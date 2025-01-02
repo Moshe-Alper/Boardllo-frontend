@@ -4,9 +4,8 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "start": "vite",
-        "dev": "nodemon --exec vite",
-        "dev:local": "VITE_LOCAL=true nodemon --exec vite",
+        "dev": "vite",
+        "dev:local": "set VITE_LOCAL=true && vite",
         "dev:local:mac": "VITE_LOCAL=true nodemon --exec vite",
         "build": "vite build",
         "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
