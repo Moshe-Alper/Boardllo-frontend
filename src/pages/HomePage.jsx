@@ -16,6 +16,9 @@ export function HomePage() {
             <Link to='/board' >Check Our Boards!</Link>
             <img src={svgService.searchSvg} alt="Search Icon" />
             <img src={svgService.settingsSvg} alt="Settings Icon" />
+            <img src={svgService.settingsSvg} alt="Settings Icon" />
+            <img src={svgService.settingsSvg} alt="Settings Icon" />
+            <img src={svgService.settingsSvg} alt="Settings Icon" />
         </section >
     )
 }
