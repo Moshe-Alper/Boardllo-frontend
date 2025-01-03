@@ -1,16 +1,53 @@
-// Colors
-$clr1: #ce2e6c;
-$clr2: #4f3a65;
-$clr3: #574f7d;
-$clr4: #95adbe;
-$clr5: #dff0ea;
-$clr6: #fff;
-$clr7: #222;
+// Root Colors Css & Scss - Good for Themes
+:root {
+  --theme-clr1: #0065ff;
+  --theme-clr2: #0052cc;
+  --theme-clr3: #3860be;
+  --theme-clr4: #b2d4ff;
+  --theme-clr5: #f99cdb;
+}
 
-$gray1: #ddd;
-$gray2: #aaa;
-$gray3: #777;
-$gray4: #333;
+// Trello Homepage Colors
+$hom-clr1: #0065ff;
+$hom-clr2: #0052cc;
+$hom-clr3: #27455c;
+$hom-clr4: #3860be;
+$hom-clr5: #0079bf;
+$hom-clr6: #2684ff;
+$hom-clr7: #b2d4ff;
+$hom-clr8: #5243aa;
+$hom-clr9: #6554c0;
+$hom-clr10: #8777d9;
+$hom-clr11: #f4f4f4;
+$hom-clr12: #ffc400;
+$hom-clr13: #f99cdb;
+$hom-clr14: #ffab00;
+$hom-clr15: #ff7452;
+$hom-clr16: #468254;
+$hom-clr17: #00c7e5;
+$hom-clr18: #57d9a3;
+
+// Trello Workspace Scss Colors
+$wrk-clr1: #172b4d;
+$wrk-clr2: #6e5dc6;
+$wrk-clr3: #0c66e4;
+$wrk-clr4: #e9f2ff;
+$wrk-clr5: #f1f2f4;
+$wrk-clr6: #091e42;
+
+// General Trello Colors
+$black: #ffffff;
+$white: #000000;
+
+$gray1: #44546f;
+$gray2: #626f86;
+$gray3: #656565;
+$gray4: #696969;
+$gray5: #767676;
+$gray6: #97a0af;
+$gray7: #767676;
+$gray8: #505f79;
+$gray9: #5e6c84;
 
 // Breakpoints
 $mobile-breakpoint: 460px;
