@@ -9,7 +9,23 @@ function getEmptyBoard() {
         title: makeId(),
         isStarred: false,
         archivedAt: null,
+        groups: [],
         msgs: [],
+    }
+}
+
+function getEmptyGroup() {
+    return {
+        id: makeId(),
+        title: '',
+        archivedAt: null,
+        tasks: [
+            {
+                id: makeId(),
+                title: '',
+            }
+        ],
+        style: {},
     }
 }
 
@@ -24,7 +40,7 @@ function getDefaultFilter() {
 }
 
 const service = VITE_LOCAL === 'true' ? local : remote
-export const boardService = { getEmptyBoard, getDefaultFilter, ...service }
+export const boardService = { getEmptyBoard, getEmptyGroup, getDefaultFilter, ...service }
 
 
 

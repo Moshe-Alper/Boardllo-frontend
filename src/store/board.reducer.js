@@ -4,10 +4,14 @@ export const REMOVE_BOARD = 'REMOVE_BOARD'
 export const ADD_BOARD = 'ADD_BOARD'
 export const UPDATE_BOARD = 'UPDATE_BOARD'
 export const ADD_BOARD_MSG = 'ADD_BOARD_MSG'
+export const ADD_GROUP = 'ADD_GROUP'
+export const UPDATE_GROUP = 'UPDATE_GROUP'
 
 const initialState = {
     boards: [],
-    board: null
+    board: null,
+    groups: [],
+    group: null,
 }
 
 export function boardReducer(state = initialState, action) {
@@ -35,7 +39,14 @@ export function boardReducer(state = initialState, action) {
         case ADD_BOARD_MSG:
             newState = { ...state, board: { ...state.board, msgs: [...state.board.msgs || [], action.msg] } }
             break
-        default:
+        case ADD_GROUP:
+            newState = { ...state, groups: [...state.groups, action.group] }
+            break
+        case UPDATE_GROUP:
+            const groups = state.groups.map(group => (group._id === action.group._id) ? action.group : group)
+            newState = { ...state, groups }
+            break
+        default:   
     }
     return newState
 }
@@ -65,5 +76,6 @@ function unitTestReducer() {
 
     state = boardReducer(state, { type: REMOVE_BOARD, boardId: board1._id })
     console.log('After REMOVE_BOARD:', state)
+    
 }
 

@@ -10,7 +10,8 @@ export const boardService = {
     getById,
     save,
     remove,
-    addBoardMsg
+    addBoardMsg,
+    addGroup,
 }
 window.cs = boardService
 
@@ -24,7 +25,7 @@ async function query(filterBy = { txt: '', price: 0 }) {
         const regex = new RegExp(filterBy.txt, 'i')
         boards = boards.filter(board => regex.test(board.title) || regex.test(board.description))
     }
-    
+
     if (sortField === 'title' || sortField === 'owner') {
         boards.sort((board1, board2) => {
             let val1, val2
@@ -61,6 +62,7 @@ async function save(board) {
             _id: board._id,
             isStarred: board.isStarred,
             archivedAt: board.archivedAt,
+            groups: board.group,
         }
         savedBoard = await storageService.put(STORAGE_KEY, boardToSave)
     } else {
@@ -68,6 +70,7 @@ async function save(board) {
             title: board.title,
             isStarred: false,
             archivedAt: null,
+            groups: [],
             // Later, owner is set by the backend
             owner: userService.getLoggedinUser(),
             msgs: []
@@ -90,4 +93,23 @@ async function addBoardMsg(boardId, txt) {
     await storageService.put(STORAGE_KEY, board)
 
     return msg
+}
+
+async function addGroup(boardId, group) {
+    console.log('🚀 boardId from service', boardId)
+    console.log('🚀 group from service', group)
+    const board = await getById(boardId)
+    if (!board) throw new Error('Board not found')
+
+    const newGroup = {
+        id: makeId(),
+        title: group.title,
+        archivedAt: null,
+        tasks: [],
+        style: {},
+    }
+    board.groups.push(newGroup)
+
+    await storageService.put(STORAGE_KEY, board)
+    return newGroup
 }

@@ -1,6 +1,6 @@
 import { boardService } from '../services/board'
 import { store } from '../store/store'
-import { ADD_BOARD, REMOVE_BOARD, SET_BOARDS, SET_BOARD, UPDATE_BOARD, ADD_BOARD_MSG } from './board.reducer'
+import { ADD_BOARD, REMOVE_BOARD, SET_BOARDS, SET_BOARD, UPDATE_BOARD, ADD_BOARD_MSG, ADD_GROUP, UPDATE_GROUP } from './board.reducer'
 
 export async function loadBoards(filterBy) {
     try {
@@ -55,6 +55,28 @@ export async function updateBoard(board) {
     }
 }
 
+export async function addGroup(boardId, group) {
+    try {
+        const savedGroup = await boardService.addGroup(boardId, group)
+        store.dispatch(getCmdAddGroup(savedGroup))
+        return savedGroup
+    } catch (err) {
+        console.log('Cannot add group', err)
+        throw err
+    }
+}
+
+export async function updateGroup(boardId, groupId, group) {
+    try {
+        const updatedGroup = await boardService.updateGroup(boardId, groupId, group)
+        store.dispatch(getCmdUpdateGroup(updatedGroup))
+        return updatedGroup
+    } catch (err) {
+        console.log('Cannot update group', err)
+        throw err
+    }
+}
+
 export async function addBoardMsg(boardId, txt) {
     try {
         const msg = await boardService.addBoardMsg(boardId, txt)
@@ -65,6 +87,7 @@ export async function addBoardMsg(boardId, txt) {
         throw err
     }
 }
+
 
 // Command Creators:
 function getCmdSetBoards(boards) {
@@ -104,14 +127,29 @@ function getCmdAddBoardMsg(msg) {
     }
 }
 
-// unitTestActions()
-async function unitTestActions() {
-    await loadBoards()
-    await addBoard(boardService.getEmptyBoard())
-    await updateBoard({
-        _id: 'm1oC7',
-        title: 'Board-Good',
-    })
-    await removeBoard('m1oC7')
-    // TODO unit test addBoardMsg
+function getCmdAddGroup(group) {
+    return {
+        type: ADD_GROUP,
+        group
+    }
 }
+
+function getCmdUpdateGroup(group) {
+    return {
+        type: UPDATE_GROUP,
+        group
+    }
+}
+
+    // unitTestActions()
+    async function unitTestActions() {
+        await loadBoards()
+        await addBoard(boardService.getEmptyBoard())
+        await updateBoard({
+            _id: 'm1oC7',
+            title: 'Board-Good',
+        })
+        await removeBoard('m1oC7')
+        // TODO unit test addBoardMsg
+        // await addGroup(boardService.getEmptyGroup())
+    }
