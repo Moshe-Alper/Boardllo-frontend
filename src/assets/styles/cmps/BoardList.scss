@@ -7,9 +7,9 @@
         display: grid;
         grid-template-columns: max-content auto;
         padding: .5em;
-        background-color: $clr2;
+        background-color: red;
 
-        color: $clr6;
+        color: black;
 
         .actions {
             justify-self: end;
