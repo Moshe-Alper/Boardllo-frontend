@@ -1,7 +1,9 @@
 import { boardService } from '../services/board'
 import { store } from '../store/store'
-import { ADD_BOARD, REMOVE_BOARD, SET_BOARDS, SET_BOARD, UPDATE_BOARD, ADD_BOARD_MSG, ADD_GROUP, UPDATE_GROUP } from './board.reducer'
+import { ADD_BOARD, REMOVE_BOARD, SET_BOARDS, SET_BOARD, UPDATE_BOARD, ADD_BOARD_MSG, SET_GROUP, SET_GROUPS, ADD_GROUP, UPDATE_GROUP } from './board.reducer'
 
+
+// Board Actions
 export async function loadBoards(filterBy) {
     try {
         const boards = await boardService.query(filterBy)
@@ -21,7 +23,6 @@ export async function loadBoard(boardId) {
         throw err
     }
 }
-
 
 export async function removeBoard(boardId) {
     try {
@@ -55,6 +56,27 @@ export async function updateBoard(board) {
     }
 }
 
+// Group Actions
+export async function loadGroups(boardId) {
+    try {
+        const groups = await boardService.getGroups(boardId)
+        store.dispatch(getCmdSetGroups(groups))
+    } catch (err) {
+        console.log('Cannot load groups', err)
+        throw err
+    }
+}
+
+// export async function loadGroup(boardId, groupId) {
+//     try {
+//         const group = await boardService.getGroupById(boardId, groupId)
+//         store.dispatch(getCmdSetGroup(group))
+//     } catch (err) {
+//         console.log('Cannot load group', err)
+//         throw err
+//     }
+// }
+
 export async function addGroup(boardId, group) {
     try {
         const savedGroup = await boardService.addGroup(boardId, group)
@@ -77,6 +99,18 @@ export async function updateGroup(boardId, groupId, group) {
     }
 }
 
+// Task Actions
+export async function saveTask(boardId, groupId, task) {
+    try {
+        const savedTask = await boardService.saveTask(boardId, groupId, task)
+        return savedTask
+    } catch (err) {
+        console.log('Cannot save task', err)
+        throw err
+    }
+}
+
+// BoardMsg Actions
 export async function addBoardMsg(boardId, txt) {
     try {
         const msg = await boardService.addBoardMsg(boardId, txt)
@@ -127,6 +161,20 @@ function getCmdAddBoardMsg(msg) {
     }
 }
 
+function getCmdSetGroups(groups) {
+    return {
+        type: SET_GROUPS,
+        groups
+    }
+}
+
+function getCmdSetGroup(group) {
+    return {
+        type: SET_GROUP,
+        group
+    }
+}
+
 function getCmdAddGroup(group) {
     return {
         type: ADD_GROUP,
@@ -141,15 +189,15 @@ function getCmdUpdateGroup(group) {
     }
 }
 
-    // unitTestActions()
-    async function unitTestActions() {
-        await loadBoards()
-        await addBoard(boardService.getEmptyBoard())
-        await updateBoard({
-            _id: 'm1oC7',
-            title: 'Board-Good',
-        })
-        await removeBoard('m1oC7')
-        // TODO unit test addBoardMsg
-        // await addGroup(boardService.getEmptyGroup())
-    }
+// unitTestActions()
+async function unitTestActions() {
+    await loadBoards()
+    await addBoard(boardService.getEmptyBoard())
+    await updateBoard({
+        _id: 'm1oC7',
+        title: 'Board-Good',
+    })
+    await removeBoard('m1oC7')
+    // TODO unit test addBoardMsg
+    // await addGroup(boardService.getEmptyGroup())
+}

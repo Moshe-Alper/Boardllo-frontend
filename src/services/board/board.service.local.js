@@ -11,14 +11,15 @@ export const boardService = {
     save,
     remove,
     addBoardMsg,
+    getGroups,
     addGroup,
+    saveTask,
 }
 window.cs = boardService
 
 
 async function query(filterBy = { txt: '', price: 0 }) {
     var boards = await storageService.query(STORAGE_KEY)
-    console.log('boards:', boards)
     const { txt, sortField, sortDir } = filterBy
 
     if (txt) {
@@ -60,9 +61,10 @@ async function save(board) {
     if (board._id) {
         const boardToSave = {
             _id: board._id,
+            title: board.title,
             isStarred: board.isStarred,
             archivedAt: board.archivedAt,
-            groups: board.group,
+            groups: board.groups,
         }
         savedBoard = await storageService.put(STORAGE_KEY, boardToSave)
     } else {
@@ -95,9 +97,14 @@ async function addBoardMsg(boardId, txt) {
     return msg
 }
 
+// Group functions
+async function getGroups(boardId) {
+    const board = await getById(boardId)
+    if (!board) throw new Error('Board not found')
+    return board.groups || []
+}
+
 async function addGroup(boardId, group) {
-    console.log('🚀 boardId from service', boardId)
-    console.log('🚀 group from service', group)
     const board = await getById(boardId)
     if (!board) throw new Error('Board not found')
 
@@ -113,3 +120,26 @@ async function addGroup(boardId, group) {
     await storageService.put(STORAGE_KEY, board)
     return newGroup
 }
+
+// Tasks functions
+async function saveTask(boardId, groupId, task) {
+    console.log('saveTask inputs:', { boardId, groupId, task }) // Debug log
+
+    const board = await getById(boardId)
+    if (!board) throw new Error('Board not found')
+
+    const group = board.groups.find(group => group.id === groupId)
+    if (!group) throw new Error('Group not found')
+
+    const taskIdx = group.tasks.findIndex(t => t.id === task.id)
+    if (taskIdx === -1) {
+        group.tasks.push(task)
+    } else {
+        group.tasks[taskIdx] = task
+    }
+
+    console.log('Updated board before save:', board) // Debug log
+    await save(board)
+    return task
+}
+

@@ -3,21 +3,30 @@ export const SET_BOARD = 'SET_BOARD'
 export const REMOVE_BOARD = 'REMOVE_BOARD'
 export const ADD_BOARD = 'ADD_BOARD'
 export const UPDATE_BOARD = 'UPDATE_BOARD'
-export const ADD_BOARD_MSG = 'ADD_BOARD_MSG'
+
+export const SET_GROUPS = 'SET_GROUPS'
+export const SET_GROUP = 'SET_GROUP'
 export const ADD_GROUP = 'ADD_GROUP'
 export const UPDATE_GROUP = 'UPDATE_GROUP'
+
+export const SAVE_TASK = 'SAVE_TASK'
+
+export const ADD_BOARD_MSG = 'ADD_BOARD_MSG'
 
 const initialState = {
     boards: [],
     board: null,
     groups: [],
     group: null,
+    tasks: [],
+    task: null,
 }
 
 export function boardReducer(state = initialState, action) {
     var newState = state
     var boards
     switch (action.type) {
+        // Board reduces
         case SET_BOARDS:
             newState = { ...state, boards: action.boards }
             break
@@ -36,8 +45,14 @@ export function boardReducer(state = initialState, action) {
             boards = state.boards.map(board => (board._id === action.board._id) ? action.board : board)
             newState = { ...state, boards }
             break
-        case ADD_BOARD_MSG:
-            newState = { ...state, board: { ...state.board, msgs: [...state.board.msgs || [], action.msg] } }
+
+
+        // Group reduces 
+        case SET_GROUPS:
+            newState = { ...state, groups: action.groups }
+            break
+        case SET_GROUP:
+            newState = { ...state, group: action.group }
             break
         case ADD_GROUP:
             newState = { ...state, groups: [...state.groups, action.group] }
@@ -46,7 +61,17 @@ export function boardReducer(state = initialState, action) {
             const groups = state.groups.map(group => (group._id === action.group._id) ? action.group : group)
             newState = { ...state, groups }
             break
-        default:   
+
+        // Task reduces
+        case SAVE_TASK:
+            newState = { ...state, task: action.task }
+            break
+            
+        // Board Massages reduces
+        case ADD_BOARD_MSG:
+            newState = { ...state, board: { ...state.board, msgs: [...state.board.msgs || [], action.msg] } }
+            break
+        default:
     }
     return newState
 }
@@ -76,6 +101,6 @@ function unitTestReducer() {
 
     state = boardReducer(state, { type: REMOVE_BOARD, boardId: board1._id })
     console.log('After REMOVE_BOARD:', state)
-    
+
 }
 

@@ -34,7 +34,7 @@ export function BoardIndex() {
 
     async function onAddBoard() {
         const board = boardService.getEmptyBoard()
-        board.title = prompt('Title?')
+        board.title = 'Board ' + Math.floor(Math.random() * 100)
         try {
             const savedBoard = await addBoard(board)
             showSuccessMsg(`Board added (id: ${savedBoard._id})`)
@@ -44,17 +44,22 @@ export function BoardIndex() {
     }
 
     async function onUpdateBoard(board) {
-        const title = +prompt('New title?', board.title)
+        // console.log('🚀 board', board)
+        const title = prompt('New title?', board.title)
         if (!title) return
-        const boardToSave = { ...board, title }
+    
+        const updatedBoard = {
+            ...board, 
+            title: title,
+        }
+    
         try {
-            const savedBoard = await updateBoard(boardToSave)
+            const savedBoard = await updateBoard(updatedBoard)
             showSuccessMsg(`Board updated, new title: ${savedBoard.title}`)
         } catch (err) {
             showErrorMsg('Cannot update board')
         }
     }
-
     return (
         <main className="board-index">
             <header>

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { boardService } from '../services/board'
 import { userService } from '../services/user'
-import { loadBoard, addBoardMsg, addGroup } from '../store/board.actions'
+import { loadBoard, addBoardMsg, addGroup, loadGroups } from '../store/board.actions'
 
 import { BoardGroup } from '../cmps/BoardGroup'
 
@@ -15,9 +15,18 @@ export function BoardDetails() {
     const { boardId } = useParams()
     const board = useSelector(storeState => storeState.boardModule.board)
 
+    const [isGroupsUpdated, setIsGroupsUpdated] = useState(false)
+
     useEffect(() => {
         loadBoard(boardId)
     }, [boardId])
+
+
+    useEffect(() => {
+        if (boardId) {
+            loadGroups(boardId)
+        }
+    }, [boardId, isGroupsUpdated])
 
     async function onAddBoardMsg(boardId) {
         try {
@@ -31,10 +40,11 @@ export function BoardDetails() {
 
     async function onAddGroup(boardId) {
         const group = boardService.getEmptyGroup()
-        group.title = prompt('Title?')
+        group.title = 'Group ' + Math.floor(Math.random() * 100)
         try {
             await addGroup(boardId, group)
             showSuccessMsg(`Group added (id: ${group.id})`)
+            setIsGroupsUpdated(prev => !prev)
         } catch (err) {
             console.log('Cannot add group', err)
             showErrorMsg('Cannot add group')
@@ -48,11 +58,14 @@ export function BoardDetails() {
         try {
             const savedGroup = await boardService.updateGroup(board._id, groupToSave)
             showSuccessMsg(`Group updated, new title: ${savedGroup.title}`)
+            setIsGroupsUpdated(prev => !prev) 
         } catch (err) {
             showErrorMsg('Cannot update group')
         }
     }
-
+    if (!board) return <div>Loading...</div>
+    // console.log('🚀 board', board)
+    
     return (
         <section className="board-details">
             <Link to="/board">Back to list</Link>
@@ -60,12 +73,14 @@ export function BoardDetails() {
             {board && <div>
                 <h3>{board.title}</h3>
                 {userService.getLoggedinUser() && <button onClick={() => { onAddGroup(board._id) }}>Add a Group</button>}
+                <h3>🍎Groups list:🍎</h3>
                 {board.groups.map(group => (
                     <BoardGroup
                         key={group.id}
-                        group={group} 
-                        updateGroup={onUpdateGroup}
-                        />
+                        board={board}
+                        group={group}
+                        onUpdateGroup={onUpdateGroup}
+                    />
                 ))}
                 <pre> {JSON.stringify(board, null, 2)} </pre>
             </div>

@@ -29,6 +29,26 @@ function getEmptyGroup() {
     }
 }
 
+function getEmptyTask() {
+    return {
+        id: makeId(),
+        title: '',
+        description: '',
+        status: 'pending',
+        priority: 'normal',
+        dueDate: null,
+        comments: [],
+        checklists: [],
+        memberIds: [],
+        labelIds: [],
+        byMember: null,
+        style: {
+            backgroundColor: '',
+        },
+        archivedAt: null,
+    }
+}
+
 function getDefaultFilter() {
     return {
         txt: '',
@@ -40,7 +60,7 @@ function getDefaultFilter() {
 }
 
 const service = VITE_LOCAL === 'true' ? local : remote
-export const boardService = { getEmptyBoard, getEmptyGroup, getDefaultFilter, ...service }
+export const boardService = { getEmptyBoard, getEmptyGroup, getEmptyTask, getDefaultFilter, ...service }
 
 
 

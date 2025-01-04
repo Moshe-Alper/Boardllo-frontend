@@ -10,7 +10,7 @@ export function BoardList({ boards, onRemoveBoard, onUpdateBoard }) {
         if (user.isAdmin) return true
         return board.owner?._id === user._id
     }
-
+    
     return <section>
         <ul className="list">
             {boards.map(board =>
