@@ -60,6 +60,7 @@ export async function updateBoard(board) {
 export async function loadGroups(boardId) {
     try {
         const groups = await boardService.getGroups(boardId)
+        console.log('Loaded groups in actions', groups) 
         store.dispatch(getCmdSetGroups(groups))
     } catch (err) {
         console.log('Cannot load groups', err)
@@ -67,19 +68,9 @@ export async function loadGroups(boardId) {
     }
 }
 
-// export async function loadGroup(boardId, groupId) {
-//     try {
-//         const group = await boardService.getGroupById(boardId, groupId)
-//         store.dispatch(getCmdSetGroup(group))
-//     } catch (err) {
-//         console.log('Cannot load group', err)
-//         throw err
-//     }
-// }
-
 export async function addGroup(boardId, group) {
     try {
-        const savedGroup = await boardService.addGroup(boardId, group)
+        const savedGroup = await boardService.saveGroup(boardId, group)
         store.dispatch(getCmdAddGroup(savedGroup))
         return savedGroup
     } catch (err) {
@@ -88,11 +79,12 @@ export async function addGroup(boardId, group) {
     }
 }
 
-export async function updateGroup(boardId, groupId, group) {
+export async function updateGroup(boardId, group) {
+    console.log('🚀 boardId, group from updateGroup in actions', boardId, group)
     try {
-        const updatedGroup = await boardService.updateGroup(boardId, groupId, group)
-        store.dispatch(getCmdUpdateGroup(updatedGroup))
-        return updatedGroup
+        const savedGroup = await boardService.saveGroup(boardId, group)
+        store.dispatch(getCmdUpdateGroup(savedGroup))
+        return savedGroup
     } catch (err) {
         console.log('Cannot update group', err)
         throw err

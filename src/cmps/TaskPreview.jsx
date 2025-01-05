@@ -1,9 +1,8 @@
 export function TaskPreview({ task }) {
 return (
             // temporary backgroundColor
-    <section className="task-preview" style={{ backgroundColor: 'lightgray' }}>
-            <h5>{task.title}</h5>
+    <article className="task-preview flex column">
             <p>{task.description}</p>
-        </section>
+        </article>
     )
 }

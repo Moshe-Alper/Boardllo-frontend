@@ -36,6 +36,8 @@ $wrk-clr5: #f1f2f4;
 $wrk-clr6: #091e42;
 
 // General Trello Colors
+$shadow-color: rgba(0, 0, 0, 0.1);
+
 $black: #ffffff;
 $white: #000000;
 
@@ -53,3 +55,11 @@ $gray9: #5e6c84;
 $mobile-breakpoint: 460px;
 $narrow-breakpoint: 720px;
 $normal-breakpoint: 960px;
+
+
+// LAYOUT
+$layoutPadding-small: 0.5rem;
+$layoutPadding-medium: 1rem;
+$layoutPadding-large: 1.5rem;
+
+$border-radius: 0.3125rem;

@@ -12,7 +12,7 @@ export const boardService = {
     remove,
     addBoardMsg,
     getGroups,
-    addGroup,
+    saveGroup,
     saveTask,
 }
 window.cs = boardService
@@ -99,32 +99,43 @@ async function addBoardMsg(boardId, txt) {
 
 // Group functions
 async function getGroups(boardId) {
-    const board = await getById(boardId)
-    if (!board) throw new Error('Board not found')
-    return board.groups || []
-}
-
-async function addGroup(boardId, group) {
-    const board = await getById(boardId)
-    if (!board) throw new Error('Board not found')
-
-    const newGroup = {
-        id: makeId(),
-        title: group.title,
-        archivedAt: null,
-        tasks: [],
-        style: {},
+    try {
+        const board = await getById(boardId)
+        if (!board) throw new Error('Board not found')
+            console.log('🚀 groups in get groups is service', board.groups)
+        return board.groups || []
+    } catch (error) {
+        console.error('Failed to get groups:', error)
+        throw error
     }
-    board.groups.push(newGroup)
-
-    await storageService.put(STORAGE_KEY, board)
-    return newGroup
 }
+
+async function saveGroup(boardId, group) {
+    const board = await getById(boardId)
+    if (!board) throw new Error('Board not found')
+
+    const groupIdx = board.groups.findIndex(g => g.id === group.id)
+    if (groupIdx === -1) {
+        const newGroup = {
+            id: makeId(),
+            title: group.title,
+            archivedAt: null,
+            tasks: [],
+            style: {},
+        }
+        board.groups.push(newGroup)
+        await storageService.put(STORAGE_KEY, board)
+        return newGroup
+    } else {
+        board.groups[groupIdx] = group
+        await storageService.put(STORAGE_KEY, board)
+        return group
+    }
+}
+
 
 // Tasks functions
 async function saveTask(boardId, groupId, task) {
-    console.log('saveTask inputs:', { boardId, groupId, task }) // Debug log
-
     const board = await getById(boardId)
     if (!board) throw new Error('Board not found')
 
@@ -138,7 +149,6 @@ async function saveTask(boardId, groupId, task) {
         group.tasks[taskIdx] = task
     }
 
-    console.log('Updated board before save:', board) // Debug log
     await save(board)
     return task
 }

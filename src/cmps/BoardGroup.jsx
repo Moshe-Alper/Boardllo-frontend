@@ -20,18 +20,16 @@ async function handleTaskSave() {
 if (!group) return <div>Loading...</div>
 
 return (
-    <section className="board-group" style={{ backgroundColor: 'lightblue' }}> 
-        {/* //Temporary backgroundColor */}
+    <section className="board-group flex column"> 
         <h5>{group.title}</h5>
-        <button onClick={() => onUpdateGroup(group)}>Edit Group</button>
-        <h5>🍕Tasks List🍕</h5>
-        <button onClick={() => handleTaskSave()}>Save Task</button>
+        <button onClick={() => onUpdateGroup(group)}>Edit Group Name</button>
         {group.tasks.map(task => (
             <TaskPreview
-                key={task.id}
-                task={task} 
+            key={task.id}
+            task={task} 
             />
         ))}
+        <button onClick={() => handleTaskSave()}>Add a card</button>
     </section>
 )
 }

@@ -3,10 +3,11 @@ import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { boardService } from '../services/board'
 import { userService } from '../services/user'
-import { loadBoard, addBoardMsg, addGroup, loadGroups } from '../store/board.actions'
+
+import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
+import { loadBoard, addBoardMsg, addGroup, updateGroup, loadGroups } from '../store/board.actions'
 
 import { BoardGroup } from '../cmps/BoardGroup'
 
@@ -15,19 +16,17 @@ export function BoardDetails() {
     const { boardId } = useParams()
     const board = useSelector(storeState => storeState.boardModule.board)
 
-    const [isGroupsUpdated, setIsGroupsUpdated] = useState(false)
-
     useEffect(() => {
         loadBoard(boardId)
     }, [boardId])
 
 
     useEffect(() => {
-        if (boardId) {
-            loadGroups(boardId)
+        if (board && board.groups) {
+            loadGroups(board._id)
         }
-    }, [boardId, isGroupsUpdated])
-
+    }, [board])
+    
     async function onAddBoardMsg(boardId) {
         try {
             await addBoardMsg(boardId, 'bla bla ' + parseInt(Math.random() * 10))
@@ -44,7 +43,6 @@ export function BoardDetails() {
         try {
             await addGroup(boardId, group)
             showSuccessMsg(`Group added (id: ${group.id})`)
-            setIsGroupsUpdated(prev => !prev)
         } catch (err) {
             console.log('Cannot add group', err)
             showErrorMsg('Cannot add group')
@@ -53,35 +51,37 @@ export function BoardDetails() {
 
     async function onUpdateGroup(group) {
         const title = prompt('New title?', group.title)
-        if (!title) return
+        if (title === null) return alert('Invalid title')
         const groupToSave = { ...group, title }
+        // console.log('🚀 groupToSave', groupToSave)
         try {
-            const savedGroup = await boardService.updateGroup(board._id, groupToSave)
+            const savedGroup = await updateGroup(board._id, groupToSave)
             showSuccessMsg(`Group updated, new title: ${savedGroup.title}`)
-            setIsGroupsUpdated(prev => !prev) 
         } catch (err) {
             showErrorMsg('Cannot update group')
         }
     }
+
+    
     if (!board) return <div>Loading...</div>
     // console.log('🚀 board', board)
     
     return (
         <section className="board-details">
             <Link to="/board">Back to list</Link>
-            <h1>Board Details</h1>
-            {board && <div>
                 <h3>{board.title}</h3>
-                {userService.getLoggedinUser() && <button onClick={() => { onAddGroup(board._id) }}>Add a Group</button>}
-                <h3>🍎Groups list:🍎</h3>
+            {board && <div>
+                {userService.getLoggedinUser() && <button onClick={() => { onAddGroup(board._id) }}>+ Add another list</button>}
+                <section className="group-container flex">
                 {board.groups.map(group => (
                     <BoardGroup
-                        key={group.id}
-                        board={board}
-                        group={group}
-                        onUpdateGroup={onUpdateGroup}
+                    key={group.id}
+                    board={board}
+                    group={group}
+                    onUpdateGroup={onUpdateGroup}
                     />
                 ))}
+                </section>
                 <pre> {JSON.stringify(board, null, 2)} </pre>
             </div>
             }
