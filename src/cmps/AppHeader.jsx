@@ -21,6 +21,7 @@ export function AppHeader() {
     return (
         <header className="app-header main-container full">
             <nav className=''>
+                <h1>Boardllo</h1>
                 <NavLink to="/" className="/logo">
                     E2E Demo
                 </NavLink>

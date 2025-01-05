@@ -11,7 +11,7 @@ export function BoardList({ boards, onRemoveBoard, onUpdateBoard }) {
         return board.owner?._id === user._id
     }
     
-    return <section>
+    return <section style={{ backgroundColor: "lightblue" }}>
         <ul className="list">
             {boards.map(board =>
                 <li key={board._id}>
