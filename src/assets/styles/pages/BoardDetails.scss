@@ -2,7 +2,7 @@
   // (ClassName: flex)
   margin: $layoutPadding-large auto;
 
-  background-color: $black;
+  background-color: $white;
   color: $white;
   box-shadow: 0 2px 4px $shadow-color;
   border-radius: $border-radius;
@@ -30,7 +30,8 @@
       gap: $layoutPadding-small;
 
       .task-preview {
-        background-color: $black;
+        color: $black;
+        background-color: $white;
         border-radius: $border-radius;
         padding: $layoutPadding-small;
       }
