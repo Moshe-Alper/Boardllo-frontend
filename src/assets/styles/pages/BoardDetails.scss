@@ -1,21 +1,23 @@
 .board-details {
-  // (ClassName: flex)
-  margin: $layoutPadding-large auto;
-
-  background-color: $white;
+  max-width: 100%;
+  margin: $layoutPadding-small auto;
   color: $white;
   box-shadow: 0 2px 4px $shadow-color;
   border-radius: $border-radius;
-  gap: $layoutPadding-medium;
+  gap: $layoutPadding-small;
 
   .group-container {
     // ClassName: flex
-    flex-wrap: wrap;
-    gap: $layoutPadding-medium;
-
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    margin-inline-start: 0.75rem;
+    gap: $layoutPadding-small;
+    
     button {
+      text-align: left;
       background-color: transparent;
       border-radius: $border-radius;
+      color: $black;
 
       &:hover {
         background-color: darken($wrk-clr2, 10%);
@@ -23,17 +25,39 @@
     }
 
     .board-group {
-      background-color: $wrk-clr2;
+      width: 256px;
+      font-size: 0.875rem;
+      background-color: $white;
+      color: $black;
       padding: $layoutPadding-medium;
+      border: 1px solid $gray2;
       border-radius: $border-radius;
-      box-shadow: 0 1px 3px $shadow-color;
-      gap: $layoutPadding-small;
+      box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px 0px, rgba(9, 30, 66, 0.31) 0px 0px 1px 0px;
+      gap: $layoutPadding-smallest;
 
       .task-preview {
         color: $black;
+        border: solid 1px $gray2;
         background-color: $white;
         border-radius: $border-radius;
-        padding: $layoutPadding-small;
+        padding: $layoutPadding-smallest;
+      }
+    }
+
+    .add-list-btn {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: $border-radius;
+      padding: $layoutPadding-small;
+      height: 2.75rem;
+
+      &::before {
+        content: '+';
+        font-size: 1rem;
+        margin-inline-end: 0.5rem;
+      }
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
       }
     }
   }

@@ -3,17 +3,19 @@ import { boardService } from '../services/board'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 
 export function BoardGroup({ board, group, onUpdateGroup }) {
- 
-async function handleTaskSave() {
-    const task = boardService.getEmptyTask()
-    task.title = 'Task ' + Math.floor(Math.random() * 100)
-    task.description = prompt('Enter task description')
+
+async function onAddTask() {
+    const task = boardService.getEmptyTask();
+    const title = prompt('Enter task title:');
+    if (title === null || title.trim() === '') return alert('Invalid title');
+
+    task.title = title
     try {
         await boardService.saveTask(board._id, group.id, task)
         showSuccessMsg(`Task added (id: ${task.id})`)
     } catch (err) {
-        console.log('Cannot save task', err)
-        showErrorMsg('Cannot save task')
+        console.log('Cannot add task', err)
+        showErrorMsg('Cannot add task')
     }
 }
 
@@ -29,7 +31,7 @@ return (
             task={task} 
             />
         ))}
-        <button onClick={() => handleTaskSave()}>Add a card</button>
+        <button onClick={() => onAddTask()}>Add a card</button>
     </section>
 )
 }

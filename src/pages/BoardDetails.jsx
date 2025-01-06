@@ -68,10 +68,8 @@ export function BoardDetails() {
     
     return (
         <section className="board-details">
-            <Link to="/board">Back to list</Link>
-                <h3>{board.title}</h3>
+            {/* <Link to="/board">Back to list</Link> */}
             {board && <div>
-                {userService.getLoggedinUser() && <button onClick={() => { onAddGroup(board._id) }}>+ Add another list</button>}
                 <section className="group-container flex">
                 {board.groups.map(group => (
                     <BoardGroup
@@ -81,6 +79,7 @@ export function BoardDetails() {
                     onUpdateGroup={onUpdateGroup}
                     />
                 ))}
+                {userService.getLoggedinUser() && <button className="add-list-btn" onClick={() => { onAddGroup(board._id) }}>Add another list</button>}
                 </section>
                 <pre> {JSON.stringify(board, null, 2)} </pre>
             </div>
