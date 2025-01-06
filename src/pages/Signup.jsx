@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 
-import { signup } from '../store/user.actions'
+import { signup } from '../store/actions/user.actions'
 
 import { ImgUploader } from '../cmps/ImgUploader'
 import { userService } from '../services/user'

@@ -7,7 +7,7 @@ import { boardService } from '../services/board'
 import { userService } from '../services/user'
 
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
-import { loadBoard, addBoardMsg, addGroup, updateGroup, loadGroups } from '../store/board.actions'
+import { loadBoard, addBoardMsg, addGroup, updateGroup, loadGroups } from '../store/actions/board.actions'
 
 import { BoardGroup } from '../cmps/BoardGroup'
 

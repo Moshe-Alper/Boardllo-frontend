@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useSelector } from "react-redux"
 
-import { addReview } from "../store/review.actions"
+import { addReview } from "../store/actions/review.actions"
 
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service"
 

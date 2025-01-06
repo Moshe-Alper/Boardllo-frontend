@@ -1,6 +1,6 @@
-import { boardService } from '../services/board'
-import { store } from '../store/store'
-import { ADD_BOARD, REMOVE_BOARD, SET_BOARDS, SET_BOARD, UPDATE_BOARD, ADD_BOARD_MSG, SET_GROUP, SET_GROUPS, ADD_GROUP, UPDATE_GROUP } from './board.reducer'
+import { boardService } from '../../services/board'
+import { store } from '../store'
+import { ADD_BOARD, REMOVE_BOARD, SET_BOARDS, SET_BOARD, UPDATE_BOARD, ADD_BOARD_MSG, SET_GROUP, SET_GROUPS, ADD_GROUP, UPDATE_GROUP } from '../reducers/board.reducer'
 
 
 // Board Actions
