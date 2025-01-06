@@ -25,10 +25,12 @@ export function AppHeader() {
                 <NavLink to="/" className="/logo">
                     E2E Demo
                 </NavLink>
+                <NavLink to="/homePage">Home</NavLink>
                 <NavLink to="/about">About</NavLink>
                 <NavLink to="/board">Boards</NavLink>
                 <NavLink to="/chat">Chat</NavLink>
                 <NavLink to="/review">Review</NavLink>
+                <NavLink to="/test">Test</NavLink>
                 {user?.isAdmin && <NavLink to="/admin">Admin</NavLink>}
 
                 {!user && <NavLink to="login" className="login-link">Login</NavLink>}
