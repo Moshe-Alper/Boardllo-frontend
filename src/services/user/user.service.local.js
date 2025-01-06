@@ -10,7 +10,8 @@ export const userService = {
   getById,
   remove,
   update,
-  getLoggedinUser
+  getLoggedinUser,
+  getEmptyCredentials
 }
 
 function getUsers() {
@@ -71,6 +72,15 @@ function _saveLocalUser(user) {
   }
   sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
   return user
+}
+
+function getEmptyCredentials() {
+  return {
+    username: '',
+    password: '',
+    fullname: '',
+    imgUrl: ''
+  }
 }
 
 // To quickly create an admin user, uncomment the next line

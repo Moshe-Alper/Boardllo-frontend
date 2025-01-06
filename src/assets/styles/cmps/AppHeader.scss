@@ -1,8 +1,11 @@
 .app-header {
-  min-height: 5rem;
-  background-color: $hom-clr8;
+  min-height: 2rem;
+  background-color: white;
+  box-shadow: inset 0 -1px 0 $border-light-gray;
+
   nav {
     display: flex;
+    margin: 0.3rem;
     width: 100%;
     align-items: center;
     gap: 1em;
@@ -14,17 +17,50 @@
     }
 
     .logo {
-      font-size: 1.4em;
+      font-size: 1.5em;
+      color: $text-primary;
       font-weight: bold;
       margin-inline-end: 2em;
+      padding: 0.2rem;
+
+      &:hover {
+        background-color: $border-light-gray;
+        border-radius: $border-radius-small;
+      }
+    }
+
+    .create-link {
+      display: flex;
+      justify-content: center;
+      background-color: $primary-blue;
+      color: white;
+      font-family: $heading-font;
+      font-weight: 600;
+      padding: 0.2rem;
+      width: 60px;
+      border-radius: $border-radius-small;
+
+      &:hover {
+        background-color: $primary-hover-blue;
+      }
     }
 
     .login-link {
       margin-inline-start: auto;
+      font-size: 1rem;
+      color: $text-primary;
+
+      &:hover {
+        color: $text-secondary;
+      }
     }
 
     button {
       margin-inline-end: 0;
+    }
+    a {
+      list-style: none;
+      text-decoration: none;
     }
   }
 

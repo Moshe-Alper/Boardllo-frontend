@@ -1,0 +1,80 @@
+.login-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100dvh;
+
+  .login-form {
+    display: grid;
+    border: 1px solid $border-light-gray;
+    border-radius: $border-radius-medium;
+    box-shadow: $card-shadow;
+    padding: 2rem;
+    justify-content: center;
+    align-items: center;
+
+    .logo {
+      display: flex;
+      justify-content: center;
+      color: $primary-blue;
+      margin-bottom: $spacing-md;
+
+      font-family: $workspace-font;
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+
+    p {
+      font-family: $workspace-font;
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: $text-primary;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+
+      label {
+        font-family: $body-font;
+        font-size: 0.9rem;
+        color: $text-secondary;
+        margin-bottom: $spacing-xs;
+      }
+
+      input {
+        width: 100%;
+        padding: $spacing-sm;
+        border: 1px solid $border-light-gray;
+        border-radius: $border-radius-small;
+        font-family: $body-font;
+        font-size: 1rem;
+        color: $text-primary;
+
+        &:focus {
+          border-color: $primary-hover-blue;
+          outline: none;
+          box-shadow: 0 0 0 2px $primary-hover-blue;
+        }
+      }
+    }
+
+    button {
+      background-color: $primary-blue;
+      border: none;
+      border-radius: $border-radius-small;
+      color: $button-text-light;
+      font-family: $body-font;
+      padding: $spacing-sm;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color $hover-transition;
+
+      &:hover {
+        background-color: $primary-hover-blue;
+      }
+    }
+  }
+}
