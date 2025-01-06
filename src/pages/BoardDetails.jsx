@@ -67,7 +67,7 @@ export function BoardDetails() {
     // console.log('🚀 board', board)
     
     return (
-        <section className="board-details">
+        <section className="board-details">            
             {/* <Link to="/board">Back to list</Link> */}
             {board && <div>
                 <section className="group-container flex">
