@@ -1,9 +1,8 @@
 .board-details {
   max-width: 100%;
-  margin: $layoutPadding-small auto;
+  margin: auto;
   color: $white;
   box-shadow: 0 2px 4px $shadow-color;
-  border-radius: $border-radius;
   gap: $layoutPadding-small;
 
   .group-container {
@@ -25,7 +24,7 @@
     }
 
     .board-group {
-      width: 256px;
+      width: 17.0625rem;
       font-size: 0.875rem;
       background-color: $white;
       color: $black;

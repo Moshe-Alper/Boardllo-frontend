@@ -6,15 +6,15 @@ import { boardService } from '../services/board'
 import { userService } from '../services/user'
 
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
-import { loadBoard, addBoardMsg, addGroup, updateGroup, loadGroups } from '../store/actions/board.actions'
+import { loadBoard, addBoardMsg, addGroup, updateGroup } from '../store/actions/board.actions'
 
 import { BoardGroup } from '../cmps/BoardGroup'
+import { BoardHeader } from '../cmps/BoardHeader'
 
 export function BoardDetails() {
 
     const { boardId } = useParams()
     const board = useSelector(storeState => storeState.boardModule.board)
-    const groups = useSelector(storeState => storeState.boardModule.groups)
 
     useEffect(() => {
         loadBoard(boardId)
@@ -46,7 +46,7 @@ export function BoardDetails() {
 
     async function onUpdateGroup(group) {
         const title = prompt('New title?', group.title)
-        if (!title || !title.trim()) return alert('Invalid title')    
+        if (!title || !title.trim()) return alert('Invalid title')
         const groupToSave = { ...group, title: title.trim() }
         try {
             const savedGroup = await updateGroup(board._id, groupToSave)
@@ -57,24 +57,29 @@ export function BoardDetails() {
         }
     }
 
-    
+
     if (!board) return <div>Loading...</div>
     // console.log('🚀 board', board)
-    
+
     return (
-        <section className="board-details">            
+        <section className="board-details">
             {/* <Link to="/board">Back to list</Link> */}
+            <BoardHeader
+                board={board}
+            />
             {board && <div>
                 <section className="group-container flex">
-                {board.groups.map(group => (
-                    <BoardGroup
-                    key={group.id}
-                    board={board}
-                    group={group}
-                    onUpdateGroup={onUpdateGroup}
-                    />
-                ))}
-                {userService.getLoggedinUser() && <button className="add-list-btn" onClick={() => { onAddGroup(board._id) }}>Add another list</button>}
+                    {board.groups.map(group => (
+                        <BoardGroup
+                            key={group.id}
+                            board={board}
+                            group={group}
+                            onUpdateGroup={onUpdateGroup}
+                        />
+                    ))}
+                    {userService.getLoggedinUser() && <button className="add-list-btn" onClick={() => { onAddGroup(board._id) }}>
+                        {board.groups.length ? 'Add another list' : 'Add a list'}
+                    </button>}
                 </section>
                 <pre> {JSON.stringify(board, null, 2)} </pre>
             </div>

@@ -1,9 +1,17 @@
-import { TaskPreview } from "./TaskPreview"
+import { useEffect } from 'react'
 import { boardService } from '../services/board'
+
+
+import { TaskPreview } from "./TaskPreview"
+import { loadBoard } from '../store/actions/board.actions'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 
 export function BoardGroup({ board, group, onUpdateGroup }) {
-    
+
+    useEffect(() => {
+        loadBoard(board._id)
+    }, [board._id])
+
 async function onAddTask() {
     const task = boardService.getEmptyTask();
     const title = prompt('Enter task title:');
@@ -12,6 +20,7 @@ async function onAddTask() {
     task.title = title
     try {
         await boardService.saveTask(board._id, group.id, task)
+        loadBoard(board._id)
         showSuccessMsg(`Task added (id: ${task.id})`)
     } catch (err) {
         console.log('Cannot add task', err)

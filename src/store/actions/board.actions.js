@@ -57,15 +57,15 @@ export async function updateBoard(board) {
 }
 
 // Group Actions
-export async function loadGroups(boardId) {
-    try {
-        const groups = await boardService.getGroups(boardId)
-        store.dispatch(getCmdSetGroups(groups))
-    } catch (err) {
-        console.log('Cannot load groups', err)
-        throw err
-    }
-}
+// export async function loadGroups(boardId) {
+//     try {
+//         const groups = await boardService.getGroups(boardId)
+//         store.dispatch(getCmdSetGroups(groups))
+//     } catch (err) {
+//         console.log('Cannot load groups', err)
+//         throw err
+//     }
+// }
 
 export async function loadGroup(boardId, groupId) {
     try {

@@ -26,7 +26,6 @@ export function RootCmp() {
             <UserMsg />
 
             <main >
-                {/* TODO hompage path (empty for now) and test path */}
                 <Routes>
                     <Route path="" element={<HomePage />} />
                     <Route path="about" element={<AboutUs />}>
