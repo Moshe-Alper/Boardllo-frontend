@@ -1,61 +1,120 @@
 .board-details {
   max-width: 100%;
-  margin: auto  ;
-
-  background-color: white;
-  color: white;
-  box-shadow: 0 2px 4px $shadow-color;
-  border-radius: $border-radius-small;
+  margin: auto;
+  background-color: $background-white;
+  color: $text-primary;
+  box-shadow: $shadow-small;
+  border-radius: $border-radius-large;
   gap: $layoutPadding-medium;
 
   .group-container {
-    // ClassName: flex
     flex-wrap: nowrap;
     align-items: flex-start;
-    margin-inline-start: 0.75rem;
+    margin: 0.75rem 0 0 0.75rem;
     gap: $layoutPadding-small;
-    
+
     button {
+      color: $text-primary;
       text-align: left;
       background-color: transparent;
-      border-radius: border-radius-small;
+      border-radius: $border-radius-small;
+      width: 200px;
+      padding: 6px 8px 12px 6px;
 
       &:hover {
-        background-color: darken($primary-blue, 10%);
+        background-color: darken($button-secondary-hover-bg, 10%);
       }
     }
 
     .board-group {
-      background-color: $primary-blue;
-      padding: $layoutPadding-medium;
-      border-radius: $border-radius-small;
-      box-shadow: 0 1px 3px $shadow-color;
+      background-color: $background-light;
+      width: 272px;
+      padding: $layoutPadding-smallest;
+      border-radius: $border-radius-largest;
+      box-shadow: $card-shadow;
       gap: $layoutPadding-small;
 
       .task-preview {
-        color: black;
-        border: solid 1px gray;
-        background-color: white;
+        color: $text-primary;
+        border: solid 1px $border-gray;
+        background-color: $card-background;
         border-radius: $border-radius;
         padding: $layoutPadding-smallest;
       }
     }
 
-    .add-list-btn {
-      background-color: rgba(255, 255, 255, 0.1);
-      border-radius: $border-radius-small;
-      padding: $layoutPadding-small;
-      height: 2.75rem;
+    .add-task-container {
+      display: flex;
+      flex-direction: column; // Stack elements vertically
+      gap: $layoutPadding-small; // Consistent spacing between input and buttons
+    
+      input {
+        width: 100%; // Ensure the input takes the full width of the container
+        padding: $layoutPadding-small;
+        border: 1px solid $border-gray;
+        border-radius: $border-radius-small;
+        font-size: 0.875rem;
+        background-color: $background-light;
+        color: $text-primary;
+    
+        &:focus {
+          outline: none;
+          border-color: $primary-blue;
+          box-shadow: 0 0 4px $primary-blue;
+        }
+      }
+    
+      .buttons-container {
+        display: flex;
+        justify-content: space-between; // Space out the buttons horizontally
+        gap: $layoutPadding-small;
+    
+        button {
+          padding: $spacing-sm $spacing-md;
+          border-radius: $border-radius-small;
+          font-size: 0.875rem;
+          cursor: pointer;
+          transition: background-color 0.2s;
+    
+          &.add-card-btn {
+            background-color: $primary-blue;
+            color: $background-white;
+    
+            &:hover {
+              background-color: darken($primary-blue, 10%);
+            }
+          }
+    
+          &.cancel-btn {
+            background-color: $background-light;
+            color: $text-secondary;
+    
+            &:hover {
+              background-color: $button-secondary-hover-bg;
+            }
+          }
+        }
+      }
+    }
 
+    .add-list-btn {
+      display: flex;
+      align-items: center;
+      font-size: 0.875rem;
+      background-color: $background-light;
+      padding: 12px 10px;
+      border-radius: $border-radius-largest;
+      box-shadow: $card-shadow;
+    
       &::before {
         content: '+';
-        font-size: 1rem;
+        font-size: 20px;
         margin-inline-end: 0.5rem;
       }
-
+    
       &:hover {
-        background-color: rgba(255, 255, 255, 0.2);
+        background-color: lighten($background-light, 5%);
       }
     }
   }
-}
+}    

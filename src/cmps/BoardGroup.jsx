@@ -1,46 +1,110 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { boardService } from '../services/board'
-
-
-import { TaskPreview } from "./TaskPreview"
+import { TaskPreview } from './TaskPreview'
 import { loadBoard } from '../store/actions/board.actions'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 
+import TextField from '@mui/material/TextField'
+
 export function BoardGroup({ board, group, onUpdateGroup }) {
+    const [isAddingTask, setIsAddingTask] = useState(false)
+    const [newTaskTitle, setNewTaskTitle] = useState('')
+    const [isEditingTitle, setIsEditingTitle] = useState(false)
+    const [editedTitle, setEditedTitle] = useState(group.title)
 
     useEffect(() => {
         loadBoard(board._id)
     }, [board._id])
 
-async function onAddTask() {
-    const task = boardService.getEmptyTask();
-    const title = prompt('Enter task title:');
-    if (title === null || title.trim() === '') return alert('Invalid title');
-
-    task.title = title
-    try {
-        await boardService.saveTask(board._id, group.id, task)
-        loadBoard(board._id)
-        showSuccessMsg(`Task added (id: ${task.id})`)
-    } catch (err) {
-        console.log('Cannot add task', err)
-        showErrorMsg('Cannot add task')
+    function handleTitleChange(ev) {
+        setNewTaskTitle(ev.target.value)
     }
-}
 
-if (!group) return <div>Loading...</div>
+    async function handleAddTask(ev) {
+        ev.preventDefault()
+        if (!newTaskTitle.trim()) return
+        const task = boardService.getEmptyTask()
+        task.title = newTaskTitle
 
-return (
-    <section className="board-group flex column"> 
-        <h5>{group.title}</h5>
-        <button onClick={() => onUpdateGroup(group)}>Edit Group Name</button>
-        {group.tasks.map(task => (
-            <TaskPreview
-            key={task.id}
-            task={task} 
-            />
-        ))}
-        <button onClick={() => onAddTask()}>Add a card</button>
-    </section>
-)
+        try {
+            await boardService.saveTask(board._id, group.id, task)
+            loadBoard(board._id)
+            showSuccessMsg(`Task added (id: ${task.id})`)
+            setNewTaskTitle('')
+            setIsAddingTask(false)
+        } catch (err) {
+            console.log('Cannot add task', err)
+            showErrorMsg('Cannot add task')
+        }
+    }
+
+    async function handleTitleSave() {
+        if (!editedTitle.trim()) {
+            alert('Title cannot be empty')
+            return
+        }
+        try {
+            group.title = editedTitle
+            await onUpdateGroup(group)
+            setIsEditingTitle(false)
+            showSuccessMsg('Group title updated')
+        } catch (err) {
+            console.error('Cannot update group title', err)
+            showErrorMsg('Cannot update group title')
+        }
+    }
+
+    if (!group) return <div>Loading...</div>
+
+    return (
+        <section className="board-group flex column">
+            {isEditingTitle ? (
+                <TextField
+                    value={editedTitle}
+                    onChange={(ev) => setEditedTitle(ev.target.value)}
+                    onBlur={() => onUpdateGroup({ group, title: editedTitle })}
+                    onKeyDown={(ev) => {
+                        if (ev.key === 'Enter') onUpdateGroup({ group, title: editedTitle })
+                        if (ev.key === 'Escape') setIsEditingTitle(false)
+                    }}
+                    autoFocus
+                    variant="outlined"
+                    size="small"
+                />
+            ) : (
+                <h5 onClick={() => setIsEditingTitle(true)} style={{ cursor: 'pointer' }}>
+                    {group.title}
+                </h5>
+            )}
+
+            {group.tasks.map(task => (
+                <TaskPreview key={task.id} task={task} />
+            ))}
+
+            {isAddingTask ? (
+                <form className="add-task-container" onSubmit={handleAddTask}>
+                    <input
+                        type="text"
+                        placeholder="Enter task title or paste a link"
+                        value={newTaskTitle}
+                        onChange={handleTitleChange}
+                    />
+                    <div className="buttons-container">
+                        <button type="submit" className="add-card-btn">Add a card</button>
+                        <button
+                            type="button"
+                            className="cancel-btn"
+                            onClick={() => setIsAddingTask(false)}
+                        >
+                            x
+                        </button>
+                    </div>
+                </form>
+            ) : (
+                <button className="add-list-btn" onClick={() => setIsAddingTask(true)}>
+                    Add a card
+                </button>
+            )}
+        </section>
+    )
 }

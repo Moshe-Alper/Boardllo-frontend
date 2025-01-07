@@ -63,14 +63,15 @@ $breakpoint-desktop: 960px;
 $border-radius-small: 0.1875rem; // 3px
 $border-radius-medium: 0.3125rem; // 5px
 $border-radius-large: 0.5rem; // 8px
+$border-radius-largest: 0.75rem;
 
 // LAYOUT
-$layoutPadding-smallest: 0.5rem;
-$layoutPadding-small: 0.75rem;
+$layoutPadding-smallest: 0.5rem; // 8px
+$layoutPadding-small: 0.75rem; // 12px
 // LAYOUT variables
-$layoutPadding-small: 0.5rem;
-$layoutPadding-medium: 1rem;
-$layoutPadding-large: 1.5rem;
+$layoutPadding-small: 0.5rem; // 8px
+$layoutPadding-medium: 1rem; // 16px
+$layoutPadding-large: 1.5rem; // 24px
 
 // New Specific Variables for Trello-Like Design
 $card-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); // Subtle shadow for cards
