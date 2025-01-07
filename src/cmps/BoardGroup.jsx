@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { boardService } from '../services/board'
+import { svgService } from '../services/svg.service'
 import { TaskPreview } from './TaskPreview'
 import { loadBoard } from '../store/actions/board.actions'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
@@ -59,22 +60,35 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
     return (
         <section className="board-group flex column">
             {isEditingTitle ? (
-                <TextField
-                    value={editedTitle}
-                    onChange={(ev) => setEditedTitle(ev.target.value)}
-                    onBlur={() => onUpdateGroup({ group, title: editedTitle })}
-                    onKeyDown={(ev) => {
-                        if (ev.key === 'Enter') onUpdateGroup({ group, title: editedTitle })
-                        if (ev.key === 'Escape') setIsEditingTitle(false)
-                    }}
-                    autoFocus
-                    variant="outlined"
-                    size="small"
-                />
+                <div className="title-editor">
+                    <TextField
+                        value={editedTitle}
+                        onChange={(ev) => setEditedTitle(ev.target.value)}
+                        onBlur={handleTitleSave}
+                        onKeyDown={(ev) => {
+                            if (ev.key === 'Enter') handleTitleSave()
+                            if (ev.key === 'Escape') setIsEditingTitle(false)
+                        }}
+                        autoFocus
+                        variant="outlined"
+                        size="small"
+                    />
+                </div>
             ) : (
-                <h5 onClick={() => setIsEditingTitle(true)} style={{ cursor: 'pointer' }}>
-                    {group.title}
-                </h5>
+                <div className="title-container">
+                    <h5 onClick={() => setIsEditingTitle(true)} style={{ cursor: 'pointer' }}>
+                        {group.title}
+                    </h5>
+                    <div className="title-actions">
+                        <button className="collapse-btn">
+                            {/* Todo make a hover with collapse and list action text */}
+                            <img src={svgService.collapseIcon} alt="Collapse Icon" />
+                        </button>
+                        <button className="menu-btn">
+                            <img src={svgService.threeDotsIcon} alt="List actions Icon" />
+                        </button>
+                    </div>
+                </div>
             )}
 
             {group.tasks.map(task => (

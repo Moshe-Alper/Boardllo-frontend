@@ -1,0 +1,25 @@
+.title-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+
+    h5 {
+        margin: 0;
+        flex-grow: 1;
+    }
+
+    .title-actions {
+        display: flex;
+        align-items: center;
+        gap: 4px; // Space between the buttons
+
+        .collapse-btn,
+        .menu-btn {
+            background: none;
+            border: none;
+            width: max-content;
+         
+        }
+    }
+}
