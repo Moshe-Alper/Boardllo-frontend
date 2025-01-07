@@ -2,8 +2,14 @@
   max-width: 100%;
   margin: auto;
   color: $white;
+  // (ClassName: flex)
+  margin: $layoutPadding-large auto;
+
+  background-color: white;
+  color: white;
   box-shadow: 0 2px 4px $shadow-color;
-  gap: $layoutPadding-small;
+  border-radius: $border-radius-small;
+  gap: $layoutPadding-medium;
 
   .group-container {
     // ClassName: flex
@@ -15,29 +21,24 @@
     button {
       text-align: left;
       background-color: transparent;
-      border-radius: $border-radius;
-      color: $black;
+      border-radius: border-radius-small;
 
       &:hover {
-        background-color: darken($wrk-clr2, 10%);
+        background-color: darken($primary-blue, 10%);
       }
     }
 
     .board-group {
-      width: 17.0625rem;
-      font-size: 0.875rem;
-      background-color: $white;
-      color: $black;
+      background-color: $primary-blue;
       padding: $layoutPadding-medium;
-      border: 1px solid $gray2;
-      border-radius: $border-radius;
-      box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px 0px, rgba(9, 30, 66, 0.31) 0px 0px 1px 0px;
-      gap: $layoutPadding-smallest;
+      border-radius: $border-radius-small;
+      box-shadow: 0 1px 3px $shadow-color;
+      gap: $layoutPadding-small;
 
       .task-preview {
-        color: $black;
+        color: black;
         border: solid 1px $gray2;
-        background-color: $white;
+        background-color: white;
         border-radius: $border-radius;
         padding: $layoutPadding-smallest;
       }
@@ -45,7 +46,7 @@
 
     .add-list-btn {
       background-color: rgba(255, 255, 255, 0.1);
-      border-radius: $border-radius;
+      border-radius: $border-radius-small;
       padding: $layoutPadding-small;
       height: 2.75rem;
 

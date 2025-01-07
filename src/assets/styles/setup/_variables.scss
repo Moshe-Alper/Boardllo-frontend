@@ -1,67 +1,83 @@
-// Root Colors Css & Scss - Good for Themes
-:root {
-  --theme-clr1: #0065ff;
-  --theme-clr2: #0052cc;
-  --theme-clr3: #3860be;
-  --theme-clr4: #b2d4ff;
-  --theme-clr5: #f99cdb;
-}
+// Theme Colors (Primary, Secondary, Accents)
+$primary-blue: #0052cc;
+$primary-hover-blue: #0065ff;
+$secondary-blue: #0079bf;
+$secondary-hover-blue: #2684ff;
+$accent-pink: #f99cdb;
+$accent-orange: #ffab00;
+$accent-yellow: #ffc400;
+$accent-green: #57d9a3;
+$accent-teal: #00c7e5;
+$accent-purple: #6554c0;
+$accent-light-purple: #8777d9;
 
-// Trello Homepage Colors
-$hom-clr1: #0065ff;
-$hom-clr2: #0052cc;
-$hom-clr3: #27455c;
-$hom-clr4: #3860be;
-$hom-clr5: #0079bf;
-$hom-clr6: #2684ff;
-$hom-clr7: #b2d4ff;
-$hom-clr8: #5243aa;
-$hom-clr9: #6554c0;
-$hom-clr10: #8777d9;
-$hom-clr11: #f4f4f4;
-$hom-clr12: #ffc400;
-$hom-clr13: #f99cdb;
-$hom-clr14: #ffab00;
-$hom-clr15: #ff7452;
-$hom-clr16: #468254;
-$hom-clr17: #00c7e5;
-$hom-clr18: #57d9a3;
-
-// Trello Workspace Scss Colors
-$wrk-clr1: #172b4d;
-$wrk-clr2: #6e5dc6;
-$wrk-clr3: #0c66e4;
-$wrk-clr4: #e9f2ff;
-$wrk-clr5: #f1f2f4;
-$wrk-clr6: #091e42;
-
-// General Trello Colors
+// Backgrounds and Neutrals
+$background-light: #f4f5f7; // Typical light gray for backgrounds
+$background-white: #ffffff;
+$background-dark: #091e42; // Dark sidebar or text areas
+$card-background: #ffffff; // Card background
+$header-background: #172b4d; // Darker header/nav background
 $shadow-color: rgba(0, 0, 0, 0.1);
 
-$black: #000000;
-$white: #ffffff;
+// Border Colors
+$border-light-gray: #e4e4e4;
+$border-gray: #c1c7d0; // Borders for cards
+$border-dark-gray: #505f79;
 
-$gray1: #44546f;
-$gray2: #626f86;
-$gray3: #656565;
-$gray4: #696969;
-$gray5: #767676;
-$gray6: #97a0af;
-$gray7: #767676;
-$gray8: #505f79;
-$gray9: #5e6c84;
+// Typography
+$heading-font: 'Charlie Display', sans-serif; // For headlines
+$body-font: 'Charlie Text', sans-serif; // For paragraph text
+$workspace-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans', Ubuntu,
+  'Droid Sans', 'Helvetica Neue', sans-serif;
+
+// Text Colors
+$text-primary: #172b4d; // Dark text
+$text-secondary: #5e6c84; // Subtle secondary text
+$text-light: #97a0af; // Muted text for inactive elements
+
+// Button Colors
+$button-primary-bg: #0065ff;
+$button-primary-hover-bg: #0052cc;
+$button-secondary-bg: #f4f5f7;
+$button-secondary-hover-bg: #e4e4e4;
+$button-text-light: #ffffff;
+
+// Shadows
+$shadow-small: 0 1px 2px $shadow-color;
+$shadow-medium: 0 4px 8px $shadow-color;
+$shadow-large: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+// Spacing
+$spacing-xs: 0.25rem; // 4px
+$spacing-sm: 0.5rem; // 8px
+$spacing-md: 1rem; // 16px
+$spacing-lg: 1.5rem; // 24px
+$spacing-xl: 2rem; // 32px
 
 // Breakpoints
-$mobile-breakpoint: 460px;
-$narrow-breakpoint: 720px;
-$normal-breakpoint: 960px;
+$breakpoint-mobile: 460px;
+$breakpoint-tablet: 720px;
+$breakpoint-desktop: 960px;
+
+// Border Radius
+$border-radius-small: 0.1875rem; // 3px
+$border-radius-medium: 0.3125rem; // 5px
+$border-radius-large: 0.5rem; // 8px
 
 // LAYOUT
 $layoutPadding-smallest: 0.5rem;
 $layoutPadding-small: 0.75rem;
+// LAYOUT variables
+$layoutPadding-small: 0.5rem;
 $layoutPadding-medium: 1rem;
 $layoutPadding-large: 1.5rem;
 
+// New Specific Variables for Trello-Like Design
+$card-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); // Subtle shadow for cards
+$navbar-height: 3.5rem; // Height of the header/navbar
+$avatar-size: 2rem; // Profile or member avatar sizes
+$modal-background: rgba(0, 0, 0, 0.4); // Overlay background for modals
+$hover-transition: all 0.3s ease-in-out; // Consistent hover transition effect
 // BORDERS
 
 $border-radius: 0.75rem;

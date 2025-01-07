@@ -1,51 +1,51 @@
 import { Link, NavLink } from 'react-router-dom'
 import { useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
-import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
-import { logout } from '../store/actions/user.actions'
+import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
+import { logout } from '../store/actions/user.actions.js'
 
 export function AppHeader() {
-    const user = useSelector(storeState => storeState.userModule.user)
-    const navigate = useNavigate()
+  const user = useSelector((storeState) => storeState.userModule.user)
+  const navigate = useNavigate()
 
-    async function onLogout() {
-        try {
-            await logout()
-            navigate('/')
-            showSuccessMsg(`Bye now`)
-        } catch (err) {
-            showErrorMsg('Cannot logout')
-        }
+  async function onLogout() {
+    try {
+      await logout()
+      navigate('/')
+      showSuccessMsg(`Bye now`)
+    } catch (err) {
+      showErrorMsg('Cannot logout')
     }
+  }
 
-    return (
-        <header className="app-header main-container full">
-            <nav className=''>
-                <h1>Boardllo</h1>
-                <NavLink to="/" className="/logo">
-                    E2E Demo
-                </NavLink>
-                <NavLink to="/homePage">Home</NavLink>
-                <NavLink to="/about">About</NavLink>
-                <NavLink to="/board">Boards</NavLink>
-                <NavLink to="/chat">Chat</NavLink>
-                <NavLink to="/review">Review</NavLink>
-                <NavLink to="/test">Test</NavLink>
-                {user?.isAdmin && <NavLink to="/admin">Admin</NavLink>}
+  return (
+    <header className='app-header main-container full'>
+      <nav className=''>
+        <NavLink className='logo' to='/'>
+          Boardllo
+        </NavLink>
 
-                {!user && <NavLink to="login" className="login-link">Login</NavLink>}
+        <NavLink className='create-link' to='/board'>
+          Create
+        </NavLink>
+        {user?.isAdmin && <NavLink to='/admin'>Admin</NavLink>}
 
-                {user && (
-                    <div className="user-info">
-                        <Link to={`user/${user._id}`}>
-                            {user.imgUrl && <img src={user.imgUrl} />}
-                            {user.fullname}
-                        </Link>
-                        {/* <span className="score">{user.score?.toLocaleString()}</span> */}
-                        <button onClick={onLogout}>logout</button>
-                    </div>
-                )}
-            </nav>
-        </header >
-    )
+        {!user && (
+          <NavLink to='login' className='login-link'>
+            Signup
+          </NavLink>
+        )}
+
+        {user && (
+          <div className='user-info'>
+            <Link to={`user/${user._id}`}>
+              {user.imgUrl && <img src={user.imgUrl} />}
+              {user.fullname}
+            </Link>
+            <button onClick={onLogout}>logout</button>
+          </div>
+        )}
+      </nav>
+    </header>
+  )
 }

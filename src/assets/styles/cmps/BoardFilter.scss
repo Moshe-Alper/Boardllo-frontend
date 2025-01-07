@@ -20,11 +20,11 @@
   input:is([type='text'], [type='number']) {
     height: 1.8em;
     border: none;
-    border-block-end: 1px solid $gray1;
+    border-block-end: 1px solid $accent-orange;
 
     &:focus {
       outline: none;
-      background-color: $gray1;
+      background-color: $accent-orange;
     }
   }
 
@@ -55,12 +55,12 @@
     span {
       font-size: 0.9em;
       padding: 0.1em 0.3em;
-      outline: 1px solid $gray1;
+      outline: 1px solid $accent-orange;
     }
 
     &:has(:checked) span {
       background-color: black;
-      color: $gray1;
+      color: $accent-orange;
     }
   }
 }

@@ -1,47 +1,52 @@
-.login-form,
-.signup-form {
-  display: grid;
-  width: min(80%, 300px);
-  margin: auto;
-
-  padding: 1em;
-  background-color: black;
-}
-
-.signup-form {
-  input {
-    width: 100%;
-  }
-
-  .admin-toggle {
-    display: flex;
-    align-items: center;
-    justify-self: start;
-
-    span {
-      font-size: 0.8em;
-    }
-  }
-}
-
-.login-page nav {
+.login-signup-cmp {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 2em;
+  height: 100vh;
+  background-color: $background-light;
 
-  margin-block: 100px 0.5em;
+  .login-signup-container {
+    background-color: $background-white;
+    border-radius: $border-radius-medium;
+    box-shadow: $shadow-medium;
+    padding: $spacing-lg;
+    width: min(100%, 400px);
+    text-align: center;
 
-  a {
-    font-size: 0.8em;
-    color: white;
+    .login-header {
+      margin-bottom: $spacing-lg;
 
-    &:hover {
-      color: black;
+      h1 {
+        font-family: $heading-font;
+        color: $text-primary;
+        font-size: 1.5rem;
+        margin: 0;
+      }
     }
-  }
-  a.active {
-    text-decoration: underline;
-    color: red;
+
+    .switch-auth {
+      margin-top: $spacing-lg;
+
+      p {
+        font-family: $body-font;
+        font-size: 0.9rem;
+        color: $text-secondary;
+
+        button {
+          background: none;
+          border: none;
+          color: $primary-blue;
+          cursor: pointer;
+          font-family: $body-font;
+          font-size: 0.9rem;
+          text-decoration: underline;
+          transition: color $hover-transition;
+
+          &:hover {
+            color: $primary-hover-blue;
+          }
+        }
+      }
+    }
   }
 }

@@ -2,7 +2,6 @@
 @import 'setup/variables';
 @import 'setup/functions';
 @import 'setup/mixins';
-@import 'setup/typography';
 
 // Basics
 @import 'basics/helpers';
@@ -13,10 +12,8 @@
 
 // pages
 @import 'RootCmp';
-@import 'pages/AboutUs';
 @import 'pages/HomePage';
 @import 'pages/BoardIndex';
-@import 'pages/ReviewIndex';
 @import 'pages/UserDetails';
 @import 'pages/BoardDetails';
 @import 'pages/TaskDetails';
@@ -24,14 +21,12 @@
 
 // Components
 @import 'cmps/AppHeader';
-@import 'cmps/AppFooter';
+@import 'cmps/LoginForm';
 @import 'cmps/UserMsg';
+@import 'cmps/Loader';
 
 @import 'cmps/BoardHeader';
 @import 'cmps/BoardFilter';
-@import 'cmps/ReviewEdit';
-@import 'cmps/ReviewList';
-@import 'cmps/ReviewPreview';
 @import 'cmps/BoardList';
 @import 'cmps/BoardPreview';
 

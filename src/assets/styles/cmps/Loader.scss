@@ -1,0 +1,49 @@
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: black;
+  font-family: $heading-font;
+
+  .loader {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 10px;
+
+    span {
+      width: 12px;
+      height: 12px;
+      background-color: $accent-pink;
+      border-radius: 50%;
+      animation: bounce 1.5s infinite ease-in-out;
+
+      &:nth-child(2) {
+        animation-delay: 0.3s;
+      }
+      &:nth-child(3) {
+        animation-delay: 0.6s;
+      }
+      &:nth-child(4) {
+        animation-delay: 0.9s;
+      }
+    }
+  }
+
+  p {
+    font-size: 16px;
+    font-weight: 500;
+  }
+}
+
+@keyframes bounce {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
