@@ -98,11 +98,17 @@ async function addBoardMsg(boardId, txt) {
 }
 
 // Group functions
-async function getGroups(boardId) {
+async function getGroups(boardId, groupId = null) {
     try {
         const board = await getById(boardId)
         if (!board) throw new Error('Board not found')
-            console.log('🚀 groups in get groups is service', board.groups)
+        
+        if (groupId) {
+            const group = board.groups.find(group => group.id === groupId)
+            if (!group) throw new Error('Group not found')
+            return group
+        }
+        
         return board.groups || []
     } catch (error) {
         console.error('Failed to get groups:', error)
@@ -152,4 +158,3 @@ async function saveTask(boardId, groupId, task) {
     await save(board)
     return task
 }
-

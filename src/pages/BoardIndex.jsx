@@ -44,15 +44,12 @@ export function BoardIndex() {
     }
 
     async function onUpdateBoard(board) {
-        // console.log('🚀 board', board)
         const title = prompt('New title?', board.title)
         if (!title) return
-    
         const updatedBoard = {
             ...board, 
             title: title,
         }
-    
         try {
             const savedBoard = await updateBoard(updatedBoard)
             showSuccessMsg(`Board updated, new title: ${savedBoard.title}`)

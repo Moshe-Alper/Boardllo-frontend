@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
 
 import { boardService } from '../services/board'
 import { userService } from '../services/user'
@@ -15,18 +14,13 @@ export function BoardDetails() {
 
     const { boardId } = useParams()
     const board = useSelector(storeState => storeState.boardModule.board)
+    const groups = useSelector(storeState => storeState.boardModule.groups)
 
     useEffect(() => {
         loadBoard(boardId)
     }, [boardId])
 
 
-    useEffect(() => {
-        if (board && board.groups) {
-            loadGroups(board._id)
-        }
-    }, [board])
-    
     async function onAddBoardMsg(boardId) {
         try {
             await addBoardMsg(boardId, 'bla bla ' + parseInt(Math.random() * 10))
@@ -42,6 +36,7 @@ export function BoardDetails() {
         group.title = 'Group ' + Math.floor(Math.random() * 100)
         try {
             await addGroup(boardId, group)
+            loadBoard(board._id)
             showSuccessMsg(`Group added (id: ${group.id})`)
         } catch (err) {
             console.log('Cannot add group', err)
@@ -51,11 +46,11 @@ export function BoardDetails() {
 
     async function onUpdateGroup(group) {
         const title = prompt('New title?', group.title)
-        if (title === null) return alert('Invalid title')
-        const groupToSave = { ...group, title }
-        // console.log('🚀 groupToSave', groupToSave)
+        if (!title || !title.trim()) return alert('Invalid title')    
+        const groupToSave = { ...group, title: title.trim() }
         try {
             const savedGroup = await updateGroup(board._id, groupToSave)
+            loadBoard(board._id)
             showSuccessMsg(`Group updated, new title: ${savedGroup.title}`)
         } catch (err) {
             showErrorMsg('Cannot update group')

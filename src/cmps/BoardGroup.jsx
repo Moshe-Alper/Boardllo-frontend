@@ -3,7 +3,7 @@ import { boardService } from '../services/board'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 
 export function BoardGroup({ board, group, onUpdateGroup }) {
-
+    
 async function onAddTask() {
     const task = boardService.getEmptyTask();
     const title = prompt('Enter task title:');

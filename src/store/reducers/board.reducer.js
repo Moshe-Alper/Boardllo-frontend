@@ -58,8 +58,11 @@ export function boardReducer(state = initialState, action) {
             newState = { ...state, groups: [...state.groups, action.group] }
             break
         case UPDATE_GROUP:
-            const groups = state.groups.map(group => (group._id === action.group._id) ? action.group : group)
-            newState = { ...state, groups }
+            newState = { ...state, 
+                groups:
+                 {...state.groups, [action.group._id]: 
+                { ...state.groups[action.group._id], 
+                    ...action.group,}} }
             break
 
         // Task reduces
