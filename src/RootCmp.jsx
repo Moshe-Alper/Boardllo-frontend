@@ -19,7 +19,6 @@ export function RootCmp() {
       <UserMsg />
 
       <main>
-        {/* TODO hompage path (empty for now) and test path */}
         <Routes>
           <Route path='' element={<HomePage />} />
           <Route path='board' element={<BoardIndex />} />
@@ -27,6 +26,7 @@ export function RootCmp() {
           <Route path='user/:id' element={<UserDetails />} />
           <Route path='admin' element={<AdminIndex />} />
           <Route path='login' element={<LoginSignup />}></Route>
+          <Route path='test' element={<Test />}></Route>
         </Routes>
       </main>
     </div>

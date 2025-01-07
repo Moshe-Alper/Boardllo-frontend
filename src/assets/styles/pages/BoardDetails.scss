@@ -1,7 +1,6 @@
 .board-details {
   max-width: 100%;
   margin: auto;
-  color: $white;
   // (ClassName: flex)
   margin: $layoutPadding-large auto;
 
@@ -37,7 +36,7 @@
 
       .task-preview {
         color: black;
-        border: solid 1px $gray2;
+        border: solid 1px gray;
         background-color: white;
         border-radius: $border-radius;
         padding: $layoutPadding-smallest;
