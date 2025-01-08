@@ -25,11 +25,14 @@
 @import 'cmps/UserMsg';
 @import 'cmps/Loader';
 
+// Board
 @import 'cmps/BoardHeader';
 @import 'cmps/BoardFilter';
-@import 'cmps/BoardGroup';
-@import 'cmps/BoardGroupHeader';
-@import 'cmps/BoardGroupFooter';
 @import 'cmps/BoardList';
 @import 'cmps/BoardPreview';
+
+// Group
+@import 'cmps/Group/BoardGroup.scss';
+@import 'cmps/Group/BoardGroupHeader';
+@import 'cmps/Group/BoardGroupFooter';
 

@@ -8,7 +8,7 @@ import { userService } from '../services/user'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { loadBoard, addBoardMsg, addGroup, updateGroup } from '../store/actions/board.actions'
 
-import { BoardGroup } from '../cmps/BoardGroup'
+import { BoardGroup } from '../cmps/Group/BoardGroup'
 import { BoardHeader } from '../cmps/BoardHeader'
 
 export function BoardDetails() {

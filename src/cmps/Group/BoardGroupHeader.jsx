@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { TextField } from '@mui/material'
-import { svgService } from '../services/svg.service'
+import { svgService } from '../../services/svg.service'
 import { BoardGroupListActions } from './BoardGroupListActions'
 
 export function BoardGroupHeader({

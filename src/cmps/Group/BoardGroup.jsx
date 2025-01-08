@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import { boardService } from '../services/board'
+import { boardService } from '../../services/board'
 import { BoardGroupHeader } from './BoardGroupHeader'
-import { TaskPreview } from './TaskPreview'
-import { loadBoard } from '../store/actions/board.actions'
-import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
+import { TaskPreview } from '../TaskPreview'
+import { loadBoard } from '../../store/actions/board.actions'
+import { showSuccessMsg, showErrorMsg } from '../../services/event-bus.service'
 import { BoardGroupFooter } from './BoardGroupFooter'
 
 export function BoardGroup({ board, group, onUpdateGroup }) {
