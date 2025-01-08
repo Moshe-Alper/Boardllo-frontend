@@ -1,6 +1,6 @@
 import { Popover, Button } from '@mui/material'
 
-export function BoardGroupMenu({ anchorEl, isOpen, onClose, onAddTask }) {
+export function BoardGroupListActions({ anchorEl, isOpen, onClose, onAddTask }) {
 
     return (
         <Popover
@@ -22,6 +22,10 @@ export function BoardGroupMenu({ anchorEl, isOpen, onClose, onAddTask }) {
                     <Button onClick={onClose}>X</Button>
                 </header>
                 <Button onClick={() => { onAddTask(); onClose() }}>Add a card</Button>
+                {/* <Button onClick={onClose}>Copy list</Button>
+                <Button onClick={onClose}>Move list</Button>
+                <Button onClick={onClose}>Watch</Button> */}
+                <Button onClick={onClose}>Archive list</Button>
             </div>
         </Popover>
     )

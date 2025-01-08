@@ -6,7 +6,7 @@ import { loadBoard } from '../store/actions/board.actions'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 
 import TextField from '@mui/material/TextField'
-import { BoardGroupMenu } from './BoardGroupMenu'
+import { BoardGroupListActions } from './BoardGroupListActions'
 
 export function BoardGroup({ board, group, onUpdateGroup }) {
     const [isAddingTask, setIsAddingTask] = useState(false)
@@ -93,56 +93,55 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
                     </h5>
                     <div className="title-actions">
                         <button className="collapse-btn">
-                            {/* Todo make a hover with collapse and list action text.*/}
                             <img src={svgService.collapseIcon} alt="Collapse Icon" />
                         </button>
-
-                        <button
-                            className="menu-btn"
-                            onClick={handleMenuClick}
-                        >
+                        <button className="menu-btn" onClick={handleMenuClick}>
                             <img src={svgService.threeDotsIcon} alt="List actions Icon" />
                         </button>
-
                     </div>
                 </div>
             )}
 
-            <BoardGroupMenu
+            <BoardGroupListActions
                 anchorEl={anchorEl}
                 onClose={handleMenuClose}
                 isOpen={Boolean(anchorEl)}
                 onAddTask={() => setIsAddingTask(true)}
             />
 
-            {group.tasks.map(task => (
-                <TaskPreview key={task.id} task={task} />
-            ))}
+            <div className="tasks-container">
+                {group.tasks.map(task => (
+                    <TaskPreview key={task.id} task={task} />
+                ))}
+            </div>
 
-            {isAddingTask ? (
-                <form className="add-task-container" onSubmit={handleAddTask}>
-                    <input
-                        type="text"
-                        placeholder="Enter task title or paste a link"
-                        value={newTaskTitle}
-                        onChange={handleTitleChange}
-                    />
-                    <div className="buttons-container">
-                        <button type="submit" className="add-card-btn">Add a card</button>
-                        <button
-                            type="button"
-                            className="cancel-btn"
-                            onClick={() => setIsAddingTask(false)}
-                        >
-                            x
-                        </button>
-                    </div>
-                </form>
-            ) : (
-                <button className="add-list-btn" onClick={() => setIsAddingTask(true)}>
-                    Add a card
-                </button>
-            )}
+            <footer className="board-group-footer">
+                {isAddingTask ? (
+                    <form className="add-task-container" onSubmit={handleAddTask}>
+                        <input
+                            type="text"
+                            placeholder="Enter task title or paste a link"
+                            value={newTaskTitle}
+                            onChange={handleTitleChange}
+                        />
+                        <div className="buttons-container">
+                            <button type="submit" className="add-card-btn">Add a card</button>
+                            <button
+                                type="button"
+                                className="cancel-btn"
+                                onClick={() => setIsAddingTask(false)}
+                            >
+                                x
+                            </button>
+                        </div>
+                    </form>
+                ) : (
+                    <button className="add-list-btn" onClick={() => setIsAddingTask(true)}>
+                        Add a card
+                    </button>
+                )}
+
+            </footer>
         </section>
     )
 }

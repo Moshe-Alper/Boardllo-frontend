@@ -1,3 +1,25 @@
+// BoardGroup.scss
+.board-group {
+    background-color: $background-light;
+    width: 272px;
+    padding: $layoutPadding-smallest;
+    border-radius: $border-radius-largest;
+    box-shadow: $card-shadow;
+    gap: $layoutPadding-small;
+
+    .task-preview {
+        color: $text-primary;
+        border: solid 1px $border-gray;
+        background-color: $card-background;
+        border-radius: $border-radius;
+        padding: $layoutPadding-smallest;
+
+        p {
+            display: flex;
+        }
+    }
+}
+
 .title-container {
     display: flex;
     align-items: center;
@@ -12,14 +34,14 @@
     .title-actions {
         display: flex;
         align-items: center;
-        gap: 4px; // Space between the buttons
+        gap: 4px;
 
         .collapse-btn,
         .menu-btn {
             background: none;
             border: none;
             width: max-content;
-         
+
         }
     }
 }

@@ -1,0 +1,77 @@
+.board-group-footer {
+  width: 17rem; // 272px / 16
+
+  .add-task-container {
+    display: flex;
+    flex-direction: column;
+    gap: $layoutPadding-small;
+
+    input {
+      width: 100%;
+      padding: $layoutPadding-small;
+      border: 1px solid $border-gray;
+      border-radius: $border-radius-small;
+      font-size: 0.875rem;
+      background-color: $background-light;
+      color: $text-primary;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-blue;
+        box-shadow: 0 0 0.25rem $primary-blue; // 4px / 16
+      }
+    }
+
+    .buttons-container {
+      display: flex;
+      justify-content: space-between;
+      gap: $layoutPadding-small;
+
+      button {
+        padding: 0.5rem 0.75rem; // $spacing-sm $spacing-md
+        border-radius: $border-radius-small;
+        font-size: 0.875rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &.add-card-btn {
+          background-color: $primary-blue;
+          color: $background-white;
+
+          &:hover {
+            background-color: darken($primary-blue, 10%);
+          }
+        }
+
+        &.cancel-btn {
+          background-color: $background-light;
+          color: $text-secondary;
+
+          &:hover {
+            background-color: $button-secondary-hover-bg;
+          }
+        }
+      }
+    }
+  }
+
+  .add-list-btn {
+    display: flex;
+    align-items: center;
+    font-size: 0.875rem;
+    background-color: $background-light;
+    padding: 0.75rem 0.625rem; 
+    border-radius: $border-radius-largest;
+    box-shadow: $card-shadow;
+
+    &::before {
+      content: '+';
+      font-size: 1.25rem; 
+      margin-inline-end: 0.5rem;
+    }
+
+    &:hover {
+      background-color: lighten($background-light, 5%);
+    }
+  }
+}
