@@ -6,12 +6,16 @@ import { loadBoard } from '../store/actions/board.actions'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 
 import TextField from '@mui/material/TextField'
+import { BoardGroupMenu } from './BoardGroupMenu'
 
 export function BoardGroup({ board, group, onUpdateGroup }) {
     const [isAddingTask, setIsAddingTask] = useState(false)
     const [newTaskTitle, setNewTaskTitle] = useState('')
+
     const [isEditingTitle, setIsEditingTitle] = useState(false)
     const [editedTitle, setEditedTitle] = useState(group.title)
+
+    const [anchorEl, setAnchorEl] = useState(null)
 
     useEffect(() => {
         loadBoard(board._id)
@@ -55,6 +59,14 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
         }
     }
 
+    const handleMenuClick = (ev) => {
+        setAnchorEl(ev.target)
+    }
+
+    const handleMenuClose = () => {
+        setAnchorEl(null)
+    }
+
     if (!group) return <div>Loading...</div>
 
     return (
@@ -81,15 +93,27 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
                     </h5>
                     <div className="title-actions">
                         <button className="collapse-btn">
-                            {/* Todo make a hover with collapse and list action text */}
+                            {/* Todo make a hover with collapse and list action text.*/}
                             <img src={svgService.collapseIcon} alt="Collapse Icon" />
                         </button>
-                        <button className="menu-btn">
+
+                        <button
+                            className="menu-btn"
+                            onClick={handleMenuClick}
+                        >
                             <img src={svgService.threeDotsIcon} alt="List actions Icon" />
                         </button>
+
                     </div>
                 </div>
             )}
+
+            <BoardGroupMenu
+                anchorEl={anchorEl}
+                onClose={handleMenuClose}
+                isOpen={Boolean(anchorEl)}
+                onAddTask={() => setIsAddingTask(true)}
+            />
 
             {group.tasks.map(task => (
                 <TaskPreview key={task.id} task={task} />
