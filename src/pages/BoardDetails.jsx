@@ -45,19 +45,22 @@ export function BoardDetails() {
     }
 
     async function onUpdateGroup(group, title) {
-        if (!title || !title.trim()) return
-        const groupToSave = { ...group, title: title.trim() }
+        if (!title) return
+
+        const updatedGroup = {
+            ...group,
+            title: title
+        }
+        
         try {
-            const savedGroup = await updateGroup(board._id, groupToSave)
-            loadBoard(board._id) 
+            const savedGroup = await updateGroup(board._id, updatedGroup)
+            loadBoard(board._id)
             showSuccessMsg(`Group updated, new title: ${savedGroup.title}`)
         } catch (err) {
             console.error('Cannot update group', err)
             showErrorMsg('Cannot update group')
         }
     }
-    
-
 
     if (!board) return <div>Loading...</div>
     // console.log('🚀 board', board)
@@ -75,7 +78,7 @@ export function BoardDetails() {
                             key={group.id}
                             board={board}
                             group={group}
-                            onUpdateGroup={(updatedGroup) => onUpdateGroup(updatedGroup.group, updatedGroup.title)}
+                            onUpdateGroup={(group, title) => onUpdateGroup(group, title)}
                         />
                     ))}
                     {userService.getLoggedinUser() && <button className="add-list-btn" onClick={() => { onAddGroup(board._id) }}>

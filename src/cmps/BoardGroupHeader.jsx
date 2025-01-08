@@ -1,0 +1,57 @@
+import React, { useCallback } from 'react'
+import { TextField } from '@mui/material'
+import { svgService } from '../services/svg.service'
+import { BoardGroupListActions } from './BoardGroupListActions'
+
+export function BoardGroupHeader({
+    group, isEditingTitle, setIsEditingTitle, editedTitle, setEditedTitle, handleTitleSave,
+    handleMenuClick, anchorEl, handleMenuClose, onAddTask, handleUpdateGroup, }
+) {
+
+    function saveTitle() {
+        handleTitleSave()
+        handleUpdateGroup(group, editedTitle)
+    }
+
+    return (
+        <div className="board-group-header flex column">
+            {isEditingTitle ? (
+                <div className="title-editor">
+                    <TextField
+                        value={editedTitle}
+                        onChange={(ev) => setEditedTitle(ev.target.value)}
+                        onBlur={saveTitle}
+                        onKeyDown={(ev) => {
+                            if (ev.key === 'Enter') saveTitle()
+                            if (ev.key === 'Escape') setIsEditingTitle(false)
+                        }}
+                        autoFocus
+                        variant="outlined"
+                        size="small"
+                    />
+                </div>
+            ) : (
+                <div className="title-container">
+                    <h5 onClick={() => setIsEditingTitle(true)} style={{ cursor: 'pointer' }}>
+                        {group.title}
+                    </h5>
+                    <div className="title-actions">
+                        <button className="collapse-btn">
+                            <img src={svgService.collapseIcon} alt="Collapse Icon" />
+                        </button>
+                        <button className="menu-btn" onClick={handleMenuClick}>
+                            <img src={svgService.threeDotsIcon} alt="List actions Icon" />
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            <BoardGroupListActions
+                anchorEl={anchorEl}
+                onClose={handleMenuClose}
+                isOpen={Boolean(anchorEl)}
+                onAddTask={onAddTask}
+            />
+        </div>
+    )
+}

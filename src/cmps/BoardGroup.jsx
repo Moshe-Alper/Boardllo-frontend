@@ -1,17 +1,14 @@
 import { useEffect, useState } from 'react'
 import { boardService } from '../services/board'
-import { svgService } from '../services/svg.service'
+import { BoardGroupHeader } from './BoardGroupHeader'
 import { TaskPreview } from './TaskPreview'
 import { loadBoard } from '../store/actions/board.actions'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
-
-import TextField from '@mui/material/TextField'
-import { BoardGroupListActions } from './BoardGroupListActions'
 import { BoardGroupFooter } from './BoardGroupFooter'
 
 export function BoardGroup({ board, group, onUpdateGroup }) {
-    const [isEditingTitle, setIsEditingTitle] = useState(false)
-    const [editedTitle, setEditedTitle] = useState(group.title)
+    const [isEditingGroupTitle, setIsEditingGroupTitle] = useState(false)
+    const [editedGroupTitle, setEditedGroupTitle] = useState(group.title)
 
     const [isAddingTask, setIsAddingTask] = useState(false)
     const [newTaskTitle, setNewTaskTitle] = useState('')
@@ -22,7 +19,11 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
         loadBoard(board._id)
     }, [board._id])
 
-    function handleTitleChange(ev) {
+    function handleUpdateGroup(group, title) {
+        onUpdateGroup(group, title)
+    }
+
+    function handleTaskTitleChange(ev) {
         setNewTaskTitle(ev.target.value)
     }
 
@@ -44,15 +45,15 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
         }
     }
 
-    async function handleTitleSave() {
-        if (!editedTitle.trim()) {
-            alert('Title cannot be empty')
+    async function handleGroupTitleSave() {
+        if (!editedGroupTitle.trim()) {
+            showErrorMsg('Title cannot be empty')
             return
         }
         try {
-            group.title = editedTitle
+            group.title = editedGroupTitle
             await onUpdateGroup(group)
-            setIsEditingTitle(false)
+            setIsEditingGroupTitle(false)
             showSuccessMsg('Group title updated')
         } catch (err) {
             console.error('Cannot update group title', err)
@@ -72,42 +73,19 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
 
     return (
         <section className="board-group flex column">
-            {isEditingTitle ? (
-                <div className="title-editor">
-                    <TextField
-                        value={editedTitle}
-                        onChange={(ev) => setEditedTitle(ev.target.value)}
-                        onBlur={handleTitleSave}
-                        onKeyDown={(ev) => {
-                            if (ev.key === 'Enter') handleTitleSave()
-                            if (ev.key === 'Escape') setIsEditingTitle(false)
-                        }}
-                        autoFocus
-                        variant="outlined"
-                        size="small"
-                    />
-                </div>
-            ) : (
-                <div className="title-container">
-                    <h5 onClick={() => setIsEditingTitle(true)} style={{ cursor: 'pointer' }}>
-                        {group.title}
-                    </h5>
-                    <div className="title-actions">
-                        <button className="collapse-btn">
-                            <img src={svgService.collapseIcon} alt="Collapse Icon" />
-                        </button>
-                        <button className="menu-btn" onClick={handleMenuClick}>
-                            <img src={svgService.threeDotsIcon} alt="List actions Icon" />
-                        </button>
-                    </div>
-                </div>
-            )}
-
-            <BoardGroupListActions
+            <BoardGroupHeader
+                group={group}
+                boardId={board._id}
+                isEditingTitle={isEditingGroupTitle}
+                setIsEditingTitle={setIsEditingGroupTitle}
+                editedTitle={editedGroupTitle}
+                setEditedTitle={setEditedGroupTitle}
+                handleTitleSave={handleGroupTitleSave}
+                handleMenuClick={handleMenuClick}
+                handleMenuClose={handleMenuClose}
                 anchorEl={anchorEl}
-                onClose={handleMenuClose}
-                isOpen={Boolean(anchorEl)}
                 onAddTask={() => setIsAddingTask(true)}
+                handleUpdateGroup={handleUpdateGroup} 
             />
 
             <div className="tasks-container">
@@ -120,11 +98,10 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
                 group={group}
                 isAddingTask={isAddingTask}
                 setIsAddingTask={setIsAddingTask}
-                newTaskTitle={newTaskTitle} 
-                handleTitleChange={handleTitleChange}
+                newTaskTitle={newTaskTitle}
+                handleTitleChange={handleTaskTitleChange}
                 handleAddTask={handleAddTask}
             />
-
         </section>
     )
 }
