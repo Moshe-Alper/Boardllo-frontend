@@ -32,7 +32,6 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
         if (!newTaskTitle.trim()) return
         const task = boardService.getEmptyTask()
         task.title = newTaskTitle
-
         try {
             await boardService.saveTask(board._id, group.id, task)
             loadBoard(board._id)

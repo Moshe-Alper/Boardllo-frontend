@@ -50,7 +50,6 @@ export function BoardIndex() {
   }
 
   async function onUpdateBoard(board) {
-    // console.log('🚀 board', board)
     const title = prompt('New title?', board.title)
     if (!title) return
 

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
@@ -16,10 +16,12 @@ export function BoardDetails() {
     const { boardId } = useParams()
     const board = useSelector(storeState => storeState.boardModule.board)
 
+    const [isAddingGroup, setIsAddingGroup] = useState(false)
+    const [newGroupTitle, setNewGroupTitle] = useState('')
+
     useEffect(() => {
         loadBoard(boardId)
     }, [boardId])
-
 
     async function onAddBoardMsg(boardId) {
         try {
@@ -32,12 +34,14 @@ export function BoardDetails() {
     }
 
     async function onAddGroup(boardId) {
+        if (!newGroupTitle) return 
         const group = boardService.getEmptyGroup()
-        group.title = 'Group ' + Math.floor(Math.random() * 100)
+        group.title = newGroupTitle
         try {
             await addGroup(boardId, group)
             loadBoard(board._id)
             showSuccessMsg(`Group added (id: ${group.id})`)
+            setIsAddingGroup(false) 
         } catch (err) {
             console.log('Cannot add group', err)
             showErrorMsg('Cannot add group')
@@ -51,7 +55,7 @@ export function BoardDetails() {
             ...group,
             title: title
         }
-        
+
         try {
             const savedGroup = await updateGroup(board._id, updatedGroup)
             loadBoard(board._id)
@@ -67,10 +71,8 @@ export function BoardDetails() {
 
     return (
         <section className="board-details">
-            {/* <Link to="/board">Back to list</Link> */}
-            <BoardHeader
-                board={board}
-            />
+            <BoardHeader board={board} />
+
             {board && <div>
                 <section className="group-container flex">
                     {board.groups.map(group => (
@@ -81,15 +83,46 @@ export function BoardDetails() {
                             onUpdateGroup={(group, title) => onUpdateGroup(group, title)}
                         />
                     ))}
-                    {userService.getLoggedinUser() && <button className="add-list-btn" onClick={() => { onAddGroup(board._id) }}>
-                        {board.groups.length ? 'Add another list' : 'Add a list'}
-                    </button>}
-                </section>
-                <pre> {JSON.stringify(board, null, 2)} </pre>
-            </div>
-            }
-            <button onClick={() => { onAddBoardMsg(board._id) }}>Add board msg</button>
 
+                    {isAddingGroup ? (
+                        <div className="add-group-form">
+                            <input
+                                type="text"
+                                placeholder="Enter list name..."
+                                value={newGroupTitle}
+                                onChange={(e) => setNewGroupTitle(e.target.value)}
+                            />
+                            <div className="buttons-container">
+                                <button
+                                    className="add-group-btn"
+                                    onClick={() => onAddGroup(board._id)}
+                                >
+                                    Add List
+                                </button>
+                                <button
+                                    className="cancel-btn"
+                                    onClick={() => setIsAddingGroup(false)} 
+                                >
+                                    x
+                                </button>
+                            </div>
+                        </div>
+                    ) : (
+                        userService.getLoggedinUser() && (
+                            <button
+                                className="add-list-btn"
+                                onClick={() => setIsAddingGroup(true)}
+                            >
+                                {board.groups.length ? 'Add another list' : 'Add a list'}
+                            </button>
+                        )
+                    )}
+                </section>
+
+                {/* <pre>{JSON.stringify(board, null, 2)}</pre> */}
+            </div>}
+
+            {/* <button onClick={() => { onAddBoardMsg(board._id) }}>Add board msg</button> */}
         </section>
     )
 }

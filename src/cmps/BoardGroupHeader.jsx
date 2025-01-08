@@ -14,7 +14,7 @@ export function BoardGroupHeader({
     }
 
     return (
-        <div className="board-group-header flex column">
+        <div className="board-group-header flex space-between">
             {isEditingTitle ? (
                 <div className="title-editor">
                     <TextField
@@ -35,17 +35,18 @@ export function BoardGroupHeader({
                     <h5 onClick={() => setIsEditingTitle(true)} style={{ cursor: 'pointer' }}>
                         {group.title}
                     </h5>
-                    <div className="title-actions">
-                        <button className="collapse-btn">
-                            <img src={svgService.collapseIcon} alt="Collapse Icon" />
-                        </button>
-                        <button className="menu-btn" onClick={handleMenuClick}>
-                            <img src={svgService.threeDotsIcon} alt="List actions Icon" />
-                        </button>
-                    </div>
                 </div>
             )}
-
+    
+            <div className="title-actions">
+                <button className="collapse-btn">
+                    <img src={svgService.collapseIcon} alt="Collapse Icon" />
+                </button>
+                <button className="menu-btn" onClick={handleMenuClick}>
+                    <img src={svgService.threeDotsIcon} alt="List actions Icon" />
+                </button>
+            </div>
+    
             <BoardGroupListActions
                 anchorEl={anchorEl}
                 onClose={handleMenuClose}
@@ -54,4 +55,4 @@ export function BoardGroupHeader({
             />
         </div>
     )
-}
+}    
