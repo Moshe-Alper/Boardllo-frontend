@@ -1,90 +1,213 @@
 .app-header {
-  min-height: 2rem;
-  background-color: white;
-  box-shadow: inset 0 -1px 0 $border-light-gray;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $navbar-height;
+  background-color: $background-white;
+  box-shadow: $shadow-small;
+  z-index: 100;
 
-  nav {
+  &.logged-in {
+    box-shadow: inset 0 -1px 0 $border-light-gray;
+  }
+
+  .nav-container {
+    max-width: 100%;
+    height: 100%;
     display: flex;
-    width: 100%;
     align-items: center;
-    gap: 1em;
-    font-size: 0.8em;
+    padding: 0 $layoutPadding-medium;
+    margin: 0 auto;
+    gap: $spacing-md;
 
-    .active {
-      color: white;
-    }
-
-    .logo {
-      font-size: 1.5em;
-      color: $text-primary;
-      font-weight: bold;
-      margin-inline-end: 2em;
-      padding: 0.2rem;
-
-      &:hover {
-        background-color: $border-light-gray;
-        border-radius: $border-radius-small;
-      }
-    }
-
-    .create-link {
-      display: flex;
-      justify-content: center;
-      background-color: $primary-blue;
-      color: white;
-      font-family: $heading-font;
-      font-weight: 600;
-      padding: 0.2rem;
-      width: 60px;
-      border-radius: $border-radius-small;
-
-      &:hover {
-        background-color: $primary-hover-blue;
-      }
-    }
-
-    .login-link {
-      margin-inline-start: auto;
-      font-size: 1rem;
-      color: $text-primary;
-
-      &:hover {
-        color: $text-secondary;
-      }
-    }
-
-    button {
-      margin-inline-end: 0;
-    }
-    a {
-      list-style: none;
-      text-decoration: none;
+    @media (max-width: $breakpoint-mobile) {
+      padding: 0 $layoutPadding-small;
     }
   }
 
-  .user-info {
+  .nav-left {
     display: flex;
     align-items: center;
-    margin-inline-start: auto;
-    color: white;
+    gap: $spacing-md;
+    min-width: 240px;
 
-    .score {
-      padding: 8px;
-      background-color: red;
-      border-radius: 50%;
-      margin: 10px;
+    @media (max-width: $breakpoint-mobile) {
+      min-width: auto;
+    }
+  }
 
-      color: white;
+  .nav-center {
+    flex-grow: 1;
+    max-width: 650px;
+    margin: 0 $spacing-md;
+
+    @media (max-width: $breakpoint-tablet) {
+      display: none;
+    }
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    margin-left: auto;
+  }
+
+  .logo-link {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-small;
+    transition: $hover-transition;
+    text-decoration: none;
+
+    &:hover {
+      background-color: $button-secondary-hover-bg;
     }
 
-    img {
+    .logo-img {
+      width: 24px;
+      height: 24px;
+    }
+
+    .logo-text {
+      color: $text-primary;
+      font-weight: 700;
+      font-size: 1.25rem;
+
+      @media (max-width: $breakpoint-mobile) {
+        display: none;
+      }
+    }
+  }
+
+  .create-btn {
+    display: flex;
+    align-items: center;
+    padding: $spacing-xs $spacing-md;
+    background-color: $button-primary-bg;
+    color: $button-text-light;
+    border-radius: $border-radius-small;
+    font-weight: 600;
+    text-decoration: none;
+    transition: $hover-transition;
+
+    &:hover {
+      background-color: $button-primary-hover-bg;
+    }
+
+    @media (max-width: $breakpoint-mobile) {
+      padding: $spacing-xs;
+    }
+  }
+
+  .search-wrapper {
+    position: relative;
+    width: 100%;
+
+    .search-icon {
+      position: absolute;
+      left: $spacing-sm;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      pointer-events: none;
+    }
+
+    .search-input {
+      padding: $spacing-sm $spacing-md $spacing-sm $spacing-xl;
+      border: 1px solid $border-gray;
+      border-radius: $border-radius-small;
+
+      &:focus {
+        background-color: $background-white;
+        border-color: $secondary-blue;
+        outline: none;
+        box-shadow: $shadow-small;
+        width: 100%;
+        margin-right: 400px;
+      }
+    }
+  }
+
+  .user-profile {
+    display: flex;
+    align-items: center;
+    text-transform: capitalize;
+    gap: $spacing-sm;
+    text-decoration: none;
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-small;
+    transition: $hover-transition;
+
+    .user-avatar {
       width: 32px;
-      aspect-ratio: 1;
+      height: 32px;
       border-radius: 50%;
+      object-fit: cover;
     }
 
-    .btn-link {
-      color: red;
+    .user-initial {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: $accent-purple;
+      color: $button-text-light;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    .user-name {
+      color: $text-primary;
+
+      @media (max-width: $breakpoint-tablet) {
+        display: none;
+      }
+    }
+  }
+
+  .logout-btn {
+    padding: $spacing-xs $spacing-md;
+    border: none;
+    background-color: $button-secondary-bg;
+    color: $text-primary;
+    border-radius: $border-radius-small;
+    cursor: pointer;
+    transition: $hover-transition;
+
+    @media (max-width: $breakpoint-mobile) {
+      padding: $spacing-xs;
+    }
+  }
+
+  // Guest header specific styles
+  .login-link {
+    color: $text-primary;
+    text-decoration: none;
+    padding: $spacing-xs $spacing-md;
+    border-radius: $border-radius-small;
+    transition: $hover-transition;
+
+    &:hover {
+      background-color: $button-secondary-hover-bg;
+    }
+  }
+
+  .signup-link {
+    padding: $spacing-xs $spacing-md;
+    background-color: $button-primary-bg;
+    color: $button-text-light;
+    text-decoration: none;
+    border-radius: $border-radius-small;
+    transition: $hover-transition;
+
+    &:hover {
+      background-color: $button-primary-hover-bg;
     }
   }
 }
