@@ -7,13 +7,14 @@ import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 
 import TextField from '@mui/material/TextField'
 import { BoardGroupListActions } from './BoardGroupListActions'
+import { BoardGroupFooter } from './BoardGroupFooter'
 
 export function BoardGroup({ board, group, onUpdateGroup }) {
-    const [isAddingTask, setIsAddingTask] = useState(false)
-    const [newTaskTitle, setNewTaskTitle] = useState('')
-
     const [isEditingTitle, setIsEditingTitle] = useState(false)
     const [editedTitle, setEditedTitle] = useState(group.title)
+
+    const [isAddingTask, setIsAddingTask] = useState(false)
+    const [newTaskTitle, setNewTaskTitle] = useState('')
 
     const [anchorEl, setAnchorEl] = useState(null)
 
@@ -115,33 +116,15 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
                 ))}
             </div>
 
-            <footer className="board-group-footer">
-                {isAddingTask ? (
-                    <form className="add-task-container" onSubmit={handleAddTask}>
-                        <input
-                            type="text"
-                            placeholder="Enter task title or paste a link"
-                            value={newTaskTitle}
-                            onChange={handleTitleChange}
-                        />
-                        <div className="buttons-container">
-                            <button type="submit" className="add-card-btn">Add a card</button>
-                            <button
-                                type="button"
-                                className="cancel-btn"
-                                onClick={() => setIsAddingTask(false)}
-                            >
-                                x
-                            </button>
-                        </div>
-                    </form>
-                ) : (
-                    <button className="add-list-btn" onClick={() => setIsAddingTask(true)}>
-                        Add a card
-                    </button>
-                )}
+            <BoardGroupFooter
+                group={group}
+                isAddingTask={isAddingTask}
+                setIsAddingTask={setIsAddingTask}
+                newTaskTitle={newTaskTitle} 
+                handleTitleChange={handleTitleChange}
+                handleAddTask={handleAddTask}
+            />
 
-            </footer>
         </section>
     )
 }
