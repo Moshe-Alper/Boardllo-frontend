@@ -1,0 +1,77 @@
+.add-group-form {
+    width: 272px;
+    background-color: $background-light;
+    padding: $layoutPadding-smallest;
+    border-radius: $border-radius-largest;
+    box-shadow: $card-shadow;
+    gap: $layoutPadding-small;
+
+    input {
+        background-color: $card-background;
+        color: $text-primary;
+        border: solid 1px $border-gray;
+        border-radius: $border-radius;
+        padding: $layoutPadding-small;
+        margin-bottom: $layoutPadding-small;
+        font-size: 14px;
+        outline: none;
+
+        &:focus {
+            border-color: $background-light;
+        }
+
+        &::placeholder {
+            color: $text-secondary;
+        }
+    }
+
+    .buttons-container {
+        display: flex;
+        justify-content: space-between;
+        gap: $layoutPadding-small;
+        
+        .add-group-btn {
+            background-color: $background-light;
+            color: black;
+            border: none;
+            border-radius: $border-radius-small;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+
+            &:hover {
+                background-color: darken($background-light, 10%);
+            }
+        }
+
+        .cancel-btn {
+            background-color: transparent;
+            color: $text-secondary;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 6px 12px;
+            text-decoration: underline;
+
+            &:hover {
+                color: $text-primary;
+            }
+        }
+    }
+}
+
+.add-list-btn {
+    background-color: transparent;
+    border: none;
+    color: $text-primary;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 8px 0;
+    text-align: left;
+    width: 100%;
+
+    &:hover {
+        color: $background-light;
+    }
+}
