@@ -5,7 +5,7 @@ import { BoardIndex } from './pages/BoardIndex.jsx'
 import { AdminIndex } from './pages/AdminIndex.jsx'
 
 import { BoardDetails } from './pages/BoardDetails.jsx'
-import { UserDetails } from './pages/UserDetails'
+import { UserProfile } from './pages/UserProfile.jsx'
 
 import { AppHeader } from './cmps/AppHeader'
 import { UserMsg } from './cmps/UserMsg.jsx'
@@ -23,7 +23,7 @@ export function RootCmp() {
           <Route path='' element={<HomePage />} />
           <Route path='board' element={<BoardIndex />} />
           <Route path='board/:boardId' element={<BoardDetails />} />
-          <Route path='user/:id' element={<UserDetails />} />
+          <Route path='user/:id' element={<UserProfile />} />
           <Route path='admin' element={<AdminIndex />} />
           <Route path='login' element={<LoginSignup />}></Route>
           <Route path='test' element={<Test />}></Route>

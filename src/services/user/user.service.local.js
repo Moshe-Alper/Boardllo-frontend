@@ -11,7 +11,8 @@ export const userService = {
   remove,
   update,
   getLoggedinUser,
-  getEmptyCredentials
+  getEmptyCredentials,
+  updateUserImg
 }
 
 function getUsers() {
@@ -72,6 +73,12 @@ function _saveLocalUser(user) {
   }
   sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
   return user
+}
+
+async function updateUserImg(userCred, imgUrl) {
+  storageService.put(userCred, imgUrl)
+  const user = await storageService.post('user', userCred)
+  return _saveLocalUser(user)
 }
 
 function getEmptyCredentials() {

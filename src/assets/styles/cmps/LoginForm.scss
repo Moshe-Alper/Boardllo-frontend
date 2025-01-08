@@ -9,7 +9,7 @@
     border: 1px solid $border-light-gray;
     border-radius: $border-radius-medium;
     box-shadow: $card-shadow;
-    padding: 2rem;
+    padding: 4rem;
     justify-content: center;
     align-items: center;
 
@@ -21,7 +21,7 @@
 
       font-family: $workspace-font;
       font-size: 1.5rem;
-      font-weight: 500;
+      font-weight: 700;
     }
 
     p {
@@ -39,7 +39,7 @@
 
       label {
         font-family: $body-font;
-        font-size: 0.9rem;
+        font-size: 1.5rem;
         color: $text-secondary;
         margin-bottom: $spacing-xs;
       }
@@ -50,7 +50,7 @@
         border: 1px solid $border-light-gray;
         border-radius: $border-radius-small;
         font-family: $body-font;
-        font-size: 1rem;
+        font-size: 1.3rem;
         color: $text-primary;
 
         &:focus {
@@ -68,7 +68,7 @@
       color: $button-text-light;
       font-family: $body-font;
       padding: $spacing-sm;
-      font-size: 1rem;
+      font-size: 1.3rem;
       cursor: pointer;
       transition: background-color $hover-transition;
 
