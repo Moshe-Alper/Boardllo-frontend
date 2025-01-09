@@ -1,8 +1,9 @@
 export function BoardHeader({ board }) {
+    // console.log(board)
 
     return (
-        <header className="board-header">
+        <section className="board-header">
             <h1>{board.title}</h1>
-        </header>
+        </section>
     )
 }

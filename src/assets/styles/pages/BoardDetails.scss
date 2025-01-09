@@ -13,12 +13,11 @@
     margin: $layoutPadding-small 0 0 $layoutPadding-small;
 
     button {
-      width: 12.5rem; // 200px converted to rem
-      padding: 0.375rem 0.5rem 0.75rem 0.375rem; // Converted padding to rem (6px, 8px, 12px, 6px)
+      padding: 0.375rem 0.5rem 0.75rem 0.375rem; 
       color: $text-primary;
       text-align: left;
       background-color: transparent;
-      border-radius: $border-radius-small;
+      border-radius: $border-radius-medium;
 
       &:hover {
         background-color: darken($button-secondary-hover-bg, 10%);
@@ -28,7 +27,7 @@
     .new-list-btn {
       width: 17rem; // 272px
       margin-block-start: $layoutPadding-small;
-      padding: 0.625rem 0.75rem;  // (10px 12px)
+      padding: 0.625rem 0.75rem;  // 10px 12px
       background-color: $secondary-blue;
       color: $button-text-light;
       font-weight: 600;
@@ -45,7 +44,7 @@
 
       &::before {
         content: '+';
-        margin-inline-end: 0.5rem; // Adjust the spacing as needed
+        margin-inline-end: 0.5rem; 
       }
     }
   }

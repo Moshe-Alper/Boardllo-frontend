@@ -8,11 +8,11 @@
     box-shadow: $card-shadow;
     display: flex;
     flex-direction: column;
-    gap: $layoutPadding-small;
-    
+
     &:hover {
         .board-group-header .title-actions {
             opacity: 1;
         }
     }
+    
 }

@@ -1,7 +1,7 @@
 .task-preview {
     background-color: $background-white;
-    border-radius: $border-radius-small;
-    box-shadow: 0 0.0625rem 0 rgba(9, 30, 66, 0.25);
+    border-radius: $border-radius-large;
+    box-shadow: $input-shadow;
     padding: 0.625rem;
     margin-bottom: 0.5rem;
     position: relative;

@@ -4,7 +4,6 @@
     padding: $layoutPadding-small;
     margin-block-start: $layoutPadding-small;
     border-radius: $border-radius-largest;
-    box-shadow: $card-shadow;
     gap: $layoutPadding-small;
 
     input {
@@ -21,7 +20,7 @@
         &:focus {
             border-color: $primary-blue;
             outline: none;
-            box-shadow: 0 0 0 0.0625rem $primary-blue; // 1px
+            box-shadow: 0 0 0.25rem rgba($primary-blue, 0.5);
         }
 
         &::placeholder {

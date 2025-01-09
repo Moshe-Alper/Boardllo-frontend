@@ -9,8 +9,8 @@ import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { loadBoard, addBoardMsg, addGroup, updateGroup } from '../store/actions/board.actions'
 
 import { BoardGroup } from '../cmps/Group/BoardGroup'
-import { BoardHeader } from '../cmps/BoardHeader'
 import { AddGroupForm } from '../cmps/Group/AddGroupForm'
+import { BoardHeader } from '../cmps/Board/BoardHeader'
 
 export function BoardDetails() {
 
@@ -71,9 +71,8 @@ export function BoardDetails() {
     // console.log('🚀 board in BoardDetails:', board)
 
     return (
-        <section className="board-details">
+        <section className="board-details"> 
             <BoardHeader board={board} />
-
             {board && <div>
                 <section className="group-container flex">
                     {board.groups.map(group => (

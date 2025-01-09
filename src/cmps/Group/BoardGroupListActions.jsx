@@ -17,11 +17,11 @@ export function BoardGroupListActions({ anchorEl, isOpen, onClose, onAddTask }) 
             className="list-actions-popover"
         >
             <div className="list-actions">
-                <header className="list-actions-header">
+                <header className="list-actions-header flex">
                     <h3>List actions</h3>
                     <button className="close-button" onClick={onClose}>×</button>
                 </header>
-                <div className="list-actions-content">
+                <div className="list-actions-content flex column">
                     <button className="action-button" onClick={() => { onAddTask(); onClose() }}>Add card...</button>
                     {/* <button className="action-button">Copy list...</button>
                     <button className="action-button">Move list...</button>

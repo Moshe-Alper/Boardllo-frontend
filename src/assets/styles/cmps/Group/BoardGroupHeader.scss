@@ -2,33 +2,35 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0;
+
 
     .title-container {
         display: flex;
-        justify-content: flex-start;
         flex-grow: 1;
+        justify-content: flex-start;
         
         h5 {
-            margin: 0.5rem;
             cursor: pointer;
+            margin: 0.5rem; // 8px
         }
-    }
+        }
 
-    .title-actions {
+        .title-actions {
         display: flex;
-        gap: 0.5rem; 
 
         .collapse-btn,
         .menu-btn {
-            width: 2rem;
+            align-items: center;
             background: none;
             border: none;
+            border-radius: $border-radius-large;
             cursor: pointer;
-            padding: 0.5rem;
             display: flex;
-            align-items: center;
             justify-content: center;
+            margin: 0;
+            padding: 0.5rem;
+            width: 2rem;
         }
     }
 }
