@@ -117,6 +117,14 @@
       }
     }
 
+    .carousel-img {
+      transform: translate(100%, -40%);
+    }
+
+    .collage-img {
+      transform: translateX(-50%);
+    }
+
     .features-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);

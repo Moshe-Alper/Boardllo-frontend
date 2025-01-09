@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
-import { ArrowRight, Layout, Users, CheckSquare } from 'lucide-react'
+import { Layout, Users, CheckSquare } from 'lucide-react'
+// import { useNavigate } from '../assets/img/assetsCollage.png'
 
 export function HomePage() {
   return (
@@ -10,10 +10,6 @@ export function HomePage() {
             <div className='hero-text'>
               <h1>Trello brings all your tasks, teammates, and tools together</h1>
               <p>Keep everything organized and work more collaboratively in one place.</p>
-              <Link className='cta-button' to='/board'>
-                View Boards
-                <ArrowRight className='arrow-icon' />
-              </Link>
             </div>
 
             <div className='features-grid'>
@@ -34,6 +30,16 @@ export function HomePage() {
               </div>
             </div>
           </div>
+          <img
+            className='collage-img'
+            src='https://res.cloudinary.com/dv7uswhcz/image/upload/v1736446520/yqedfnbivqhfogcaixdj.png'
+            alt=''
+          />
+          <img
+            className='carousel-img'
+            src='https://res.cloudinary.com/dv7uswhcz/image/upload/v1736446520/plnikgc85kndsu9be3ra.png'
+            alt=''
+          />
         </section>
 
         <section className='social-proof main-layout full'>

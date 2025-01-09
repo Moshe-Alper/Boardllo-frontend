@@ -1,6 +1,6 @@
 // Theme Colors (Primary, Secondary, Accents)
 $primary-blue: #0052cc;
-$primary-hover-blue: #0065ff;
+$primary-hover-blue: darken($primary-blue, 20%);
 $secondary-blue: #0079bf;
 $secondary-hover-blue: #2684ff;
 $accent-pink: #f99cdb;
@@ -78,7 +78,7 @@ $layoutPadding-large: 1.5rem; // 24px
 
 // New Specific Variables for Trello-Like Design
 $card-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); // Subtle shadow for cards
-$input-shadow: 0 0.0625rem 0 rgba(9, 30, 66, 0.25);  // Shadow for input fields
+$input-shadow: 0 0.0625rem 0 rgba(9, 30, 66, 0.25); // Shadow for input fields
 $navbar-height: 3.5rem; // Height of the header/navbar
 $avatar-size: 2rem; // Profile or member avatar sizes
 $modal-background: rgba(0, 0, 0, 0.4); // Overlay background for modals
