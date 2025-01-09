@@ -2,19 +2,20 @@
 import { useState } from 'react'
 import { userService } from '../services/user/user.service.local.js'
 import { useNavigate } from 'react-router'
-import { login } from '../store/actions/user.actions.js'
+import { signup } from '../store/actions/user.actions.js'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 
-export function LoginForm() {
+export function SignupForm() {
   const [credentials, setCredentials] = useState(userService.getEmptyCredentials())
+
   const navigate = useNavigate()
 
-  async function _login(credentials) {
+  async function _signup(credentials) {
     try {
-      await login(credentials)
-      showSuccessMsg('Logged in successfully')
+      await signup(credentials)
+      showSuccessMsg('Signed in successfully')
     } catch (err) {
-      console.log(`problem with login`, err)
+      console.log(`problem with signup`, err)
       showErrorMsg('Oops try again')
     }
   }
@@ -26,7 +27,7 @@ export function LoginForm() {
 
   function handleSubmit(ev) {
     ev.preventDefault()
-    _login(credentials)
+    _signup(credentials)
     navigate('/')
   }
 
@@ -35,7 +36,7 @@ export function LoginForm() {
       <form className='login-form' onSubmit={handleSubmit}>
         <div className='form-group'>
           <div className='logo'>Boardllo</div>
-          <p>Login to continue</p>
+          <p>Sign up</p>
           <label htmlFor='username'></label>
           <input
             id='username'
@@ -59,9 +60,22 @@ export function LoginForm() {
             required
           />
         </div>
-        <button type='submit'>Log in</button>
-        <a href='signup'>
-          <p>Create an account</p>
+
+        <div className='form-group'>
+          <label htmlFor='fullname'></label>
+          <input
+            id='fullname'
+            type='text'
+            name='fullname'
+            value={credentials.fullname}
+            placeholder='Enter your full name'
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <button type='submit'>Sign up</button>
+        <a href='login'>
+          <p>Already account?</p>
         </a>
         <hr className='horizon'></hr>
         <div className='logo'>Boardllo</div>

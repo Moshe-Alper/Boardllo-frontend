@@ -83,7 +83,7 @@ export function AppHeader() {
           <NavLink to='login' className='login-link'>
             Log in
           </NavLink>
-          <NavLink to='login' className='signup-link'>
+          <NavLink to='signup' className='signup-link'>
             Get Boardllo for free
           </NavLink>
         </div>
