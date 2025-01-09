@@ -40,7 +40,8 @@ export function BoardIndex() {
 
   async function onAddBoard() {
     const board = boardService.getEmptyBoard()
-    board.title = 'Board ' + Math.floor(Math.random() * 100)
+    board.title = prompt('Board Title?')
+    if (!board.title) return
     try {
       const savedBoard = await addBoard(board)
       showSuccessMsg(`Board added (id: ${savedBoard._id})`)
@@ -70,12 +71,9 @@ export function BoardIndex() {
 
   return (
     <main className='board-index'>
-      <header>
-        <h2>Boards</h2>
-        {userService.getLoggedinUser() && <button onClick={onAddBoard}>Add a Board</button>}
-      </header>
       <BoardFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
       <BoardList boards={boards} onRemoveBoard={onRemoveBoard} onUpdateBoard={onUpdateBoard} />
+      {userService.getLoggedinUser() && <button onClick={onAddBoard}>Add a Board</button>}
     </main>
   )
 }
