@@ -1,0 +1,187 @@
+.homepage {
+  background: linear-gradient($background-light, $background-white);
+  font-family: $workspace-font;
+  margin-block-start: 3rem;
+
+  // Navigation
+  .main-nav {
+    background: $background-white;
+    box-shadow: $shadow-small;
+    padding: $spacing-md;
+    height: $navbar-height;
+
+    .nav-container {
+      max-width: $breakpoint-desktop;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 $layoutPadding-medium;
+    }
+
+    .logo {
+      font-family: $heading-font;
+      font-size: $spacing-lg;
+      font-weight: bold;
+      color: $primary-blue;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: $spacing-md;
+
+      button {
+        padding: $spacing-sm $spacing-md;
+        border-radius: $border-radius-small;
+        transition: $hover-transition;
+        cursor: pointer;
+
+        &.login-btn {
+          background: $button-secondary-bg;
+          color: $text-primary;
+          border: none;
+
+          &:hover {
+            background: $button-secondary-hover-bg;
+          }
+        }
+
+        &.signup-btn {
+          background: $button-primary-bg;
+          color: $button-text-light;
+          border: none;
+
+          &:hover {
+            background: $button-primary-hover-bg;
+          }
+        }
+      }
+    }
+  }
+
+  // Hero Section
+  .hero-section {
+    max-width: $breakpoint-desktop;
+    margin: 0 auto;
+    padding: $spacing-xl $layoutPadding-medium;
+    min-height: 100dvh;
+
+    .hero-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: $spacing-xl;
+      align-items: center;
+
+      @media (max-width: $breakpoint-tablet) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .hero-text {
+      h1 {
+        font-family: $heading-font;
+        font-size: 2.5rem;
+        color: $text-primary;
+        margin-bottom: $spacing-lg;
+        line-height: 1.2;
+      }
+
+      p {
+        font-family: $body-font;
+        font-size: 1.125rem;
+        color: $text-secondary;
+        margin-bottom: $spacing-xl;
+      }
+
+      .cta-button {
+        display: inline-flex;
+        align-items: center;
+        gap: $spacing-sm;
+        padding: $spacing-md $spacing-lg;
+        background: $button-primary-bg;
+        color: $button-text-light;
+        border: none;
+        border-radius: $border-radius-small;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: $hover-transition;
+
+        &:hover {
+          background: $button-primary-hover-bg;
+        }
+
+        .arrow-icon {
+          width: $spacing-lg;
+          height: $spacing-lg;
+        }
+      }
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: $spacing-md;
+
+      .feature-card {
+        background: $card-background;
+        padding: $spacing-lg;
+        border-radius: $border-radius-medium;
+        box-shadow: $card-shadow;
+
+        .feature-icon {
+          color: $secondary-blue;
+          width: $spacing-xl;
+          height: $spacing-xl;
+          margin-bottom: $spacing-md;
+        }
+
+        h3 {
+          font-family: $heading-font;
+          color: $text-primary;
+          margin-bottom: $spacing-sm;
+          font-size: 1.125rem;
+        }
+
+        p {
+          font-family: $body-font;
+          color: $text-secondary;
+          font-size: 0.875rem;
+        }
+      }
+    }
+  }
+
+  // Social Proof Section
+  .social-proof {
+    background: $background-light;
+    padding: $spacing-xl $layoutPadding-medium;
+    text-align: center;
+
+    h2 {
+      font-family: $heading-font;
+      color: $text-primary;
+      font-size: 1.5rem;
+      margin-bottom: $spacing-xl;
+    }
+
+    .stats-grid {
+      max-width: $breakpoint-desktop;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: $spacing-xl;
+
+      @media (max-width: $breakpoint-tablet) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stat-item {
+        p {
+          color: $secondary-blue;
+          font-size: 1.5rem;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
