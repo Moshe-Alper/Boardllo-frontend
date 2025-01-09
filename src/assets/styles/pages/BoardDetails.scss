@@ -6,13 +6,11 @@
   color: $text-primary;
   box-shadow: $shadow-small;
   border-radius: $border-radius-large;
-  gap: $layoutPadding-medium;
 
   .group-container {
     flex-wrap: nowrap;
     align-items: flex-start;
     margin: $layoutPadding-small 0 0 $layoutPadding-small;
-    gap: $layoutPadding-small;
 
     button {
       width: 12.5rem; // 200px converted to rem

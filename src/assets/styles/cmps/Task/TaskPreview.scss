@@ -1,0 +1,47 @@
+.task-preview {
+    background-color: $background-white;
+    border-radius: $border-radius-small;
+    box-shadow: 0 0.0625rem 0 rgba(9, 30, 66, 0.25);
+    padding: 0.625rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: $background-light-hover;
+    }
+
+    p {
+        margin: 0;
+        font-size: 0.875rem;
+        color: $text-primary;
+    }
+
+    .edit-icon-container {
+        position: absolute;
+        top: 50%;
+        right: 0.625rem;
+        transform: translateY(-50%); 
+    }
+
+    .edit-icon {
+        display: none; 
+        width: 1.5rem;
+        height: 1.5rem; 
+        background-color: $button-secondary-hover-bg;
+        border-radius: 50%; 
+        cursor: pointer;
+        justify-content: center;
+        align-items: center; 
+        transition: display 0.3s ease; 
+
+        img {
+            width: 1rem;
+            height: 1rem; 
+        }
+    }
+
+    &:hover .edit-icon {
+        display: flex;  
+    }
+}

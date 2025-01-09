@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { boardService } from '../../services/board'
-import { BoardGroupHeader } from './BoardGroupHeader'
-import { TaskPreview } from '../TaskPreview'
 import { loadBoard } from '../../store/actions/board.actions'
+import { boardService } from '../../services/board'
 import { showSuccessMsg, showErrorMsg } from '../../services/event-bus.service'
+import { BoardGroupHeader } from './BoardGroupHeader'
 import { BoardGroupFooter } from './BoardGroupFooter'
+import { TaskPreview } from '../Task/TaskPreview'
 
 export function BoardGroup({ board, group, onUpdateGroup }) {
     const [isEditingGroupTitle, setIsEditingGroupTitle] = useState(false)
