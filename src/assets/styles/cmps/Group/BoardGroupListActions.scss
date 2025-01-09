@@ -1,0 +1,65 @@
+.list-action {
+    min-width: 304px;
+    background-color: $background-white;
+    border-radius: $border-radius-small;
+    box-shadow: $shadow-medium;
+    
+    // Header section
+    .list-action-header {
+        padding: $layoutPadding-small;
+        border-bottom: 1px solid $border-light-gray;
+        justify-content: space-between;
+        align-items: center;
+        
+        h3 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 500;
+            color: $text-primary;
+            font-family: $workspace-font;
+        }
+        
+        button {
+            min-width: unset;
+            padding: 4px;
+            font-size: 16px;
+            color: $text-secondary;
+            
+            &:hover {
+                background-color: $button-secondary-hover-bg;
+                color: $text-primary;
+            }
+        }
+    }
+    
+    // Action buttons
+    .MuiButton-root {
+        justify-content: flex-start;
+        padding: $layoutPadding-small $layoutPadding-medium;
+        text-transform: none;
+        font-family: $workspace-font;
+        font-weight: 400;
+        font-size: 14px;
+        color: $text-primary;
+        width: 100%;
+        border-radius: 0;
+        
+        &:hover {
+            background-color: $button-secondary-hover-bg;
+        }
+        
+        &:last-child {
+            color: $text-primary;
+            
+            &:hover {
+                background-color: rgba($accent-orange, 0.1);
+                color: darken($accent-orange, 10%);
+            }
+        }
+    }
+}
+
+.MuiPopover-paper {
+    margin-block-start: 4px;
+    box-shadow: $shadow-medium;
+}

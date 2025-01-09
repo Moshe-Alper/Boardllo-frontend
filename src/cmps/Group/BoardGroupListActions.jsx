@@ -1,7 +1,6 @@
 import { Popover, Button } from '@mui/material'
 
 export function BoardGroupListActions({ anchorEl, isOpen, onClose, onAddTask }) {
-
     return (
         <Popover
             open={isOpen}
@@ -15,17 +14,20 @@ export function BoardGroupListActions({ anchorEl, isOpen, onClose, onAddTask }) 
                 vertical: 'top',
                 horizontal: 'left',
             }}
+            className="list-actions-popover"
         >
-            <div className="list-action flex column">
-                <header className='list-action-header flex'>
+            <div className="list-actions">
+                <header className="list-actions-header">
                     <h3>List actions</h3>
-                    <Button onClick={onClose}>X</Button>
+                    <button className="close-button" onClick={onClose}>×</button>
                 </header>
-                <Button onClick={() => { onAddTask(); onClose() }}>Add a card</Button>
-                {/* <Button onClick={onClose}>Copy list</Button>
-                <Button onClick={onClose}>Move list</Button>
-                <Button onClick={onClose}>Watch</Button> */}
-                <Button onClick={onClose}>Archive list</Button>
+                <div className="list-actions-content">
+                    <button className="action-button" onClick={() => { onAddTask(); onClose() }}>Add card...</button>
+                    {/* <button className="action-button">Copy list...</button>
+                    <button className="action-button">Move list...</button>
+                    <button className="action-button">Watch</button> */}
+                    <button className="action-button danger">Archive this list</button>
+                </div>
             </div>
         </Popover>
     )

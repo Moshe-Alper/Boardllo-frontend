@@ -1,77 +1,96 @@
+// Board Group Footer
 .board-group-footer {
-  width: 17rem; // 272px / 16
-
+  width: 100%;
+  
   .add-task-container {
-    display: flex;
-    flex-direction: column;
-    gap: $layoutPadding-small;
-
-    input {
+      margin-top: $layoutPadding-smallest;
+      width: 100%;
+      box-sizing: border-box;
+      
+      input {
+          width: 100%;
+          box-sizing: border-box;
+          padding: $layoutPadding-small;
+          border: 2px solid transparent;
+          border-radius: $border-radius-small;
+          background-color: $card-background;
+          font-size: 14px;
+          font-family: $workspace-font;
+          color: $text-primary;
+          
+          &:focus {
+              border-color: $primary-blue;
+              outline: none;
+              box-shadow: 0 0 0 1px $primary-blue;
+          }
+      }
+      
+      .buttons-container {
+          margin-top: $layoutPadding-small;
+          display: flex;
+          align-items: center;
+          gap: $layoutPadding-small;
+          
+          .add-card-btn {
+              width: 83px;
+              padding: 6px 12px;
+              background-color: $primary-blue;
+              color: $button-text-light;
+              border: none;
+              border-radius: $border-radius-small;
+              font-weight: 500;
+              font-size: 14px;
+              cursor: pointer;
+              
+              &:hover {
+                  background-color: $primary-hover-blue;
+              }
+          }
+          
+          .cancel-btn {
+              width: 10px;
+              height: 10px;
+              padding: 0;
+              background: transparent;
+              border: none;
+              cursor: pointer;
+              color: $text-secondary;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 16px;
+              line-height: 1;
+              
+              &:hover {
+                  color: $text-primary;
+              }
+          }
+      }
+  }
+  
+  .add-list-btn {
       width: 100%;
       padding: $layoutPadding-small;
-      border: 1px solid $border-gray;
-      border-radius: $border-radius-small;
-      font-size: 0.875rem;
-      background-color: $background-light;
+      background-color: rgba($background-white, 0.24);
+      border: none;
+      border-radius: $border-radius;
       color: $text-primary;
-
-      &:focus {
-        outline: none;
-        border-color: $primary-blue;
-        box-shadow: 0 0 0.25rem $primary-blue; // 4px / 16
+      cursor: pointer;
+      font-size: 14px;
+      text-align: left;
+      transition: $hover-transition;
+      font-family: $workspace-font;
+      box-sizing: border-box;
+      
+      &:hover {
+          background-color: $button-secondary-hover-bg;
       }
-    }
-
-    .buttons-container {
-      display: flex;
-      justify-content: space-between;
-      gap: $layoutPadding-small;
-
-      button {
-        padding: 0.5rem 0.75rem; // $spacing-sm $spacing-md
-        border-radius: $border-radius-small;
-        font-size: 0.875rem;
-        cursor: pointer;
-        transition: background-color 0.2s;
-
-        &.add-card-btn {
-          background-color: $primary-blue;
-          color: $background-white;
-
-          &:hover {
-            background-color: darken($primary-blue, 10%);
-          }
-        }
-
-        &.cancel-btn {
-          background-color: $background-light;
-          color: $text-secondary;
-
-          &:hover {
-            background-color: $button-secondary-hover-bg;
-          }
-        }
+      
+      &::before {
+          content: '+';
+          margin-right: $layoutPadding-small;
+          font-size: 20px;
+          font-weight: 500;
       }
-    }
-  }
-
-  .add-list-btn {
-    display: flex;
-    align-items: center;
-    font-size: 0.875rem;
-    background-color: $background-light;
-    padding: 0.75rem 0.625rem; 
-    border-radius: $border-radius-largest;
-    box-shadow: $card-shadow;
-
-    &::before {
-      content: '+';
-      font-size: 1.25rem; 
-      margin-inline-end: 0.5rem;
-    }
-
-    &:hover {
-      background-color: lighten($background-light, 5%);
-    }
   }
 }

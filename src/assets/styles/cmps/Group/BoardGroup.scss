@@ -1,22 +1,23 @@
 .board-group {
     background-color: $background-light;
     width: 272px;
-    padding: $layoutPadding-smallest;
-    border-radius: $border-radius-largest;
+    min-height: 32px;
+    margin: $layoutPadding-small;
+    padding: $layoutPadding-small;
+    border-radius: $border-radius;
     box-shadow: $card-shadow;
+    display: flex;
+    flex-direction: column;
     gap: $layoutPadding-small;
-
-    .task-preview {
-        color: $text-primary;
-        border: solid 1px $border-gray;
-        background-color: $card-background;
-        border-radius: $border-radius;
-        padding: $layoutPadding-smallest;
-
-        p {
-            display: flex;
+    
+    &:hover {
+        .board-group-header .title-actions {
+            opacity: 1;
         }
     }
+
+    .tasks-container {
+        min-height: 2px;
+        padding: $layoutPadding-smallest 0;
+    }
 }
-
-

@@ -14,7 +14,7 @@ export function BoardGroupFooter({
                         onChange={handleTitleChange}
                     />
                     <div className="buttons-container">
-                        <button type="submit" className="add-card-btn">Add a card</button>
+                        <button type="submit" className="add-card-btn">Add card</button>
                         <button
                             type="button"
                             className="cancel-btn"
