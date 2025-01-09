@@ -1,96 +1,96 @@
-// Board Group Footer
 .board-group-footer {
-  width: 100%;
-  
-  .add-task-container {
-      margin-top: $layoutPadding-smallest;
-      width: 100%;
-      box-sizing: border-box;
-      
-      input {
-          width: 100%;
-          box-sizing: border-box;
-          padding: $layoutPadding-small;
-          border: 2px solid transparent;
-          border-radius: $border-radius-small;
-          background-color: $card-background;
-          font-size: 14px;
-          font-family: $workspace-font;
-          color: $text-primary;
-          
-          &:focus {
-              border-color: $primary-blue;
-              outline: none;
-              box-shadow: 0 0 0 1px $primary-blue;
-          }
-      }
-      
-      .buttons-container {
-          margin-top: $layoutPadding-small;
-          display: flex;
-          align-items: center;
-          gap: $layoutPadding-small;
-          
-          .add-card-btn {
-              width: 83px;
-              padding: 6px 12px;
-              background-color: $primary-blue;
-              color: $button-text-light;
-              border: none;
-              border-radius: $border-radius-small;
-              font-weight: 500;
-              font-size: 14px;
-              cursor: pointer;
-              
-              &:hover {
-                  background-color: $primary-hover-blue;
-              }
-          }
-          
-          .cancel-btn {
-              width: 10px;
-              height: 10px;
-              padding: 0;
-              background: transparent;
-              border: none;
-              cursor: pointer;
-              color: $text-secondary;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              font-size: 16px;
-              line-height: 1;
-              
-              &:hover {
-                  color: $text-primary;
-              }
-          }
-      }
-  }
-  
-  .add-list-btn {
-      width: 100%;
-      padding: $layoutPadding-small;
-      background-color: rgba($background-white, 0.24);
-      border: none;
-      border-radius: $border-radius;
-      color: $text-primary;
-      cursor: pointer;
-      font-size: 14px;
-      text-align: left;
-      transition: $hover-transition;
-      font-family: $workspace-font;
-      box-sizing: border-box;
-      
-      &:hover {
-          background-color: $button-secondary-hover-bg;
-      }
-      
-      &::before {
-          content: '+';
-          margin-right: $layoutPadding-small;
-          font-size: 20px;
-          font-weight: 500;
-      }
-  }
+    width: 100%;
+
+    .add-task-container {
+        margin-block-start: 0.5rem;
+        width: 100%;
+        box-sizing: border-box;
+
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 1rem;
+            border: 0.125rem solid transparent;
+            border-radius: 0.25rem;
+            background-color: $card-background;
+            font-size: 0.875rem;
+            font-family: $workspace-font;
+            color: $text-primary;
+
+            &:focus {
+                border-color: $primary-blue;
+                outline: none;
+                box-shadow: 0 0 0 0.0625rem $primary-blue;
+            }
+        }
+
+        .buttons-container {
+            margin-block-start: $layoutPadding-small;
+            display: flex;
+            align-items: center;
+
+            .add-card-btn {
+                width: auto;
+                padding: 0.5rem 1rem; // 8px 16px
+                background-color: $primary-blue;
+                color: $button-text-light;
+                border: none;
+                border-radius: $border-radius-small;
+                font-weight: 500;
+                font-size: 0.875rem; // 14px
+                cursor: pointer;
+                transition: background-color 0.3s ease, transform 0.1s ease;
+
+                &:hover {
+                    background-color: $primary-hover-blue;
+                }
+            }
+
+            .cancel-btn {
+                width: auto;
+                font-size: 1.25rem; // 20px
+                padding: $layoutPadding-smallest 1rem; 
+                border: none;
+                cursor: pointer;
+                color: $text-dark;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                line-height: 1;
+                
+                flex-grow: 0;
+                flex-shrink: 0;
+    
+                &:hover {
+                    color: $text-primary;
+                }
+            }
+        }
+    }
+
+    .add-list-btn {
+        width: 100%;
+        padding: 1rem;
+        background-color: rgba($background-white, 0.24);
+        border: none;
+        border-radius: $border-radius;
+        color: $text-primary;
+        cursor: pointer;
+        font-size: 0.875rem;
+        text-align: left;
+        transition: $hover-transition;
+        font-family: $workspace-font;
+        box-sizing: border-box;
+
+        &:hover {
+            background-color: $button-secondary-hover-bg;
+        }
+
+        &::before {
+            content: '+';
+            margin-inline-end: 1rem;
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
+    }
 }

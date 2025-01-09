@@ -14,7 +14,7 @@
     text-align: center;
 
     .login-header {
-      margin-bottom: $spacing-lg;
+      margin-block-end: $spacing-lg;
 
       h1 {
         font-family: $heading-font;
@@ -25,7 +25,7 @@
     }
 
     .switch-auth {
-      margin-top: $spacing-lg;
+      margin-block-start: $spacing-lg;
 
       p {
         font-family: $body-font;

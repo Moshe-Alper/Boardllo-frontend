@@ -55,8 +55,6 @@ async function remove(boardId) {
 }
 
 async function save(board) {
-  console.log('in save', board)
-
   var savedBoard
   if (board._id) {
     const boardToSave = {

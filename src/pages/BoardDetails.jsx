@@ -96,7 +96,7 @@ export function BoardDetails() {
                     ) : (
                         userService.getLoggedinUser() && (
                             <button
-                                className="add-list-btn"
+                                className="new-list-btn"
                                 onClick={() => setIsAddingGroup(true)}
                                 aria-label="Add a list"
                             >

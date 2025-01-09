@@ -11,19 +11,43 @@
   .group-container {
     flex-wrap: nowrap;
     align-items: flex-start;
-    margin: 0.75rem 0 0 0.75rem;
+    margin: $layoutPadding-small 0 0 $layoutPadding-small;
     gap: $layoutPadding-small;
 
     button {
+      width: 12.5rem; // 200px converted to rem
+      padding: 0.375rem 0.5rem 0.75rem 0.375rem; // Converted padding to rem (6px, 8px, 12px, 6px)
       color: $text-primary;
       text-align: left;
       background-color: transparent;
       border-radius: $border-radius-small;
-      width: 200px;
-      padding: 6px 8px 12px 6px;
 
       &:hover {
         background-color: darken($button-secondary-hover-bg, 10%);
+      }
+    }
+
+    .new-list-btn {
+      width: 17rem; // 272px
+      margin-block-start: $layoutPadding-small;
+      padding: 0.625rem 0.75rem;  // (10px 12px)
+      background-color: $secondary-blue;
+      color: $button-text-light;
+      font-weight: 600;
+      font-size: 0.875rem;
+      border: none;
+      border-radius: $border-radius-largest;
+      cursor: pointer;
+      text-align: left;
+      transition: background-color 0.2s, transform 0.1s ease-in-out;
+
+      &:hover {
+        background-color: $secondary-hover-blue;
+      }
+
+      &::before {
+        content: '+';
+        margin-inline-end: 0.5rem; // Adjust the spacing as needed
       }
     }
   }

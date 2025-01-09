@@ -17,7 +17,7 @@
       display: flex;
       justify-content: center;
       color: $primary-blue;
-      margin-bottom: $spacing-md;
+      margin-block-end: $spacing-md;
 
       font-family: $workspace-font;
       font-size: 1.5rem;
@@ -41,7 +41,7 @@
         font-family: $body-font;
         font-size: 1.5rem;
         color: $text-secondary;
-        margin-bottom: $spacing-xs;
+        margin-block-end: $spacing-xs;
       }
 
       input {

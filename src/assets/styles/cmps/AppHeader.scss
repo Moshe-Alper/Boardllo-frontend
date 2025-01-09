@@ -51,7 +51,7 @@
     display: flex;
     align-items: center;
     gap: $spacing-md;
-    margin-left: auto;
+    margin-inline-start: auto;
   }
 
   .logo-link {
@@ -128,7 +128,7 @@
         outline: none;
         box-shadow: $shadow-small;
         width: 100%;
-        margin-right: 400px;
+        margin-inline-end: 400px;
       }
     }
   }

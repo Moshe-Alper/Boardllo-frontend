@@ -1,59 +1,100 @@
-.board-group-header {
-    padding: $layoutPadding-smallest $layoutPadding-small;
-    position: relative;
-    
-    .title-container {
-        flex: 1;
-        
-        h5 {
-            font-size: 14px;
-            font-weight: 600;
-            margin: 0;
-            padding: $layoutPadding-smallest $layoutPadding-small;
-            border-radius: $border-radius-small;
-            color: $text-primary;
-            
-            &:hover {
-                background-color: $button-secondary-hover-bg;
-            }
+.add-group-form {
+    width: 17rem; // 272px
+    background-color: $background-light;
+    padding: $layoutPadding-small;
+    margin-block-start: $layoutPadding-small;
+    border-radius: $border-radius-largest;
+    box-shadow: $card-shadow;
+    gap: $layoutPadding-small;
+
+    input {
+        width: 100%;
+        padding: $layoutPadding-small;
+        border: 0.125rem solid transparent; // 2px
+        border-radius: $border-radius-small;
+        background-color: $card-background;
+        font-size: 0.875rem; // 14px
+        color: $text-primary;
+        font-family: $workspace-font;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+        &:focus {
+            border-color: $primary-blue;
+            outline: none;
+            box-shadow: 0 0 0 0.0625rem $primary-blue; // 1px
+        }
+
+        &::placeholder {
+            color: $text-secondary;
         }
     }
-    
-    .title-editor {
-        flex: 1;
-        
-        .MuiTextField-root {
-            width: 100%;
-            
-            input {
-                padding: $layoutPadding-smallest $layoutPadding-small;
-                font-size: 14px;
-                font-weight: 600;
-                font-family: $workspace-font;
-            }
-        }
-    }
-    
-    .title-actions {
+
+    .buttons-container {
+        margin-block-start: $layoutPadding-small;
         display: flex;
-        opacity: 0;
-        transition: $hover-transition;
-        
-        button {
-            padding: $layoutPadding-smallest;
+        align-items: center;
+
+        .add-group-btn {
+            width: auto;
+            padding: 0.5rem 1rem; // 8px 16px
+            background-color: $primary-blue;
+            color: $button-text-light;
+            border: none;
             border-radius: $border-radius-small;
-            background: transparent;
+            font-weight: 500;
+            font-size: 0.875rem; // 14px
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+
+            &:hover {
+                background-color: $primary-hover-blue;
+            }
+        }
+
+        .cancel-btn {
+            width: auto;
+            font-size: 1.25rem; // 20px
+            padding: $layoutPadding-smallest 1rem; // Increase padding (e.g., 1rem for more space)
             border: none;
             cursor: pointer;
+            color: $text-dark;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
             
+            flex-grow: 0;
+            flex-shrink: 0;
+
             &:hover {
-                background-color: $button-secondary-hover-bg;
-            }
-            
-            img {
-                width: 16px;
-                height: 16px;
+                color: $text-primary;
             }
         }
+    }
+}
+
+.add-list-btn {
+    width: 100%;
+    padding: $layoutPadding-small;
+    background-color: rgba($background-white, 0.24);
+    border: none;
+    border-radius: $border-radius;
+    color: $text-primary;
+    cursor: pointer;
+    font-size: 0.875rem; // 14px
+    text-align: left;
+    transition: background-color 0.3s ease;
+    font-family: $workspace-font;
+    box-sizing: border-box;
+
+    &:hover {
+        background-color: $button-secondary-hover-bg;
+    }
+
+    &::before {
+        content: '+';
+        margin-inline-end: $layoutPadding-small;
+        font-size: 1.25rem; // 20px
+        font-weight: 500;
     }
 }
