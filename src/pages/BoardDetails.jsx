@@ -105,7 +105,7 @@ export function BoardDetails() {
                     )}
                 </section>
 
-                {/* <pre>{JSON.stringify(board, null, 2)}</pre> */}
+                <pre>{JSON.stringify(board, null, 2)}</pre>
             </div>}
 
             {/* <button onClick={() => { onAddBoardMsg(board._id) }}>Add board msg</button> */}

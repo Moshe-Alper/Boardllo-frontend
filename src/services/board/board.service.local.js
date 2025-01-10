@@ -9,11 +9,16 @@ export const boardService = {
   getById,
   save,
   remove,
-  addBoardMsg,
-  getGroups,
+
   saveGroup,
-  saveTask
+  removeGroup,
+
+  saveTask,
+  removeTask,
+
+  addBoardMsg,
 }
+
 window.cs = boardService
 
 async function query(filterBy = { txt: '', price: 0 }) {
@@ -80,39 +85,7 @@ async function save(board) {
   return savedBoard
 }
 
-async function addBoardMsg(boardId, txt) {
-  // Later, this is all done by the backend
-  const board = await getById(boardId)
-
-  const msg = {
-    id: makeId(),
-    by: userService.getLoggedinUser(),
-    txt
-  }
-  board.msgs.push(msg)
-  await storageService.put(STORAGE_KEY, board)
-
-  return msg
-}
-
 // Group functions
-async function getGroups(boardId, groupId = null) {
-  try {
-    const board = await getById(boardId)
-    if (!board) throw new Error('Board not found')
-
-    if (groupId) {
-      const group = board.groups.find((group) => group.id === groupId)
-      if (!group) throw new Error('Group not found')
-      return group
-    }
-
-    return board.groups || []
-  } catch (error) {
-    console.error('Failed to get groups:', error)
-    throw error
-  }
-}
 
 async function saveGroup(boardId, group) {
   const board = await getById(boardId)
@@ -137,6 +110,18 @@ async function saveGroup(boardId, group) {
   }
 }
 
+async function removeGroup(boardId, groupId) {
+  const board = await getById(boardId)
+  if (!board) throw new Error('Board not found')
+
+  const groupIdx = board.groups.findIndex((g) => g.id === groupId)
+  if (groupIdx === -1) throw new Error('Group not found')
+
+  const group = board.groups.splice(groupIdx, 1)[0]
+  await storageService.put(STORAGE_KEY, board)
+  return group
+}
+
 // Tasks functions
 async function saveTask(boardId, groupId, task) {
   const board = await getById(boardId)
@@ -154,4 +139,35 @@ async function saveTask(boardId, groupId, task) {
 
   await save(board)
   return task
+}
+
+async function removeTask(boardId, groupId, taskId) {
+  const board = await getById(boardId)
+  if (!board) throw new Error('Board not found')
+
+  const group = board.groups.find((group) => group.id === groupId)
+  if (!group) throw new Error('Group not found')
+
+  const taskIdx = group.tasks.findIndex((t) => t.id === taskId)
+  if (taskIdx === -1) throw new Error('Task not found')
+
+  const task = group.tasks.splice(taskIdx, 1)[0]
+  await storageService.put(STORAGE_KEY, board)
+  return task
+}
+
+// BoardMsg functions
+async function addBoardMsg(boardId, txt) {
+  // Later, this is all done by the backend
+  const board = await getById(boardId)
+
+  const msg = {
+    id: makeId(),
+    by: userService.getLoggedinUser(),
+    txt
+  }
+  board.msgs.push(msg)
+  await storageService.put(STORAGE_KEY, board)
+
+  return msg
 }

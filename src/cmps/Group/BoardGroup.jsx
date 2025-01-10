@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { loadBoard } from '../../store/actions/board.actions'
+import { addTask, loadBoard } from '../../store/actions/board.actions'
 import { boardService } from '../../services/board'
 import { showSuccessMsg, showErrorMsg } from '../../services/event-bus.service'
 import { BoardGroupHeader } from './BoardGroupHeader'
@@ -19,7 +19,7 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
         loadBoard(board._id)
     }, [board._id])
 
-    function handleUpdateGroup(group, title) {
+    function updateGroupTitle(group, title) {
         onUpdateGroup(group, title)
     }
 
@@ -33,13 +33,13 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
         const task = boardService.getEmptyTask()
         task.title = newTaskTitle
         try {
-            await boardService.saveTask(board._id, group.id, task)
+            await addTask(board._id, group.id, task)
             loadBoard(board._id)
             showSuccessMsg(`Task added (id: ${task.id})`)
             setNewTaskTitle('')
             setIsAddingTask(false)
         } catch (err) {
-            console.log('Cannot add task', err)
+            console.error('Cannot add task', err)
             showErrorMsg('Cannot add task')
         }
     }
@@ -60,11 +60,11 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
         }
     }
 
-    const handleMenuClick = (ev) => {
+    function handleMenuClick(ev) {
         setAnchorEl(ev.target)
     }
 
-    const handleMenuClose = () => {
+    function handleMenuClose() {
         setAnchorEl(null)
     }
 
@@ -84,7 +84,7 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
                 handleMenuClose={handleMenuClose}
                 anchorEl={anchorEl}
                 onAddTask={() => setIsAddingTask(true)}
-                handleUpdateGroup={handleUpdateGroup} 
+                updateGroupTitle={updateGroupTitle}
             />
 
             <div className="tasks-container">
