@@ -5,12 +5,12 @@ import { BoardGroupListActions } from './BoardGroupListActions'
 
 export function BoardGroupHeader({
     group, isEditingTitle, setIsEditingTitle, editedTitle, setEditedTitle, handleTitleSave,
-    handleMenuClick, anchorEl, handleMenuClose, onAddTask, updateGroupTitle, }
+    handleMenuClick, anchorEl, handleMenuClose, onAddTask, handleUpdateGroup, }
 ) {
 
     function saveTitle() {
         handleTitleSave()
-        updateGroupTitle(group, editedTitle)
+        handleUpdateGroup(group, editedTitle)
     }
 
     return (

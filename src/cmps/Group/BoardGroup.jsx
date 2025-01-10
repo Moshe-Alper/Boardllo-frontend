@@ -12,6 +12,7 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
 
     const [isAddingTask, setIsAddingTask] = useState(false)
     const [newTaskTitle, setNewTaskTitle] = useState('')
+    const [tasks, setTasks] = useState(group.tasks)
 
     const [anchorEl, setAnchorEl] = useState(null)
 
@@ -27,22 +28,35 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
         setNewTaskTitle(ev.target.value)
     }
 
-    async function handleAddTask(ev) {
+    async function onAddTask(ev) {
         ev.preventDefault()
-        if (!newTaskTitle.trim()) return
+
+        if (!newTaskTitle.trim()) {
+            showErrorMsg('Task title cannot be empty')
+            return
+        }
+
         const task = boardService.getEmptyTask()
         task.title = newTaskTitle
+
+        // Optimistic
+        setTasks(prevTasks => [...prevTasks, { ...task, _id: 'temp-id' }])
+
         try {
-            await addTask(board._id, group.id, task)
+            const savedTask = await addTask(board._id, group.id, task)
+            setTasks(prevTasks => prevTasks.map(task => task._id === 'temp-id' ? savedTask : task))
             loadBoard(board._id)
-            showSuccessMsg(`Task added (id: ${task.id})`)
+            showSuccessMsg(`Task added (id: ${savedTask.id})`)
             setNewTaskTitle('')
-            setIsAddingTask(false)
         } catch (err) {
-            console.error('Cannot add task', err)
+            console.log('Cannot add task', err)
             showErrorMsg('Cannot add task')
+
+            // Optimistic undo
+            setTasks(prevTasks => prevTasks.filter(task => task._id !== 'temp-id'))
         }
     }
+
 
     async function handleGroupTitleSave() {
         if (!editedGroupTitle.trim()) {
@@ -99,7 +113,7 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
                 setIsAddingTask={setIsAddingTask}
                 newTaskTitle={newTaskTitle}
                 handleTitleChange={handleTaskTitleChange}
-                handleAddTask={handleAddTask}
+                onAddTask={onAddTask}
             />
         </section>
     )
