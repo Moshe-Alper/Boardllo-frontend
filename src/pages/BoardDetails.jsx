@@ -24,16 +24,6 @@ export function BoardDetails() {
         loadBoard(boardId)
     }, [boardId])
 
-
-    // async function onAddBoardMsg(boardId) {
-    //     try {
-    //         await addBoardMsg(boardId, 'bla bla ' + parseInt(Math.random() * 10))
-    //         showSuccessMsg(`Board msg added`)
-    //     } catch (err) {
-    //         showErrorMsg('Cannot add board msg')
-    //     }
-    // }
-
     async function onAddGroup(boardId) {
         if (!newGroupTitle.trim()) {
             showErrorMsg('Group title cannot be empty')
@@ -43,7 +33,6 @@ export function BoardDetails() {
         const group = boardService.getEmptyGroup()
         group.title = newGroupTitle
 
-        // Optimistic
         try {
             const savedGroup = await addGroup(boardId, group)
             showSuccessMsg(`Group added (id: ${savedGroup._id})`)

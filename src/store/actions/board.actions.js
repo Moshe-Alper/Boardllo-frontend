@@ -1,22 +1,6 @@
 import { boardService } from '../../services/board'
 import { store } from '../store'
-import { 
-    ADD_BOARD, 
-    REMOVE_BOARD, 
-    SET_BOARDS, 
-    SET_BOARD, 
-    UPDATE_BOARD, 
-    ADD_BOARD_MSG, 
-    ADD_GROUP, 
-    UPDATE_GROUP, 
-    ADD_TASK, 
-    UPDATE_TASK, 
-    REMOVE_GROUP, 
-    UNDO_REMOVE_BOARD, 
-    UNDO_REMOVE_GROUP, 
-    REMOVE_TASK, 
-    UNDO_REMOVE_TASK 
-} from '../reducers/board.reducer'
+import { ADD_BOARD, REMOVE_BOARD, SET_BOARDS, SET_BOARD, UPDATE_BOARD, ADD_BOARD_MSG, ADD_GROUP, UPDATE_GROUP, ADD_TASK, UPDATE_TASK, REMOVE_GROUP, UNDO_REMOVE_BOARD, UNDO_REMOVE_GROUP, REMOVE_TASK, UNDO_REMOVE_TASK } from '../reducers/board.reducer'
 
 
 // Board Actions
@@ -40,29 +24,23 @@ export async function loadBoard(boardId) {
     }
 }
 
-
 export async function addBoard(board) {
-    const optimisticBoard = { ...board, _id: 'temp-id' }
-    store.dispatch(getCmdAddBoard(optimisticBoard))
     try {
         const savedBoard = await boardService.save(board)
-        store.dispatch(getCmdUpdateBoard(savedBoard))
+        store.dispatch(getCmdAddBoard(savedBoard))
         return savedBoard
     } catch (err) {
-        store.dispatch(getCmdRemoveBoard(optimisticBoard._id))
         console.log('Cannot add board', err)
         throw err
     }
 }
 
 export async function updateBoard(board) {
-    const originalBoard = { ...board }
-    store.dispatch(getCmdUpdateBoard(board))
     try {
         const savedBoard = await boardService.save(board)
+        store.dispatch(getCmdUpdateBoard(savedBoard))
         return savedBoard
     } catch (err) {
-        store.dispatch(getCmdUpdateBoard(originalBoard))
         console.log('Cannot save board', err)
         throw err
     }
@@ -276,7 +254,7 @@ function getCmdUndoRemoveTask() {
 }
 
 
-// unitTestActions()
+unitTestActions()
 async function unitTestActions() {
     // await loadBoards()
     // await addBoard(boardService.getEmptyBoard())
