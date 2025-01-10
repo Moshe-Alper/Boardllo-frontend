@@ -9,19 +9,22 @@ import { TaskPreview } from '../Task/TaskPreview'
 export function BoardGroup({ board, group, onUpdateGroup }) {
     const [isEditingGroupTitle, setIsEditingGroupTitle] = useState(false)
     const [editedGroupTitle, setEditedGroupTitle] = useState(group.title)
-
     const [isAddingTask, setIsAddingTask] = useState(false)
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const [tasks, setTasks] = useState(group.tasks)
-
     const [anchorEl, setAnchorEl] = useState(null)
 
     useEffect(() => {
         loadBoard(board._id)
     }, [board._id])
 
-    function updateGroupTitle(group, title) {
+    function onUpdateGroupTitle(group, title) {
         onUpdateGroup(group, title)
+    }
+
+    function handleGroupTitleSave() {
+        onUpdateGroup(group, editedGroupTitle)
+        setIsEditingGroupTitle(false)
     }
 
     function handleTaskTitleChange(ev) {
@@ -45,6 +48,7 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
         try {
             const savedTask = await addTask(board._id, group.id, task)
             setTasks(prevTasks => prevTasks.map(task => task._id === 'temp-id' ? savedTask : task))
+
             loadBoard(board._id)
             showSuccessMsg(`Task added (id: ${savedTask.id})`)
             setNewTaskTitle('')
@@ -57,22 +61,6 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
         }
     }
 
-
-    async function handleGroupTitleSave() {
-        if (!editedGroupTitle.trim()) {
-            showErrorMsg('Title cannot be empty')
-            return
-        }
-        try {
-            group.title = editedGroupTitle
-            await onUpdateGroup(group)
-            setIsEditingGroupTitle(false)
-            showSuccessMsg('Group title updated')
-        } catch (err) {
-            console.error('Cannot update group title', err)
-            showErrorMsg('Cannot update group title')
-        }
-    }
 
     function handleMenuClick(ev) {
         setAnchorEl(ev.target)
@@ -98,11 +86,11 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
                 handleMenuClose={handleMenuClose}
                 anchorEl={anchorEl}
                 onAddTask={() => setIsAddingTask(true)}
-                updateGroupTitle={updateGroupTitle}
+                updateGroupTitle={onUpdateGroupTitle} 
             />
 
             <div className="tasks-container">
-                {group.tasks.map(task => (
+                {tasks.map(task => (
                     <TaskPreview key={task.id} task={task} />
                 ))}
             </div>

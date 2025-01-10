@@ -68,7 +68,7 @@ export function BoardIndex() {
   }
 
   if (!boards) return <Loader />
-
+  
   return (
     <main className='board-index'>
       <BoardFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />

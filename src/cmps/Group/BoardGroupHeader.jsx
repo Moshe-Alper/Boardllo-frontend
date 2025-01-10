@@ -5,12 +5,12 @@ import { BoardGroupListActions } from './BoardGroupListActions'
 
 export function BoardGroupHeader({
     group, isEditingTitle, setIsEditingTitle, editedTitle, setEditedTitle, handleTitleSave,
-    handleMenuClick, anchorEl, handleMenuClose, onAddTask, handleUpdateGroup, }
+    handleMenuClick, anchorEl, handleMenuClose, onAddTask, updateGroupTitle, }
 ) {
 
     function saveTitle() {
         handleTitleSave()
-        handleUpdateGroup(group, editedTitle)
+        updateGroupTitle(group, editedTitle)
     }
 
     return (
@@ -37,7 +37,7 @@ export function BoardGroupHeader({
                     </h5>
                 </div>
             )}
-    
+
             <div className="title-actions">
                 <button className="collapse-btn">
                     <img src={svgService.collapseIcon} alt="Collapse Icon" />
@@ -46,7 +46,7 @@ export function BoardGroupHeader({
                     <img src={svgService.threeDotsIcon} alt="List actions Icon" />
                 </button>
             </div>
-    
+
             <BoardGroupListActions
                 anchorEl={anchorEl}
                 onClose={handleMenuClose}
