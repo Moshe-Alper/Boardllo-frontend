@@ -107,7 +107,7 @@ export function BoardGroup({ board, group, onUpdateGroup}) {
             onClick={handleGroupClick}
         >
             <DragDropContext onDragEnd={handleDragDrop}>
-                <Droppable droppableId="Root" type="task">
+                <Droppable droppableId={group.id} type="task">
                     {(provided) => (
                         <div {...provided.droppableProps} ref={provided.innerRef}>
                             <BoardGroupHeader
