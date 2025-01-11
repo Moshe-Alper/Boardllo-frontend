@@ -7,9 +7,7 @@ import { BoardGroupHeader } from './BoardGroupHeader'
 import { BoardGroupFooter } from './BoardGroupFooter'
 import { TaskPreview } from '../Task/TaskPreview'
 
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-
-export function BoardGroup({ board, group, onUpdateGroup}) {
+export function BoardGroup({ board, group, onUpdateGroup }) {
     const [isEditingGroupTitle, setIsEditingGroupTitle] = useState(false)
     const [editedGroupTitle, setEditedGroupTitle] = useState(group.title)
     const [isAddingTask, setIsAddingTask] = useState(false)
@@ -81,22 +79,8 @@ export function BoardGroup({ board, group, onUpdateGroup}) {
         }
     }
 
-    function handleDragDrop(results) {
-        const { source, destination, type } = results
-        if (!destination) return
-        if (source.droppableId === destination.droppableId && 
-            source.index === destination.index) 
-        return
-        if (type === "task") {
-            const reorderedTasks = Array.from(tasks)
-            const sourceIdx = source.index
-            const destinationIdx = destination.index
-            const [removedTask] = reorderedTasks.splice(sourceIdx, 1)
-            reorderedTasks.splice(destinationIdx, 0, removedTask)
-            setTasks(reorderedTasks)
-            onUpdateGroup({ ...group, tasks: reorderedTasks }, group.title)
-        }
-    }
+
+
 
     if (!group) return <div>Loading...</div>
 
@@ -104,61 +88,37 @@ export function BoardGroup({ board, group, onUpdateGroup}) {
         <section
             className={`board-group flex column ${isCollapsed ? 'collapsed' : ''}`}
             onClick={handleGroupClick}
-        >
-            <DragDropContext onDragEnd={handleDragDrop}>
-                <Droppable droppableId={group.id} type="task">
-                    {(provided) => (
-                        <div {...provided.droppableProps} ref={provided.innerRef}>
-                            <BoardGroupHeader
-                                group={group}
-                                boardId={board._id}
-                                isEditingTitle={isEditingGroupTitle}
-                                setIsEditingTitle={setIsEditingGroupTitle}
-                                editedTitle={editedGroupTitle}
-                                setEditedTitle={setEditedGroupTitle}
-                                handleGroupTitleSave={handleGroupTitleSave}
-                                handleMenuClick={handleMenuClick}
-                                handleMenuClose={handleMenuClose}
-                                anchorEl={anchorEl}
-                                onAddTask={() => setIsAddingTask(true)}
-                                isCollapsed={isCollapsed}
-                                onToggleCollapse={toggleCollapse}
-                                taskCount={tasks.length}
-                            />
+        > <BoardGroupHeader
+                group={group}
+                boardId={board._id}
+                isEditingTitle={isEditingGroupTitle}
+                setIsEditingTitle={setIsEditingGroupTitle}
+                editedTitle={editedGroupTitle}
+                setEditedTitle={setEditedGroupTitle}
+                handleGroupTitleSave={handleGroupTitleSave}
+                handleMenuClick={handleMenuClick}
+                handleMenuClose={handleMenuClose}
+                anchorEl={anchorEl}
+                onAddTask={() => setIsAddingTask(true)}
+                isCollapsed={isCollapsed}
+                onToggleCollapse={toggleCollapse}
+                taskCount={tasks.length}
+            />
 
-                            <div className="tasks-container">
-                                {tasks.map((task, index) => (
-                                    <Draggable
-                                        key={task.id}
-                                        draggableId={task.id}
-                                        index={index}>
-                                        {(provided) => (
-                                            <div
-                                                ref={provided.innerRef}
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
-                                            >
-                                                <TaskPreview task={task} />
-                                            </div>
-                                        )}
-                                    </Draggable>
-                                ))}
-                                {provided.placeholder}
-                            </div>
+            <div className="tasks-container">
+                {tasks.map(task => (
+                    <TaskPreview key={task.id} task={task} />
+                ))}
+            </div>
 
-                            <BoardGroupFooter
-                                group={group}
-                                isAddingTask={isAddingTask}
-                                setIsAddingTask={setIsAddingTask}
-                                newTaskTitle={newTaskTitle}
-                                handleTitleChange={handleTaskTitleChange}
-                                onAddTask={onAddTask}
-                            />
-                            {/* {provided.placeholder} */}
-                        </div>
-                    )}
-                </Droppable>
-            </DragDropContext>
+            <BoardGroupFooter
+                group={group}
+                isAddingTask={isAddingTask}
+                setIsAddingTask={setIsAddingTask}
+                newTaskTitle={newTaskTitle}
+                handleTitleChange={handleTaskTitleChange}
+                onAddTask={onAddTask}
+            />
         </section>
     )
 }
