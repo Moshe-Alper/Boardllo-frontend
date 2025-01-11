@@ -13,6 +13,7 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const [tasks, setTasks] = useState(group.tasks)
     const [anchorEl, setAnchorEl] = useState(null)
+    const [isCollapsed, setIsCollapsed] = useState(false)
 
     useEffect(() => {
         loadBoard(board._id)
@@ -42,12 +43,13 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
         const task = boardService.getEmptyTask()
         task.title = newTaskTitle
 
-        // Optimistic
         setTasks(prevTasks => [...prevTasks, { ...task, _id: 'temp-id' }])
 
         try {
             const savedTask = await addTask(board._id, group.id, task)
-            setTasks(prevTasks => prevTasks.map(task => task._id === 'temp-id' ? savedTask : task))
+            setTasks(prevTasks => prevTasks.map(task => 
+                task._id === 'temp-id' ? savedTask : task
+            ))
 
             loadBoard(board._id)
             showSuccessMsg(`Task added (id: ${savedTask.id})`)
@@ -55,12 +57,9 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
         } catch (err) {
             console.log('Cannot add task', err)
             showErrorMsg('Cannot add task')
-
-            // Optimistic undo
             setTasks(prevTasks => prevTasks.filter(task => task._id !== 'temp-id'))
         }
     }
-
 
     function handleMenuClick(ev) {
         setAnchorEl(ev.target)
@@ -69,11 +68,17 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
     function handleMenuClose() {
         setAnchorEl(null)
     }
+    function toggleCollapse() {
+        setIsCollapsed(!isCollapsed)
+        if (!isCollapsed) {
+            setIsEditingGroupTitle(false)
+        }
+    }
 
     if (!group) return <div>Loading...</div>
 
     return (
-        <section className="board-group flex column">
+        <section className={`board-group flex column ${isCollapsed ? 'collapsed' : ''}`}>
             <BoardGroupHeader
                 group={group}
                 boardId={board._id}
@@ -86,7 +91,10 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
                 handleMenuClose={handleMenuClose}
                 anchorEl={anchorEl}
                 onAddTask={() => setIsAddingTask(true)}
-                updateGroupTitle={onUpdateGroupTitle} 
+                updateGroupTitle={onUpdateGroupTitle}
+                isCollapsed={isCollapsed}
+                onToggleCollapse={toggleCollapse}
+                taskCount={tasks.length}
             />
 
             <div className="tasks-container">

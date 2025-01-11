@@ -3,34 +3,56 @@
     justify-content: space-between;
     align-items: center;
     gap: 0;
-
+    transition: all 0.3s ease;
 
     .title-container {
         display: flex;
         flex-grow: 1;
         justify-content: flex-start;
-        
+
         h5 {
             cursor: pointer;
-            margin: 0.5rem; // 8px
+            margin: 0.5rem;
+            transition: all 0.3s ease;
         }
-        }
+    }
 
-        .title-actions {
+    .title-actions {
         display: flex;
+        align-items: center;
 
         .collapse-btn,
         .menu-btn {
+            display: flex;
             align-items: center;
+            justify-content: center;
+
             background: none;
             border: none;
             border-radius: $border-radius-large;
             cursor: pointer;
-            display: flex;
-            justify-content: center;
-            margin: 0;
-            padding: 0.5rem;
-            width: 2rem;
+            padding: 0.25rem; 
+            transition: transform 0.3s ease;
+
+            img {
+                width: 1.2rem;
+                height: 1.2rem;
+                object-fit: contain;
+            }
+        }
+    }
+
+    &.collapsed {
+        .title-actions {
+            .collapse-btn {
+                width: 2.5rem;
+                padding: 0.25rem; 
+
+                img {
+                    width: 1.2rem;
+                    height: 1.2rem;
+                }
+            }
         }
     }
 }
