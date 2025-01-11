@@ -6,6 +6,7 @@
   color: $text-primary;
   box-shadow: $shadow-small;
   border-radius: $border-radius-large;
+  display: inline;
 
   .group-container {
     flex-wrap: nowrap;
