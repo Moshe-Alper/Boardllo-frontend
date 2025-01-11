@@ -52,7 +52,6 @@ export function BoardDetails() {
             ...group,
             title: title
         }
-
         try {
             const savedGroup = await updateGroup(board._id, updatedGroup)
             loadBoard(board._id)
@@ -66,7 +65,7 @@ export function BoardDetails() {
     if (!board) return <div>Loading...</div>
 
     return (
-        <section className="board-details"> 
+        <section className="board-details">
             <BoardHeader board={board} />
             {board && <div>
                 <section className="group-container flex">

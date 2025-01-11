@@ -98,8 +98,7 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
             const [removedTask] = reorderedTasks.splice(sourceIdx, 1)
             reorderedTasks.splice(destinationIdx, 0, removedTask)
             setTasks(reorderedTasks)
-            // console.log('🚀 reorderedTasks', reorderedTasks)
-            onUpdateGroup({ ...group, tasks: reorderedTasks })
+            onUpdateGroup({ ...group, tasks: reorderedTasks }, group.title)
         }
     }
 
@@ -160,7 +159,7 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
                                 handleTitleChange={handleTaskTitleChange}
                                 onAddTask={onAddTask}
                             />
-                            {provided.placeholder}
+                            {/* {provided.placeholder} */}
                         </div>
                     )}
                 </Droppable>
