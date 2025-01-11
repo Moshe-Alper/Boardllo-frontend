@@ -47,7 +47,7 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
 
         try {
             const savedTask = await addTask(board._id, group.id, task)
-            setTasks(prevTasks => prevTasks.map(task => 
+            setTasks(prevTasks => prevTasks.map(task =>
                 task._id === 'temp-id' ? savedTask : task
             ))
 
@@ -75,11 +75,19 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
         }
     }
 
+    function handleGroupClick() {
+        if (isCollapsed) {
+            setIsCollapsed(false)
+        }
+    }
+
     if (!group) return <div>Loading...</div>
 
     return (
-        <section className={`board-group flex column ${isCollapsed ? 'collapsed' : ''}`}>
-            <BoardGroupHeader
+        <section
+            className={`board-group flex column ${isCollapsed ? 'collapsed' : ''}`}
+            onClick={handleGroupClick} 
+        >       <BoardGroupHeader
                 group={group}
                 boardId={board._id}
                 isEditingTitle={isEditingGroupTitle}
