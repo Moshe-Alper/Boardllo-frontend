@@ -6,11 +6,13 @@ import { boardService } from '../services/board'
 import { userService } from '../services/user'
 
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
-import { loadBoard, addBoardMsg, addGroup, updateGroup } from '../store/actions/board.actions'
+import { loadBoard, updateBoard, addGroup, updateGroup } from '../store/actions/board.actions'
 
 import { BoardGroup } from '../cmps/Group/BoardGroup'
 import { AddGroupForm } from '../cmps/Group/AddGroupForm'
 import { BoardHeader } from '../cmps/Board/BoardHeader'
+import { DragDropContainer } from '../cmps/DragDropContainer'
+import { store } from '../store/store'
 
 export function BoardDetails() {
 
@@ -56,6 +58,31 @@ export function BoardDetails() {
         }
     }
 
+    async function handleDragDropGroup(result) {
+        const { destination, source } = result
+        
+        if (!destination) return 
+        
+        if (destination.index === source.index) return
+        
+        const newGroups = Array.from(board.groups)
+        const [movedGroup] = newGroups.splice(source.index, 1)
+        newGroups.splice(destination.index, 0, movedGroup) 
+        
+        const updatedBoard = { ...board, groups: newGroups } 
+
+        store.dispatch({ type: 'SET_BOARD', board: updatedBoard })
+        try {
+            const savedBoard = await updateBoard(updatedBoard)
+            showSuccessMsg(`Board updated with new group order (id: ${savedBoard._id})`)
+        } catch (err) {
+            console.error('Cannot update board order', err)
+            showErrorMsg('Cannot update board order')
+            store.dispatch({ type: 'SET_BOARD', board })
+        }
+    }
+    
+    
     if (!board) return <div>Loading...</div>
 
     return (
@@ -63,14 +90,21 @@ export function BoardDetails() {
             <BoardHeader board={board} />
             {board && <div>
                 <section className="group-container flex">
-                    {board.groups.map(group => (
-                        <BoardGroup
-                            key={group.id}
-                            board={board}
-                            group={group}
-                            onUpdateGroup={(updatedGroup) => onUpdateGroup(updatedGroup)}
-                        />
-                    ))}
+                    <DragDropContainer
+                        items={board.groups}
+                        onDragEnd={handleDragDropGroup}
+                        droppableId="board-groups"
+                        type="group"
+                    >
+                        {(group) => (
+                            <BoardGroup
+                                key={group.id}
+                                board={board}
+                                group={group}
+                                onUpdateGroup={(updatedGroup) => updateGroup(board._id, updatedGroup)}
+                            />
+                        )}
+                    </DragDropContainer>
 
                     {isAddingGroup ? (
                         <AddGroupForm

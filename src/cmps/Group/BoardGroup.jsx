@@ -83,7 +83,6 @@ export function BoardGroup({ board, group, onUpdateGroup}) {
 
     function handleDragDrop(results) {
         const { source, destination, type } = results
-
         if (!destination) return
         if (source.droppableId === destination.droppableId && 
             source.index === destination.index) 
