@@ -24,6 +24,7 @@
 @import 'cmps/LoginForm';
 @import 'cmps/UserMsg';
 @import 'cmps/Loader';
+@import 'cmps/UserMenuDropdown';
 
 // Board
 @import 'cmps/BoardHeader';
@@ -37,7 +38,6 @@
 @import 'cmps/Group/BoardGroupFooter';
 @import 'cmps/Group/BoardGroupListActions';
 @import 'cmps/Group/AddGroupForm';
-
 
 // Task
 @import 'cmps/Task/TaskPreview';

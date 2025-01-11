@@ -30,16 +30,18 @@ export function HomePage() {
               </div>
             </div>
           </div>
-          <img
-            className='collage-img'
-            src='https://res.cloudinary.com/dv7uswhcz/image/upload/v1736446520/yqedfnbivqhfogcaixdj.png'
-            alt=''
-          />
-          <img
-            className='carousel-img'
-            src='https://res.cloudinary.com/dv7uswhcz/image/upload/v1736446520/plnikgc85kndsu9be3ra.png'
-            alt=''
-          />
+          <section className='homepage-imgs'>
+            <img
+              className='collage-img'
+              src='https://res.cloudinary.com/dv7uswhcz/image/upload/v1736446520/yqedfnbivqhfogcaixdj.png'
+              alt=''
+            />
+            <img
+              className='carousel-img'
+              src='https://res.cloudinary.com/dv7uswhcz/image/upload/v1736446520/plnikgc85kndsu9be3ra.png'
+              alt=''
+            />
+          </section>
         </section>
 
         <section className='social-proof main-layout full'>

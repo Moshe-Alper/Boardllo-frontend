@@ -1,0 +1,115 @@
+.user-menu-dropdown {
+  position: relative;
+
+  .avatar-container {
+    cursor: pointer;
+  }
+
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .user-initial {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: $primary-blue;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    width: 304px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border: 1px solid #dfe1e6;
+    z-index: 100;
+  }
+
+  .account-section {
+    padding: 16px;
+    border-bottom: 1px solid $background-light;
+  }
+
+  .menu-section {
+    padding: 8px;
+  }
+
+  .logout-section {
+    padding: 8px;
+    border-top: 1px solid $background-light;
+  }
+
+  .section-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #5e6c84;
+    padding: 8px 12px;
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .user-avatar-small {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .user-initial-small {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: $primary-blue;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .user-details {
+    .user-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: #172b4d;
+    }
+
+    .user-email {
+      font-size: 14px;
+      color: #5e6c84;
+    }
+  }
+
+  .menu-item {
+    width: 100%;
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #172b4d;
+    background: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $background-light;
+    }
+  }
+}
