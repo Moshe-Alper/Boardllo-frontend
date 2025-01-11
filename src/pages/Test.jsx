@@ -1,22 +1,19 @@
-import React, { useState } from 'react';
-import { Sidebar } from '../cmps/Sidebar';
-import { Button } from '@mui/material';
-
+import React, { useState } from 'react'
+import { Sidebar } from '../cmps/Sidebar'
+import { IconButton } from '@mui/material'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 
 export function Test() {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true)
 
     const toggleSidebar = () => {
-        setIsSidebarOpen(!isSidebarOpen);
-    };
+        setIsSidebarOpen(!isSidebarOpen)
+    }
 
     return (
         <div>
-            <Button variant="contained" onClick={toggleSidebar}>
-                Toggle Sidebar
-            </Button>
+            {/* Sidebar */}
             <Sidebar isOpen={isSidebarOpen} toggleDrawer={toggleSidebar} />
-       
         </div>
-    );
+    )
 }

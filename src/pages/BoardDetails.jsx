@@ -6,11 +6,12 @@ import { boardService } from '../services/board'
 import { userService } from '../services/user'
 
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
-import { loadBoard, addBoardMsg, addGroup, updateGroup } from '../store/actions/board.actions'
+import { loadBoard, addBoardMsg, addGroup, updateGroup, loadBoardsToSidebar } from '../store/actions/board.actions'
 
 import { BoardGroup } from '../cmps/Group/BoardGroup'
 import { AddGroupForm } from '../cmps/Group/AddGroupForm'
 import { BoardHeader } from '../cmps/Board/BoardHeader'
+import { Sidebar } from '../cmps/Sidebar'
 
 export function BoardDetails() {
 
@@ -19,9 +20,16 @@ export function BoardDetails() {
 
     const [isAddingGroup, setIsAddingGroup] = useState(false)
     const [newGroupTitle, setNewGroupTitle] = useState('')
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+    const [boards, setBoards] = useState([])
+
+    const toggleSidebar = () => {
+        setIsSidebarOpen(!isSidebarOpen)
+    }
 
     useEffect(() => {
         loadBoard(boardId)
+        loadBoardsToSidebar()
     }, [boardId])
 
 
@@ -33,6 +41,14 @@ export function BoardDetails() {
     //         showErrorMsg('Cannot add board msg')
     //     }
     // }
+    const loadBoardsToSidebar = async () => {
+        try {
+            const boards = await boardService.query()
+            setBoards(boards)
+        } catch (err) {
+            console.error('Failed to load boards for sidebar:', err)
+        }
+    }
 
     async function onAddGroup(boardId) {
         if (!newGroupTitle) return
@@ -73,6 +89,9 @@ export function BoardDetails() {
     return (
         <section className="board-details"> 
             <BoardHeader board={board} />
+              <div>
+                        <Sidebar isOpen={isSidebarOpen} toggleDrawer={toggleSidebar}  boards={boards} />
+                    </div>
             {board && <div>
                 <section className="group-container flex">
                     {board.groups.map(group => (

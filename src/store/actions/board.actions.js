@@ -56,6 +56,21 @@ export async function updateBoard(board) {
     }
 }
 
+export async function loadBoardsToSidebar() {
+    try {
+        const boards = await boardService.query()
+
+        
+        store.dispatch(getCmdSetBoards(boards))
+
+        
+        return boards
+    } catch (err) {
+        console.log('Cannot load boards for sidebar', err)
+        throw err
+    }
+}
+
 // Group Actions
 // export async function loadGroups(boardId) {
 //     try {
