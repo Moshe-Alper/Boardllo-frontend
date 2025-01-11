@@ -35,7 +35,7 @@ export function BoardDetails() {
 
         try {
             const savedGroup = await addGroup(boardId, group)
-            showSuccessMsg(`Group added (id: ${savedGroup._id})`)
+            showSuccessMsg(`Group added (id: ${savedGroup.id})`)
             loadBoard(board._id)
             setNewGroupTitle('')
             setIsAddingGroup(false)
@@ -45,17 +45,11 @@ export function BoardDetails() {
         }
     }
 
-    async function onUpdateGroup(group, title) {
-        if (!title) return
-
-        const updatedGroup = {
-            ...group,
-            title: title
-        }
+    async function onUpdateGroup(updatedGroup) {
         try {
             const savedGroup = await updateGroup(board._id, updatedGroup)
             loadBoard(board._id)
-            showSuccessMsg(`Group updated, new title: ${savedGroup.title}`)
+            showSuccessMsg(`Group updated successfully (id: ${savedGroup.id})`)
         } catch (err) {
             console.error('Cannot update group', err)
             showErrorMsg('Cannot update group')
@@ -74,7 +68,7 @@ export function BoardDetails() {
                             key={group.id}
                             board={board}
                             group={group}
-                            onUpdateGroup={(group, title) => onUpdateGroup(group, title)}
+                            onUpdateGroup={(updatedGroup) => onUpdateGroup(updatedGroup)}
                         />
                     ))}
 

@@ -9,7 +9,7 @@ export function BoardGroupHeader({
     setIsEditingTitle,
     editedTitle,
     setEditedTitle,
-    handleTitleSave,
+    handleGroupTitleSave,
     handleMenuClick,
     anchorEl,
     handleMenuClose,
@@ -19,9 +19,13 @@ export function BoardGroupHeader({
     onToggleCollapse,
     taskCount
 }) {
+
     function saveTitle() {
-        handleTitleSave()
-        updateGroupTitle(group, editedTitle)
+        if (editedTitle.trim()) {
+            handleGroupTitleSave()
+        } else {
+            showErrorMsg('Group title cannot be empty')
+        }
     }
 
     return (

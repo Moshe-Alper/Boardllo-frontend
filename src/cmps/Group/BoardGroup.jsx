@@ -9,7 +9,7 @@ import { TaskPreview } from '../Task/TaskPreview'
 
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
-export function BoardGroup({ board, group, onUpdateGroup }) {
+export function BoardGroup({ board, group, onUpdateGroup}) {
     const [isEditingGroupTitle, setIsEditingGroupTitle] = useState(false)
     const [editedGroupTitle, setEditedGroupTitle] = useState(group.title)
     const [isAddingTask, setIsAddingTask] = useState(false)
@@ -22,12 +22,9 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
         loadBoard(board._id)
     }, [board._id])
 
-    function onUpdateGroupTitle(group, title) {
-        onUpdateGroup(group, title)
-    }
-
     function handleGroupTitleSave() {
-        onUpdateGroup(group, editedGroupTitle)
+        group.title = editedGroupTitle
+        onUpdateGroup(group)
         setIsEditingGroupTitle(false)
     }
 
@@ -120,12 +117,11 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
                                 setIsEditingTitle={setIsEditingGroupTitle}
                                 editedTitle={editedGroupTitle}
                                 setEditedTitle={setEditedGroupTitle}
-                                handleTitleSave={handleGroupTitleSave}
+                                handleGroupTitleSave={handleGroupTitleSave}
                                 handleMenuClick={handleMenuClick}
                                 handleMenuClose={handleMenuClose}
                                 anchorEl={anchorEl}
                                 onAddTask={() => setIsAddingTask(true)}
-                                updateGroupTitle={onUpdateGroupTitle}
                                 isCollapsed={isCollapsed}
                                 onToggleCollapse={toggleCollapse}
                                 taskCount={tasks.length}
