@@ -1,12 +1,12 @@
 import React from 'react'
 
 export function BoardGroupFooter({ 
-    isAddingTask, setIsAddingTask, newTaskTitle, handleTitleChange, handleAddTask }) {
+    isAddingTask, setIsAddingTask, newTaskTitle, handleTitleChange, onAddTask }) {
 
     return (
         <footer className="board-group-footer">
             {isAddingTask ? (
-                <form className="add-task-container" onSubmit={handleAddTask}>
+                <form className="add-task-container" onSubmit={onAddTask}>
                     <input
                         type="text"
                         placeholder="Enter task title or paste a link"

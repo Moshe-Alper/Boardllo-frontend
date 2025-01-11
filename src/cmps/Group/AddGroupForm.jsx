@@ -1,13 +1,13 @@
 
-export function AddGroupForm({ board, onAddGroup, setIsAddingGroup, setNewGroupTitle, newGroupTitle }) {
+export function AddGroupForm({ newGroupTitle, setNewGroupTitle, onAddGroup, setIsAddingGroup, boardId }) {
 
     function handleSubmit(ev) {
         ev.preventDefault()
-        onAddGroup(board._id)
+        onAddGroup(boardId)
     }
 
     return (
-        <form 
+        <form
             className="add-group-form"
             onSubmit={handleSubmit}
         >
@@ -35,5 +35,5 @@ export function AddGroupForm({ board, onAddGroup, setIsAddingGroup, setNewGroupT
                 </button>
             </div>
         </form>
-    );
+    )
 }

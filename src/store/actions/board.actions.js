@@ -1,6 +1,6 @@
 import { boardService } from '../../services/board'
 import { store } from '../store'
-import { ADD_BOARD, REMOVE_BOARD, SET_BOARDS, SET_BOARD, UPDATE_BOARD, ADD_BOARD_MSG, SET_GROUP, SET_GROUPS, ADD_GROUP, UPDATE_GROUP } from '../reducers/board.reducer'
+import { ADD_BOARD, REMOVE_BOARD, SET_BOARDS, SET_BOARD, UPDATE_BOARD, ADD_BOARD_MSG, ADD_GROUP, UPDATE_GROUP, ADD_TASK, UPDATE_TASK, REMOVE_GROUP, UNDO_REMOVE_BOARD, UNDO_REMOVE_GROUP, REMOVE_TASK, UNDO_REMOVE_TASK } from '../reducers/board.reducer'
 
 
 // Board Actions
@@ -20,16 +20,6 @@ export async function loadBoard(boardId) {
         store.dispatch(getCmdSetBoard(board))
     } catch (err) {
         console.log('Cannot load board', err)
-        throw err
-    }
-}
-
-export async function removeBoard(boardId) {
-    try {
-        await boardService.remove(boardId)
-        store.dispatch(getCmdRemoveBoard(boardId))
-    } catch (err) {
-        console.log('Cannot remove board', err)
         throw err
     }
 }
@@ -87,40 +77,86 @@ export async function loadGroup(boardId, groupId) {
         const group = await boardService.getGroups(boardId, groupId)
         store.dispatch(getCmdSetGroup(group))
     } catch (err) {
-        console.log('Cannot load group', err)
+        store.dispatch(getCmdUndoRemoveBoard())
+        console.log('Cannot remove board', err)
         throw err
     }
 }
 
+// Group Actions
 export async function addGroup(boardId, group) {
+    const optimisticGroup = { ...group, _id: 'temp-id' }
+    store.dispatch(getCmdAddGroup(optimisticGroup))
     try {
         const savedGroup = await boardService.saveGroup(boardId, group)
-        store.dispatch(getCmdAddGroup(savedGroup))
+        store.dispatch(getCmdUpdateGroup(savedGroup))
         return savedGroup
     } catch (err) {
+        store.dispatch(getCmdRemoveGroup(optimisticGroup._id))
         console.log('Cannot add group', err)
         throw err
     }
 }
 
 export async function updateGroup(boardId, group) {
+    const originalGroup = { ...group }
+    store.dispatch(getCmdUpdateGroup(group))
     try {
         const savedGroup = await boardService.saveGroup(boardId, group)
-        store.dispatch(getCmdUpdateGroup(savedGroup))
         return savedGroup
     } catch (err) {
+        store.dispatch(getCmdUpdateGroup(originalGroup))
         console.log('Cannot update group', err)
         throw err
     }
 }
 
+export async function removeGroup(boardId, groupId) {
+    store.dispatch(getCmdRemoveGroup(groupId))
+    try {
+        await boardService.removeGroup(boardId, groupId)
+    } catch (err) {
+        store.dispatch(getCmdUndoRemoveGroup())
+        console.log('Cannot remove group', err)
+        throw err
+    }
+}
+
 // Task Actions
-export async function saveTask(boardId, groupId, task) {
+export async function addTask(boardId, groupId, task) {
+    const optimisticTask = { ...task, _id: 'temp-id' }
+    store.dispatch(getCmdAddTask(optimisticTask))
+    try {
+        const savedTask = await boardService.saveTask(boardId, groupId, task)
+        store.dispatch(getCmdUpdateTask(savedTask))
+        return savedTask
+    } catch (err) {
+        store.dispatch(getCmdRemoveTask(optimisticTask._id))
+        console.log('Cannot add task', err)
+        throw err
+    }
+}
+
+export async function updateTask(boardId, groupId, task) {
+    const originalTask = { ...task }
+    store.dispatch(getCmdUpdateTask(task))
     try {
         const savedTask = await boardService.saveTask(boardId, groupId, task)
         return savedTask
     } catch (err) {
-        console.log('Cannot save task', err)
+        store.dispatch(getCmdUpdateTask(originalTask))
+        console.log('Cannot update task', err)
+        throw err
+    }
+}
+
+export async function removeTask(boardId, groupId, taskId) {
+    store.dispatch(getCmdRemoveTask(taskId))
+    try {
+        await boardService.removeTask(boardId, groupId, taskId)
+    } catch (err) {
+        store.dispatch(getCmdUndoRemoveTask())
+        console.log('Cannot remove task', err)
         throw err
     }
 }
@@ -138,37 +174,42 @@ export async function addBoardMsg(boardId, txt) {
 }
 
 
-// Command Creators:
+// Board Command Creators
 function getCmdSetBoards(boards) {
     return {
         type: SET_BOARDS,
         boards
     }
 }
+
 function getCmdSetBoard(board) {
     return {
         type: SET_BOARD,
         board
     }
 }
+
 function getCmdRemoveBoard(boardId) {
     return {
         type: REMOVE_BOARD,
         boardId
     }
 }
+
 function getCmdAddBoard(board) {
     return {
         type: ADD_BOARD,
         board
     }
 }
+
 function getCmdUpdateBoard(board) {
     return {
         type: UPDATE_BOARD,
         board
     }
 }
+
 function getCmdAddBoardMsg(msg) {
     return {
         type: ADD_BOARD_MSG,
@@ -176,20 +217,13 @@ function getCmdAddBoardMsg(msg) {
     }
 }
 
-function getCmdSetGroups(groups) {
+function getCmdUndoRemoveBoard() {
     return {
-        type: SET_GROUPS,
-        groups
+        type: UNDO_REMOVE_BOARD
     }
 }
 
-function getCmdSetGroup(group) {
-    return {
-        type: SET_GROUP,
-        group
-    }
-}
-
+// Group Command Creators
 function getCmdAddGroup(group) {
     return {
         type: ADD_GROUP,
@@ -204,15 +238,60 @@ function getCmdUpdateGroup(group) {
     }
 }
 
-// unitTestActions()
+function getCmdRemoveGroup(groupId) {
+    return {
+        type: REMOVE_GROUP,
+        groupId
+    }
+}
+
+function getCmdUndoRemoveGroup() {
+    return {
+        type: UNDO_REMOVE_GROUP
+    }
+}
+
+// Task Command Creators
+function getCmdAddTask(task) {
+    return {
+        type: ADD_TASK,
+        task
+    }
+}
+
+function getCmdUpdateTask(task) {
+    return {
+        type: UPDATE_TASK,
+        task
+    }
+}
+
+function getCmdRemoveTask(taskId) {
+    return {
+        type: REMOVE_TASK,
+        taskId
+    }
+}
+
+function getCmdUndoRemoveTask() {
+    return {
+        type: UNDO_REMOVE_TASK
+    }
+}
+
+
+unitTestActions()
 async function unitTestActions() {
-    await loadBoards()
-    await addBoard(boardService.getEmptyBoard())
-    await updateBoard({
-        _id: 'm1oC7',
-        title: 'Board-Good',
-    })
-    await removeBoard('m1oC7')
+    // await loadBoards()
+    // await addBoard(boardService.getEmptyBoard())
+    // await updateBoard({
+    //     _id: 'm1oC7',
+    //     title: 'Board-Good',
+    // })
+    // await removeBoard('m1oC7')
     // TODO unit test addBoardMsg
     // await addGroup(boardService.getEmptyGroup())
+    // await removeGroup('HLe0s', 'SKh8Xs')
+    // await removeTask('HLe0s', 'dP5kdh', 'e7tONZ')
+
 }

@@ -33,31 +33,21 @@ export function BoardDetails() {
     }, [boardId])
 
 
-    // async function onAddBoardMsg(boardId) {
-    //     try {
-    //         await addBoardMsg(boardId, 'bla bla ' + parseInt(Math.random() * 10))
-    //         showSuccessMsg(`Board msg added`)
-    //     } catch (err) {
-    //         showErrorMsg('Cannot add board msg')
-    //     }
-    // }
-    const loadBoardsToSidebar = async () => {
-        try {
-            const boards = await boardService.query()
-            setBoards(boards)
-        } catch (err) {
-            console.error('Failed to load boards for sidebar:', err)
-        }
-    }
 
     async function onAddGroup(boardId) {
-        if (!newGroupTitle) return
+        if (!newGroupTitle.trim()) {
+            showErrorMsg('Group title cannot be empty')
+            setIsAddingGroup(false)
+            return
+        }
         const group = boardService.getEmptyGroup()
         group.title = newGroupTitle
+
         try {
-            await addGroup(boardId, group)
+            const savedGroup = await addGroup(boardId, group)
+            showSuccessMsg(`Group added (id: ${savedGroup.id})`)
             loadBoard(board._id)
-            showSuccessMsg(`Group added (id: ${group.id})`)
+            setNewGroupTitle('')
             setIsAddingGroup(false)
         } catch (err) {
             console.log('Cannot add group', err)
@@ -65,18 +55,11 @@ export function BoardDetails() {
         }
     }
 
-    async function onUpdateGroup(group, title) {
-        if (!title) return
-
-        const updatedGroup = {
-            ...group,
-            title: title
-        }
-
+    async function onUpdateGroup(updatedGroup) {
         try {
             const savedGroup = await updateGroup(board._id, updatedGroup)
             loadBoard(board._id)
-            showSuccessMsg(`Group updated, new title: ${savedGroup.title}`)
+            showSuccessMsg(`Group updated successfully (id: ${savedGroup.id})`)
         } catch (err) {
             console.error('Cannot update group', err)
             showErrorMsg('Cannot update group')
@@ -84,10 +67,9 @@ export function BoardDetails() {
     }
 
     if (!board) return <div>Loading...</div>
-    // console.log('🚀 board in BoardDetails:', board)
 
     return (
-        <section className="board-details"> 
+        <section className="board-details">
             <BoardHeader board={board} />
               <div>
                         <Sidebar isOpen={isSidebarOpen} toggleDrawer={toggleSidebar}  boards={boards} />
@@ -99,7 +81,7 @@ export function BoardDetails() {
                             key={group.id}
                             board={board}
                             group={group}
-                            onUpdateGroup={(group, title) => onUpdateGroup(group, title)}
+                            onUpdateGroup={(updatedGroup) => onUpdateGroup(updatedGroup)}
                         />
                     ))}
 
@@ -124,7 +106,7 @@ export function BoardDetails() {
                     )}
                 </section>
 
-                {/* <pre>{JSON.stringify(board, null, 2)}</pre> */}
+                <pre>{JSON.stringify(board, null, 2)}</pre>
             </div>}
 
             {/* <button onClick={() => { onAddBoardMsg(board._id) }}>Add board msg</button> */}
