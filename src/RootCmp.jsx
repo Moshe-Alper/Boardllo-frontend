@@ -9,8 +9,9 @@ import { UserProfile } from './pages/UserProfile.jsx'
 
 import { AppHeader } from './cmps/AppHeader'
 import { UserMsg } from './cmps/UserMsg.jsx'
-import { LoginSignup } from './pages/LoginSignup.jsx'
 import { Test } from './pages/Test.jsx'
+import { LoginForm } from './cmps/LoginForm.jsx'
+import { SignupForm } from './cmps/SignupForm.jsx'
 
 export function RootCmp() {
   return (
@@ -25,7 +26,8 @@ export function RootCmp() {
           <Route path='board/:boardId' element={<BoardDetails />} />
           <Route path='user/:id' element={<UserProfile />} />
           <Route path='admin' element={<AdminIndex />} />
-          <Route path='login' element={<LoginSignup />}></Route>
+          <Route path='login' element={<LoginForm />}></Route>
+          <Route path='signup' element={<SignupForm />}></Route>
           <Route path='test' element={<Test />}></Route>
         </Routes>
       </main>

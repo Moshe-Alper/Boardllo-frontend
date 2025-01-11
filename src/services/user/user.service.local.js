@@ -12,7 +12,8 @@ export const userService = {
   update,
   getLoggedinUser,
   getEmptyCredentials,
-  updateUserImg
+  updateUserImg,
+  updateUserName
 }
 
 function getUsers() {
@@ -75,10 +76,14 @@ function _saveLocalUser(user) {
   return user
 }
 
-async function updateUserImg(userCred, imgUrl) {
-  storageService.put(userCred, imgUrl)
-  const user = await storageService.post('user', userCred)
-  return _saveLocalUser(user)
+async function updateUserImg(userCred) {
+  const updatedUser = await storageService.put('user', userCred)
+  return _saveLocalUser(updatedUser)
+}
+
+async function updateUserName(userCred) {
+  const updatedUser = await storageService.put('user', userCred)
+  return _saveLocalUser(updatedUser)
 }
 
 function getEmptyCredentials() {

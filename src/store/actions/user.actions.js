@@ -98,6 +98,18 @@ export async function updateUserImg(user) {
   }
 }
 
+export async function updateUserName(user) {
+  try {
+    const updatedUser = await userService.updateUserName(user)
+    store.dispatch({ type: 'SET_USER', user: updatedUser })
+    store.dispatch({ type: 'SET_WATCHED_USER', user: updatedUser }) // Also update the watched user
+    return updatedUser
+  } catch (err) {
+    console.error('Error updating user', err)
+    throw err
+  }
+}
+
 export function toggleIsSignUp(isSignup) {
   store.dispatch({ type: IS_SIGNUP, isSignup })
 }

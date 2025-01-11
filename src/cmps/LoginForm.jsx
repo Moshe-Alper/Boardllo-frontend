@@ -2,10 +2,22 @@
 import { useState } from 'react'
 import { userService } from '../services/user/user.service.local.js'
 import { useNavigate } from 'react-router'
+import { login } from '../store/actions/user.actions.js'
+import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 
-export function LoginForm({ onLogin, isSignup, toggleSignup }) {
+export function LoginForm() {
   const [credentials, setCredentials] = useState(userService.getEmptyCredentials())
   const navigate = useNavigate()
+
+  async function _login(credentials) {
+    try {
+      await login(credentials)
+      showSuccessMsg('Logged in successfully')
+    } catch (err) {
+      console.log(`problem with login`, err)
+      showErrorMsg('Oops try again')
+    }
+  }
 
   function handleChange({ target }) {
     const { name: field, value } = target
@@ -14,7 +26,7 @@ export function LoginForm({ onLogin, isSignup, toggleSignup }) {
 
   function handleSubmit(ev) {
     ev.preventDefault()
-    onLogin(credentials)
+    _login(credentials)
     navigate('/')
   }
 
@@ -23,7 +35,7 @@ export function LoginForm({ onLogin, isSignup, toggleSignup }) {
       <form className='login-form' onSubmit={handleSubmit}>
         <div className='form-group'>
           <div className='logo'>Boardllo</div>
-          <p>{isSignup ? `Login to continue` : 'Sign up'}</p>
+          <p>Login to continue</p>
           <label htmlFor='username'></label>
           <input
             id='username'
@@ -47,23 +59,9 @@ export function LoginForm({ onLogin, isSignup, toggleSignup }) {
             required
           />
         </div>
-        {!isSignup && (
-          <div className='form-group'>
-            <label htmlFor='fullname'></label>
-            <input
-              id='fullname'
-              type='text'
-              name='fullname'
-              value={credentials.fullname}
-              placeholder='Enter your full name'
-              onChange={handleChange}
-              required
-            />
-          </div>
-        )}
-        <button type='submit'>{isSignup ? 'Log in' : 'Sign up'}</button>
-        <a href='#' onClick={toggleSignup}>
-          <p>{isSignup ? `Create an account ` : `Already account?`}</p>
+        <button type='submit'>Log in</button>
+        <a href='signup'>
+          <p>Create an account</p>
         </a>
         <hr className='horizon'></hr>
         <div className='logo'>Boardllo</div>

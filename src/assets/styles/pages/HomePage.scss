@@ -1,7 +1,6 @@
 .homepage {
   background: linear-gradient($background-light, $background-white);
   font-family: $workspace-font;
-  margin-block-start: 3rem;
 
   // Navigation
   .main-nav {
@@ -114,6 +113,19 @@
           width: $spacing-lg;
           height: $spacing-lg;
         }
+      }
+    }
+
+    .homepage-imgs {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+
+      .carousel-img {
+        transform: translate(20%, 100%);
+      }
+
+      .collage-img {
+        transform: translateX(-20%);
       }
     }
 
