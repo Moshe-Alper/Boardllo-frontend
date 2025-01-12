@@ -1,8 +1,6 @@
-import { Link, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
-import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
-import { logout } from '../store/actions/user.actions.js'
 import { svgService } from '../services/svg.service.js'
 import UserMenuDropdown from '../cmps/UserMenuDropdown.jsx'
 
@@ -11,16 +9,6 @@ import UserMenuDropdown from '../cmps/UserMenuDropdown.jsx'
 export function AppHeader() {
   const user = useSelector((storeState) => storeState.userModule.user)
   const navigate = useNavigate()
-
-  async function onLogout() {
-    try {
-      await logout()
-      navigate('/')
-      showSuccessMsg(`Bye now`)
-    } catch (err) {
-      showErrorMsg('Cannot logout')
-    }
-  }
 
   const handleNavigate = (path) => {
     navigate(path)
@@ -59,9 +47,6 @@ export function AppHeader() {
                 />
               </div>
             </div>
-            <button className='logout-btn' onClick={onLogout}>
-              Logout
-            </button>
 
             <img
               style={{ cursor: 'pointer' }}
@@ -69,7 +54,7 @@ export function AppHeader() {
               alt='notification-icon'
             />
             <img style={{ cursor: 'pointer' }} src={`${svgService.infoIcon}`} alt='info-icon' />
-            <UserMenuDropdown user={user} onLogout={onLogout} onNavigate={handleNavigate} />
+            <UserMenuDropdown user={user} onNavigate={handleNavigate} />
           </div>
         </nav>
       </header>
