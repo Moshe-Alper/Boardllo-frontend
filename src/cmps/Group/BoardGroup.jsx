@@ -16,9 +16,9 @@ export function BoardGroup({ board, group, onUpdateGroup, activeItem, activeType
     const [anchorEl, setAnchorEl] = useState(null)
     const [isCollapsed, setIsCollapsed] = useState(false)
 
-    // useEffect(() => {
-    //     loadBoard(board._id)
-    // }, [board._id])
+    useEffect(() => {
+        loadBoard(board._id)
+    }, [board._id])
 
     useEffect(() => {
         setTasks(group.tasks || [])
@@ -45,12 +45,12 @@ export function BoardGroup({ board, group, onUpdateGroup, activeItem, activeType
         const task = boardService.getEmptyTask()
         task.title = newTaskTitle
 
-        setTasks(prevTasks => [...prevTasks, { ...task, _id: 'temp-id' }])
+        setTasks(prevTasks => [...prevTasks, { ...task, id: 'temp-id' }])
 
         try {
             const savedTask = await addTask(board._id, group.id, task)
             setTasks(prevTasks => prevTasks.map(task =>
-                task._id === 'temp-id' ? savedTask : task
+                task.id === 'temp-id' ? savedTask : task
             ))
 
             loadBoard(board._id)
@@ -59,7 +59,7 @@ export function BoardGroup({ board, group, onUpdateGroup, activeItem, activeType
         } catch (err) {
             console.log('Cannot add task', err)
             showErrorMsg('Cannot add task')
-            setTasks(prevTasks => prevTasks.filter(task => task._id !== 'temp-id'))
+            setTasks(prevTasks => prevTasks.filter(task => task.id !== 'temp-id'))
         }
     }
 

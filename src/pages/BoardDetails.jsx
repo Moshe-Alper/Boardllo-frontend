@@ -51,65 +51,73 @@ export function BoardDetails() {
         }
     }
 
-    async function handleDrop({ dragItem, dragType, drop }) {    
+    async function handleDrop({ dragItem, dragType, drop }) {
         if (!board) return
         const updatedBoard = structuredClone(board)
-      
+    
         try {
             if (dragType === "task") {
+                // Handle dropping task into a group (either empty or with tasks)
                 const [targetGroupId, targetTaskIdxString] = drop.split("-")
                 const targetTaskIdx = parseInt(targetTaskIdxString)
-      
+    
                 // Find source group and task
                 let sourceGroupIdx = -1
                 let sourceTaskIdx = -1
-      
+    
                 updatedBoard.groups.forEach((group, groupIdx) => {
-                    if (!group.tasks) group.tasks = []
+                    if (!group.tasks) group.tasks = [] // Ensure tasks exist on each group
                     const taskIdx = group.tasks.findIndex(task => task.id === dragItem)
                     if (taskIdx !== -1) {
                         sourceGroupIdx = groupIdx
                         sourceTaskIdx = taskIdx
                     }
                 })
-      
+    
                 if (sourceGroupIdx === -1) return
-      
+    
                 // Get task and remove from old position
                 const [task] = updatedBoard.groups[sourceGroupIdx].tasks.splice(sourceTaskIdx, 1)
-      
+    
                 // Find target group and ensure it has a tasks array
                 const targetGroupIdx = updatedBoard.groups.findIndex(group => group.id === targetGroupId)
+                if (targetGroupIdx === -1) return
+                console.log('🚀 targetGroupIdx', targetGroupIdx)
+    
                 if (!updatedBoard.groups[targetGroupIdx].tasks) {
-                    updatedBoard.groups[targetGroupIdx].tasks = []
+                    updatedBoard.groups[targetGroupIdx].tasks = [] // Initialize tasks if empty
                 }
-      
-                // Add task to new position
+    
+                // Add task to new position in the target group
                 updatedBoard.groups[targetGroupIdx].tasks.splice(targetTaskIdx, 0, task)
-      
+    
             } else if (dragType === "group") {
+                // Handle group-to-group drag and drop (unchanged from previous logic)
                 const targetGroupIdx = parseInt(drop)
-      
+    
                 // Find source group
                 const sourceGroupIdx = updatedBoard.groups.findIndex(group => group.id === dragItem)
                 if (sourceGroupIdx === -1) return
-      
+    
                 // Get group and remove from old position
                 const [group] = updatedBoard.groups.splice(sourceGroupIdx, 1)
-      
+    
                 // Add group to new position
                 updatedBoard.groups.splice(targetGroupIdx, 0, group)
             }
+    
+            // Update the board after the drop
             await updateBoard(updatedBoard)
             store.dispatch({ type: 'SET_BOARD', board: updatedBoard })
             showSuccessMsg('Board updated successfully')
+    
         } catch (err) {
             console.error('Cannot update board', err)
             showErrorMsg('Cannot update board')
             loadBoard(boardId)
         }
-    } 
-
+    }
+    
     if (!board) return <div>Loading...</div>
 
     return (
@@ -123,24 +131,23 @@ export function BoardDetails() {
                     <Drag handleDrop={handleDrop}>
                         {({ activeItem, activeType, isDragging }) => (
                             <Drag.DropZone className="flex overflow-x-auto">
-                                {board.groups.map((group, groupIndex) => (
+                                {board.groups.map((group, groupIdx) => (
                                     <React.Fragment key={group.id}>
-                                        {/* Drop zone for group positioning */}
-                                        <Drag.DropZone 
-                                            dropId={groupIndex.toString()} 
-                                            dropType="group" 
+                                        <Drag.DropZone
+                                            dropId={groupIdx.toString()} 
+                                            dropType="group"  
                                             remember={true}
                                         >
-                                            <Drag.DropGuide 
-                                                dropId={groupIndex.toString()}
-                                                dropType="group" 
-                                                className="board-group" 
+                                            <Drag.DropGuide
+                                                dropId={groupIdx.toString()}
+                                                dropType="group"
+                                                className="board-group"
                                             />
                                         </Drag.DropZone>
-    
-                                        <Drag.DropZones 
-                                            prevId={groupIndex.toString()}
-                                            nextId={(groupIndex + 1).toString()}
+
+                                        <Drag.DropZones
+                                            prevId={groupIdx.toString()}
+                                            nextId={(groupIdx + 1).toString()}
                                             dropType="group"
                                             split="x"
                                             remember={true}
@@ -153,7 +160,7 @@ export function BoardDetails() {
                                                 isDragging={isDragging}
                                                 onUpdateGroup={(updatedGroup) => {
                                                     const newBoard = { ...board }
-                                                    const index = newBoard.groups.findIndex(g => g.id === updatedGroup.id)
+                                                    const index = newBoard.groups.findIndex(group => group.id === updatedGroup.id)
                                                     if (index !== -1) {
                                                         newBoard.groups[index] = updatedGroup
                                                         updateBoard(newBoard)
@@ -163,10 +170,10 @@ export function BoardDetails() {
                                         </Drag.DropZones>
                                     </React.Fragment>
                                 ))}
-    
-                                <Drag.DropZone 
-                                    dropId={board.groups.length.toString()} 
-                                    dropType="group" 
+
+                                <Drag.DropZone
+                                    dropId={board.groups.length.toString()}
+                                    dropType="group"
                                     remember={true}
                                 >
                                     {isAddingGroup ? (
