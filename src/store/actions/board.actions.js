@@ -57,6 +57,39 @@ export async function removeBoard(boardId) {
     }
 }
 
+export async function loadBoardsToSidebar() {
+    try {
+        const boards = await boardService.query()
+        store.dispatch(getCmdSetBoards(boards))
+        return boards
+    } catch (err) {
+        console.log('Cannot load boards for sidebar', err)
+        throw err
+    }
+}
+
+// Group Actions
+// export async function loadGroups(boardId) {
+//     try {
+//         const groups = await boardService.getGroups(boardId)
+//         store.dispatch(getCmdSetGroups(groups))
+//     } catch (err) {
+//         console.log('Cannot load groups', err)
+//         throw err
+//     }
+// }
+
+export async function loadGroup(boardId, groupId) {
+    try {
+        const group = await boardService.getGroups(boardId, groupId)
+        store.dispatch(getCmdSetGroup(group))
+    } catch (err) {
+        store.dispatch(getCmdUndoRemoveBoard())
+        console.log('Cannot remove board', err)
+        throw err
+    }
+}
+
 // Group Actions
 export async function addGroup(boardId, group) {
     const optimisticGroup = { ...group, id: 'temp-id' }

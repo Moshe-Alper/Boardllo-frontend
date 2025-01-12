@@ -17,13 +17,13 @@ export function ImgUploader() {
     const { secure_url } = await uploadService.uploadImg(ev)
     await updateUserImg({ ...user, imgUrl: secure_url })
 
-    setImgData({ imgUrl: secure_url })
+    setImgData(secure_url)
     setIsUploading(false)
   }
 
   function getUploadLabel() {
-    if (imgData) return 'Change picture?'
-    return isUploading ? <Loader /> : 'Upload Image'
+    if (imgData) return <p className='change-pic'>Change picture?</p>
+    return isUploading ? <Loader /> : <p className='upload-pic'>Upload Image</p>
   }
 
   return (
@@ -31,6 +31,7 @@ export function ImgUploader() {
       <div>{getUploadLabel()}</div>
 
       <label
+        className='img-uploader'
         onDrop={uploadImg}
         // onDragOver={console.log}
         onDragOver={(ev) => ev.preventDefault()}
@@ -40,7 +41,7 @@ export function ImgUploader() {
             imgData ||
             'https://res.cloudinary.com/dv7uswhcz/image/upload/f_auto,q_auto/nersbxk6gursqfexji42'
           }
-          style={{ width: '200px', height: '200px', cursor: 'pointer', borderRadius: '50%' }}
+          style={{ width: '70px', height: '70px', cursor: 'pointer', borderRadius: '50%' }}
         />
 
         <input hidden type='file' onChange={uploadImg} accept='img/*' />

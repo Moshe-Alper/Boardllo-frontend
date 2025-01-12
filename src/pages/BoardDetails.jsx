@@ -4,10 +4,11 @@ import { useSelector } from 'react-redux'
 import { boardService } from '../services/board'
 import { userService } from '../services/user'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
-import { loadBoard, updateBoard, addGroup } from '../store/actions/board.actions'
+import { loadBoard, updateBoard, addGroup, loadBoardsToSidebar } from '../store/actions/board.actions'
 import { BoardGroup } from '../cmps/Group/BoardGroup'
 import { AddGroupForm } from '../cmps/Group/AddGroupForm'
 import { BoardHeader } from '../cmps/Board/BoardHeader'
+import { Sidebar } from '../cmps/Sidebar'
 import { Drag } from '../cmps/DragDrop/DragDropSystem'
 import { store } from '../store/store'
 
@@ -16,10 +17,19 @@ export function BoardDetails() {
     const board = useSelector(storeState => storeState.boardModule.board)
     const [isAddingGroup, setIsAddingGroup] = useState(false)
     const [newGroupTitle, setNewGroupTitle] = useState('')
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+    const [boards, setBoards] = useState([])
+
+    const toggleSidebar = () => {
+        setIsSidebarOpen(!isSidebarOpen)
+    }
 
     useEffect(() => {
         loadBoard(boardId)
+        loadBoardsToSidebar()
     }, [boardId])
+
+
 
     async function onAddGroup(boardId) {
         if (!newGroupTitle.trim()) {
@@ -110,6 +120,9 @@ export function BoardDetails() {
     return (
         <section className="board-details">
             <BoardHeader board={board} />
+            <div>
+                <Sidebar isOpen={isSidebarOpen} toggleDrawer={toggleSidebar} boards={boards} />
+            </div>
             <div>
                 <section className="group-container">
                     <Drag handleDrop={handleDrop}>

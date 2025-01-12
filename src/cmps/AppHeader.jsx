@@ -4,6 +4,9 @@ import { useSelector } from 'react-redux'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 import { logout } from '../store/actions/user.actions.js'
 import { svgService } from '../services/svg.service.js'
+import UserMenuDropdown from '../cmps/UserMenuDropdown.jsx'
+
+//TODO - Fix when logout from userProfile page, have an error with imguploader
 
 export function AppHeader() {
   const user = useSelector((storeState) => storeState.userModule.user)
@@ -17,6 +20,10 @@ export function AppHeader() {
     } catch (err) {
       showErrorMsg('Cannot logout')
     }
+  }
+
+  const handleNavigate = (path) => {
+    navigate(path)
   }
 
   if (user) {
@@ -56,13 +63,13 @@ export function AppHeader() {
               Logout
             </button>
 
-            <Link to={`user/${user._id}`} className='user-profile'>
-              {user.imgUrl ? (
-                <img className='user-avatar' src={user.imgUrl} />
-              ) : (
-                <div className='user-initial'>{user.fullname?.charAt(0).toUpperCase()}</div>
-              )}
-            </Link>
+            <img
+              style={{ cursor: 'pointer' }}
+              src={`${svgService.notificationIcon}`}
+              alt='notification-icon'
+            />
+            <img style={{ cursor: 'pointer' }} src={`${svgService.infoIcon}`} alt='info-icon' />
+            <UserMenuDropdown user={user} onLogout={onLogout} onNavigate={handleNavigate} />
           </div>
         </nav>
       </header>
@@ -83,7 +90,7 @@ export function AppHeader() {
           <NavLink to='login' className='login-link'>
             Log in
           </NavLink>
-          <NavLink to='login' className='signup-link'>
+          <NavLink to='signup' className='signup-link'>
             Get Boardllo for free
           </NavLink>
         </div>

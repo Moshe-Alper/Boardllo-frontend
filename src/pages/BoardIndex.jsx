@@ -6,7 +6,9 @@ import {
   addBoard,
   updateBoard,
   removeBoard,
-  addBoardMsg
+  addBoardMsg,
+  loadBoardsToSidebar,
+
 } from '../store/actions/board.actions.js'
 
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
@@ -16,18 +18,29 @@ import { userService } from '../services/user'
 import { BoardList } from '../cmps/BoardList'
 import { BoardFilter } from '../cmps/BoardFilter'
 import { Loader } from '../cmps/Loader.jsx'
+import { Sidebar } from '../cmps/Sidebar'
+
+
+
 
 export function BoardIndex() {
   const [filterBy, setFilterBy] = useState(boardService.getDefaultFilter())
   const boards = useSelector((storeState) => storeState.boardModule.boards)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
 
   useEffect(() => {
     loadBoards(filterBy)
+    loadBoardsToSidebar()
   }, [filterBy])
+
 
   function onSetFilterBy(filterBy) {
     setFilterBy((prevFilterBy) => ({ ...prevFilterBy, ...filterBy }))
   }
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen)
+}
 
   async function onRemoveBoard(boardId) {
     try {
@@ -66,11 +79,12 @@ export function BoardIndex() {
       showErrorMsg('Cannot update board')
     }
   }
-
+  console.log('Boards passed to Sidebar:', boards)
   if (!boards) return <Loader />
-  
+ 
   return (
     <main className='board-index'>
+        <Sidebar isOpen={isSidebarOpen} toggleDrawer={toggleSidebar} boards={boards} />
       <BoardFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
       <BoardList boards={boards} onRemoveBoard={onRemoveBoard} onUpdateBoard={onUpdateBoard} />
       {userService.getLoggedinUser() && <button onClick={onAddBoard}>Add a Board</button>}
