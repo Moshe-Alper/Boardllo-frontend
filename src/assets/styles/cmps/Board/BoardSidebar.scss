@@ -1,0 +1,33 @@
+.sidebar {
+    .MuiDrawer-paper {
+        background-color: $primary-blue; 
+        color: $background-white;
+    }
+
+    .MuiList-root {
+        padding-top: 0;
+    }
+
+    .MuiListItemButton-root {
+        border-radius: $border-radius-small;
+        margin: $spacing-xs $spacing-sm;
+
+        &:hover {
+            background-color: $primary-hover-blue;
+            transition: $hover-transition;
+        }
+    }
+
+    .MuiListItemIcon-root {
+        color: $background-white; 
+    }
+
+    .MuiListItemText-primary {
+        font-weight: 500;
+        font-size: 0.875rem; 
+    }
+
+    .MuiListItemButton-root:active {
+        background-color: darken($primary-blue, 30%);
+    }
+}

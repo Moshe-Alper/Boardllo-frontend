@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { boardService } from '../services/board'
-import { userService } from '../services/user'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { loadBoard, updateBoard, addGroup, loadBoardsToSidebar } from '../store/actions/board.actions'
 import { BoardGroup } from '../cmps/Group/BoardGroup'
 import { AddGroupForm } from '../cmps/Group/AddGroupForm'
 import { BoardHeader } from '../cmps/Board/BoardHeader'
-import { Sidebar } from '../cmps/Sidebar'
+import { BoardSidebar } from '../cmps/Board/BoardSidebar'
 import { Drag } from '../cmps/DragDrop/DragDropSystem'
 import { store } from '../store/store'
 
@@ -20,7 +19,7 @@ export function BoardDetails() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const [boards, setBoards] = useState([])
 
-    const toggleSidebar = () => {
+    function toggleSidebar() {
         setIsSidebarOpen(!isSidebarOpen)
     }
 
@@ -52,68 +51,64 @@ export function BoardDetails() {
         }
     }
 
-    async function handleDrop({ dragItem, dragType, drop }) {
-        // console.log('Drop event:', { dragItem, dragType, drop })
-    
+    async function handleDrop({ dragItem, dragType, drop }) {    
         if (!board) return
-        const newBoard = structuredClone(board)
-    
+        const updatedBoard = structuredClone(board)
+      
         try {
             if (dragType === "task") {
-                const [targetGroupId, newIndexStr] = drop.split("-")
-                const newIndex = parseInt(newIndexStr)
-    
+                const [targetGroupId, targetTaskIdxString] = drop.split("-")
+                const targetTaskIdx = parseInt(targetTaskIdxString)
+      
                 // Find source group and task
-                let sourceGroupIndex = -1
-                let taskIndex = -1
-    
-                newBoard.groups.forEach((group, gIndex) => {
+                let sourceGroupIdx = -1
+                let sourceTaskIdx = -1
+      
+                updatedBoard.groups.forEach((group, groupIdx) => {
                     if (!group.tasks) group.tasks = []
-                    const tIndex = group.tasks.findIndex(t => t.id === dragItem)
-                    if (tIndex !== -1) {
-                        sourceGroupIndex = gIndex
-                        taskIndex = tIndex
+                    const taskIdx = group.tasks.findIndex(task => task.id === dragItem)
+                    if (taskIdx !== -1) {
+                        sourceGroupIdx = groupIdx
+                        sourceTaskIdx = taskIdx
                     }
                 })
-    
-                if (sourceGroupIndex === -1) return
-    
+      
+                if (sourceGroupIdx === -1) return
+      
                 // Get task and remove from old position
-                const [task] = newBoard.groups[sourceGroupIndex].tasks.splice(taskIndex, 1)
-    
+                const [task] = updatedBoard.groups[sourceGroupIdx].tasks.splice(sourceTaskIdx, 1)
+      
                 // Find target group and ensure it has a tasks array
-                const targetGroupIndex = newBoard.groups.findIndex(g => g.id === targetGroupId)
-                if (!newBoard.groups[targetGroupIndex].tasks) {
-                    newBoard.groups[targetGroupIndex].tasks = []
+                const targetGroupIdx = updatedBoard.groups.findIndex(group => group.id === targetGroupId)
+                if (!updatedBoard.groups[targetGroupIdx].tasks) {
+                    updatedBoard.groups[targetGroupIdx].tasks = []
                 }
-    
+      
                 // Add task to new position
-                newBoard.groups[targetGroupIndex].tasks.splice(newIndex, 0, task)
-    
+                updatedBoard.groups[targetGroupIdx].tasks.splice(targetTaskIdx, 0, task)
+      
             } else if (dragType === "group") {
-                const newIndex = parseInt(drop)
-    
+                const targetGroupIdx = parseInt(drop)
+      
                 // Find source group
-                const sourceGroupIndex = newBoard.groups.findIndex(g => g.id === dragItem)
-                if (sourceGroupIndex === -1) return
-    
+                const sourceGroupIdx = updatedBoard.groups.findIndex(group => group.id === dragItem)
+                if (sourceGroupIdx === -1) return
+      
                 // Get group and remove from old position
-                const [group] = newBoard.groups.splice(sourceGroupIndex, 1)
-    
+                const [group] = updatedBoard.groups.splice(sourceGroupIdx, 1)
+      
                 // Add group to new position
-                newBoard.groups.splice(newIndex, 0, group)
+                updatedBoard.groups.splice(targetGroupIdx, 0, group)
             }
-    
-            console.log('Updating board:', newBoard)
-            await updateBoard(newBoard)
-            store.dispatch({ type: 'SET_BOARD', board: newBoard })
+            await updateBoard(updatedBoard)
+            store.dispatch({ type: 'SET_BOARD', board: updatedBoard })
             showSuccessMsg('Board updated successfully')
         } catch (err) {
             console.error('Cannot update board', err)
             showErrorMsg('Cannot update board')
             loadBoard(boardId)
         }
-    }
+    } 
 
     if (!board) return <div>Loading...</div>
 
@@ -121,7 +116,7 @@ export function BoardDetails() {
         <section className="board-details">
             <BoardHeader board={board} />
             <div>
-                <Sidebar isOpen={isSidebarOpen} toggleDrawer={toggleSidebar} boards={boards} />
+                <BoardSidebar isOpen={isSidebarOpen} toggleDrawer={toggleSidebar} boards={boards} />
             </div>
             <div>
                 <section className="group-container">
