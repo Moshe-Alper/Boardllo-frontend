@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Sidebar } from '../cmps/Sidebar'
+
 import { IconButton } from '@mui/material'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import { BoardSidebar } from '../cmps/Board/BoardSidebar'
 
 export function Test() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true)
@@ -13,7 +14,7 @@ export function Test() {
     return (
         <div>
             {/* Sidebar */}
-            <Sidebar isOpen={isSidebarOpen} toggleDrawer={toggleSidebar} />
+            <BoardSidebar isOpen={isSidebarOpen} toggleDrawer={toggleSidebar} />
         </div>
     )
 }

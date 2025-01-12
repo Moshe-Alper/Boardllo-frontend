@@ -1,4 +1,4 @@
-import { userService } from '../services/user'
+import { userService } from '../../services/user'  
 import { BoardPreview } from './BoardPreview'
 
 export function BoardList({ boards, onRemoveBoard, onUpdateBoard }) {

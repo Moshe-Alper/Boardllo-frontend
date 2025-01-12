@@ -27,10 +27,11 @@
 @import 'cmps/UserMenuDropdown';
 
 // Board
-@import 'cmps/BoardHeader';
-@import 'cmps/BoardFilter';
-@import 'cmps/BoardList';
-@import 'cmps/BoardPreview';
+@import 'cmps/Board/BoardSidebar';
+@import 'cmps/Board/BoardHeader';
+@import 'cmps/Board/BoardFilter';
+@import 'cmps/Board/BoardList';
+@import 'cmps/Board/BoardPreview';
 
 // Group
 @import 'cmps/Group/BoardGroup.scss';

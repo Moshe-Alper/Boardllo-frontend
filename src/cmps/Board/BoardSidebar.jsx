@@ -16,7 +16,7 @@ import SettingsIcon from '@mui/icons-material/Settings'
 import TableChartIcon from '@mui/icons-material/TableChart'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 
-export function Sidebar({ isOpen, toggleDrawer, boards = [] }) {
+export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
     const navigate = useNavigate()
 
     const menuItems = [

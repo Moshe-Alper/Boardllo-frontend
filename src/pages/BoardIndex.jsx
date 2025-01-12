@@ -1,27 +1,15 @@
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
-import {
-  loadBoards,
-  addBoard,
-  updateBoard,
-  removeBoard,
-  addBoardMsg,
-  loadBoardsToSidebar,
-
-} from '../store/actions/board.actions.js'
+import {loadBoards, addBoard, updateBoard, removeBoard, loadBoardsToSidebar,} from '../store/actions/board.actions.js'
 
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import { boardService } from '../services/board'
 import { userService } from '../services/user'
 
-import { BoardList } from '../cmps/BoardList'
-import { BoardFilter } from '../cmps/BoardFilter'
 import { Loader } from '../cmps/Loader.jsx'
-import { Sidebar } from '../cmps/Sidebar'
-
-
-
+import { BoardFilter } from '../cmps/Board/BoardFilter.jsx'
+import { BoardList } from '../cmps/Board/BoardList.jsx'
 
 export function BoardIndex() {
   const [filterBy, setFilterBy] = useState(boardService.getDefaultFilter())
@@ -37,10 +25,6 @@ export function BoardIndex() {
   function onSetFilterBy(filterBy) {
     setFilterBy((prevFilterBy) => ({ ...prevFilterBy, ...filterBy }))
   }
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen)
-}
 
   async function onRemoveBoard(boardId) {
     try {
@@ -79,12 +63,10 @@ export function BoardIndex() {
       showErrorMsg('Cannot update board')
     }
   }
-  console.log('Boards passed to Sidebar:', boards)
   if (!boards) return <Loader />
  
   return (
     <main className='board-index'>
-        <Sidebar isOpen={isSidebarOpen} toggleDrawer={toggleSidebar} boards={boards} />
       <BoardFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
       <BoardList boards={boards} onRemoveBoard={onRemoveBoard} onUpdateBoard={onUpdateBoard} />
       {userService.getLoggedinUser() && <button onClick={onAddBoard}>Add a Board</button>}
