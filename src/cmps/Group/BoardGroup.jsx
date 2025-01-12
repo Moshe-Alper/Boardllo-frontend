@@ -1,24 +1,28 @@
 import { useEffect, useState } from 'react'
 import { addTask, loadBoard } from '../../store/actions/board.actions'
 import { boardService } from '../../services/board'
-
 import { showSuccessMsg, showErrorMsg } from '../../services/event-bus.service'
 import { BoardGroupHeader } from './BoardGroupHeader'
 import { BoardGroupFooter } from './BoardGroupFooter'
 import { TaskPreview } from '../Task/TaskPreview'
+import { Drag } from '../DragDrop/DragDropSystem'
 
-export function BoardGroup({ board, group, onUpdateGroup }) {
+export function BoardGroup({ board, group, onUpdateGroup, activeItem, activeType, isDragging }) {
     const [isEditingGroupTitle, setIsEditingGroupTitle] = useState(false)
     const [editedGroupTitle, setEditedGroupTitle] = useState(group.title)
     const [isAddingTask, setIsAddingTask] = useState(false)
     const [newTaskTitle, setNewTaskTitle] = useState('')
-    const [tasks, setTasks] = useState(group.tasks)
+    const [tasks, setTasks] = useState(group.tasks || [])
     const [anchorEl, setAnchorEl] = useState(null)
     const [isCollapsed, setIsCollapsed] = useState(false)
 
+    // useEffect(() => {
+    //     loadBoard(board._id)
+    // }, [board._id])
+
     useEffect(() => {
-        loadBoard(board._id)
-    }, [board._id])
+        setTasks(group.tasks || [])
+    }, [group.tasks])
 
     function handleGroupTitleSave() {
         group.title = editedGroupTitle
@@ -59,6 +63,7 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
         }
     }
 
+
     function handleMenuClick(ev) {
         setAnchorEl(ev.target)
     }
@@ -80,45 +85,85 @@ export function BoardGroup({ board, group, onUpdateGroup }) {
     }
 
 
-
-
     if (!group) return <div>Loading...</div>
 
     return (
-        <section
-            className={`board-group flex column ${isCollapsed ? 'collapsed' : ''}`}
-            onClick={handleGroupClick}
-        > <BoardGroupHeader
-                group={group}
-                boardId={board._id}
-                isEditingTitle={isEditingGroupTitle}
-                setIsEditingTitle={setIsEditingGroupTitle}
-                editedTitle={editedGroupTitle}
-                setEditedTitle={setEditedGroupTitle}
-                handleGroupTitleSave={handleGroupTitleSave}
-                handleMenuClick={handleMenuClick}
-                handleMenuClose={handleMenuClose}
-                anchorEl={anchorEl}
-                onAddTask={() => setIsAddingTask(true)}
-                isCollapsed={isCollapsed}
-                onToggleCollapse={toggleCollapse}
-                taskCount={tasks.length}
-            />
+        <Drag.DragItem
+            dragId={group.id}
+            dragType="group"
+            className={`cursor-grab ${activeItem === group.id && activeType === "group" && isDragging ? "hidden" : ""}`}
+        >
+            <section
+                className={`board-group flex column ${isCollapsed ? 'collapsed' : ''} ${activeItem === group.id && activeType === "group" ? "rotate-3" : ""}`}
+                onClick={handleGroupClick}
+            >
+                <BoardGroupHeader
+                    group={group}
+                    boardId={board._id}
+                    isEditingTitle={isEditingGroupTitle}
+                    setIsEditingTitle={setIsEditingGroupTitle}
+                    editedTitle={editedGroupTitle}
+                    setEditedTitle={setEditedGroupTitle}
+                    handleGroupTitleSave={handleGroupTitleSave}
+                    handleMenuClick={handleMenuClick}
+                    handleMenuClose={handleMenuClose}
+                    anchorEl={anchorEl}
+                    onAddTask={() => setIsAddingTask(true)}
+                    isCollapsed={isCollapsed}
+                    onToggleCollapse={toggleCollapse}
+                    taskCount={tasks.length}
+                />
 
-            <div className="tasks-container">
-                {tasks.map(task => (
-                    <TaskPreview key={task.id} task={task} />
-                ))}
-            </div>
+                <div className="tasks-container">
+                    {tasks.map((task, taskIndex) => (
+                        <Drag.DropZones
+                            key={task.id}
+                            prevId={`${group.id}-${taskIndex}`}
+                            nextId={`${group.id}-${taskIndex + 1}`}
+                            dropType="task"
+                            remember={true}
+                        >
+                            <Drag.DropGuide
+                                dropId={`${group.id}-${taskIndex}`}
+                                dropType="task"
+                                className="task-preview bg-gray-200 h-20 mx-2 mb-2"
+                            />
 
-            <BoardGroupFooter
-                group={group}
-                isAddingTask={isAddingTask}
-                setIsAddingTask={setIsAddingTask}
-                newTaskTitle={newTaskTitle}
-                handleTitleChange={handleTaskTitleChange}
-                onAddTask={onAddTask}
-            />
-        </section>
+                            <Drag.DragItem
+                                dragId={task.id}
+                                dragType="task"
+                                className={`cursor-grab ${activeItem === task.id && activeType === "task" && isDragging ? "hidden" : ""}`}
+                            >
+                                <TaskPreview
+                                    task={task}
+                                    isDragging={activeItem === task.id && activeType === "task"}
+                                />
+                            </Drag.DragItem>
+                        </Drag.DropZones>
+                    ))}
+
+                    <Drag.DropZone
+                        dropId={`${group.id}-${tasks.length}`}
+                        dropType="task"
+                        remember={true}
+                    >
+                        <Drag.DropGuide
+                            dropId={`${group.id}-${tasks.length}`}
+                            dropType="task"
+                            className="task-preview bg-gray-200 h-20 mx-2"
+                        />
+                    </Drag.DropZone>
+                </div>
+
+                <BoardGroupFooter
+                    group={group}
+                    isAddingTask={isAddingTask}
+                    setIsAddingTask={setIsAddingTask}
+                    newTaskTitle={newTaskTitle}
+                    handleTitleChange={handleTaskTitleChange}
+                    onAddTask={onAddTask}
+                />
+            </section>
+        </Drag.DragItem>
     )
 }

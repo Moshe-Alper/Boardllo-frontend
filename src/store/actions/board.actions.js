@@ -59,7 +59,7 @@ export async function removeBoard(boardId) {
 
 // Group Actions
 export async function addGroup(boardId, group) {
-    const optimisticGroup = { ...group, _id: 'temp-id' }
+    const optimisticGroup = { ...group, id: 'temp-id' }
     store.dispatch(getCmdAddGroup(optimisticGroup))
     try {
         const savedGroup = await boardService.saveGroup(boardId, group)
