@@ -98,7 +98,8 @@ async function saveGroup(boardId, group) {
       title: group.title,
       archivedAt: null,
       tasks: [],
-      style: {}
+      style: {},
+      isCollapsed: false
     }
     board.groups.push(newGroup)
     await storageService.put(STORAGE_KEY, board)

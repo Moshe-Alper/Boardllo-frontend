@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { addTask, loadBoard } from '../../store/actions/board.actions'
+import { addTask, loadBoard, updateGroup } from '../../store/actions/board.actions'
 import { boardService } from '../../services/board'
 import { showSuccessMsg, showErrorMsg } from '../../services/event-bus.service'
 import { BoardGroupHeader } from './BoardGroupHeader'
@@ -14,8 +14,8 @@ export function BoardGroup({ board, group, onUpdateGroup, activeItem, activeType
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const [tasks, setTasks] = useState(group.tasks || [])
     const [anchorEl, setAnchorEl] = useState(null)
-    const [isCollapsed, setIsCollapsed] = useState(null)
-
+    const [isCollapsed, setIsCollapsed] = useState(group.isCollapsed)
+    
     useEffect(() => {
         loadBoard(board._id)
     }, [board._id])
@@ -70,10 +70,21 @@ export function BoardGroup({ board, group, onUpdateGroup, activeItem, activeType
     function handleMenuClose() {
         setAnchorEl(null)
     }
-    function toggleCollapse() {
+
+    async function toggleCollapse() {
         setIsCollapsed(!isCollapsed)
-        if (!isCollapsed) {
-            setIsEditingGroupTitle(false)
+        const updatedGroup = { 
+            ...group, 
+            isCollapsed: !group.isCollapsed 
+        }
+        try {
+            await updateGroup(board._id, updatedGroup)
+            if (!updatedGroup.isCollapsed) {
+                setIsEditingGroupTitle(false)
+            }
+        } catch (err) {
+            setIsCollapsed(isCollapsed)
+            console.log('Collapsed not updated', err)
         }
     }
 
