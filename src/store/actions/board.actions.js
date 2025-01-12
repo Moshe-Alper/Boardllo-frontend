@@ -46,14 +46,21 @@ export async function updateBoard(board) {
     }
 }
 
+export async function removeBoard(boardId) {
+    store.dispatch(getCmdRemoveBoard(boardId))
+    try {
+        await boardService.remove(boardId)
+    } catch (err) {
+        store.dispatch(getCmdUndoRemoveBoard())
+        console.log('Cannot remove board', err)
+        throw err
+    }
+}
+
 export async function loadBoardsToSidebar() {
     try {
         const boards = await boardService.query()
-
-        
         store.dispatch(getCmdSetBoards(boards))
-
-        
         return boards
     } catch (err) {
         console.log('Cannot load boards for sidebar', err)

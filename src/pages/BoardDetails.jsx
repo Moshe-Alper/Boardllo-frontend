@@ -20,7 +20,7 @@ export function BoardDetails() {
 
     const [isAddingGroup, setIsAddingGroup] = useState(false)
     const [newGroupTitle, setNewGroupTitle] = useState('')
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const [boards, setBoards] = useState([])
 
     const toggleSidebar = () => {
@@ -71,9 +71,9 @@ export function BoardDetails() {
     return (
         <section className="board-details">
             <BoardHeader board={board} />
-              <div>
-                        <Sidebar isOpen={isSidebarOpen} toggleDrawer={toggleSidebar}  boards={boards} />
-                    </div>
+            <div>
+                <Sidebar isOpen={isSidebarOpen} toggleDrawer={toggleSidebar} boards={boards} />
+            </div>
             {board && <div>
                 <section className="group-container flex">
                     {board.groups.map(group => (
