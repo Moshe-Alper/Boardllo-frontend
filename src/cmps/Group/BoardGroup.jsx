@@ -14,7 +14,7 @@ export function BoardGroup({ board, group, onUpdateGroup, activeItem, activeType
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const [tasks, setTasks] = useState(group.tasks || [])
     const [anchorEl, setAnchorEl] = useState(null)
-    const [isCollapsed, setIsCollapsed] = useState(false)
+    const [isCollapsed, setIsCollapsed] = useState(null)
 
     useEffect(() => {
         loadBoard(board._id)
@@ -63,7 +63,6 @@ export function BoardGroup({ board, group, onUpdateGroup, activeItem, activeType
         }
     }
 
-
     function handleMenuClick(ev) {
         setAnchorEl(ev.target)
     }
@@ -83,7 +82,6 @@ export function BoardGroup({ board, group, onUpdateGroup, activeItem, activeType
             setIsCollapsed(false)
         }
     }
-
 
     if (!group) return <div>Loading...</div>
 

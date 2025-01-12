@@ -28,8 +28,6 @@ export function BoardDetails() {
         loadBoardsToSidebar()
     }, [boardId])
 
-
-
     async function onAddGroup(boardId) {
         if (!newGroupTitle.trim()) {
             showErrorMsg('Group title cannot be empty')
@@ -54,7 +52,7 @@ export function BoardDetails() {
     async function handleDrop({ dragItem, dragType, drop }) {
         if (!board) return
         const updatedBoard = structuredClone(board)
-    
+        
         try {
             if (dragType === "task") {
                 // Handle dropping task into a group (either empty or with tasks)
@@ -82,7 +80,6 @@ export function BoardDetails() {
                 // Find target group and ensure it has a tasks array
                 const targetGroupIdx = updatedBoard.groups.findIndex(group => group.id === targetGroupId)
                 if (targetGroupIdx === -1) return
-                console.log('🚀 targetGroupIdx', targetGroupIdx)
     
                 if (!updatedBoard.groups[targetGroupIdx].tasks) {
                     updatedBoard.groups[targetGroupIdx].tasks = [] // Initialize tasks if empty
@@ -92,7 +89,7 @@ export function BoardDetails() {
                 updatedBoard.groups[targetGroupIdx].tasks.splice(targetTaskIdx, 0, task)
     
             } else if (dragType === "group") {
-                // Handle group-to-group drag and drop (unchanged from previous logic)
+                // Handle group-to-group drag and drop
                 const targetGroupIdx = parseInt(drop)
     
                 // Find source group
@@ -106,15 +103,15 @@ export function BoardDetails() {
                 updatedBoard.groups.splice(targetGroupIdx, 0, group)
             }
     
-            // Update the board after the drop
+            // Optimistic
+            store.dispatch({ type: 'SET_BOARD', board: updatedBoard });
             await updateBoard(updatedBoard)
-            store.dispatch({ type: 'SET_BOARD', board: updatedBoard })
             showSuccessMsg('Board updated successfully')
-    
         } catch (err) {
             console.error('Cannot update board', err)
             showErrorMsg('Cannot update board')
-            loadBoard(boardId)
+            // Optimistic error handling
+            loadBoard(board.id)
         }
     }
     
