@@ -1,9 +1,13 @@
 /* eslint-disable react/prop-types */
 import { useState, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router'
+import { logout } from '../store/actions/user.actions'
+import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 
-const UserMenuDropdown = ({ user, onLogout, onNavigate }) => {
+const UserMenuDropdown = ({ user, onNavigate }) => {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -19,6 +23,16 @@ const UserMenuDropdown = ({ user, onLogout, onNavigate }) => {
   const handleNavigation = (path) => {
     onNavigate(path)
     setIsOpen(false)
+  }
+
+  async function onLogout() {
+    try {
+      await logout()
+      navigate('/')
+      showSuccessMsg(`Bye now`)
+    } catch (err) {
+      showErrorMsg('Cannot logout')
+    }
   }
 
   return (
