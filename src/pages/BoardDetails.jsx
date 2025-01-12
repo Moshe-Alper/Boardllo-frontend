@@ -14,10 +14,11 @@ import { store } from '../store/store'
 export function BoardDetails() {
     const { boardId } = useParams()
     const board = useSelector(storeState => storeState.boardModule.board)
+    const boards = useSelector((storeState) => storeState.boardModule.boards)
     const [isAddingGroup, setIsAddingGroup] = useState(false)
     const [newGroupTitle, setNewGroupTitle] = useState('')
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-    const [boards, setBoards] = useState([])
+    // const [boards, setBoards] = useState([])
 
     function toggleSidebar() {
         setIsSidebarOpen(!isSidebarOpen)
@@ -118,11 +119,11 @@ export function BoardDetails() {
     if (!board) return <div>Loading...</div>
 
     return (
+        <div className={`board-layout ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+        <BoardSidebar isOpen={isSidebarOpen} toggleDrawer={toggleSidebar} boards={boards} />
         <section className="board-details">
             <BoardHeader board={board} />
-            <div>
-                <BoardSidebar isOpen={isSidebarOpen} toggleDrawer={toggleSidebar} boards={boards} />
-            </div>
+    
             <div>
                 <section className="group-container">
                     <Drag handleDrop={handleDrop}>
@@ -196,5 +197,6 @@ export function BoardDetails() {
                 </section>
             </div>
         </section>
+        </div>
     )
 }
