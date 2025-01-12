@@ -1,27 +1,16 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Layout, Plus, Users } from 'lucide-react'
 import { Link } from 'react-router-dom'
-
-import {
-  loadBoards,
-  addBoard,
-  updateBoard,
-  removeBoard,
-  loadBoardsToSidebar
-} from '../store/actions/board.actions.js'
-
-import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
+import { Clock, Layout, Plus, Settings, Users } from 'lucide-react'
 import { boardService } from '../services/board'
-import { Loader } from '../cmps/Loader.jsx'
-import { userService } from '../services/user'
+import { loadBoards, loadBoardsToSidebar } from '../store/actions/board.actions'
+import { svgService } from '../services/svg.service'
 
-// import { BoardFilter } from '../cmps/Board/BoardFilter.jsx'
-// import { BoardList } from '../cmps/Board/BoardList.jsx'
-
-export function BoardIndex() {
+export function BoardIndexTest() {
   const [filterBy, setFilterBy] = useState(boardService.getDefaultFilter())
   const boards = useSelector((storeState) => storeState.boardModule.boards)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+
   const workspaceBoards = boards?.filter((board) => !board.isGuest) || []
   const guestBoards = boards?.filter((board) => board.isGuest) || []
 
@@ -29,50 +18,6 @@ export function BoardIndex() {
     loadBoards(filterBy)
     loadBoardsToSidebar()
   }, [filterBy])
-
-  function onSetFilterBy(filterBy) {
-    setFilterBy((prevFilterBy) => ({ ...prevFilterBy, ...filterBy }))
-  }
-
-  async function onRemoveBoard(boardId) {
-    try {
-      await removeBoard(boardId)
-      showSuccessMsg('Board removed')
-    } catch (err) {
-      showErrorMsg('Cannot remove board')
-    }
-  }
-
-  async function onAddBoard() {
-    const board = boardService.getEmptyBoard()
-    board.title = prompt('Board Title?')
-    if (!board.title) return
-    try {
-      const savedBoard = await addBoard(board)
-      showSuccessMsg(`Board added (id: ${savedBoard._id})`)
-    } catch (err) {
-      showErrorMsg('Cannot add board')
-    }
-  }
-
-  async function onUpdateBoard(board) {
-    const title = prompt('New title?', board.title)
-    if (!title) return
-
-    const updatedBoard = {
-      ...board,
-      title: title
-    }
-
-    try {
-      const savedBoard = await updateBoard(updatedBoard)
-      showSuccessMsg(`Board updated, new title: ${savedBoard.title}`)
-    } catch (err) {
-      showErrorMsg('Cannot update board')
-    }
-  }
-
-  if (!boards) return <Loader />
 
   return (
     <div className='board-index-container'>
@@ -84,7 +29,10 @@ export function BoardIndex() {
               <Layout size={16} />
               <span>Boards</span>
             </Link>
-
+            <Link to='/templates' className='nav-item'>
+              <Layout size={16} />
+              <span>Templates</span>
+            </Link>
             <Link to='/' className='nav-item'>
               <Layout size={16} />
               <span>Home</span>
@@ -105,7 +53,6 @@ export function BoardIndex() {
                   <Layout size={16} />
                   <span>Boards</span>
                 </Link>
-
                 <Link to='/members' className='tool-item'>
                   <Users size={16} />
                   <span>Members</span>
@@ -137,29 +84,18 @@ export function BoardIndex() {
           <div className='workspace-header'>
             <div className='workspace-info'>
               <div className='workspace-icon'>B</div>
-              <h3>Boardllo Workspace</h3>
+              <h3>Trello Workspace</h3>
             </div>
           </div>
           <div className='board-grid'>
             {workspaceBoards.map((board) => (
-              <>
-                <Link key={board._id} to={`/board/${board._id}`} className='board-tile'>
-                  <div className='board-tile-details'>
-                    <h3>{board.title}</h3>
-                  </div>
-                </Link>
-                <section className='workspace-crud'>
-                  <button onClick={() => onRemoveBoard(board._id)}>Remove</button>
-                  <button
-                    onClick={() => onUpdateBoard(board)}
-                    style={{ backgroundColor: '#0052cc' }}
-                  >
-                    Edit
-                  </button>
-                </section>
-              </>
+              <Link key={board._id} to={`/board/${board._id}`} className='board-tile'>
+                <div className='board-tile-details'>
+                  <h3>{board.title}</h3>
+                </div>
+              </Link>
             ))}
-            <button onClick={onAddBoard} className='create-board-tile'>
+            <button className='create-board-tile'>
               <Plus size={24} />
               <span>Create new board</span>
             </button>
@@ -183,11 +119,3 @@ export function BoardIndex() {
     </div>
   )
 }
-
-/*
- ;<main className='board-index'>
-   {userService.getLoggedinUser() && <button onClick={onAddBoard}>Add a Board</button>}
- </main>
- <BoardFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
-<BoardList boards={boards} onRemoveBoard={onRemoveBoard} onUpdateBoard={onUpdateBoard} /> 
-*/
