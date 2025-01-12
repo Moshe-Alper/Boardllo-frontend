@@ -50,10 +50,10 @@ export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
                         '&:hover': {
                             backgroundColor: '#003366',
                         },
-                        
+
                     }}
                 >
-                    <ChevronRightIcon />
+                    <ChevronRightIcon sx={{width: '15px', height:'15px' }} />
                 </IconButton>
             )}
 
@@ -85,7 +85,7 @@ export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
                         <h3 style={{ margin: 0 }}>Trello Workspace</h3>
                         <p style={{ margin: 0, fontSize: '12px', color: '#B0C4DE' }}>Premium</p>
                     </div>
-                    <IconButton onClick={toggleDrawer} sx={{ color: '#FFFFFF' }}>
+                    <IconButton onClick={toggleDrawer} sx={{ color: '#FFFFFF', width: '20px', height:'20px' }}>
                         <ChevronLeftIcon />
                     </IconButton>
                 </div>
@@ -93,7 +93,7 @@ export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
                 <List>
                     {menuItems.map((item, index) => (
                         <ListItem key={index} disablePadding>
-                            <ListItemButton  onClick={() => navigate(item.path)} >
+                            <ListItemButton onClick={() => navigate(item.path)} >
                                 <ListItemIcon sx={{ color: '#FFFFFF', marginRight: '-20px' }}>{item.icon}</ListItemIcon>
                                 <ListItemText primary={item.text} />
                                 {item.extra && (
@@ -121,17 +121,17 @@ export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
 
                 <div style={{ padding: '8px 16px', fontSize: '12px', color: '#B0C4DE' }}>Your Boards</div>
                 <List>
-    {boards.map((board) => (
-        <ListItem key={board._id} disablePadding>
-            <ListItemButton onClick={() => navigate(`/board/${board._id}`)}>
-                <ListItemIcon sx={{ color: '#FFFFFF', marginRight: '-20px' }}>
-                    <DashboardIcon />
-                </ListItemIcon>
-                <ListItemText primary={board.title} />
-            </ListItemButton>
-        </ListItem>
-    ))}
-</List>
+                    {boards.map((board) => (
+                        <ListItem key={board._id} disablePadding>
+                            <ListItemButton onClick={() => navigate(`/board/${board._id}`)}>
+                                <ListItemIcon sx={{ color: '#FFFFFF', marginRight: '-20px' }}>
+                                    <DashboardIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={board.title} />
+                            </ListItemButton>
+                        </ListItem>
+                    ))}
+                </List>
             </Drawer>
         </div>
     )
