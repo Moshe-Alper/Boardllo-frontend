@@ -1,10 +1,106 @@
 .board-header {
     background-color: $primary-blue;
-    height: 3.5rem; // 56px
-    padding: 1rem 1.625rem; // 16px 26px 
+    height: $navbar-height;
+    padding: $spacing-md $spacing-lg;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: $text-light;
 
-    h1 {
-        font-size: 0.875rem;
-        line-height: 1.25rem;
+    .board-header-left {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+
+        h1 {
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            color: $background-white;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .star-btn {
+            background: none;
+            border: none;
+            padding: $spacing-xs;
+            cursor: pointer;
+            color: $background-white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: $hover-transition;
+
+            img {
+                width: 16px;
+                height: 16px;
+                filter: brightness(0) invert(1);
+            }
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        .workspace-info {
+            display: flex;
+            gap: $spacing-sm;
+            padding: 0 $spacing-sm;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            margin-left: $spacing-sm;
+
+            .workspace-name {
+                color: $background-white;
+                font-size: 0.875rem;
+            }
+
+            .visibility {
+                color: $background-white;
+                opacity: 0.8;
+                font-size: 0.875rem;
+            }
+        }
+    }
+
+    .board-header-right {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+
+        .header-btn {
+            display: flex;
+            align-items: center;
+            gap: $spacing-xs;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: $spacing-xs $spacing-sm;
+            border-radius: $border-radius-small;
+            color: $background-white;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: $hover-transition;
+
+            img {
+                width: 16px;
+                height: 16px;
+                filter: brightness(0) invert(1);
+            }
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.3);
+            }
+
+            .power-up-count {
+                background: rgba(255, 255, 255, 0.3);
+                padding: 0 $spacing-xs;
+                border-radius: $border-radius-small;
+                font-size: 0.75rem;
+            }
+        }
+
+        .members-btn {
+            padding: $spacing-xs;
+            background: rgba(255, 255, 255, 0.2);
+        }
     }
 }
