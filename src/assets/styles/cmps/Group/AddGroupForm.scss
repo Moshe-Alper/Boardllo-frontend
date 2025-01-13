@@ -2,7 +2,6 @@
     width: 17rem; // 272px
     background-color: $background-light;
     padding: $layoutPadding-small;
-    margin-block-start: $layoutPadding-small;
     border-radius: $border-radius-largest;
     gap: $layoutPadding-small;
 
@@ -33,6 +32,11 @@
         display: flex;
         align-items: center;
 
+        button {
+            border-radius: $border-radius-large;
+        }
+
+
         .add-group-btn {
             width: auto;
             padding: 0.5rem 1rem; // 8px 16px
@@ -53,7 +57,8 @@
         .cancel-btn {
             width: auto;
             font-size: 1.25rem; // 20px
-            padding: $layoutPadding-smallest 1rem; // Increase padding (e.g., 1rem for more space)
+            background-color: transparent;
+            padding: $layoutPadding-smallest 1rem; 
             border: none;
             cursor: pointer;
             color: $text-dark;
@@ -67,6 +72,7 @@
 
             &:hover {
                 color: $text-primary;
+                background-color: $button-secondary-hover-bg;
             }
         }
     }

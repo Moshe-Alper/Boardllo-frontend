@@ -29,6 +29,10 @@
             align-items: center;
             margin-block-start: $layoutPadding-small;
 
+            button {
+                border-radius: $border-radius-large;
+            }
+            
             .add-card-btn {
                 width: auto;
                 padding: 0.5rem 1rem;
@@ -50,6 +54,7 @@
                 width: auto;
                 padding: $layoutPadding-smallest 1rem;
                 border: none;
+                background-color: transparent;
                 font-size: 1.25rem;
                 color: $text-dark;
                 cursor: pointer;
@@ -62,6 +67,7 @@
 
                 &:hover {
                     color: $text-primary;
+                    background-color: $button-secondary-hover-bg;
                 }
             }
         }

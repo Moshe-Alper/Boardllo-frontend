@@ -1,7 +1,7 @@
 .board-group {
     background-color: $background-light;
-    min-width: 272px;
-    max-width: 272px;
+    min-width: 17rem; // 272px
+    max-width: 17rem; // 272px
     margin: $layoutPadding-small;
     padding: $layoutPadding-small;
     border-radius: $border-radius;
@@ -9,10 +9,11 @@
     display: flex;
     flex-direction: column;
     flex-shrink: 0; 
-    transition: $hover-transition;
+    transition: min-width 0.3s ease-in-out, max-width 0.3s ease-in-out, padding 0.3s ease-in-out, background-color 0.3s ease-in-out;
 
     &.collapsed {
-        width: 2.5rem;
+        min-width: 2.5rem;
+        max-width: 2.5rem;
         padding: $layoutPadding-small 0;
 
         .tasks-container,
@@ -30,6 +31,8 @@
                 width: 100%;
                 height: 100%;
                 padding: 0.25rem 0;
+                opacity: 0; 
+                transition: opacity 0.3s ease-in-out;
 
                 .title-actions {
                     .collapse-btn {
@@ -52,6 +55,7 @@
                         transform: rotate(0deg);
                         white-space: nowrap;
                         margin: 0;
+                        transition: transform 0.3s ease-in-out;
                     }
 
                     .vertical-text-field {
@@ -79,6 +83,8 @@
                         font-size: 0.75rem;
                         color: $text-secondary;
                         pointer-events: none;
+                        opacity: 0;
+                        transition: opacity 0.3s ease-in-out;
                     }
                 }
             }
@@ -88,6 +94,15 @@
     &:hover {
         .board-group-header .title-actions {
             opacity: 1;
+            transition: opacity 0.3s ease-in-out;
         }
+    }
+
+    &.collapsed .board-group-header .collapsed-content {
+        opacity: 1; 
+    }
+
+    &.collapsed .task-count h3 {
+        opacity: 1; 
     }
 }
