@@ -5,9 +5,9 @@ import { showSuccessMsg, showErrorMsg } from '../../services/event-bus.service'
 import { BoardGroupHeader } from './BoardGroupHeader'
 import { BoardGroupFooter } from './BoardGroupFooter'
 import { TaskPreview } from '../Task/TaskPreview'
-import { Drag } from '../DragDrop/DragDropSystem'
+import { TaskDragDropContainer } from '../DragDropSystem'
 
-export function BoardGroup({ board, group, onUpdateGroup, activeItem, activeType, isDragging }) {
+export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
     const [isEditingGroupTitle, setIsEditingGroupTitle] = useState(false)
     const [editedGroupTitle, setEditedGroupTitle] = useState(group.title)
     const [isAddingTask, setIsAddingTask] = useState(false)
@@ -15,12 +15,6 @@ export function BoardGroup({ board, group, onUpdateGroup, activeItem, activeType
     const [anchorEl, setAnchorEl] = useState(null)
     const [isCollapsed, setIsCollapsed] = useState(group.isCollapsed)
     
-    // Ensure group always has a tasks array
-    if (!group.tasks) {
-        group.tasks = []
-        onUpdateGroup(group)
-    }
-
     useEffect(() => {
         loadBoard(board._id)
     }, [board._id])
@@ -106,82 +100,51 @@ export function BoardGroup({ board, group, onUpdateGroup, activeItem, activeType
     if (!group) return <div>Loading...</div>
 
     return (
-        <Drag.DragItem
-            dragId={group.id}
-            dragType="group"
-            className={`cursor-grab ${activeItem === group.id && activeType === "group" && isDragging ? "hidden" : ""}`}
+        <section
+            className={`board-group flex column ${isCollapsed ? 'collapsed' : ''} 
+                      ${isDragging ? 'dragging' : ''}`}
+            onClick={handleGroupClick}
         >
-            <section
-                className={`board-group flex column ${isCollapsed ? 'collapsed' : ''} ${activeItem === group.id && activeType === "group" ? "rotate-3" : ""}`}
-                onClick={handleGroupClick}
-            >
-                <BoardGroupHeader
-                    group={group}
-                    boardId={board._id}
-                    isEditingTitle={isEditingGroupTitle}
-                    setIsEditingTitle={setIsEditingGroupTitle}
-                    editedTitle={editedGroupTitle}
-                    setEditedTitle={setEditedGroupTitle}
-                    handleGroupTitleSave={handleGroupTitleSave}
-                    handleMenuClick={handleMenuClick}
-                    handleMenuClose={handleMenuClose}
-                    anchorEl={anchorEl}
-                    onAddTask={() => setIsAddingTask(true)}
-                    isCollapsed={isCollapsed}
-                    onToggleCollapse={toggleCollapse}
-                    taskCount={(group.tasks || []).length}
-                />
+            <BoardGroupHeader
+                group={group}
+                boardId={board._id}
+                isEditingTitle={isEditingGroupTitle}
+                setIsEditingTitle={setIsEditingGroupTitle}
+                editedTitle={editedGroupTitle}
+                setEditedTitle={setEditedGroupTitle}
+                handleGroupTitleSave={handleGroupTitleSave}
+                handleMenuClick={handleMenuClick}
+                handleMenuClose={handleMenuClose}
+                anchorEl={anchorEl}
+                onAddTask={() => setIsAddingTask(true)}
+                isCollapsed={isCollapsed}
+                onToggleCollapse={toggleCollapse}
+                taskCount={(group.tasks || []).length}
+            />
 
-                <div className="tasks-container">
-                    {(group.tasks || []).map((task, taskIndex) => (
-                        <Drag.DropZones
+            {!isCollapsed && (
+                <TaskDragDropContainer 
+                    groupId={group.id} 
+                    tasks={group.tasks || []}
+                >
+                    {(task, index, isDragging) => (
+                        <TaskPreview
                             key={task.id}
-                            prevId={`${group.id}-${taskIndex}`}
-                            nextId={`${group.id}-${taskIndex + 1}`}
-                            dropType="task"
-                            remember={true}
-                        >
-                            <Drag.DropGuide
-                                dropId={`${group.id}-${taskIndex}`}
-                                dropType="task"
-                                className="task-preview bg-gray-200 h-20 mx-2 mb-2"
-                            />
-
-                            <Drag.DragItem
-                                dragId={task.id}
-                                dragType="task"
-                                className={`cursor-grab ${activeItem === task.id && activeType === "task" && isDragging ? "hidden" : ""}`}
-                            >
-                                <TaskPreview
-                                    task={task}
-                                    isDragging={activeItem === task.id && activeType === "task"}
-                                />
-                            </Drag.DragItem>
-                        </Drag.DropZones>
-                    ))}
-
-                    <Drag.DropZone
-                        dropId={`${group.id}-${(group.tasks || []).length}`}
-                        dropType="task"
-                        remember={true}
-                    >
-                        <Drag.DropGuide
-                            dropId={`${group.id}-${(group.tasks || []).length}`}
-                            dropType="task"
-                            className="task-preview bg-gray-200 h-20 mx-2"
+                            task={task}
+                            isDragging={isDragging}
                         />
-                    </Drag.DropZone>
-                </div>
+                    )}
+                </TaskDragDropContainer>
+            )}
 
-                <BoardGroupFooter
-                    group={group}
-                    isAddingTask={isAddingTask}
-                    setIsAddingTask={setIsAddingTask}
-                    newTaskTitle={newTaskTitle}
-                    handleTitleChange={handleTaskTitleChange}
-                    onAddTask={onAddTask}
-                />
-            </section>
-        </Drag.DragItem>
+            <BoardGroupFooter
+                group={group}
+                isAddingTask={isAddingTask}
+                setIsAddingTask={setIsAddingTask}
+                newTaskTitle={newTaskTitle}
+                handleTitleChange={handleTaskTitleChange}
+                onAddTask={onAddTask}
+            />
+        </section>
     )
 }

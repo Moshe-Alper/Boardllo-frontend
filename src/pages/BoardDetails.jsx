@@ -3,13 +3,13 @@ import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { boardService } from '../services/board'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
-import { loadBoard, updateBoard, addGroup, loadBoardsToSidebar } from '../store/actions/board.actions'
+import { loadBoard, updateBoard, addGroup, loadBoardsToSidebar, updateGroup } from '../store/actions/board.actions'
 import { BoardGroup } from '../cmps/Group/BoardGroup'
 import { AddGroupForm } from '../cmps/Group/AddGroupForm'
 import { BoardHeader } from '../cmps/Board/BoardHeader'
 import { BoardSidebar } from '../cmps/Board/BoardSidebar'
-import { Drag } from '../cmps/DragDrop/DragDropSystem'
-import { store } from '../store/store'
+import { GroupDragDropContainer } from '../cmps/DragDropSystem'
+
 
 export function BoardDetails() {
     const { boardId } = useParams()
@@ -18,7 +18,8 @@ export function BoardDetails() {
     const [isAddingGroup, setIsAddingGroup] = useState(false)
     const [newGroupTitle, setNewGroupTitle] = useState('')
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-    // const [boards, setBoards] = useState([])
+    const [activeItem, setActiveItem] = useState(null)
+    const [activeType, setActiveType] = useState(null)
 
     function toggleSidebar() {
         setIsSidebarOpen(!isSidebarOpen)
@@ -50,155 +51,156 @@ export function BoardDetails() {
         }
     }
 
-    async function handleDrop({ dragItem, dragType, drop }) {
-        if (!board) return
-        const updatedBoard = structuredClone(board)
-        
+    async function onUpdateGroup(updatedGroup) {
         try {
-            // Initialize tasks arrays for all groups if they don't exist
-            updatedBoard.groups = updatedBoard.groups.map(group => ({
-                ...group,
-                tasks: group.tasks || []
-            }))
-    
-            if (dragType === "task") {
-                const [targetGroupId, targetTaskIdxString] = drop.split("-")
-                const targetTaskIdx = parseInt(targetTaskIdxString) || 0 // Default to 0 if NaN
-                
-                // Find source group and task
-                let sourceGroupIdx = -1
-                let sourceTaskIdx = -1
-                let task = null
-    
-                // Find and remove task from source group
-                for (let groupIdx = 0; groupIdx < updatedBoard.groups.length; groupIdx++) {
-                    const taskIdx = updatedBoard.groups[groupIdx].tasks.findIndex(t => t.id === dragItem)
-                    if (taskIdx !== -1) {
-                        sourceGroupIdx = groupIdx
-                        sourceTaskIdx = taskIdx
-                        task = updatedBoard.groups[groupIdx].tasks[taskIdx]
-                        updatedBoard.groups[groupIdx].tasks.splice(taskIdx, 1)
-                        break
-                    }
-                }
-    
-                if (!task) return
-    
-                // Find target group
-                const targetGroupIdx = updatedBoard.groups.findIndex(g => g.id === targetGroupId)
-                if (targetGroupIdx === -1) return
-    
-                // Ensure target group has a tasks array
-                if (!updatedBoard.groups[targetGroupIdx].tasks) {
-                    updatedBoard.groups[targetGroupIdx].tasks = []
-                }
-    
-                // Add task to new position
-                updatedBoard.groups[targetGroupIdx].tasks.splice(targetTaskIdx, 0, task)
-    
-            } else if (dragType === "group") {
-                const targetGroupIdx = parseInt(drop)
-                const sourceGroupIdx = updatedBoard.groups.findIndex(g => g.id === dragItem)
-                
-                if (sourceGroupIdx === -1) return
-    
-                const [group] = updatedBoard.groups.splice(sourceGroupIdx, 1)
-                updatedBoard.groups.splice(targetGroupIdx, 0, group)
-            }
-    
-            // Optimistic update
-            store.dispatch({ type: 'SET_BOARD', board: updatedBoard })
-            await updateBoard(updatedBoard)
-            showSuccessMsg('Board updated successfully')
-        } catch (err) {
-            console.error('Cannot update board', err)
-            showErrorMsg('Cannot update board')
+            const savedGroup = await updateGroup(board._id, updatedGroup)
             loadBoard(board._id)
+            showSuccessMsg(`Group updated successfully (id: ${savedGroup.id})`)
+        } catch (err) {
+            console.error('Cannot update group', err)
+            showErrorMsg('Cannot update group')
         }
     }
+
+    async function onAddGroup(boardId) {
+        if (!newGroupTitle.trim()) {
+            showErrorMsg('Group title cannot be empty')
+            setIsAddingGroup(false)
+            return
+        }
+
+        const group = {
+            ...boardService.getEmptyGroup(),
+            title: newGroupTitle
+        }
+
+        const optimisticBoard = {
+            ...board,
+            groups: [...board.groups, { ...group, id: 'temp-id' }]
+        }
+        dispatch({ type: SET_BOARD, board: optimisticBoard })
+        setNewGroupTitle('')
+        setIsAddingGroup(false)
+
+        try {
+            await addGroup(boardId, group)
+            showSuccessMsg('Group added successfully')
+        } catch (err) {
+            console.log('Cannot add group', err)
+            showErrorMsg('Cannot add group')
+            dispatch({ type: SET_BOARD, board })
+        }
+    }
+
+    async function onUpdateGroup(updatedGroup) {
+        const originalBoard = { ...board }
+        const optimisticBoard = {
+            ...board,
+            groups: board.groups.map(group => 
+                group.id === updatedGroup.id ? updatedGroup : group
+            )
+        }
+        
+        dispatch({ type: SET_BOARD, board: optimisticBoard })
     
+        try {
+            await updateGroup(board._id, updatedGroup)
+            showSuccessMsg('Group updated successfully')
+        } catch (err) {
+            console.error('Cannot update group', err)
+            showErrorMsg('Cannot update group')
+            dispatch({ type: SET_BOARD, board: originalBoard })
+        }
+    }
+
+    async function handleDragEnd(result) {
+        const { source, destination, type } = result
+
+        if (!destination ||
+            (source.droppableId === destination.droppableId &&
+                source.index === destination.index)) {
+            return
+        }
+
+        const updatedBoard = { ...board }
+        const originalBoard = { ...board }
+
+        if (type === "group") {
+            const [removed] = updatedBoard.groups.splice(source.index, 1)
+            updatedBoard.groups.splice(destination.index, 0, removed)
+
+            dispatch({ type: SET_BOARD, board: updatedBoard })
+
+            try {
+                await updateBoard(updatedBoard)
+                showSuccessMsg('Group reordered successfully')
+            } catch (err) {
+                console.error('Failed to reorder group:', err)
+                showErrorMsg('Failed to reorder group')
+                dispatch({ type: SET_BOARD, board: originalBoard })
+            }
+        } else if (type === "task") {
+            const sourceGroup = updatedBoard.groups.find(group => group.id === source.droppableId)
+            const destinationGroup = updatedBoard.groups.find(group => group.id === destination.droppableId)
+
+            if (!sourceGroup || !destinationGroup) return
+
+            const [movedTask] = sourceGroup.tasks.splice(source.index, 1)
+            destinationGroup.tasks.splice(destination.index, 0, movedTask)
+
+            dispatch({ type: SET_BOARD, board: updatedBoard })
+
+            try {
+                await updateBoard(updatedBoard)
+                showSuccessMsg('Task moved successfully')
+            } catch (err) {
+                console.error('Failed to move task:', err)
+                showErrorMsg('Failed to move task')
+                dispatch({ type: SET_BOARD, board: originalBoard })
+            }
+        }
+    }
+
     if (!board) return <div>Loading...</div>
 
     return (
         <div className={`board-layout ${isSidebarOpen ? 'sidebar-open' : ''}`}>
-        <BoardSidebar isOpen={isSidebarOpen} toggleDrawer={toggleSidebar} boards={boards} />
-        <section className="board-details">
-            <BoardHeader board={board} />
-    
-            <div>
-                <section className="group-container">
-                    <Drag handleDrop={handleDrop}>
-                        {({ activeItem, activeType, isDragging }) => (
-                            <Drag.DropZone className="flex overflow-x-auto">
-                                {board.groups.map((group, groupIdx) => (
-                                    <React.Fragment key={group.id}>
-                                        <Drag.DropZone
-                                            dropId={groupIdx.toString()} 
-                                            dropType="group"  
-                                            remember={true}
-                                        >
-                                            <Drag.DropGuide
-                                                dropId={groupIdx.toString()}
-                                                dropType="group"
-                                                className="board-group"
-                                            />
-                                        </Drag.DropZone>
+            <BoardSidebar isOpen={isSidebarOpen} toggleDrawer={toggleSidebar} boards={boards} />
+            <section className="board-details">
+                <BoardHeader board={board} />
+                <GroupDragDropContainer
+                    items={board.groups}
+                    onDragEnd={handleDragEnd}
+                >
+                    {(group, index, isDragging) => (
+                        <BoardGroup
+                            key={group.id}
+                            board={board}
+                            group={group}
+                            index={index}
+                            onUpdateGroup={onUpdateGroup}
+                            isDragging={isDragging}
+                        />
+                    )}
+                </GroupDragDropContainer>
 
-                                        <Drag.DropZones
-                                            prevId={groupIdx.toString()}
-                                            nextId={(groupIdx + 1).toString()}
-                                            dropType="group"
-                                            split="x"
-                                            remember={true}
-                                        >
-                                            <BoardGroup
-                                                board={board}
-                                                group={group}
-                                                activeItem={activeItem}
-                                                activeType={activeType}
-                                                isDragging={isDragging}
-                                                onUpdateGroup={(updatedGroup) => {
-                                                    const newBoard = { ...board }
-                                                    const index = newBoard.groups.findIndex(group => group.id === updatedGroup.id)
-                                                    if (index !== -1) {
-                                                        newBoard.groups[index] = updatedGroup
-                                                        updateBoard(newBoard)
-                                                    }
-                                                }}
-                                            />
-                                        </Drag.DropZones>
-                                    </React.Fragment>
-                                ))}
-
-                                <Drag.DropZone
-                                    dropId={board.groups.length.toString()}
-                                    dropType="group"
-                                    remember={true}
-                                >
-                                    {isAddingGroup ? (
-                                        <AddGroupForm
-                                            board={board}
-                                            newGroupTitle={newGroupTitle}
-                                            setNewGroupTitle={setNewGroupTitle}
-                                            onAddGroup={() => onAddGroup(board._id)}
-                                            setIsAddingGroup={setIsAddingGroup}
-                                        />
-                                    ) : (
-                                        <button
-                                            className="new-list-btn"
-                                            onClick={() => setIsAddingGroup(true)}
-                                        >
-                                            {board.groups.length ? 'Add another list' : 'Add a list'}
-                                        </button>
-                                    )}
-                                </Drag.DropZone>
-                            </Drag.DropZone>
-                        )}
-                    </Drag>
-                    <pre> {JSON.stringify(board, null, 2)} </pre>
-                </section>
-            </div>
-        </section>
+                {isAddingGroup ? (
+                    <AddGroupForm
+                        board={board}
+                        newGroupTitle={newGroupTitle}
+                        setNewGroupTitle={setNewGroupTitle}
+                        onAddGroup={() => onAddGroup(board._id)}
+                        setIsAddingGroup={setIsAddingGroup}
+                    />
+                ) : (
+                    <button
+                        className="new-list-btn"
+                        onClick={() => setIsAddingGroup(true)}
+                    >
+                        {board.groups.length ? 'Add another list' : 'Add a list'}
+                    </button>
+                )}
+            </section>
         </div>
     )
 }
