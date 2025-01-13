@@ -97,6 +97,10 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
         }
     }
 
+    function getTaskClass(task) {
+        return task.style.coverColor ? 'task-preview has-cover' : 'task-preview'
+    }
+
     if (!group) return <div>Loading...</div>
 
     return (
@@ -132,6 +136,7 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
                             key={task.id}
                             task={task}
                             isDragging={isDragging}
+                            className={getTaskClass(task)}
                         />
                     )}
                 </TaskDragDropContainer>
