@@ -54,64 +54,65 @@ export function BoardDetails() {
         const updatedBoard = structuredClone(board)
         
         try {
-            if (dragType === "task") {
-                // Handle dropping task into a group (either empty or with tasks)
-                const [targetGroupId, targetTaskIdxString] = drop.split("-")
-                const targetTaskIdx = parseInt(targetTaskIdxString)
+            // Initialize tasks arrays for all groups if they don't exist
+            updatedBoard.groups = updatedBoard.groups.map(group => ({
+                ...group,
+                tasks: group.tasks || []
+            }))
     
+            if (dragType === "task") {
+                const [targetGroupId, targetTaskIdxString] = drop.split("-")
+                const targetTaskIdx = parseInt(targetTaskIdxString) || 0 // Default to 0 if NaN
+                
                 // Find source group and task
                 let sourceGroupIdx = -1
                 let sourceTaskIdx = -1
+                let task = null
     
-                updatedBoard.groups.forEach((group, groupIdx) => {
-                    if (!group.tasks) group.tasks = [] // Ensure tasks exist on each group
-                    const taskIdx = group.tasks.findIndex(task => task.id === dragItem)
+                // Find and remove task from source group
+                for (let groupIdx = 0; groupIdx < updatedBoard.groups.length; groupIdx++) {
+                    const taskIdx = updatedBoard.groups[groupIdx].tasks.findIndex(t => t.id === dragItem)
                     if (taskIdx !== -1) {
                         sourceGroupIdx = groupIdx
                         sourceTaskIdx = taskIdx
+                        task = updatedBoard.groups[groupIdx].tasks[taskIdx]
+                        updatedBoard.groups[groupIdx].tasks.splice(taskIdx, 1)
+                        break
                     }
-                })
-    
-                if (sourceGroupIdx === -1) return
-    
-                // Get task and remove from old position
-                const [task] = updatedBoard.groups[sourceGroupIdx].tasks.splice(sourceTaskIdx, 1)
-    
-                // Find target group and ensure it has a tasks array
-                const targetGroupIdx = updatedBoard.groups.findIndex(group => group.id === targetGroupId)
-                if (targetGroupIdx === -1) return
-    
-                if (!updatedBoard.groups[targetGroupIdx].tasks) {
-                    updatedBoard.groups[targetGroupIdx].tasks = [] // Initialize tasks if empty
                 }
     
-                // Add task to new position in the target group
+                if (!task) return
+    
+                // Find target group
+                const targetGroupIdx = updatedBoard.groups.findIndex(g => g.id === targetGroupId)
+                if (targetGroupIdx === -1) return
+    
+                // Ensure target group has a tasks array
+                if (!updatedBoard.groups[targetGroupIdx].tasks) {
+                    updatedBoard.groups[targetGroupIdx].tasks = []
+                }
+    
+                // Add task to new position
                 updatedBoard.groups[targetGroupIdx].tasks.splice(targetTaskIdx, 0, task)
     
             } else if (dragType === "group") {
-                // Handle group-to-group drag and drop
                 const targetGroupIdx = parseInt(drop)
-    
-                // Find source group
-                const sourceGroupIdx = updatedBoard.groups.findIndex(group => group.id === dragItem)
+                const sourceGroupIdx = updatedBoard.groups.findIndex(g => g.id === dragItem)
+                
                 if (sourceGroupIdx === -1) return
     
-                // Get group and remove from old position
                 const [group] = updatedBoard.groups.splice(sourceGroupIdx, 1)
-    
-                // Add group to new position
                 updatedBoard.groups.splice(targetGroupIdx, 0, group)
             }
     
-            // Optimistic
-            store.dispatch({ type: 'SET_BOARD', board: updatedBoard });
+            // Optimistic update
+            store.dispatch({ type: 'SET_BOARD', board: updatedBoard })
             await updateBoard(updatedBoard)
             showSuccessMsg('Board updated successfully')
         } catch (err) {
             console.error('Cannot update board', err)
             showErrorMsg('Cannot update board')
-            // Optimistic error handling
-            loadBoard(board.id)
+            loadBoard(board._id)
         }
     }
     
@@ -193,6 +194,7 @@ export function BoardDetails() {
                             </Drag.DropZone>
                         )}
                     </Drag>
+                    <pre> {JSON.stringify(board, null, 2)} </pre>
                 </section>
             </div>
         </section>

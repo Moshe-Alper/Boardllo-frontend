@@ -12,17 +12,18 @@ export function BoardGroup({ board, group, onUpdateGroup, activeItem, activeType
     const [editedGroupTitle, setEditedGroupTitle] = useState(group.title)
     const [isAddingTask, setIsAddingTask] = useState(false)
     const [newTaskTitle, setNewTaskTitle] = useState('')
-    const [tasks, setTasks] = useState(group.tasks || [])
     const [anchorEl, setAnchorEl] = useState(null)
     const [isCollapsed, setIsCollapsed] = useState(group.isCollapsed)
     
+    // Ensure group always has a tasks array
+    if (!group.tasks) {
+        group.tasks = []
+        onUpdateGroup(group)
+    }
+
     useEffect(() => {
         loadBoard(board._id)
     }, [board._id])
-
-    useEffect(() => {
-        setTasks(group.tasks || [])
-    }, [group.tasks])
 
     function handleGroupTitleSave() {
         group.title = editedGroupTitle
@@ -45,13 +46,17 @@ export function BoardGroup({ board, group, onUpdateGroup, activeItem, activeType
         const task = boardService.getEmptyTask()
         task.title = newTaskTitle
 
-        setTasks(prevTasks => [...prevTasks, { ...task, id: 'temp-id' }])
+        const tempTask = { ...task, id: 'temp-id' }
+        
+        // Update the group directly
+        group.tasks = [...(group.tasks || []), tempTask]
+        onUpdateGroup({ ...group })
 
         try {
             const savedTask = await addTask(board._id, group.id, task)
-            setTasks(prevTasks => prevTasks.map(task =>
-                task.id === 'temp-id' ? savedTask : task
-            ))
+            
+            group.tasks = group.tasks.map(t => t.id === 'temp-id' ? savedTask : t)
+            onUpdateGroup({ ...group })
 
             loadBoard(board._id)
             showSuccessMsg(`Task added (id: ${savedTask.id})`)
@@ -59,7 +64,9 @@ export function BoardGroup({ board, group, onUpdateGroup, activeItem, activeType
         } catch (err) {
             console.log('Cannot add task', err)
             showErrorMsg('Cannot add task')
-            setTasks(prevTasks => prevTasks.filter(task => task.id !== 'temp-id'))
+            
+            group.tasks = group.tasks.filter(t => t.id !== 'temp-id')
+            onUpdateGroup({ ...group })
         }
     }
 
@@ -72,18 +79,20 @@ export function BoardGroup({ board, group, onUpdateGroup, activeItem, activeType
     }
 
     async function toggleCollapse() {
-        setIsCollapsed(!isCollapsed)
+        const newCollapsedState = !isCollapsed
+        setIsCollapsed(newCollapsedState)
+        
         const updatedGroup = { 
             ...group, 
-            isCollapsed: !group.isCollapsed 
+            isCollapsed: newCollapsedState 
         }
         try {
             await updateGroup(board._id, updatedGroup)
-            if (!updatedGroup.isCollapsed) {
+            if (!newCollapsedState) {
                 setIsEditingGroupTitle(false)
             }
         } catch (err) {
-            setIsCollapsed(isCollapsed)
+            setIsCollapsed(!newCollapsedState)
             console.log('Collapsed not updated', err)
         }
     }
@@ -120,11 +129,11 @@ export function BoardGroup({ board, group, onUpdateGroup, activeItem, activeType
                     onAddTask={() => setIsAddingTask(true)}
                     isCollapsed={isCollapsed}
                     onToggleCollapse={toggleCollapse}
-                    taskCount={tasks.length}
+                    taskCount={(group.tasks || []).length}
                 />
 
                 <div className="tasks-container">
-                    {tasks.map((task, taskIndex) => (
+                    {(group.tasks || []).map((task, taskIndex) => (
                         <Drag.DropZones
                             key={task.id}
                             prevId={`${group.id}-${taskIndex}`}
@@ -152,12 +161,12 @@ export function BoardGroup({ board, group, onUpdateGroup, activeItem, activeType
                     ))}
 
                     <Drag.DropZone
-                        dropId={`${group.id}-${tasks.length}`}
+                        dropId={`${group.id}-${(group.tasks || []).length}`}
                         dropType="task"
                         remember={true}
                     >
                         <Drag.DropGuide
-                            dropId={`${group.id}-${tasks.length}`}
+                            dropId={`${group.id}-${(group.tasks || []).length}`}
                             dropType="task"
                             className="task-preview bg-gray-200 h-20 mx-2"
                         />
