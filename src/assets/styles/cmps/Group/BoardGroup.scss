@@ -1,14 +1,15 @@
 .board-group {
     background-color: $background-light;
-    width: 17rem; // 272px 
-    min-height: 2rem; // 32px
+    min-width: 272px;
+    max-width: 272px;
     margin: $layoutPadding-small;
     padding: $layoutPadding-small;
     border-radius: $border-radius;
     box-shadow: $card-shadow;
     display: flex;
     flex-direction: column;
-    transition: width 0.3s ease;
+    flex-shrink: 0; 
+    transition: $hover-transition;
 
     &.collapsed {
         width: 2.5rem;

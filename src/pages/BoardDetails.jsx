@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { boardService } from '../services/board'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { loadBoard, updateBoard, addGroup, loadBoardsToSidebar, updateGroup } from '../store/actions/board.actions'
@@ -20,7 +20,8 @@ export function BoardDetails() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const [activeItem, setActiveItem] = useState(null)
     const [activeType, setActiveType] = useState(null)
-
+    const dispatch = useDispatch()  
+     
     function toggleSidebar() {
         setIsSidebarOpen(!isSidebarOpen)
     }
@@ -59,57 +60,6 @@ export function BoardDetails() {
         } catch (err) {
             console.error('Cannot update group', err)
             showErrorMsg('Cannot update group')
-        }
-    }
-
-    async function onAddGroup(boardId) {
-        if (!newGroupTitle.trim()) {
-            showErrorMsg('Group title cannot be empty')
-            setIsAddingGroup(false)
-            return
-        }
-
-        const group = {
-            ...boardService.getEmptyGroup(),
-            title: newGroupTitle
-        }
-
-        const optimisticBoard = {
-            ...board,
-            groups: [...board.groups, { ...group, id: 'temp-id' }]
-        }
-        dispatch({ type: SET_BOARD, board: optimisticBoard })
-        setNewGroupTitle('')
-        setIsAddingGroup(false)
-
-        try {
-            await addGroup(boardId, group)
-            showSuccessMsg('Group added successfully')
-        } catch (err) {
-            console.log('Cannot add group', err)
-            showErrorMsg('Cannot add group')
-            dispatch({ type: SET_BOARD, board })
-        }
-    }
-
-    async function onUpdateGroup(updatedGroup) {
-        const originalBoard = { ...board }
-        const optimisticBoard = {
-            ...board,
-            groups: board.groups.map(group => 
-                group.id === updatedGroup.id ? updatedGroup : group
-            )
-        }
-        
-        dispatch({ type: SET_BOARD, board: optimisticBoard })
-    
-        try {
-            await updateGroup(board._id, updatedGroup)
-            showSuccessMsg('Group updated successfully')
-        } catch (err) {
-            console.error('Cannot update group', err)
-            showErrorMsg('Cannot update group')
-            dispatch({ type: SET_BOARD, board: originalBoard })
         }
     }
 
@@ -168,38 +118,42 @@ export function BoardDetails() {
             <BoardSidebar isOpen={isSidebarOpen} toggleDrawer={toggleSidebar} boards={boards} />
             <section className="board-details">
                 <BoardHeader board={board} />
-                <GroupDragDropContainer
-                    items={board.groups}
-                    onDragEnd={handleDragEnd}
-                >
-                    {(group, index, isDragging) => (
-                        <BoardGroup
-                            key={group.id}
-                            board={board}
-                            group={group}
-                            index={index}
-                            onUpdateGroup={onUpdateGroup}
-                            isDragging={isDragging}
-                        />
-                    )}
-                </GroupDragDropContainer>
-
-                {isAddingGroup ? (
-                    <AddGroupForm
-                        board={board}
-                        newGroupTitle={newGroupTitle}
-                        setNewGroupTitle={setNewGroupTitle}
-                        onAddGroup={() => onAddGroup(board._id)}
-                        setIsAddingGroup={setIsAddingGroup}
-                    />
-                ) : (
-                    <button
-                        className="new-list-btn"
-                        onClick={() => setIsAddingGroup(true)}
+                <div className="group-container">
+                    <GroupDragDropContainer
+                        items={board.groups}
+                        onDragEnd={handleDragEnd}
                     >
-                        {board.groups.length ? 'Add another list' : 'Add a list'}
-                    </button>
-                )}
+                        {(group, index, isDragging) => (
+                            <BoardGroup
+                                key={group.id}
+                                board={board}
+                                group={group}
+                                index={index}
+                                onUpdateGroup={onUpdateGroup}
+                                isDragging={isDragging}
+                            />
+                        )}
+                    </GroupDragDropContainer>
+
+                    <div className="add-group-wrapper">
+                        {isAddingGroup ? (
+                            <AddGroupForm
+                                board={board}
+                                newGroupTitle={newGroupTitle}
+                                setNewGroupTitle={setNewGroupTitle}
+                                onAddGroup={() => onAddGroup(board._id)}
+                                setIsAddingGroup={setIsAddingGroup}
+                            />
+                        ) : (
+                            <button
+                                className="new-list-btn"
+                                onClick={() => setIsAddingGroup(true)}
+                            >
+                                {board.groups.length ? 'Add another list' : 'Add a list'}
+                            </button>
+                        )}
+                    </div>
+                </div>
             </section>
         </div>
     )

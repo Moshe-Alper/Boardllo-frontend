@@ -56,3 +56,15 @@
         }
     }
   }
+
+//  Drag and Drop
+  @mixin card-hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-medium;
+    transition: $hover-transition;
+  }
+  
+  @mixin group-hover {
+    background-color: darken($background-light, 3%);
+    transition: $hover-transition;
+  }
