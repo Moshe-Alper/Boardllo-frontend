@@ -36,13 +36,19 @@ export function ImgUploader() {
         // onDragOver={console.log}
         onDragOver={(ev) => ev.preventDefault()}
       >
-        <img
-          src={
-            imgData ||
-            'https://res.cloudinary.com/dv7uswhcz/image/upload/f_auto,q_auto/nersbxk6gursqfexji42'
-          }
-          style={{ width: '70px', height: '70px', cursor: 'pointer', borderRadius: '50%' }}
-        />
+        {imgData ? (
+          <img
+            style={{ width: '70px', height: '70px', cursor: 'pointer', borderRadius: '50%' }}
+            src={imgData}
+          ></img>
+        ) : (
+          <div
+            className='user-initial-small'
+            style={{ width: '70px', height: '70px', cursor: 'pointer', borderRadius: '50%' }}
+          >
+            {user.fullname?.charAt(0).toUpperCase()}
+          </div>
+        )}
 
         <input hidden type='file' onChange={uploadImg} accept='img/*' />
       </label>

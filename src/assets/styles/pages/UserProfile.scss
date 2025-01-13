@@ -64,6 +64,19 @@
     padding: $spacing-xl;
   }
 
+  .user-initial-small {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: $primary-blue;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 24px;
+  }
+
   .img-uploader {
     display: flex;
     justify-content: center;

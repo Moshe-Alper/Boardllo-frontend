@@ -118,14 +118,20 @@
 
     .homepage-imgs {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      align-items: center;
 
       .carousel-img {
-        transform: translate(20%, 100%);
+        grid-column: 1 / 4;
+        grid-row: 2 / 3;
+        rotate: -10deg;
       }
 
       .collage-img {
-        transform: translateX(-20%);
+        grid-column: 3/ -1;
+        margin-block-start: 3rem;
+        rotate: 10deg;
       }
     }
 

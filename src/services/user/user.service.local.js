@@ -48,8 +48,7 @@ async function login(userCred) {
 }
 
 async function signup(userCred) {
-  if (!userCred.imgUrl)
-    userCred.imgUrl = 'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png'
+  if (!userCred.imgUrl) userCred.imgUrl = ''
   userCred.score = 10000
 
   const user = await storageService.post('user', userCred)
@@ -102,7 +101,7 @@ async function _createAdmin(userCred) {
     username: 'admin',
     password: 'admin',
     fullname: 'Mustafa Adminsky',
-    imgUrl: 'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png',
+    imgUrl: '',
     score: 10000
   }
 
