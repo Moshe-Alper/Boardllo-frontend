@@ -1,16 +1,9 @@
-import React from 'react';
 import { svgService } from "../../services/svg.service";
 
-export function TaskPreview({ task, isDragging }) {
+export function TaskPreview({ task, isDragging, className }) {
+    console.log('🚀 className', className)
     return (
-        <article 
-            className={`task-preview flex column ${isDragging ? 'dragging' : ''}`}
-            style={{
-                opacity: isDragging ? 0.5 : 1,
-                transform: isDragging ? 'scale(1.02)' : 'scale(1)',
-                transition: 'all 0.2s ease'
-            }}
-        >
+        <article className={`${className} flex column ${isDragging ? "rotate-3" : ""}`}>
             <p>{task.title}</p>
             <div className="edit-icon-container">
                 <div className="edit-icon">
@@ -18,5 +11,5 @@ export function TaskPreview({ task, isDragging }) {
                 </div>
             </div>
         </article>
-    );
+    )
 }

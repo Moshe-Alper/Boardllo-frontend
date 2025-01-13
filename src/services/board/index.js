@@ -43,6 +43,7 @@ function getEmptyTask() {
     labelIds: [],
     byMember: null,
     style: {
+      coverColor: 'blue',
       backgroundColor: ''
     },
     archivedAt: null
