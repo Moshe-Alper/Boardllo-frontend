@@ -2,15 +2,24 @@ import React from 'react'
 import { svgService } from "../../services/svg.service"
 import { onToggleModal } from "../../store/actions/app.actions"
 import { TaskDetails } from "./TaskDetails"
+import { TaskQuickActions } from "./TaskQuickActions"
 
 export function TaskPreview({ task, isDragging }) {
     const hasCover = !!task.style.coverColor
 
     function onOpenTaskDetails(ev) {
         if (ev.target.closest('.edit-icon-container')) return
-        
+
         onToggleModal({
             cmp: TaskDetails,
+            props: { task }
+        })
+    }
+
+    function onOpenQuickActions(ev) {
+        ev.stopPropagation()
+        onToggleModal({
+            cmp: TaskQuickActions,
             props: { task }
         })
     }
@@ -28,7 +37,7 @@ export function TaskPreview({ task, isDragging }) {
         >
             <p>{task.title}</p>
             <div className="edit-icon-container">
-                <div className="edit-icon">
+                <div className="edit-icon" onClick={onOpenQuickActions}>
                     <img src={svgService.pencilIcon} alt="Edit Icon" />
                 </div>
             </div>

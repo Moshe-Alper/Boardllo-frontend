@@ -1,0 +1,34 @@
+.task-quick-actions {
+    inline-size: 18rem;
+    background-color: $background-white;
+    border-radius: $border-radius-medium;
+    padding: $spacing-xs;
+    box-shadow: $shadow-medium;
+    
+    .quick-action-btn {
+        display: flex;
+        align-items: center;
+        inline-size: 100%;
+        padding: $spacing-sm $spacing-md;
+        background: none;
+        border: none;
+        border-radius: $border-radius-small;
+        color: $text-primary;
+        font-size: 0.875rem;
+        font-family: $workspace-font;
+        text-align: start;
+        cursor: pointer;
+        transition: $hover-transition;
+
+        &:hover {
+            background-color: $button-secondary-hover-bg;
+        }
+
+        &.danger {
+            &:hover {
+                background-color: rgba($accent-orange, 0.1);
+                color: darken($accent-orange, 10%);
+            }
+        }
+    }
+}
