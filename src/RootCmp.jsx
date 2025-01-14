@@ -12,6 +12,7 @@ import { UserMsg } from './cmps/UserMsg.jsx'
 import { Test } from './pages/Test.jsx'
 import { LoginForm } from './cmps/LoginForm.jsx'
 import { SignupForm } from './cmps/SignupForm.jsx'
+import { MobileSearch } from './cmps/MobileSearch.jsx'
 
 export function RootCmp() {
   return (
@@ -29,6 +30,7 @@ export function RootCmp() {
           <Route path='login' element={<LoginForm />}></Route>
           <Route path='signup' element={<SignupForm />}></Route>
           <Route path='test' element={<Test />}></Route>
+          <Route path='search' element={<MobileSearch />}></Route>
         </Routes>
       </main>
     </div>

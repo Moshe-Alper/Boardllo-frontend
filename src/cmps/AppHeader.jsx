@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
 import { svgService } from '../services/svg.service.js'
@@ -47,6 +47,9 @@ export function AppHeader() {
                 />
               </div>
             </div>
+            <Link className='search-icon-mobile' to='search'>
+              <img className='search-icon-mobile' src={svgService.searchIcon} alt='Search' />
+            </Link>
 
             <img
               style={{ cursor: 'pointer' }}

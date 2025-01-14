@@ -37,6 +37,13 @@
     }
   }
 
+  .search-icon-mobile {
+    display: none;
+    @media (max-width: $breakpoint-tablet) {
+      display: block;
+    }
+  }
+
   .nav-center {
     flex-grow: 1;
     max-width: 650px;
