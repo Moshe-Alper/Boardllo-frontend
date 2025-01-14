@@ -14,7 +14,6 @@ import {
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import { boardService } from '../services/board'
 import { Loader } from '../cmps/Loader.jsx'
-import { userService } from '../services/user'
 
 // import { BoardFilter } from '../cmps/Board/BoardFilter.jsx'
 // import { BoardList } from '../cmps/Board/BoardList.jsx'
