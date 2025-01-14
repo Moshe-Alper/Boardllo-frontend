@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
+import Popover from '@mui/material/Popover'
 import { svgService } from "../../services/svg.service"
 import { onToggleModal } from "../../store/actions/app.actions"
 import { TaskDetails } from "./TaskDetails"
 import { TaskQuickActions } from "./TaskQuickActions"
 
 export function TaskPreview({ task, isDragging }) {
+    const [anchorEl, setAnchorEl] = useState(null)
+    const isPopoverOpen = Boolean(anchorEl)
+
     const hasCover = !!task.style.coverColor
 
     function onOpenTaskDetails(ev) {
@@ -16,12 +20,14 @@ export function TaskPreview({ task, isDragging }) {
         })
     }
 
-    function onOpenQuickActions(ev) {
+    function onOpenPopover(ev) {
         ev.stopPropagation()
-        onToggleModal({
-            cmp: TaskQuickActions,
-            props: { task }
-        })
+        setAnchorEl(ev.currentTarget)
+    }
+
+    function onClosePopover(ev) {
+        ev.stopPropagation()
+        setAnchorEl(null)
     }
 
     return (
@@ -37,10 +43,26 @@ export function TaskPreview({ task, isDragging }) {
         >
             <p>{task.title}</p>
             <div className="edit-icon-container">
-                <div className="edit-icon" onClick={onOpenQuickActions}>
+                <div className="edit-icon" onClick={onOpenPopover}>
                     <img src={svgService.pencilIcon} alt="Edit Icon" />
                 </div>
             </div>
+
+            <Popover
+                open={isPopoverOpen}
+                anchorEl={anchorEl}
+                onClose={onClosePopover}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+            >
+                <TaskQuickActions task={task} onClose={onClosePopover} />
+            </Popover>
         </article>
     )
 }

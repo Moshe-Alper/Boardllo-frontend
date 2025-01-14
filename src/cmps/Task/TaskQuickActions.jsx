@@ -1,25 +1,15 @@
-// TaskQuickActions.jsx
 import React from 'react'
-import { onToggleModal } from '../../store/actions/app.actions'
 import { TaskDetails } from '../Task/TaskDetails'
+import { onToggleModal } from '../../store/actions/app.actions'
+import { TaskPreview } from './TaskPreview'
 
-export function TaskQuickActions({ task }) {
+export function TaskQuickActions({ task, onClose }) {
     function onOpenCard() {
-        // Close current quick actions modal
-        onToggleModal(null)
-        // Open task details modal
-        onToggleModal({
-            cmp: TaskDetails,
-            props: { task }
-        })
+        if (onClose) onClose()
     }
 
     return (
         <div className="task-quick-actions">
-            <header className="quick-actions-header">
-                <h3>Card actions</h3>
-                <button className="close" onClick={() => onToggleModal()}>×</button>
-            </header>
             <div className="actions-list">
                 <button onClick={onOpenCard} className="quick-action-btn">
                     <span>Open card</span>
@@ -45,6 +35,7 @@ export function TaskQuickActions({ task }) {
                 <button className="quick-action-btn">
                     <span>Archive</span>
                 </button>
+                <button className="save" onClick={onClose} style={{ color: 'blue' }}>Save</button>
             </div>
         </div>
     )
