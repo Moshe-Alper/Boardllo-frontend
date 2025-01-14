@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { json, useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { boardService } from '../services/board'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
@@ -17,13 +17,19 @@ export function BoardDetails() {
     const boards = useSelector((storeState) => storeState.boardModule.boards)
     const [isAddingGroup, setIsAddingGroup] = useState(false)
     const [newGroupTitle, setNewGroupTitle] = useState('')
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+    const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
+        const sidebarState = localStorage.getItem('isSidebarOpen')
+        return sidebarState ? JSON.parse(sidebarState) : (false)
+    }
+    )
     const [activeItem, setActiveItem] = useState(null)
     const [activeType, setActiveType] = useState(null)
-    const dispatch = useDispatch()  
-     
-    function toggleSidebar() {
-        setIsSidebarOpen(!isSidebarOpen)
+    const dispatch = useDispatch()
+
+    const toggleSidebar = () => {
+       const newSidebarState = !isSidebarOpen
+       setIsSidebarOpen(newSidebarState)
+       localStorage.setItem('isSidebarOpen' , JSON.stringify(newSidebarState))
     }
 
     useEffect(() => {
@@ -101,7 +107,7 @@ export function BoardDetails() {
             } catch (err) {
                 console.error('Failed to move task:', err)
                 showErrorMsg('Failed to move task')
-             }
+            }
         }
     }
 
