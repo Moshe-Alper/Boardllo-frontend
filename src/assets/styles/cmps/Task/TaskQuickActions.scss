@@ -2,14 +2,67 @@
     inline-size: 18rem;
     background-color: $background-white;
     border-radius: $border-radius-medium;
-    padding: $spacing-xs;
-    box-shadow: $shadow-medium;
-    
+    overflow: hidden;
+
+    .quick-actions-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: $spacing-sm;
+        border-block-end: 1px solid $border-light-gray;
+
+        h3 {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: $text-primary;
+            margin: 0;
+        }
+
+        .close {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: $text-secondary;
+            cursor: pointer;
+            padding: $spacing-xs;
+            border-radius: $border-radius-small;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            block-size: 1.5rem;
+            inline-size: 1.5rem;
+
+            &:hover {
+                background-color: $button-secondary-hover-bg;
+                color: $text-primary;
+            }
+        }
+    }
+
+    .actions-list {
+        padding: $spacing-xs;
+        
+        &:not(:last-child) {
+            border-block-end: 1px solid $border-light-gray;
+        }
+
+        &.danger {
+            .quick-action-btn {
+                color: $text-secondary;
+                
+                &:hover {
+                    background-color: rgba($accent-orange, 0.1);
+                    color: darken($accent-orange, 10%);
+                }
+            }
+        }
+    }
+
     .quick-action-btn {
         display: flex;
         align-items: center;
         inline-size: 100%;
-        padding: $spacing-sm $spacing-md;
+        padding: $spacing-sm;
         background: none;
         border: none;
         border-radius: $border-radius-small;
@@ -22,13 +75,6 @@
 
         &:hover {
             background-color: $button-secondary-hover-bg;
-        }
-
-        &.danger {
-            &:hover {
-                background-color: rgba($accent-orange, 0.1);
-                color: darken($accent-orange, 10%);
-            }
         }
     }
 }
