@@ -24,6 +24,7 @@
       padding: $spacing-sm;
       border: 1px solid $border-light-gray;
       border-radius: $border-radius-medium;
+      min-width: 100%;
 
       &:focus {
         border-color: $primary-blue;
