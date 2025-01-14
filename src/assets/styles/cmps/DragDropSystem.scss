@@ -54,7 +54,7 @@
   .task-drag-placeholder {
     background-color: darken($background-light, 5%);
     border-radius: $border-radius-small;
-    margin-bottom: $spacing-sm;
+    margin-block-end: $spacing-sm;
     height: 2.5rem;
     transition: $hover-transition;
   }
@@ -103,7 +103,7 @@
 .task-drag-placeholder {
   background-color: darken($background-light, 5%);
   border-radius: $border-radius-small;
-  margin-bottom: $spacing-sm;
+  margin-block-end: $spacing-sm;
   height: 2.5rem;
   transition: $hover-transition;
 }
