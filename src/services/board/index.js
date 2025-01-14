@@ -44,7 +44,7 @@ function getEmptyTask() {
     byMember: null,
     style: {
       backgroundColor: '',
-      coverColor: 'blue'
+      coverColor: ''
     },
     archivedAt: null
   }

@@ -38,7 +38,7 @@
 
   .account-section {
     padding: 16px;
-    border-bottom: 1px solid $background-light;
+    border-block-end: 1px solid $background-light;
   }
 
   .menu-section {
@@ -47,7 +47,7 @@
 
   .logout-section {
     padding: 8px;
-    border-top: 1px solid $background-light;
+    border-block-start: 1px solid $background-light;
   }
 
   .section-title {
@@ -61,7 +61,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-top: 8px;
+    margin-block-start: 8px;
   }
 
   .user-avatar-small {

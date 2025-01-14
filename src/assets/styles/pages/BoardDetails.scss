@@ -27,7 +27,7 @@
     align-items: flex-start;
     padding: 1rem; // 16px
     height: calc(100vh - $navbar-height);
-    gap: 1rem; // 16px
+    gap: $layoutPadding-small; // 12px
     overflow-x: auto;
     min-width: min-content;
     scrollbar-width: none; // Firefox
@@ -71,7 +71,7 @@
 
     &::before {
       content: '+';
-      margin-right: 0.5rem; // 8px
+      margin-inline-end: 0.5rem; // 8px
       font-weight: bold;
     }
   }

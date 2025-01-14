@@ -79,7 +79,6 @@ export function BoardDetails() {
             const [removed] = updatedBoard.groups.splice(source.index, 1)
             updatedBoard.groups.splice(destination.index, 0, removed)
 
-            dispatch({ type: SET_BOARD, board: updatedBoard })
 
             try {
                 await updateBoard(updatedBoard)
@@ -87,7 +86,6 @@ export function BoardDetails() {
             } catch (err) {
                 console.error('Failed to reorder group:', err)
                 showErrorMsg('Failed to reorder group')
-                dispatch({ type: SET_BOARD, board: originalBoard })
             }
         } else if (type === "task") {
             const sourceGroup = updatedBoard.groups.find(group => group.id === source.droppableId)
@@ -98,16 +96,13 @@ export function BoardDetails() {
             const [movedTask] = sourceGroup.tasks.splice(source.index, 1)
             destinationGroup.tasks.splice(destination.index, 0, movedTask)
 
-            dispatch({ type: SET_BOARD, board: updatedBoard })
-
             try {
                 await updateBoard(updatedBoard)
                 showSuccessMsg('Task moved successfully')
             } catch (err) {
                 console.error('Failed to move task:', err)
                 showErrorMsg('Failed to move task')
-                dispatch({ type: SET_BOARD, board: originalBoard })
-            }
+             }
         }
     }
 

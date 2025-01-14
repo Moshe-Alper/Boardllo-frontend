@@ -8,7 +8,7 @@
 
   .sidebar {
     background-color: $background-white;
-    border-right: 1px solid $border-light-gray;
+    border-inline-end: 1px solid $border-light-gray;
     padding: $spacing-md;
     margin-inline-start: 15rem;
 
@@ -37,7 +37,7 @@
     }
 
     .workspace-section {
-      margin-top: $spacing-lg;
+      margin-block-start: $spacing-lg;
 
       .workspace-header {
         padding: $spacing-sm;

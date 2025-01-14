@@ -13,7 +13,7 @@
     .nav-items {
       display: flex;
       gap: $spacing-md;
-      border-bottom: 2px solid $border-light-gray;
+      border-block-end: 2px solid $border-light-gray;
       padding-bottom: $spacing-xs;
     }
 

@@ -3,7 +3,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 export function GroupDragDropContainer({ items, onDragEnd, children }) {
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="board" type="COLUMN" direction="horizontal">
+            <Droppable droppableId="board" type="group" direction="horizontal">
                 {(provided) => (
                     <div 
                         className="board-content"

@@ -46,7 +46,7 @@
             display: flex;
             gap: $spacing-sm;
             padding: 0 $spacing-sm;
-            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border-inline-start: 1px solid rgba(255, 255, 255, 0.2);
             margin-inline-start: $spacing-sm;
 
             .workspace-name {
