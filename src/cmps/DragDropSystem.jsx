@@ -1,6 +1,6 @@
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 
-export function GroupDragDropContainer({ items, onDragEnd, children }) {
+export function GroupDragDropContainer({ items = [], onDragEnd, children }) {
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="board" type="group" direction="horizontal">
@@ -35,7 +35,7 @@ export function GroupDragDropContainer({ items, onDragEnd, children }) {
     )
 }
 
-export function TaskDragDropContainer({ groupId, tasks, children }) {
+export function TaskDragDropContainer({ groupId, tasks = [], children }) {
     return (
         <Droppable droppableId={groupId} type="task">
             {(provided) => (
