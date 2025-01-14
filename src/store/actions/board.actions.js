@@ -92,7 +92,7 @@ export async function loadGroup(boardId, groupId) {
 
 // Group Actions
 export async function addGroup(boardId, group) {
-    const optimisticGroup = { ...group, id: `temp-${Date.now()}`  }
+    const optimisticGroup = { ...group, id: 'temp-id' }
     store.dispatch(getCmdAddGroup(optimisticGroup))
     try {
         const savedGroup = await boardService.saveGroup(boardId, group)
@@ -131,14 +131,14 @@ export async function removeGroup(boardId, groupId) {
 
 // Task Actions
 export async function addTask(boardId, groupId, task) {
-    const optimisticTask = { ...task, _id: 'temp-id' }
+    const optimisticTask = { ...task, id: 'temp-id' }
     store.dispatch(getCmdAddTask(optimisticTask))
     try {
         const savedTask = await boardService.saveTask(boardId, groupId, task)
         store.dispatch(getCmdUpdateTask(savedTask))
         return savedTask
     } catch (err) {
-        store.dispatch(getCmdRemoveTask(optimisticTask._id))
+        store.dispatch(getCmdRemoveTask(optimisticTask.id))
         console.log('Cannot add task', err)
         throw err
     }

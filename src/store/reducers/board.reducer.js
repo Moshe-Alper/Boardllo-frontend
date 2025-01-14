@@ -74,14 +74,14 @@ export function boardReducer(state = initialState, action) {
             newState = { ...state, groups: [...state.groups, action.group] }
             break
         case UPDATE_GROUP:
-            groups = state.groups.map(group => (group._id === action.group._id ? action.group : group))
+            groups = state.groups.map(group => (group.id === action.group.id ? action.group : group))
             newState = { ...state, groups }
             break
         case REMOVE_GROUP:
-            const removedGroup = state.groups.find(group => group._id === action.groupId)
+            const removedGroup = state.groups.find(group => group.id === action.groupId)
             newState = {
                 ...state,
-                groups: state.groups.filter(group => group._id !== action.groupId),
+                groups: state.groups.filter(group => group.id !== action.groupId),
                 lastGroup: removedGroup,
             }
             break
@@ -96,14 +96,14 @@ export function boardReducer(state = initialState, action) {
             newState = { ...state, tasks: [...state.tasks, action.task] }
             break
         case UPDATE_TASK:
-            tasks = state.tasks.map(task => (task._id === action.task._id ? action.task : task))
+            tasks = state.tasks.map(task => (task.id === action.task.id ? action.task : task))
             newState = { ...state, tasks }
             break
         case REMOVE_TASK:
-            const removedTask = state.tasks.find(task => task._id === action.taskId)
+            const removedTask = state.tasks.find(task => task.id === action.taskId)
             newState = {
                 ...state,
-                tasks: state.tasks.filter(task => task._id !== action.taskId),
+                tasks: state.tasks.filter(task => task.id !== action.taskId),
                 lastTask: removedTask,
             }
             break
