@@ -1,65 +1,87 @@
-.list-action {
-    min-width: 304px;
+.list-actions-popover {
+    .MuiPopover-paper {
+        margin-block-start: 4px;
+        border-radius: $border-radius-medium;
+        box-shadow: $shadow-medium;
+        overflow: hidden;
+    }
+}
+
+.list-actions {
+    inline-size: 304px;
     background-color: $background-white;
-    border-radius: $border-radius-small;
-    box-shadow: $shadow-medium;
-    
-    // Header section
-    .list-action-header {
-        padding: $layoutPadding-small;
-        border-block-end: 1px solid $border-light-gray;
+
+    .list-actions-header {
+        display: flex;
         justify-content: space-between;
         align-items: center;
-        
+        padding-block: $layoutPadding-small;
+        padding-inline: $layoutPadding-medium;
+        border-block-end: 1px solid $border-light-gray;
+
         h3 {
             margin: 0;
-            font-size: 14px;
+            font-size: 0.875rem;
             font-weight: 500;
             color: $text-primary;
             font-family: $workspace-font;
         }
-        
-        button {
-            min-width: unset;
-            padding: 4px;
-            font-size: 16px;
+
+        .close-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+            border-radius: $border-radius-small;
+            background: transparent;
+            border: none;
+            cursor: pointer;
             color: $text-secondary;
-            
+            font-size: 1.25rem;
+            line-height: 1;
+
             &:hover {
                 background-color: $button-secondary-hover-bg;
                 color: $text-primary;
             }
         }
     }
-    
-    // Action buttons
-    .MuiButton-root {
-        justify-content: flex-start;
-        padding: $layoutPadding-small $layoutPadding-medium;
-        text-transform: none;
-        font-family: $workspace-font;
-        font-weight: 400;
-        font-size: 14px;
-        color: $text-primary;
-        width: 100%;
-        border-radius: 0;
-        
-        &:hover {
-            background-color: $button-secondary-hover-bg;
+
+    .list-actions-content {
+        padding-block: $layoutPadding-smallest;
+
+        .actions-group {
+            &:not(:last-child) {
+                border-block-end: 1px solid $border-light-gray;
+                padding-block-end: $layoutPadding-smallest;
+                margin-block-end: $layoutPadding-smallest;
+            }
         }
-        
-        &:last-child {
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            inline-size: 100%;
+            padding-block: $layoutPadding-small;
+            padding-inline: $layoutPadding-medium;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-family: $workspace-font;
+            font-size: 0.875rem;
             color: $text-primary;
-            
+            text-align: start;
+
             &:hover {
-                background-color: rgba($accent-orange, 0.1);
-                color: darken($accent-orange, 10%);
+                background-color: $button-secondary-hover-bg;
+            }
+
+            &.action-btn-danger {
+                &:hover {
+                    background-color: rgba($accent-orange, 0.1);
+                    color: darken($accent-orange, 10%);
+                }
             }
         }
     }
-}
-
-.MuiPopover-paper {
-    margin-block-start: 4px;
-    box-shadow: $shadow-medium;
 }

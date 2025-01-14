@@ -8,25 +8,43 @@ export function BoardGroupListActions({ anchorEl, isOpen, onClose, onAddTask }) 
             onClose={onClose}
             anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'left',
+                horizontal: 'left'
             }}
             transformOrigin={{
                 vertical: 'top',
-                horizontal: 'left',
+                horizontal: 'left'
             }}
             className="list-actions-popover"
         >
             <div className="list-actions">
-                <header className="list-actions-header flex">
+                <header className="list-actions-header">
                     <h3>List actions</h3>
-                    <button className="close-button" onClick={onClose}>×</button>
+                    <button className="close-btn" onClick={onClose}>
+                        <span>&times;</span>
+                    </button>
                 </header>
-                <div className="list-actions-content flex column">
-                    <button className="action-button" onClick={() => { onAddTask(); onClose() }}>Add card...</button>
-                    {/* <button className="action-button">Copy list...</button>
-                    <button className="action-button">Move list...</button>
-                    <button className="action-button">Watch</button> */}
-                    <button className="action-button danger">Archive this list</button>
+                
+                <div className="list-actions-content">
+                    <div className="actions-group">
+                        <button className="action-btn" onClick={() => { onAddTask(); onClose() }}>
+                            <span>Add card...</span>
+                        </button>
+                        <button className="action-btn">
+                            <span>Copy list...</span>
+                        </button>
+                        <button className="action-btn">
+                            <span>Move list...</span>
+                        </button>
+                        <button className="action-btn">
+                            <span>Watch</span>
+                        </button>
+                    </div>
+                    
+                    <div className="actions-group">
+                        <button className="action-btn action-btn-danger">
+                            <span>Archive this list</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </Popover>
