@@ -90,8 +90,9 @@ async function save(board) {
 async function saveGroup(boardId, group) {
   const board = await getById(boardId)
   if (!board) throw new Error('Board not found')
+  if (!board.groups) board.groups = []
 
-  const groupIdx = board.groups.findIndex((g) => g.id === group.id)
+  const groupIdx = board.groups.findIndex((group) => group.id === group.id)
   if (groupIdx === -1) {
     const newGroup = {
       id: makeId(),
@@ -101,6 +102,7 @@ async function saveGroup(boardId, group) {
       style: {},
       isCollapsed: false
     }
+
     board.groups.push(newGroup)
     await storageService.put(STORAGE_KEY, board)
     return newGroup

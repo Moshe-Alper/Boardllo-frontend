@@ -92,14 +92,14 @@ export async function loadGroup(boardId, groupId) {
 
 // Group Actions
 export async function addGroup(boardId, group) {
-    const optimisticGroup = { ...group, id: 'temp-id' }
+    const optimisticGroup = { ...group, id: `temp-${Date.now()}`  }
     store.dispatch(getCmdAddGroup(optimisticGroup))
     try {
         const savedGroup = await boardService.saveGroup(boardId, group)
         store.dispatch(getCmdUpdateGroup(savedGroup))
         return savedGroup
     } catch (err) {
-        store.dispatch(getCmdRemoveGroup(optimisticGroup._id))
+        store.dispatch(getCmdRemoveGroup(optimisticGroup.id))
         console.log('Cannot add group', err)
         throw err
     }

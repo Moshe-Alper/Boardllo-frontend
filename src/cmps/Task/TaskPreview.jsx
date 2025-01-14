@@ -9,7 +9,7 @@ export function TaskPreview({ task, isDragging }) {
     const [anchorEl, setAnchorEl] = useState(null)
     const isPopoverOpen = Boolean(anchorEl)
 
-    const hasCover = !!task.style.coverColor
+    const hasCover = !!task?.style?.coverColor
 
     function onOpenTaskDetails(ev) {
         if (ev.target.closest('.edit-icon-container')) return

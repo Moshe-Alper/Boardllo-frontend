@@ -18,9 +18,7 @@ export function BoardDetails() {
     const [isAddingGroup, setIsAddingGroup] = useState(false)
     const [newGroupTitle, setNewGroupTitle] = useState('')
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-    const [activeItem, setActiveItem] = useState(null)
-    const [activeType, setActiveType] = useState(null)
-    const dispatch = useDispatch()  
+
      
     function toggleSidebar() {
         setIsSidebarOpen(!isSidebarOpen)

@@ -16,7 +16,7 @@ function getEmptyBoard() {
 
 function getEmptyGroup() {
   return {
-    id: makeId(),
+    id: '',
     title: '',
     archivedAt: null,
     tasks: [

@@ -35,7 +35,7 @@ export function TaskQuickActions({ task, onClose }) {
                 <button className="quick-action-btn">
                     <span>Archive</span>
                 </button>
-                <button className="save" onClick={onClose} style={{ color: 'blue' }}>Save</button>
+                <button className="save" onClick={onClose}>Save</button>
             </div>
         </div>
     )
