@@ -1,0 +1,111 @@
+.task-details {
+    position: relative;
+    inline-size: 43.75rem;
+    background-color: $background-white; // Changed to white like Trello
+    border-radius: $border-radius-medium;
+    padding: $layoutPadding-medium;
+    text-align: start;
+    max-block-size: 90vh;
+    overflow-y: auto;
+    font-family: $workspace-font;
+    box-shadow: $shadow-medium;
+
+    .details-header {
+        position: relative;
+        margin-block-end: $layoutPadding-medium;
+        display: flex;
+        align-items: flex-start;
+        gap: $spacing-md;
+
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: $text-primary;
+            margin: 0;
+            margin-inline-end: $spacing-xl;
+            padding-inline-end: $spacing-xl;
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .close-task-icon {
+            position: absolute;
+            inset-inline-end: -$layoutPadding-medium;
+            inset-block-start: -$layoutPadding-medium;
+            cursor: pointer;
+            padding: $spacing-xs;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: $border-radius-small;
+            block-size: 2.5rem;
+            inline-size: 2.5rem;
+            opacity: 0.8;
+            transition: $hover-transition;
+
+            img {
+                inline-size: 1.25rem;
+                block-size: 1.25rem;
+            }
+
+            &:hover {
+                background-color: $button-secondary-hover-bg;
+                opacity: 1;
+            }
+        }
+    }
+
+    .details-grid {
+        display: grid;
+        grid-template-columns: 1fr 11.25rem;
+        gap: $spacing-lg; // Increased gap like Trello
+    }
+
+    .main-content {
+        section {
+            margin-block-end: $spacing-xl; // More spacing between sections
+
+            h3 {
+                font-size: 0.875rem;
+                font-weight: 600;
+                color: $text-primary;
+                margin-block-end: $spacing-sm;
+                display: flex;
+                align-items: center;
+                gap: $spacing-sm;
+            }
+        }
+
+        .description-section {
+            background-color: $button-secondary-bg;
+            padding: $spacing-sm;
+            border-radius: $border-radius-small;
+            min-block-size: 6.25rem;
+            cursor: pointer;
+
+            &:hover {
+                background-color: $button-secondary-hover-bg;
+            }
+
+            &.empty {
+                color: $text-secondary;
+                min-block-size: 3.75rem; // Shorter for empty state
+            }
+        }
+    }
+
+    .sidebar {
+        .actions-list {
+            margin-block-end: $spacing-lg;
+
+            h3 {
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                color: $text-secondary;
+                font-weight: 600;
+                margin-block-end: $spacing-sm;
+                letter-spacing: 0.04em;
+            }
+        }
+    }
+}

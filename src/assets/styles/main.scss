@@ -16,7 +16,6 @@
 @import 'pages/BoardIndex';
 @import 'pages/UserProfile';
 @import 'pages/BoardDetails';
-@import 'pages/TaskDetails';
 @import 'pages/LoginSignup';
 
 // Components
@@ -26,6 +25,7 @@
 @import 'cmps/Loader';
 @import 'cmps/UserMenuDropdown';
 @import 'cmps/DragDropSystem';
+@import 'cmps/DynamicModal';
 
 // Board
 @import 'cmps/Board/BoardSidebar';
@@ -43,3 +43,4 @@
 
 // Task
 @import 'cmps/Task/TaskPreview';
+@import 'cmps/Task/TaskDetails';

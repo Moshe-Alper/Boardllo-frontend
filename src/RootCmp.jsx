@@ -10,6 +10,7 @@ import { UserProfile } from './pages/UserProfile.jsx'
 import { AppHeader } from './cmps/AppHeader'
 import { UserMsg } from './cmps/UserMsg.jsx'
 import { Test } from './pages/Test.jsx'
+import { DynamicModal } from './cmps/DynamicModal.jsx'
 import { LoginForm } from './cmps/LoginForm.jsx'
 import { SignupForm } from './cmps/SignupForm.jsx'
 
@@ -31,6 +32,7 @@ export function RootCmp() {
           <Route path='test' element={<Test />}></Route>
         </Routes>
       </main>
+      <DynamicModal/>
     </div>
   )
 }

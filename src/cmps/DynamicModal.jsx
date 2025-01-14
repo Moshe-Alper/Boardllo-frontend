@@ -9,12 +9,11 @@ export function DynamicModal() {
 		onToggleModal()
 	}
 
-	console.log('modalData', modalData)
+	// console.log('modalData', modalData)
 	if (!modalData) return <></>
 	const Cmp = modalData.cmp
 	return (
 		<div className="dynamic-modal">
-			<button className="close" onClick={onCloseModal}>X</button>
 			<section className="content">
 				{Cmp && <Cmp {...modalData.props} />}
 			</section>

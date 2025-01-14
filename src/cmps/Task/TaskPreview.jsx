@@ -1,8 +1,19 @@
 import React from 'react'
 import { svgService } from "../../services/svg.service"
+import { onToggleModal } from "../../store/actions/app.actions"
+import { TaskDetails } from "./TaskDetails"
 
 export function TaskPreview({ task, isDragging }) {
     const hasCover = !!task.style.coverColor
+
+    function onOpenTaskDetails(ev) {
+        if (ev.target.closest('.edit-icon-container')) return
+        
+        onToggleModal({
+            cmp: TaskDetails,
+            props: { task }
+        })
+    }
 
     return (
         <article
@@ -13,6 +24,7 @@ export function TaskPreview({ task, isDragging }) {
                 transform: isDragging ? 'scale(1.02)' : 'scale(1)',
                 transition: 'all 0.2s ease'
             }}
+            onClick={onOpenTaskDetails}
         >
             <p>{task.title}</p>
             <div className="edit-icon-container">

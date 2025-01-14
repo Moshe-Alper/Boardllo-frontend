@@ -5,12 +5,12 @@ const initialState = {
 	modalData: null,
 }
 
-export function appReducer(state = initialState, cmd = {}) {    
-	switch (cmd.type) {
+export function appReducer(state = initialState, action = {}) {    
+	switch (action.type) {
 		case SET_MODAL_DATA:
 			return {
 				...state,
-				modalData: cmd.modalData
+				modalData: action.modalData
 			}
 
 		default:

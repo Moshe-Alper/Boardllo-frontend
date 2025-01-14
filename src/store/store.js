@@ -8,7 +8,8 @@ import { appReducer } from './reducers/app.reducer'
 const rootReducer = combineReducers({
   boardModule: boardReducer,
   userModule: userReducer,
-  systemModule: systemReducer
+  systemModule: systemReducer,
+  appModule: appReducer
 })
 
 const middleware = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__

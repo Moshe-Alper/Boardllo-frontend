@@ -73,7 +73,6 @@ export function BoardDetails() {
         }
 
         const updatedBoard = { ...board }
-        const originalBoard = { ...board }
 
         if (type === "group") {
             const [removed] = updatedBoard.groups.splice(source.index, 1)
@@ -144,7 +143,7 @@ export function BoardDetails() {
                                 className="new-list-btn"
                                 onClick={() => setIsAddingGroup(true)}
                             >
-                                {board.groups.length ? 'Add another list' : 'Add a list'}
+                                {board.groups?.length ? 'Add another list' : 'Add a list'}
                             </button>
                         )}
                     </div>
