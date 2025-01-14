@@ -1,6 +1,6 @@
 .board-index-container {
   display: grid;
-  grid-template-columns: 560px 1fr;
+  grid-template-columns: 260px 1fr;
   min-height: 100vh;
   background-color: $background-white;
   // background-color: $background-light;
@@ -10,7 +10,6 @@
     background-color: $background-white;
     border-inline-end: 1px solid $border-light-gray;
     padding: $spacing-md;
-    margin-inline-start: 15rem;
 
     .sidebar-nav {
       display: flex;
