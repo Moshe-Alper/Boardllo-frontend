@@ -20,6 +20,7 @@ export function RootCmp() {
     <div className='main-container'>
       <AppHeader />
       <UserMsg />
+      <DynamicModal/>
 
       <main>
         <Routes>
@@ -34,7 +35,6 @@ export function RootCmp() {
           <Route path='search' element={<MobileSearch />}></Route>
         </Routes>
       </main>
-      <DynamicModal/>
     </div>
   )
 }

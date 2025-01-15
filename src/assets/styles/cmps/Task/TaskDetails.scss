@@ -1,39 +1,50 @@
+.task-details-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    z-index: 9999;
+}
+
 .task-details {
-    position: relative;
-    inline-size: 43.75rem;
-    margin: auto;
+    position: fixed;
+    inset-block-start: 3rem; 
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
+    inline-size: 48rem; 
+    block-size: calc(100vh - 6rem);
+    max-block-size: 62rem; 
     background-color: $background-white;
     border-radius: $border-radius-medium;
-    padding: $layoutPadding-medium;
     text-align: start;
-    max-block-size: 90vh;
-    overflow-y: auto;
     font-family: $workspace-font;
     box-shadow: $shadow-medium;
-    z-index: 10000; 
+    z-index: 10000;
 
     .details-header {
         position: relative;
-        margin-block-end: $layoutPadding-medium;
+        block-size: 3.5rem; // 56px
         display: flex;
         align-items: flex-start;
-        gap: $spacing-md;
-
+        padding: $layoutPadding-medium;
+        padding-inline-end: 3.25rem; // 52px
+        border-bottom: 1px solid $border-light-gray;
+        
         h2 {
             font-size: 1.25rem;
             font-weight: 600;
             color: $text-primary;
             margin: 0;
-            margin-inline-end: $spacing-xl;
-            padding-inline-end: $spacing-xl;
             line-height: 1.5;
             flex: 1;
         }
-
+        
         .close-task-icon {
             position: absolute;
-            inset-inline-end: -$layoutPadding-medium;
-            inset-block-start: -$layoutPadding-medium;
+            inset-inline-end: $layoutPadding-medium;
+            inset-block-start: $layoutPadding-medium;
             cursor: pointer;
             padding: $spacing-xs;
             display: flex;
@@ -44,69 +55,108 @@
             inline-size: 2.5rem;
             opacity: 0.8;
             transition: $hover-transition;
-
+            
             img {
                 inline-size: 1.25rem;
                 block-size: 1.25rem;
             }
-
+            
             &:hover {
                 background-color: $button-secondary-hover-bg;
                 opacity: 1;
             }
         }
     }
-
+    
     .details-grid {
-        display: grid;
-        grid-template-columns: 1fr 11.25rem;
-        gap: $spacing-lg; // Increased gap like Trello
-    }
-
-    .main-content {
-        section {
-            margin-block-end: $spacing-xl; // More spacing between sections
-
-            h3 {
-                font-size: 0.875rem;
-                font-weight: 600;
-                color: $text-primary;
-                margin-block-end: $spacing-sm;
-                display: flex;
-                align-items: center;
-                gap: $spacing-sm;
+        display: flex;
+        block-size: calc(100% - 3.5rem); // Full height minus header
+        
+        .main-content {
+            flex: 1;
+            padding: $layoutPadding-medium;
+            overflow-y: auto;
+            
+            section {
+                margin-block-end: $spacing-xl;
+                
+                h3 {
+                    font-size: 0.875rem;
+                    font-weight: 600;
+                    color: $text-primary;
+                    margin-block-end: $spacing-sm;
+                    display: flex;
+                    align-items: center;
+                    gap: $spacing-sm;
+                }
+            }
+            
+            .description-section {
+                .description-content {
+                    background-color: $button-secondary-bg;
+                    padding: $spacing-sm;
+                    border-radius: $border-radius-small;
+                    min-block-size: 6.25rem;
+                    cursor: pointer;
+                    
+                    &:hover {
+                        background-color: $button-secondary-hover-bg;
+                    }
+                    
+                    &.empty {
+                        color: $text-secondary;
+                        min-block-size: 3.75rem;
+                    }
+                }
+            }
+            
+            .activity-section {
+                .no-activity {
+                    color: $text-secondary;
+                }
             }
         }
-
-        .description-section {
-            background-color: $button-secondary-bg;
-            padding: $spacing-sm;
-            border-radius: $border-radius-small;
-            min-block-size: 6.25rem;
-            cursor: pointer;
-
-            &:hover {
-                background-color: $button-secondary-hover-bg;
-            }
-
-            &.empty {
-                color: $text-secondary;
-                min-block-size: 3.75rem; // Shorter for empty state
-            }
-        }
-    }
-
-    .sidebar {
-        .actions-list {
-            margin-block-end: $spacing-lg;
-
-            h3 {
-                font-size: 0.75rem;
-                text-transform: uppercase;
-                color: $text-secondary;
-                font-weight: 600;
-                margin-block-end: $spacing-sm;
-                letter-spacing: 0.04em;
+        
+        .sidebar {
+            inline-size: 10.5rem; // 168px
+            padding-block-end: 1.5rem; // 24px
+            padding-inline-end: $layoutPadding-medium;
+            border-inline-start: 1px solid $border-light-gray;
+            
+            .actions-list {
+                padding: $layoutPadding-medium;
+                padding-block-end: 0;
+                
+                h3 {
+                    font-size: 0.75rem;
+                    text-transform: uppercase;
+                    color: $text-secondary;
+                    font-weight: 600;
+                    margin-block-end: $spacing-sm;
+                    letter-spacing: 0.04em;
+                }
+                
+                .action-buttons {
+                    display: flex;
+                    flex-direction: column;
+                    gap: $spacing-xs;
+                    
+                    button {
+                        width: 100%;
+                        text-align: start;
+                        padding: $spacing-sm $spacing-md;
+                        color: $text-primary;
+                        background: none;
+                        border: none;
+                        border-radius: $border-radius-small;
+                        cursor: pointer;
+                        transition: $hover-transition;
+                        
+                        &:hover {
+                            background-color: $button-secondary-hover-bg;
+                        }
+                    }
+                }
             }
         }
     }

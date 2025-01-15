@@ -16,8 +16,12 @@ export function TaskPreview({ task, isDragging }) {
 
         onToggleModal({
             cmp: TaskDetails,
-            props: { task }
+            props: { task, onClose: onCloseTaskDetails }  
         })
+    }
+
+    function onCloseTaskDetails() {
+        onToggleModal()
     }
 
     function onOpenPopover(ev) {
