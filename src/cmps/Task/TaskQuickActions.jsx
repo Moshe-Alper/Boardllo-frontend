@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { CoverColorPicker } from '../../cmps/Picker/CoverColorPicker'
 
- 
 export function TaskQuickActions({ task, onClose, onCoverColorSelect }) {
     const [showColorPicker, setShowColorPicker] = useState(false)
 

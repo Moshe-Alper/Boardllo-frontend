@@ -4,7 +4,8 @@ import { svgService } from "../../services/svg.service"
 import { onToggleModal } from "../../store/actions/app.actions"
 import { TaskDetails } from "./TaskDetails"
 import { TaskQuickActions } from "./TaskQuickActions"
-import { updateTask } from '../../store/actions/board.actions'
+import { loadBoard, updateTask } from '../../store/actions/board.actions'
+import { showErrorMsg, showSuccessMsg } from '../../services/event-bus.service'
 
 export function TaskPreview({ task, boardId, groupId, isDragging }) {
     const [anchorEl, setAnchorEl] = useState(null)
@@ -35,7 +36,7 @@ export function TaskPreview({ task, boardId, groupId, isDragging }) {
         setAnchorEl(ev.currentTarget)
     }
 
-    function onClosePopover() {  // Removed ev parameter since it's not being used
+    function onClosePopover() {  
         setAnchorEl(null)
     }
 
@@ -50,8 +51,11 @@ export function TaskPreview({ task, boardId, groupId, isDragging }) {
 
         try {
             await updateTask(boardId, groupId, updatedTask)
+            loadBoard(boardId)
+            showSuccessMsg('Task cover color updated')
         } catch (err) {
             console.log('Failed to update task cover color:', err)
+            showErrorMsg('Failed to update task cover color')
         }
     }
 
@@ -87,7 +91,7 @@ export function TaskPreview({ task, boardId, groupId, isDragging }) {
                     vertical: 'top',
                     horizontal: 'left',
                 }}
-                onClick={(ev) => ev.stopPropagation()} // Add stopPropagation here
+                onClick={(ev) => ev.stopPropagation()}
             >
                 <TaskQuickActions
                     task={task}
