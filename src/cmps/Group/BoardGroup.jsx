@@ -14,7 +14,7 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const [anchorEl, setAnchorEl] = useState(null)
     const [isCollapsed, setIsCollapsed] = useState(group.isCollapsed)
-    
+
     useEffect(() => {
         loadBoard(board._id)
     }, [board._id])
@@ -41,14 +41,14 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
         task.title = newTaskTitle
 
         const tempTask = { ...task, id: 'temp-id' }
-        
+
         // Update the group directly
         group.tasks = [...(group.tasks || []), tempTask]
         onUpdateGroup({ ...group })
 
         try {
             const savedTask = await addTask(board._id, group.id, task)
-            
+
             group.tasks = group.tasks.map(t => t.id === 'temp-id' ? savedTask : t)
             onUpdateGroup({ ...group })
 
@@ -58,7 +58,7 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
         } catch (err) {
             console.log('Cannot add task', err)
             showErrorMsg('Cannot add task')
-            
+
             group.tasks = group.tasks.filter(t => t.id !== 'temp-id')
             onUpdateGroup({ ...group })
         }
@@ -75,10 +75,10 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
     async function toggleCollapse() {
         const newCollapsedState = !isCollapsed
         setIsCollapsed(newCollapsedState)
-        
-        const updatedGroup = { 
-            ...group, 
-            isCollapsed: newCollapsedState 
+
+        const updatedGroup = {
+            ...group,
+            isCollapsed: newCollapsedState
         }
         try {
             await updateGroup(board._id, updatedGroup)
@@ -98,6 +98,9 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
     }
 
     function getTaskClass(task) {
+        if (!task || !task.style) {
+            return 'task-preview';
+        }
         return task.style.coverColor ? 'task-preview has-cover' : 'task-preview'
     }
 
@@ -127,8 +130,8 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
             />
 
             {!isCollapsed && (
-                <TaskDragDropContainer 
-                    groupId={group.id} 
+                <TaskDragDropContainer
+                    groupId={group.id}
                     tasks={group.tasks || []}
                 >
                     {(task, index, isDragging) => (

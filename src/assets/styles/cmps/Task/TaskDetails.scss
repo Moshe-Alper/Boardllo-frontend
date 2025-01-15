@@ -1,7 +1,8 @@
 .task-details {
     position: relative;
     inline-size: 43.75rem;
-    background-color: $background-white; // Changed to white like Trello
+    margin: auto;
+    background-color: $background-white;
     border-radius: $border-radius-medium;
     padding: $layoutPadding-medium;
     text-align: start;
@@ -9,6 +10,7 @@
     overflow-y: auto;
     font-family: $workspace-font;
     box-shadow: $shadow-medium;
+    z-index: 10000; 
 
     .details-header {
         position: relative;

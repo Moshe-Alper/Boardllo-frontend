@@ -9,7 +9,7 @@ export function TaskPreview({ task, isDragging }) {
     const [anchorEl, setAnchorEl] = useState(null)
     const isPopoverOpen = Boolean(anchorEl)
 
-    const hasCover = !!task.style.coverColor
+    const hasCover = task?.style?.coverColor ? true : false
 
     function onOpenTaskDetails(ev) {
         if (ev.target.closest('.edit-icon-container')) return
@@ -29,6 +29,8 @@ export function TaskPreview({ task, isDragging }) {
         ev.stopPropagation()
         setAnchorEl(null)
     }
+
+    if (!task) return <div>Loading...</div>
 
     return (
         <article
