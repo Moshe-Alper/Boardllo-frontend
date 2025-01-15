@@ -10,7 +10,7 @@ export function TaskDetails({ task, onClose }) {
         }
     }
 
-    function handleOverlayClick(e) {
+    function handleOverlayClick(ev) {
         if (ev.target === ev.currentTarget) {
             onClose()
         }
