@@ -14,7 +14,6 @@ export function BoardGroupHeader({
     anchorEl,
     handleMenuClose,
     onAddTask,
-    updateGroupTitle,
     isCollapsed,
     onToggleCollapse,
     taskCount
