@@ -1,21 +1,69 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { svgService } from '../../services/svg.service'
+import { showErrorMsg, showSuccessMsg } from '../../services/event-bus.service'
+import { loadBoard, updateBoard } from '../../store/actions/board.actions'
 
-export function BoardHeader({ board }) {
-    const demoWorkspace = {
-        name: "Marketing Team",
-        visibility: "Workspace visible"
+export function BoardHeader({ board, onUpdateBoard }) {
+    const [isEditingTitle, setIsEditingTitle] = useState(false)
+    const [editedTitle, setEditedTitle] = useState(board.title)
+    const demoWorkspace = { name: "Coding Team", visibility: "Workspace visible" }
+    const demoPowerUps = [{ id: 1, name: "Calendar" }, { id: 2, name: "Automation" }]
+
+    async function onUpdateBoardTitle() {
+        if (!editedTitle.trim()) {
+            showErrorMsg('Board title cannot be empty')
+            setEditedTitle(board.title)
+            setIsEditingTitle(false)
+            return
+        }
+
+        try {
+            const updatedBoard = { ...board, title: editedTitle.trim() }
+            await updateBoard(updatedBoard)
+            loadBoard(board._id)
+            showSuccessMsg('Board title updated successfully')
+            setIsEditingTitle(false)
+        } catch (err) {
+            console.log('Cannot update board title', err)
+            showErrorMsg('Cannot update board title')
+            setEditedTitle(board.title)
+        }
     }
 
-    const demoPowerUps = [
-        { id: 1, name: "Calendar" },
-        { id: 2, name: "Automation" }
-    ]
+    const handleTitleClick = () => {
+        setIsEditingTitle(true)
+    }
+
+    const handleTitleBlur = () => {
+        onUpdateBoardTitle()
+    }
+
+    const handleTitleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            e.target.blur()
+        }
+        if (e.key === 'Escape') {
+            setEditedTitle(board.title)
+            setIsEditingTitle(false)
+        }
+    }
 
     return (
         <section className="board-header">
             <div className="board-header-left">
-                <h1>{board.title}</h1>
+                {isEditingTitle ? (
+                    <input
+                        type="text"
+                        value={editedTitle}
+                        onChange={(e) => setEditedTitle(e.target.value)}
+                        onBlur={handleTitleBlur}
+                        onKeyDown={handleTitleKeyPress}
+                        className="board-title-input"
+                        autoFocus
+                    />
+                ) : (
+                    <h1 onClick={handleTitleClick}>{board.title}</h1>
+                )}
                 <button className="star-btn">
                     <img src={svgService.starIcon} alt="Star" />
                 </button>

@@ -7,17 +7,96 @@
     align-items: center;
     color: $text-light;
 
+    @media screen and (max-width: $breakpoint-mobile) {
+        padding: $spacing-sm;
+        height: auto;
+        flex-direction: column;
+        gap: $spacing-sm;
+
+        .board-header-left {
+            width: 100%;
+
+            .workspace-info {
+                display: none;
+            }
+        }
+
+        .board-header-right {
+            width: 100%;
+            justify-content: space-between;
+
+            .header-btn span {
+                display: none;
+            }
+        }
+    }
+
+    @media screen and (max-width: $breakpoint-tablet) and (min-width: #{$breakpoint-mobile + 1}) {
+        padding: $spacing-md;
+
+        .board-header-left {
+            .workspace-info {
+                .visibility {
+                    display: none;
+                }
+            }
+        }
+
+        .board-header-right {
+            .header-btn {
+                padding: $spacing-xs;
+
+                span {
+                    display: none;
+                }
+            }
+        }
+    }
+
     .board-header-left {
         display: flex;
         align-items: center;
         gap: $spacing-sm;
 
         h1 {
-            font-size: 0.875rem;
+            font-size: 1.125rem;
             line-height: 1.25rem;
             color: $background-white;
             margin: 0;
             font-weight: 600;
+            cursor: pointer;
+            padding: $spacing-xs $spacing-sm;
+            border-radius: $border-radius-small;
+            transition: $hover-transition;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        .board-title-input {
+            font-size: 1.125rem;
+            line-height: 1.25rem;
+            color: $background-white;
+            margin: 0;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: $border-radius-small;
+            padding: calc(#{$spacing-xs} - 2px) calc(#{$spacing-sm} - 2px); // Subtracting border width
+            width: auto;
+            min-width: 120px;
+            transition: $hover-transition;
+
+            &:focus {
+                outline: none;
+                border-color: rgba(255, 255, 255, 0.5);
+                background: rgba(255, 255, 255, 0.3);
+            }
+
+            &::placeholder {
+                color: rgba(255, 255, 255, 0.7);
+            }
         }
 
         .star-btn {
