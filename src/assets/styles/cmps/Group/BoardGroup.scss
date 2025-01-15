@@ -2,7 +2,7 @@
     background-color: $background-light;
     min-width: 17rem; // 272px
     max-width: 17rem; // 272px
-    margin: $layoutPadding-small;
+    margin: 0.5rem;
     padding: $layoutPadding-small;
     border-radius: $border-radius;
     box-shadow: $card-shadow;
@@ -32,7 +32,7 @@
                 width: 100%;
                 height: 100%;
                 padding: 0.25rem 0;
-                opacity: 1; // Always show collapsed content
+                opacity: 1; 
 
                 .title-actions {
                     .collapse-btn {
@@ -77,14 +77,14 @@
                     white-space: nowrap;
                     color: $text-secondary;
                     margin-inline-start: 0.5rem;
-                    opacity: 1; // Always show task count
+                    opacity: 1; 
 
                     h3 {
                         margin: 0;
                         font-size: 0.75rem;
                         color: $text-secondary;
                         pointer-events: none;
-                        opacity: 1; // Always show task count number
+                        opacity: 1;
                     }
                 }
             }
