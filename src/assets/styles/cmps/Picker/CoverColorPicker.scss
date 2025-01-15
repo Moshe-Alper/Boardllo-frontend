@@ -1,0 +1,61 @@
+.cover-color-picker {
+    padding: $spacing-md;
+    background: $background-white;
+    border-radius: $border-radius-medium;
+
+    h3 {
+        color: $text-primary;
+        font-family: $workspace-font;
+        font-size: 14px;
+        margin-bottom: $spacing-sm;
+    }
+
+    .colors-container {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: $spacing-xs;
+        margin-bottom: $spacing-sm;
+
+        .color-option {
+            width: 32px;
+            height: 32px;
+            border-radius: $border-radius-small;
+            border: 1px solid $border-light-gray;
+            cursor: pointer;
+            transition: $hover-transition;
+            position: relative;
+
+            &:hover {
+                transform: scale(1.05);
+            }
+
+            &.selected::after {
+                content: '✓';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: white;
+                text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            }
+        }
+    }
+
+    .remove-btn {
+        width: 100%;
+        padding: $spacing-xs $spacing-sm;
+        color: $text-secondary;
+        background: transparent;
+        border: none;
+        border-radius: $border-radius-small;
+        font-family: $workspace-font;
+        font-size: 14px;
+        cursor: pointer;
+        transition: $hover-transition;
+
+        &:hover {
+            background: $background-light-hover;
+            color: $text-primary;
+        }
+    }
+}

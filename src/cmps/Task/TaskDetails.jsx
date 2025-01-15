@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { svgService } from "../../services/svg.service"
 
-export function TaskDetails({ task, onClose }) {
+export function TaskDetails({ task, onClose, onCoverColorSelect }) {
     if (!task) return <div>Loading...</div>
 
     function handleEscape(ev) {

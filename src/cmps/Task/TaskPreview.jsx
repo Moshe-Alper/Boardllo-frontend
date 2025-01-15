@@ -4,8 +4,9 @@ import { svgService } from "../../services/svg.service"
 import { onToggleModal } from "../../store/actions/app.actions"
 import { TaskDetails } from "./TaskDetails"
 import { TaskQuickActions } from "./TaskQuickActions"
+import { updateTask } from '../../store/actions/board.actions'
 
-export function TaskPreview({ task, isDragging }) {
+export function TaskPreview({ task, boardId, groupId, isDragging }) {
     const [anchorEl, setAnchorEl] = useState(null)
     const isPopoverOpen = Boolean(anchorEl)
 
@@ -13,10 +14,15 @@ export function TaskPreview({ task, isDragging }) {
 
     function onOpenTaskDetails(ev) {
         if (ev.target.closest('.edit-icon-container')) return
+        if (ev.target.closest('.MuiPopover-root')) return
 
         onToggleModal({
             cmp: TaskDetails,
-            props: { task, onClose: onCloseTaskDetails }  
+            props: {
+                task,
+                onClose: onCloseTaskDetails,
+                onCoverColorSelect: handleCoverColorSelect
+            }
         })
     }
 
@@ -29,9 +35,24 @@ export function TaskPreview({ task, isDragging }) {
         setAnchorEl(ev.currentTarget)
     }
 
-    function onClosePopover(ev) {
-        ev.stopPropagation()
+    function onClosePopover() {  // Removed ev parameter since it's not being used
         setAnchorEl(null)
+    }
+
+    async function handleCoverColorSelect(color) {
+        const updatedTask = {
+            ...task,
+            style: {
+                ...task.style,
+                coverColor: color
+            }
+        }
+
+        try {
+            await updateTask(boardId, groupId, updatedTask)
+        } catch (err) {
+            console.log('Failed to update task cover color:', err)
+        }
     }
 
     if (!task) return <div>Loading...</div>
@@ -66,8 +87,13 @@ export function TaskPreview({ task, isDragging }) {
                     vertical: 'top',
                     horizontal: 'left',
                 }}
+                onClick={(ev) => ev.stopPropagation()} // Add stopPropagation here
             >
-                <TaskQuickActions task={task} onClose={onClosePopover} />
+                <TaskQuickActions
+                    task={task}
+                    onClose={onClosePopover}
+                    onCoverColorSelect={handleCoverColorSelect}
+                />
             </Popover>
         </article>
     )

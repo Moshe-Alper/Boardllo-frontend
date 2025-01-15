@@ -1,11 +1,26 @@
-import React from 'react'
-import { TaskDetails } from '../Task/TaskDetails'
-import { onToggleModal } from '../../store/actions/app.actions'
-import { TaskPreview } from './TaskPreview'
+import React, { useState } from 'react'
+import { CoverColorPicker } from '../../cmps/Picker/CoverColorPicker'
 
-export function TaskQuickActions({ task, onClose }) {
+ 
+export function TaskQuickActions({ task, onClose, onCoverColorSelect }) {
+    const [showColorPicker, setShowColorPicker] = useState(false)
+
     function onOpenCard() {
         if (onClose) onClose()
+    }
+
+    async function handleColorSelect(color) {
+        await onCoverColorSelect(color)
+        onClose()
+    }
+
+    if (showColorPicker) {
+        return (
+            <CoverColorPicker
+                selectedColor={task.style?.coverColor || ''}
+                onColorSelect={handleColorSelect}
+            />
+        )
     }
 
     return (
@@ -19,7 +34,7 @@ export function TaskQuickActions({ task, onClose }) {
                 <button className="quick-action-btn">
                     <span>Edit labels</span>
                 </button>
-                <button className="quick-action-btn">
+                <button onClick={() => setShowColorPicker(true)} className="quick-action-btn">
                     <span>Change cover</span>
                 </button>
             </div>

@@ -115,7 +115,7 @@ async function removeGroup(boardId, groupId) {
   const board = await getById(boardId)
   if (!board) throw new Error('Board not found')
 
-  const groupIdx = board.groups.findIndex((g) => g.id === groupId)
+  const groupIdx = board.groups.findIndex((group) => group.id === groupId)
   if (groupIdx === -1) throw new Error('Group not found')
 
   const group = board.groups.splice(groupIdx, 1)[0]
@@ -131,7 +131,7 @@ async function saveTask(boardId, groupId, task) {
   const group = board.groups.find((group) => group.id === groupId)
   if (!group) throw new Error('Group not found')
 
-  const taskIdx = group.tasks.findIndex((t) => t.id === task.id)
+  const taskIdx = group.tasks.findIndex((task) => task.id === task.id)
   if (taskIdx === -1) {
     group.tasks.push(task)
   } else {
