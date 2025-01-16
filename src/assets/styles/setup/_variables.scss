@@ -35,6 +35,7 @@ $text-primary: #172b4d; // Dark text
 $text-secondary: #5e6c84; // Subtle secondary text
 $text-light: #97a0af; // Muted text for inactive elements
 $text-dark: #020112;
+$text-white: #ffffff;
 
 // Hover and Active States
 $background-light-hover: #f4f5f7; // Light hover background color
@@ -75,6 +76,9 @@ $layoutPadding-smallest: 0.5rem; // 8px
 $layoutPadding-small: 0.75rem; // 12px
 $layoutPadding-medium: 1rem; // 16px
 $layoutPadding-large: 1.5rem; // 24px
+
+// Groups  
+$group-padding: 0.75rem; // 12px
 
 // New Specific Variables for Trello-Like Design
 $card-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); // Subtle shadow for cards

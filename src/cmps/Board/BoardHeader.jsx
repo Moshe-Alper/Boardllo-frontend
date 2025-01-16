@@ -74,21 +74,6 @@ export function BoardHeader({ board, onUpdateBoard }) {
             </div>
 
             <div className="board-header-right">
-                <div className="power-ups">
-                    <button className="header-btn">
-                        <img src={svgService.powerUpsIcon} alt="Power-Ups" />
-                        <span>Power-Ups</span>
-                        <span className="power-up-count">{demoPowerUps.length}</span>
-                    </button>
-                </div>
-
-                <div className="automation">
-                    <button className="header-btn">
-                        <img src={svgService.highlightIcon} alt="Automation" />
-                        <span>Automation</span>
-                    </button>
-                </div>
-
                 <div className="filters">
                     <button className="header-btn">
                         <img src={svgService.filterIcon} alt="Filter" />

@@ -2,8 +2,9 @@
   display: grid;
   grid-template-columns: 0 1fr;
   transition: grid-template-columns 0.3s ease-in-out;
-  height: 100vh;
+  height: calc(100vh - $navbar-height);
   width: 100%;
+  overflow: hidden;
 
   &.sidebar-open {
     grid-template-columns: 17.5rem 1fr; // 280px
@@ -20,22 +21,26 @@
     overflow: hidden;
   }
 
-  .group-container {
+ .group-container {
     display: flex;
     flex-wrap: nowrap;
     align-items: flex-start;
-    padding: 0.5rem;
-    height: calc(100vh - $navbar-height);
-    gap: $layoutPadding-small; // 12px
+    padding: $spacing-xs;
+    height: calc(100vh - $navbar-height - 48px);
+    gap: $layoutPadding-small;
     overflow-x: auto;
-    min-width: min-content;
-    scrollbar-width: none; // Firefox
-    -ms-overflow-style: none; // IE and Edge
-
-    &::-webkit-scrollbar { // Chrome, Safari, Opera
-      display: none;
+    overflow-y: hidden;
+    
+    @media (max-width: $breakpoint-tablet) {
+        padding: $spacing-xs;
+        gap: $spacing-sm;
     }
-  }
+
+    @media (max-width: $breakpoint-mobile) {
+        padding: $spacing-xs $spacing-xs $spacing-lg $spacing-xs;
+        gap: $spacing-xs;
+    }
+}
 
   .add-group-wrapper {
     flex-shrink: 0;
@@ -47,7 +52,8 @@
     display: inline-flex;
     white-space: nowrap;
     border-radius: 0.75rem;
-    margin: 0.5rem 0; 
+    margin: 0.5rem 0;
+
   }
 
   .new-list-btn {
