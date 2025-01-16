@@ -1,7 +1,7 @@
 .board-header {
     background-color: $blue-header;
-    height: $navbar-height;
-    padding: $spacing-md $spacing-lg;
+    min-height: 2rem;
+    padding: 0.75rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
