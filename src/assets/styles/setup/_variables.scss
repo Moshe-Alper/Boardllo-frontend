@@ -86,3 +86,13 @@ $hover-transition: all 0.3s ease-in-out; // Consistent hover transition effect
 // BORDERS
 
 $border-radius: 0.75rem;
+
+// Blue Theme Variables
+$blue-base: #0052cc;          
+$blue-header: #0747a6;          
+$blue-sidebar: #0a3d8f;        
+$blue-app-header: #092e6b;     
+
+// Helper variables for hover states
+$blue-hover: darken($blue-base, 5%);
+$blue-active: darken($blue-base, 10%);
