@@ -5,6 +5,7 @@
   height: calc(100vh - $navbar-height);
   width: 100%;
   overflow: hidden;
+  height: 100vh;
 
   &.sidebar-open {
     grid-template-columns: 17.5rem 1fr; // 280px

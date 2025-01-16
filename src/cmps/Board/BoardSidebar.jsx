@@ -63,7 +63,8 @@ export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
                 open={isOpen}
                 sx={{
                     '& .MuiDrawer-paper': {
-                        top: '55px',
+                        top: '56px',
+                        height: '100vh',
                         width: 280,
                         backgroundColor: '#0055CC',
                         color: '#FFFFFF',
@@ -77,7 +78,7 @@ export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
-                        padding: '16px',
+                        padding: '5px',
                         backgroundColor: '#0050CC',
                     }}
                 >
