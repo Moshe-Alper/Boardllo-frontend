@@ -4,6 +4,7 @@ export const REMOVE_BOARD = 'REMOVE_BOARD'
 export const ADD_BOARD = 'ADD_BOARD'
 export const UPDATE_BOARD = 'UPDATE_BOARD'
 export const UNDO_REMOVE_BOARD = 'UNDO_REMOVE_BOARD'
+export const SET_BOARD_STYLE = 'SET_BOARD_STYLE'
 
 export const ADD_GROUP = 'ADD_GROUP'
 export const UPDATE_GROUP = 'UPDATE_GROUP'
@@ -17,12 +18,14 @@ export const UNDO_REMOVE_TASK = 'UNDO_REMOVE_TASK'
 
 export const ADD_BOARD_MSG = 'ADD_BOARD_MSG'
 
+import { generateRandomStyle } from '../../services/board'
 
 const initialState = {
     boards: [],
     lastBoards: [],
     board: null,
     lastBoard: null,
+    boardStyle: null,
 
     groups: [],
     lastGroups: [],
@@ -67,6 +70,9 @@ export function boardReducer(state = initialState, action) {
         case UPDATE_BOARD:
             boards = state.boards.map(board => (board._id === action.board._id ? action.board : board))
             newState = { ...state, boards }
+            break
+        case SET_BOARD_STYLE:
+            newState = { ...state, boardStyle: action.styles }
             break
 
         // Group reducers

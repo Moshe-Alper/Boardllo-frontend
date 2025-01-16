@@ -10,21 +10,28 @@ import { BoardHeader } from '../cmps/Board/BoardHeader'
 import { BoardSidebar } from '../cmps/Board/BoardSidebar'
 import { GroupDragDropContainer } from '../cmps/DragDropSystem'
 
-
 export function BoardDetails() {
     const { boardId } = useParams()
     const board = useSelector(storeState => storeState.boardModule.board)
     const boards = useSelector((storeState) => storeState.boardModule.boards)
+    const boardStyle = useSelector(storeState => storeState.boardModule.boardStyle)
+
     const [isAddingGroup, setIsAddingGroup] = useState(false)
     const [newGroupTitle, setNewGroupTitle] = useState('')
+
     const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
         const sidebarState = localStorage.getItem('isSidebarOpen')
         return sidebarState ? JSON.parse(sidebarState) : (false)
     }
     )
+
     const [activeItem, setActiveItem] = useState(null)
     const [activeType, setActiveType] = useState(null)
     const dispatch = useDispatch()
+
+    function setBoardStyles(styles) {
+        dispatch({ type: 'SET_BOARD_STYLES', styles })
+    }
 
     const toggleSidebar = () => {
        const newSidebarState = !isSidebarOpen

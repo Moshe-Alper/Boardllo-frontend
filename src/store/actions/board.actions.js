@@ -1,6 +1,6 @@
 import { boardService } from '../../services/board'
 import { store } from '../store'
-import { ADD_BOARD, REMOVE_BOARD, SET_BOARDS, SET_BOARD, UPDATE_BOARD, ADD_BOARD_MSG, ADD_GROUP, UPDATE_GROUP, ADD_TASK, UPDATE_TASK, REMOVE_GROUP, UNDO_REMOVE_BOARD, UNDO_REMOVE_GROUP, REMOVE_TASK, UNDO_REMOVE_TASK } from '../reducers/board.reducer'
+import { ADD_BOARD, REMOVE_BOARD, SET_BOARDS, SET_BOARD, UPDATE_BOARD, SET_BOARD_STYLE, ADD_BOARD_MSG, ADD_GROUP, UPDATE_GROUP, ADD_TASK, UPDATE_TASK, REMOVE_GROUP, UNDO_REMOVE_BOARD, UNDO_REMOVE_GROUP, REMOVE_TASK, UNDO_REMOVE_TASK } from '../reducers/board.reducer'
 
 
 // Board Actions
@@ -68,17 +68,26 @@ export async function loadBoardsToSidebar() {
     }
 }
 
-// Group Actions
-// export async function loadGroups(boardId) {
-//     try {
-//         const groups = await boardService.getGroups(boardId)
-//         store.dispatch(getCmdSetGroups(groups))
-//     } catch (err) {
-//         console.log('Cannot load groups', err)
-//         throw err
-//     }
-// }
+export async function updateBoardStyle(boardId, styleConfig) {
+    try {
+        const style = await boardService.generateComponentStyles(
+            styleConfig.color, 
+            styleConfig.direction
+        )
+        const updatedBoard = await boardService.saveBoardStyle(boardId, style)
+        store.dispatch({
+            type: SET_BOARD_STYLE,
+            style: style
+        })
+        store.dispatch(getCmdUpdateBoard(updatedBoard))
+        return updatedBoard
+    } catch (err) {
+        console.log('Cannot update board style', err)
+        throw err
+    }
+}
 
+// Group Actions
 export async function loadGroup(boardId, groupId) {
     try {
         const group = await boardService.getGroups(boardId, groupId)
@@ -180,7 +189,6 @@ export async function addBoardMsg(boardId, txt) {
     }
 }
 
-
 // Board Command Creators
 function getCmdSetBoards(boards) {
     return {
@@ -227,6 +235,13 @@ function getCmdAddBoardMsg(msg) {
 function getCmdUndoRemoveBoard() {
     return {
         type: UNDO_REMOVE_BOARD
+    }
+}
+
+function getCmdSetBoardsStyle(style) {
+    return {
+        type: SET_BOARD_STYLE,
+        style
     }
 }
 
