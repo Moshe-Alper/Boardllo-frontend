@@ -25,14 +25,14 @@
     display: flex;
     flex-wrap: nowrap;
     align-items: flex-start;
-    padding: $spacing-xs;
-    height: calc(100vh - $navbar-height - 48px);
+    padding: $spacing-sm;
+    height: calc(100vh - $navbar-height - 3rem); // 48px
     gap: $layoutPadding-small;
     overflow-x: auto;
     overflow-y: hidden;
     
     @media (max-width: $breakpoint-tablet) {
-        padding: $spacing-xs;
+        padding: $spacing-sm;
         gap: $spacing-sm;
     }
 
