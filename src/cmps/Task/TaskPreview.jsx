@@ -7,7 +7,7 @@ import { TaskQuickActions } from "./TaskQuickActions"
 import { loadBoard, updateTask } from '../../store/actions/board.actions'
 import { showErrorMsg, showSuccessMsg } from '../../services/event-bus.service'
 
-export function TaskPreview({ task, boardId, groupId, isDragging }) {
+export function TaskPreview({ task, boardId, group, isDragging }) {
     const [anchorEl, setAnchorEl] = useState(null)
     const isPopoverOpen = Boolean(anchorEl)
 
@@ -20,6 +20,7 @@ export function TaskPreview({ task, boardId, groupId, isDragging }) {
         onToggleModal({
             cmp: TaskDetails,
             props: {
+                group,
                 task,
                 onClose: onCloseTaskDetails,
                 onCoverColorSelect: handleCoverColorSelect
@@ -50,7 +51,7 @@ export function TaskPreview({ task, boardId, groupId, isDragging }) {
         }
 
         try {
-            await updateTask(boardId, groupId, updatedTask)
+            await updateTask(boardId, group.id, updatedTask)
             loadBoard(boardId)
             showSuccessMsg('Task cover color updated')
         } catch (err) {

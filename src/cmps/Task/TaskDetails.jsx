@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { svgService } from "../../services/svg.service"
 import { showErrorMsg, showSuccessMsg } from '../../services/event-bus.service'
 import { updateTask, loadBoard } from '../../store/actions/board.actions'
 
-export function TaskDetails({ task, onClose, onCoverColorSelect, board }) {
+export function TaskDetails({ group, task, onClose, onCoverColorSelect }) {
     const [isEditingTitle, setIsEditingTitle] = useState(false)
     const [editedTitle, setEditedTitle] = useState(task?.title || '')
     const [isEditingDescription, setIsEditingDescription] = useState(false)
     const [editedDescription, setEditedDescription] = useState(task?.description || '')
     const [comment, setComment] = useState('')
+
     const hasCover = task?.style?.coverColor ? true : false
-    console.log('🚀 task', task.style.coverColor)
-    if (!task) return <div>Loading...</div>
 
     function handleEscape(ev) {
         if (ev.key === 'Escape') {
@@ -69,6 +69,8 @@ export function TaskDetails({ task, onClose, onCoverColorSelect, board }) {
         }
     }, [])
 
+    if (!task) return <div>Loading...</div>
+
     return (
         <div className="task-details-overlay" onClick={handleOverlayClick}>
             <section
@@ -99,7 +101,7 @@ export function TaskDetails({ task, onClose, onCoverColorSelect, board }) {
                         </div>
                         <div className="list-info">
                             <span>in list</span>
-                            <button className="list-name-btn">NEW LIST FOR PADDING</button>
+                            <span className="list-name-btn">{group.title}</span>
                         </div>
                     </div>
                     <button className="close-btn" onClick={onClose}>
@@ -111,9 +113,8 @@ export function TaskDetails({ task, onClose, onCoverColorSelect, board }) {
                     <div className="main-content">
                         <section className="notifications-section">
                             <div className="section-header">
-                                <img src={svgService.watchIcon} alt="Watch" />
-                                <h3>Notifications</h3>
                             </div>
+                            <h3>Notifications</h3>
                             <button className="watch-btn">
                                 <img src={svgService.watchIcon} alt="Watch" />
                                 Watch
@@ -153,7 +154,7 @@ export function TaskDetails({ task, onClose, onCoverColorSelect, board }) {
                                 <div className="activity-item">
                                     <div className="user-avatar"></div>
                                     <div className="activity-details">
-                                        <p><span className="user-name">User</span> added this card to NEW LIST FOR PADDING</p>
+                                        <p><span className="user-name">User</span> added this card to {group.title}</p>
                                         <span className="timestamp">8 Jan 2025, 15:01</span>
                                     </div>
                                 </div>
@@ -164,7 +165,6 @@ export function TaskDetails({ task, onClose, onCoverColorSelect, board }) {
                     <aside className="sidebar">
                         <div className="actions-list">
                             <section>
-                                <h3>Add to card</h3>
                                 <div className="action-buttons">
                                     <button><img src={svgService.joinIcon} alt="Join" /> Join</button>
                                     <button><img src={svgService.memberIcon} alt="Members" /> Members</button>

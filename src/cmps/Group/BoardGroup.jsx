@@ -138,7 +138,7 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
                         <TaskPreview
                             key={task.id}
                             boardId={board._id}
-                            groupId={group.id}
+                            group={group}
                             task={task}
                             isDragging={isDragging}
                             className={getTaskClass(task)}

@@ -6,16 +6,17 @@
     justify-content: center;
     align-items: flex-start;
     z-index: 9999;
+    overflow-y: auto;  
 }
 
 .task-details {
     position: relative;
-    margin-block-start: $navbar-height;
+    margin: $navbar-height auto; 
     inline-size: 48rem;
-    block-size: calc(100vh - #{2 * $spacing-xl});
-    max-block-size: 62rem;
-    background-color: $background-white;
-    border-radius: $border-radius-large;
+    min-block-size: calc(100vh - #{2 * $spacing-xl});  
+    max-block-size: none; 
+    background-color: $background-light;
+    border-radius: rem(12px);
     box-shadow: $shadow-large;
 
     &.has-cover {
@@ -67,8 +68,11 @@
                     font-size: rem(20px);
                     line-height: rem(24px);
                     font-weight: 600;
-                    padding: $spacing-xs $spacing-sm;
-                    margin: -$spacing-xs -$spacing-sm;
+                    padding-block: rem(6px);
+                    padding-inline: rem(10px);
+                    margin-block: rem(-6px);
+                    margin-inline: rem(-10px);
+                    width: rem(660px);
                     cursor: pointer;
                     border-radius: $border-radius-small;
                     color: $text-primary;
@@ -83,9 +87,12 @@
                     line-height: rem(24px);
                     font-weight: 600;
                     color: $text-primary;
-                    margin: -$spacing-xs -$spacing-sm;
-                    width: calc(100% + #{2 * $spacing-sm});
-                    border: 2px solid $primary-blue;
+                    padding-block: rem(6px);
+                    padding-inline: rem(10px);
+                    margin-block: rem(-6px);
+                    margin-inline: rem(-10px);
+                    width: rem(660px);
+                    border: 1px solid $primary-blue;
                     border-radius: $border-radius-small;
                     
 
@@ -101,16 +108,17 @@
                 align-items: center;
                 gap: $spacing-sm;
                 color: $text-secondary;
-                font-size: 0.875rem;
 
                 .list-name-btn {
-                    font-weight: 500;
-                    padding: $spacing-xs $spacing-sm;
+                    font-weight: 700;
                     border-radius: $border-radius-small;
-                    background-color: $background-light;
+                    background-color: #dcdfe4;
+                    color: $text-secondary;
+                    font-size: rem(11px);
+                    padding-inline: 2px;
 
                     &:hover {
-                        background-color: $background-light-hover;
+                        background-color: #bbbec1;
                     }
                 }
             }
@@ -118,34 +126,43 @@
 
         .close-btn {
             position: absolute;
-            top: $spacing-lg;
-            right: $spacing-lg;
-            width: 2.5rem;
-            height: 2.5rem;
-            padding: $spacing-sm;
+            top: rem(5px);
+            right: rem(5px);
+            width: 2rem;
+            height: 2rem;
+            padding: 0.25rem;
             border-radius: 50%;
-            background-color: rgba($background-dark, 0.05);
             display: flex;
             align-items: center;
             justify-content: center;
             transition: background-color 0.2s ease;
-
+            background-color: transparent;
+            
             &:hover {
-                background-color: rgba($background-dark, 0.1);
+                background-color: rgba($background-dark, 0.08);
             }
-
+            
             img {
-                width: 1.25rem;
-                height: 1.25rem;
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+            
+            &:hover {
+                background-color: $close-details-btn-hover;
+            }
+            
+            img {
+                width: 1.5rem;
+                height: 1.5rem;
                 color: $text-secondary;
             }
         }
     }
-     
 
     .details-grid {
         display: flex;
-        block-size: calc(100% - 4rem);
+        block-size: calc(100% - $navbar-height);
+        min-block-size: 0;
 
         .main-content {
             flex: 1;
@@ -186,6 +203,8 @@
 
             .notifications-section {
                 margin-block-end: $spacing-lg;
+                font-size: 11px;
+                color: $text-light;
 
                 .watch-btn {
                     display: flex;
@@ -215,10 +234,10 @@
                     border-radius: $border-radius-small;
                     min-height: 6.25rem;
                     cursor: pointer;
-                    background-color: $background-light-hover;
-
+                    background-color: #e3e6ea;
+                    
                     &:hover {
-                        background-color: $button-secondary-hover-bg;
+                        background-color: #dcdfe4;
                     }
 
                     &.empty {
@@ -277,16 +296,16 @@
         }
 
         .sidebar {
-            width: 14rem;
-            padding: $spacing-md;
-            border-left: 1px solid $border-light-gray;
+            min-width: rem(168px);
+            max-height: rem(765px);
+            margin-right: rem(16px);
 
             .actions-list {
                 section {
                     margin-block-end: $spacing-lg;
 
                     h3 {
-                        font-size: 0.75rem;
+                        font-size: 0.5rem;
                         font-weight: 600;
                         color: $text-secondary;
                         text-transform: uppercase;
@@ -301,22 +320,25 @@
                         button {
                             display: flex;
                             align-items: center;
-                            gap: $spacing-xs;
+                            font-size: rem(14px);
+                            gap: $spacing-sm;
                             width: 100%;
                             padding: $spacing-xs $spacing-sm;
                             background-color: rgba($background-dark, 0.04);
                             border-radius: $border-radius-medium;
                             color: $text-primary;
-                            font-weight: 400;
+                            font-weight: 500;
                             text-align: left;
+                            min-height: rem(32px);
 
                             &:hover {
                                 background-color: rgba($background-dark, 0.08);
                             }
 
                             img {
-                                font-size: 1.25rem;
                                 color: $text-secondary;
+                                width: rem(16px);
+                                height: rem(16px);
                             }
                         }
                     }
