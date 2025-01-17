@@ -10,55 +10,45 @@
 
 .task-details {
     position: relative;
-    margin-block-start: $spacing-xl;
+    margin-block-start: $navbar-height;
     inline-size: 48rem;
     block-size: calc(100vh - #{2 * $spacing-xl});
     max-block-size: 62rem;
     background-color: $background-white;
     border-radius: $border-radius-large;
-    font-family: $workspace-font;
     box-shadow: $shadow-large;
 
     .details-header {
-        padding: $spacing-lg $spacing-xl;
-        border-bottom: 1px solid $border-light-gray;
         position: relative;
 
         .header-content {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            grid-template-areas:
+                "icon title"
+                "... list";
             gap: $spacing-md;
+            padding: $spacing-lg;
+            min-height: rem(56px);
 
             .card-icon {
+                grid-area: icon;
                 width: 1.25rem;
                 height: 1.25rem;
                 color: $text-secondary;
-                margin-bottom: $spacing-xs;
-            }
-
-            .list-info {
-                display: flex;
-                align-items: center;
-                gap: $spacing-sm;
-                color: $text-secondary;
-                font-size: 0.875rem;
-                margin-bottom: $spacing-sm;
-
-                .list-name-btn {
-                    font-weight: 500;
-                    padding: $spacing-xs $spacing-sm;
-                    border-radius: $border-radius-small;
-                    background-color: $background-light;
-
-                    &:hover {
-                        background-color: $background-light-hover;
-                    }
-                }
             }
 
             .title-container {
+                grid-area: title;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                column-gap: rem(8px);
+                row-gap: rem(2px);
+
                 h2 {
-                    font-size: 1.5rem;
+                    font-size: rem(20px);
+                    line-height: rem(24px);
                     font-weight: 600;
                     padding: $spacing-xs $spacing-sm;
                     margin: -$spacing-xs -$spacing-sm;
@@ -82,6 +72,26 @@
 
                     &:focus {
                         outline: none;
+                    }
+                }
+            }
+
+            .list-info {
+                grid-area: list;
+                display: flex;
+                align-items: center;
+                gap: $spacing-sm;
+                color: $text-secondary;
+                font-size: 0.875rem;
+
+                .list-name-btn {
+                    font-weight: 500;
+                    padding: $spacing-xs $spacing-sm;
+                    border-radius: $border-radius-small;
+                    background-color: $background-light;
+
+                    &:hover {
+                        background-color: $background-light-hover;
                     }
                 }
             }
@@ -119,14 +129,16 @@
 
         .main-content {
             flex: 1;
-            padding: $spacing-md $spacing-md $spacing-md $spacing-xl;
+            padding: $spacing-md $spacing-md $spacing-md 3.4rem;
             overflow-y: auto;
 
             .section-header {
-                display: flex;
+                display: grid;
+                grid-template-columns: auto 1fr auto;
                 align-items: center;
                 gap: $spacing-sm;
                 margin-block-end: $spacing-sm;
+                margin-left: calc(-1.25rem - #{$spacing-sm});
 
                 img {
                     width: 1.25rem;
@@ -282,7 +294,7 @@
                                 background-color: rgba($background-dark, 0.08);
                             }
 
-                            svg {
+                            img {
                                 font-size: 1.25rem;
                                 color: $text-secondary;
                             }

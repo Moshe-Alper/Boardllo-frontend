@@ -74,10 +74,6 @@ export function TaskDetails({ task, onClose, onCoverColorSelect, board }) {
                 <header className="details-header">
                     <div className="header-content">
                         <img src={svgService.cardIcon} alt="Card Icon" className="card-icon" />
-                        <div className="list-info">
-                            <span>in list</span>
-                            <button className="list-name-btn">NEW LIST FOR PADDING</button>
-                        </div>
                         <div className="title-container">
                             {isEditingTitle ? (
                                 <input
@@ -95,6 +91,10 @@ export function TaskDetails({ task, onClose, onCoverColorSelect, board }) {
                                 </h2>
                             )}
                         </div>
+                        <div className="list-info">
+                            <span>in list</span>
+                            <button className="list-name-btn">NEW LIST FOR PADDING</button>
+                        </div>
                     </div>
                     <button className="close-btn" onClick={onClose}>
                         <img src={svgService.closeIcon} alt="Close" />
@@ -104,7 +104,10 @@ export function TaskDetails({ task, onClose, onCoverColorSelect, board }) {
                 <div className="details-grid">
                     <div className="main-content">
                         <section className="notifications-section">
-                            <h3>Notifications</h3>
+                            <div className="section-header">
+                                <img src={svgService.watchIcon} alt="Watch" />
+                                <h3>Notifications</h3>
+                            </div>
                             <button className="watch-btn">
                                 <img src={svgService.watchIcon} alt="Watch" />
                                 Watch
@@ -140,16 +143,6 @@ export function TaskDetails({ task, onClose, onCoverColorSelect, board }) {
                                 <h3>Activity</h3>
                                 <button className="show-details-btn">Show details</button>
                             </div>
-                            <div className="comment-input-container">
-                                <div className="user-avatar"></div>
-                                <input
-                                    type="text"
-                                    placeholder="Write a comment..."
-                                    value={comment}
-                                    onChange={(ev) => setComment(ev.target.value)}
-                                    className="comment-input"
-                                />
-                            </div>
                             <div className="activity-content">
                                 <div className="activity-item">
                                     <div className="user-avatar"></div>
@@ -164,11 +157,11 @@ export function TaskDetails({ task, onClose, onCoverColorSelect, board }) {
 
                     <aside className="sidebar">
                         <div className="actions-list">
-                            <section className="add-to-card">
+                            <section>
                                 <h3>Add to card</h3>
                                 <div className="action-buttons">
                                     <button><img src={svgService.joinIcon} alt="Join" /> Join</button>
-                                    <button><img src={svgService.membersIcon} alt="Members" /> Members</button>
+                                    <button><img src={svgService.memberIcon} alt="Members" /> Members</button>
                                     <button><img src={svgService.labelsIcon} alt="Labels" /> Labels</button>
                                     <button><img src={svgService.checklistIcon} alt="Checklist" /> Checklist</button>
                                     <button><img src={svgService.datesIcon} alt="Dates" /> Dates</button>
@@ -178,12 +171,12 @@ export function TaskDetails({ task, onClose, onCoverColorSelect, board }) {
                                 </div>
                             </section>
 
-                            <section className="actions">
+                            <section>
                                 <h3>Actions</h3>
                                 <div className="action-buttons">
                                     <button><img src={svgService.moveIcon} alt="Move" /> Move</button>
                                     <button><img src={svgService.copyIcon} alt="Copy" /> Copy</button>
-                                    <button><img src={svgService.mirrorIcon} alt="Mirror" /> Mirror</button>
+                                    <button><img src={svgService.cardIcon} alt="Mirror" /> Mirror</button>
                                     <button><img src={svgService.templateIcon} alt="Template" /> Make template</button>
                                     <button><img src={svgService.archiveIcon} alt="Archive" /> Archive</button>
                                     <button><img src={svgService.shareIcon} alt="Share" /> Share</button>
