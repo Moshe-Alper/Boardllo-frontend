@@ -1,7 +1,7 @@
 .task-details-overlay {
     position: fixed;
     inset: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: $modal-background;
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -9,151 +9,270 @@
 }
 
 .task-details {
-    position: fixed;
-    inset-block-start: 3rem; 
-    inset-inline-start: 50%;
-    transform: translateX(-50%);
-    inline-size: 48rem; 
-    block-size: calc(100vh - 6rem);
-    max-block-size: 62rem; 
+    position: relative;
+    margin-top: $spacing-xl;
+    inline-size: 48rem;
+    block-size: calc(100vh - #{2 * $spacing-xl});
+    max-block-size: 62rem;
     background-color: $background-white;
-    border-radius: $border-radius-medium;
-    text-align: start;
+    border-radius: $border-radius-large;
     font-family: $workspace-font;
-    box-shadow: $shadow-medium;
-    z-index: 10000;
+    box-shadow: $shadow-large;
 
     .details-header {
-        position: relative;
-        block-size: 3.5rem; // 56px
-        display: flex;
-        align-items: flex-start;
-        padding: $layoutPadding-medium;
-        padding-inline-end: 3.25rem; // 52px
+        padding: $spacing-md;
         border-bottom: 1px solid $border-light-gray;
-        
-        h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: $text-primary;
-            margin: 0;
-            line-height: 1.5;
-            flex: 1;
-        }
-        
-        .close-task-icon {
-            position: absolute;
-            inset-inline-end: $layoutPadding-medium;
-            inset-block-start: $layoutPadding-medium;
-            cursor: pointer;
-            padding: $spacing-xs;
+
+        .header-content {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: $border-radius-small;
-            block-size: 2.5rem;
-            inline-size: 2.5rem;
-            opacity: 0.8;
-            transition: $hover-transition;
-            
-            img {
-                inline-size: 1.25rem;
-                block-size: 1.25rem;
+            flex-direction: column;
+            gap: $spacing-sm;
+
+            .card-icon {
+                width: 1.25rem;
+                height: 1.25rem;
+                color: $text-secondary;
             }
-            
+
+            .list-info {
+                display: flex;
+                align-items: center;
+                gap: $spacing-sm;
+                color: $text-secondary;
+                font-size: 0.875rem;
+
+                .list-name-btn {
+                    font-weight: 500;
+                    padding: $spacing-xs $spacing-sm;
+                    border-radius: $border-radius-small;
+
+                    &:hover {
+                        background-color: $background-light-hover;
+                    }
+                }
+            }
+
+            .title-container {
+                h2 {
+                    font-size: 1.25rem;
+                    font-weight: 600;
+                    padding: $spacing-xs $spacing-sm;
+                    margin: -$spacing-xs -$spacing-sm;
+                    cursor: pointer;
+                    border-radius: $border-radius-small;
+
+                    &:hover {
+                        background-color: $background-light-hover;
+                    }
+                }
+
+                .title-input {
+                    width: 100%;
+                    font-size: 1.25rem;
+                    font-weight: 600;
+                    padding: $spacing-xs $spacing-sm;
+                    border: 2px solid $primary-blue;
+                    border-radius: $border-radius-small;
+
+                    &:focus {
+                        outline: none;
+                    }
+                }
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: $spacing-md;
+            right: $spacing-md;
+            padding: $spacing-sm;
+            border-radius: 50%;
+            color: $text-secondary;
+
             &:hover {
-                background-color: $button-secondary-hover-bg;
-                opacity: 1;
+                background-color: $background-light-hover;
+            }
+
+            img {
+                width: 1.25rem;
+                height: 1.25rem;
             }
         }
     }
-    
+
     .details-grid {
         display: flex;
-        block-size: calc(100% - 3.5rem); // Full height minus header
-        
+        block-size: calc(100% - 4rem);
+
         .main-content {
             flex: 1;
-            padding: $layoutPadding-medium;
+            padding: $spacing-md $spacing-md $spacing-md $spacing-xl;
             overflow-y: auto;
-            
-            section {
-                margin-block-end: $spacing-xl;
-                
+
+            .section-header {
+                display: flex;
+                align-items: center;
+                gap: $spacing-sm;
+                margin-block-end: $spacing-sm;
+
+                img {
+                    width: 1.25rem;
+                    height: 1.25rem;
+                    color: $text-secondary;
+                }
+
                 h3 {
-                    font-size: 0.875rem;
+                    font-size: 1rem;
                     font-weight: 600;
                     color: $text-primary;
-                    margin-block-end: $spacing-sm;
+                    margin: 0;
+                }
+
+                .show-details-btn {
+                    margin-left: auto;
+                    color: $text-secondary;
+                    font-size: 0.875rem;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+
+            .notifications-section {
+                margin-block-end: $spacing-lg;
+
+                .watch-btn {
                     display: flex;
                     align-items: center;
                     gap: $spacing-sm;
-                }
-            }
-            
-            .description-section {
-                .description-content {
-                    background-color: $button-secondary-bg;
-                    padding: $spacing-sm;
+                    padding: $spacing-sm $spacing-md;
+                    background-color: $background-light-hover;
                     border-radius: $border-radius-small;
-                    min-block-size: 6.25rem;
-                    cursor: pointer;
-                    
+                    color: $text-primary;
+
                     &:hover {
                         background-color: $button-secondary-hover-bg;
                     }
-                    
-                    &.empty {
-                        color: $text-secondary;
-                        min-block-size: 3.75rem;
+
+                    img {
+                        width: 1.25rem;
+                        height: 1.25rem;
                     }
                 }
             }
-            
-            .activity-section {
-                .no-activity {
-                    color: $text-secondary;
+
+            .description-section {
+                margin-block-end: $spacing-xl;
+
+                .description-content {
+                    padding: 0.75rem;
+                    border-radius: $border-radius-small;
+                    min-height: 6.25rem;
+                    cursor: pointer;
+                    background-color: $background-light-hover;
+
+                    &:hover {
+                        background-color: $button-secondary-hover-bg;
+                    }
+
+                    &.empty {
+                        color: $text-secondary;
+                        min-height: 3.75rem;
+                    }
+                }
+
+                .description-textarea {
+                    width: 100%;
+                    min-height: 6.25rem;
+                    padding: 0.75rem;
+                    border: 2px solid $primary-blue;
+                    border-radius: $border-radius-small;
+                    resize: vertical;
+                    font-family: inherit;
+
+                    &:focus {
+                        outline: none;
+                    }
+                }
+            }
+
+            .activity-content {
+                .activity-item {
+                    display: flex;
+                    gap: $spacing-sm;
+                    margin-block-end: $spacing-md;
+
+                    .user-avatar {
+                        width: $avatar-size;
+                        height: $avatar-size;
+                        border-radius: 50%;
+                        background-color: $border-gray;
+                    }
+
+                    .activity-details {
+                        flex: 1;
+
+                        p {
+                            margin: 0;
+                            color: $text-primary;
+
+                            .user-name {
+                                font-weight: 700;
+                            }
+                        }
+
+                        .timestamp {
+                            font-size: 0.75rem;
+                            color: $text-secondary;
+                        }
+                    }
                 }
             }
         }
-        
+
         .sidebar {
-            inline-size: 10.5rem; // 168px
-            padding-block-end: 1.5rem; // 24px
-            padding-inline-end: $layoutPadding-medium;
-            border-inline-start: 1px solid $border-light-gray;
-            
+            width: 14rem;
+            padding: $spacing-md;
+            border-left: 1px solid $border-light-gray;
+
             .actions-list {
-                padding: $layoutPadding-medium;
-                padding-block-end: 0;
-                
-                h3 {
-                    font-size: 0.75rem;
-                    text-transform: uppercase;
-                    color: $text-secondary;
-                    font-weight: 600;
-                    margin-block-end: $spacing-sm;
-                    letter-spacing: 0.04em;
-                }
-                
-                .action-buttons {
-                    display: flex;
-                    flex-direction: column;
-                    gap: $spacing-xs;
-                    
-                    button {
-                        width: 100%;
-                        text-align: start;
-                        padding: $spacing-sm $spacing-md;
-                        color: $text-primary;
-                        background: none;
-                        border: none;
-                        border-radius: $border-radius-small;
-                        cursor: pointer;
-                        transition: $hover-transition;
-                        
-                        &:hover {
-                            background-color: $button-secondary-hover-bg;
+                section {
+                    margin-block-end: $spacing-lg;
+
+                    h3 {
+                        font-size: 0.75rem;
+                        font-weight: 600;
+                        color: $text-secondary;
+                        text-transform: uppercase;
+                        margin: 0 0 $spacing-xs;
+                    }
+
+                    .action-buttons {
+                        display: flex;
+                        flex-direction: column;
+                        gap: $spacing-xs;
+
+                        button {
+                            display: flex;
+                            align-items: center;
+                            gap: $spacing-xs;
+                            width: 100%;
+                            padding: $spacing-xs $spacing-sm;
+                            background-color: rgba($background-dark, 0.04);
+                            border-radius: $border-radius-medium;
+                            color: $text-primary;
+                            font-weight: 400;
+                            text-align: left;
+
+                            &:hover {
+                                background-color: rgba($background-dark, 0.08);
+                            }
+
+                            svg {
+                                font-size: 1.25rem;
+                                color: $text-secondary;
+                            }
                         }
                     }
                 }
