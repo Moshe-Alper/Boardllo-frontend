@@ -6,8 +6,6 @@ import { loadBoard, updateBoard } from '../../store/actions/board.actions'
 export function BoardHeader({ board, onUpdateBoard }) {
     const [isEditingTitle, setIsEditingTitle] = useState(false)
     const [editedTitle, setEditedTitle] = useState(board.title)
-    const demoWorkspace = { name: "Coding Team", visibility: "Workspace visible" }
-    const demoPowerUps = [{ id: 1, name: "Calendar" }, { id: 2, name: "Automation" }]
 
     async function onUpdateBoardTitle() {
         if (!editedTitle.trim()) {
@@ -67,10 +65,6 @@ export function BoardHeader({ board, onUpdateBoard }) {
                 <button className="star-btn">
                     <img src={svgService.starIcon} alt="Star" />
                 </button>
-                <div className="workspace-info">
-                    <span className="workspace-name">{demoWorkspace.name}</span>
-                    <span className="visibility">{demoWorkspace.visibility}</span>
-                </div>
             </div>
 
             <div className="board-header-right">

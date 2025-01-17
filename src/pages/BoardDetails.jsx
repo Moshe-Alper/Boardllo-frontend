@@ -118,7 +118,7 @@ export function BoardDetails() {
             <BoardSidebar isOpen={isSidebarOpen} toggleDrawer={toggleSidebar} boards={boards} />
             <section className="board-details">
                 <BoardHeader board={board} />
-                <div className="group-container">
+                <main className="group-container">
                     <GroupDragDropContainer
                         items={board.groups}
                         onDragEnd={handleDragEnd}
@@ -153,7 +153,7 @@ export function BoardDetails() {
                             </button>
                         )}
                     </div>
-                </div>
+                </main>
             </section>
         </div>
     )
