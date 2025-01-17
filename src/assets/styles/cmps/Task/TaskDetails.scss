@@ -18,6 +18,23 @@
     border-radius: $border-radius-large;
     box-shadow: $shadow-large;
 
+    &.has-cover {
+        .cover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: rem(116px);
+            background-color: var(--cover-color);
+            border-top-left-radius: $border-radius-large;
+            border-top-right-radius: $border-radius-large;
+        }
+
+        .details-header {
+            padding-top: rem(116px);
+        }
+    }
+
     .details-header {
         position: relative;
 
@@ -62,13 +79,15 @@
                 }
 
                 .title-input {
-                    width: 100%;
-                    font-size: 1.5rem;
+                    font-size: rem(20px);
+                    line-height: rem(24px);
                     font-weight: 600;
-                    padding: $spacing-xs $spacing-sm;
+                    color: $text-primary;
+                    margin: -$spacing-xs -$spacing-sm;
+                    width: calc(100% + #{2 * $spacing-sm});
                     border: 2px solid $primary-blue;
                     border-radius: $border-radius-small;
-                    background-color: $background-white;
+                    
 
                     &:focus {
                         outline: none;
@@ -122,6 +141,7 @@
             }
         }
     }
+     
 
     .details-grid {
         display: flex;

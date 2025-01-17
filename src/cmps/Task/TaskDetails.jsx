@@ -9,7 +9,8 @@ export function TaskDetails({ task, onClose, onCoverColorSelect, board }) {
     const [isEditingDescription, setIsEditingDescription] = useState(false)
     const [editedDescription, setEditedDescription] = useState(task?.description || '')
     const [comment, setComment] = useState('')
-
+    const hasCover = task?.style?.coverColor ? true : false
+    console.log('🚀 task', task.style.coverColor)
     if (!task) return <div>Loading...</div>
 
     function handleEscape(ev) {
@@ -70,7 +71,12 @@ export function TaskDetails({ task, onClose, onCoverColorSelect, board }) {
 
     return (
         <div className="task-details-overlay" onClick={handleOverlayClick}>
-            <section className="task-details">
+            <section
+                className={`task-details ${hasCover ? 'has-cover' : ''}`}
+                style={{
+                    '--cover-color': hasCover ? task.style.coverColor : 'transparent'
+                }}>
+                {hasCover && <div className="cover" />}
                 <header className="details-header">
                     <div className="header-content">
                         <img src={svgService.cardIcon} alt="Card Icon" className="card-icon" />
@@ -174,7 +180,7 @@ export function TaskDetails({ task, onClose, onCoverColorSelect, board }) {
                             <section>
                                 <h3>Actions</h3>
                                 <div className="action-buttons">
-                                    <button><img src={svgService.moveIcon} alt="Move" /> Move</button>
+                                    <button><img src={svgService.rightArrowIcon} alt="Move" /> Move</button>
                                     <button><img src={svgService.copyIcon} alt="Copy" /> Copy</button>
                                     <button><img src={svgService.cardIcon} alt="Mirror" /> Mirror</button>
                                     <button><img src={svgService.templateIcon} alt="Template" /> Make template</button>
