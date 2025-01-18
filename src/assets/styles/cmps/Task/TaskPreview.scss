@@ -36,7 +36,6 @@
         font-size: 0.875rem;
         color: $text-primary;
         max-width: 13.8125rem; // 221px to rem
-        max-height: 1.25rem; // 20px to rem
         margin-block-end: 0.25rem; // 4px to rem
     }
 
@@ -60,8 +59,8 @@
         transition: display 0.3s ease;
 
         img {
-            inline-size: 1rem; // 16px to rem
-            block-size: 1rem; // 16px to rem
+            inline-size: 1rem; // 16px
+            block-size: 1rem; // 16px
         }
     }
 
