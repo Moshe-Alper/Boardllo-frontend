@@ -2,9 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { svgService } from "../../services/svg.service"
 import { showErrorMsg, showSuccessMsg } from '../../services/event-bus.service'
-import { updateTask, loadBoard } from '../../store/actions/board.actions'
+import { updateTask } from '../../store/actions/board.actions'
 
-export function TaskDetails({ group, task, onClose, onCoverColorSelect }) {
+export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSelect }) {
+    const board = useSelector(storeState => storeState.boardModule.board)
+    const currGroup = board?.groups?.find(g => g.id === group.id)
+    const task = currGroup?.tasks?.find(t => t.id === initialTask.id) || initialTask
+
     const [isEditingTitle, setIsEditingTitle] = useState(false)
     const [editedTitle, setEditedTitle] = useState(task?.title || '')
     const [isEditingDescription, setIsEditingDescription] = useState(false)
@@ -12,6 +16,10 @@ export function TaskDetails({ group, task, onClose, onCoverColorSelect }) {
     const [comment, setComment] = useState('')
 
     const hasCover = task?.style?.coverColor ? true : false
+
+    useEffect(() => {
+        setEditedTitle(task?.title || '')
+    }, [task])
 
     function handleEscape(ev) {
         if (ev.key === 'Escape') {
@@ -22,33 +30,6 @@ export function TaskDetails({ group, task, onClose, onCoverColorSelect }) {
     function handleOverlayClick(ev) {
         if (ev.target === ev.currentTarget) {
             onClose()
-        }
-    }
-
-    async function handleTitleBlur() {
-        if (!editedTitle.trim()) {
-            setEditedTitle(task.title)
-            setIsEditingTitle(false)
-            showErrorMsg('Title cannot be empty')
-            return
-        }
-
-        if (editedTitle === task.title) {
-            setIsEditingTitle(false)
-            return
-        }
-
-        try {
-            const updatedTask = { ...task, title: editedTitle.trim() }
-            const savedTask = await updateTask(board._id, updatedTask)
-            await loadBoard(board._id)
-            showSuccessMsg(`Task updated successfully (id: ${savedTask.id})`)
-            setIsEditingTitle(false)
-        } catch (err) {
-            console.error('Cannot update task', err)
-            showErrorMsg('Cannot update task')
-            setEditedTitle(task.title)
-            setIsEditingTitle(false)
         }
     }
 
@@ -69,6 +50,33 @@ export function TaskDetails({ group, task, onClose, onCoverColorSelect }) {
         }
     }, [])
 
+
+    async function handleTitleSubmit() {
+        if (!editedTitle.trim()) {
+            setEditedTitle(task.title)
+            setIsEditingTitle(false)
+            showErrorMsg('Title cannot be empty')
+            return
+        }
+    
+        if (editedTitle === task.title) {
+            setIsEditingTitle(false)
+            return
+        }
+    
+        const updatedTask = { ...task, title: editedTitle.trim() }
+        
+        try {
+            await updateTask(board._id, group.id, updatedTask)
+            showSuccessMsg('Title updated successfully')
+            setIsEditingTitle(false)
+        } catch (err) {
+            showErrorMsg('Failed to update title')
+            setEditedTitle(task.title)
+            setIsEditingTitle(false)
+        }
+    }
+
     if (!task) return <div>Loading...</div>
 
     return (
@@ -88,7 +96,7 @@ export function TaskDetails({ group, task, onClose, onCoverColorSelect }) {
                                     type="text"
                                     value={editedTitle}
                                     onChange={(ev) => setEditedTitle(ev.target.value)}
-                                    onBlur={handleTitleBlur}
+                                    onBlur={handleTitleSubmit}
                                     onKeyDown={handleTitleKeyPress}
                                     className="title-input"
                                     autoFocus

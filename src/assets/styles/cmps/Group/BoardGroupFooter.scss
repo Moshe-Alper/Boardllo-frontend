@@ -2,8 +2,8 @@
     width: 100%;
 
     .add-task-btn-preview {
-        width: 220px;
-        height: 32px;
+        width: rem(220px);
+        height: rem(32px);
         background-color: transparent;
         color: $text-secondary;
         border: none;
@@ -16,6 +16,7 @@
         display: flex;
         align-items: center;
         margin-inline-start: 0;
+        margin-block-start: 0;
         
         &:hover {
             background-color: $details-add-hover;

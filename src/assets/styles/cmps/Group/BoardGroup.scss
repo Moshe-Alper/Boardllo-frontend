@@ -4,7 +4,6 @@
     max-width: 17rem;
     margin: $spacing-xs;
     padding: rem(4px) rem(8px);
-    min-height: 6.25rem; // 100px
     height: fit-content;
     max-height: calc(100vh - $navbar-height - 5rem); // 80px
     border-radius: $border-radius;
