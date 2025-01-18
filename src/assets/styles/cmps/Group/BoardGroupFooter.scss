@@ -29,7 +29,6 @@
         }
     }
     
-
     .add-task-container {
         width: 100%;
         margin-block-start: rem(8px);
@@ -51,6 +50,7 @@
             line-height: 1.2;
             resize: none; 
             overflow-y: auto; 
+            margin: 0;
             
             &:focus {
                 border-color: none;

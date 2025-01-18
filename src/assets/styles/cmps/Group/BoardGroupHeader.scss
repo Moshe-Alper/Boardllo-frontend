@@ -3,50 +3,58 @@
     justify-content: space-between;
     align-items: center;
     padding: 0;
-    min-height: 2rem;  //32px 
-
+    min-height: 2rem; 
+    max-width: 100%;  
+    
     .title-container, .title-editor {
-        flex-grow: 1;
+        flex: 1 1 0; 
+        min-width: 0;  
         display: flex;
         align-items: center;
         gap: $spacing-xs;
-
+        
         .MuiTextField-root {
             width: 100%;
             margin: 0;
-
+            
             .MuiOutlinedInput-root {
                 height: 2rem;  // 32px
                 background-color: $background-white;
             }
-
+            
             .MuiOutlinedInput-input {
-                padding: 0.25rem 0.5rem;  //  4px 8px 
-                font-size: 0.875rem;  // 14px 
+                padding: 0.25rem 0.5rem;  // 4px 8px
+                font-size: 0.875rem;  // 14px
                 font-weight: 600;
                 color: $text-primary;
             }
         }
-
+        
         h5 {
-            font-size: 0.875rem;  // 14px
+            flex: 1 1 auto; 
+            min-width: 0;    
+            font-size: 0.875rem;  
             font-weight: 600;
             color: $text-primary;
             margin: 0;
-            padding: $spacing-xs $spacing-sm;
+            padding: 0.25rem 0.5rem;  
             border-radius: $border-radius-small;
             cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis; 
         }
     }
-
+    
     .title-actions {
         display: flex;
         align-items: center;
-        gap: $spacing-xs;
-
+        gap: 0.125rem;  
+        flex: 0 0 auto;  
+        
         .collapse-btn,
         .menu-btn {
-            width: 1.75rem;  //  28px
+            width: 1.75rem;  // 28px
             height: 1.75rem;  // 28px
             display: flex;
             align-items: center;
@@ -57,27 +65,28 @@
             cursor: pointer;
             padding: $spacing-xs;
             margin: 0;
-
+            
             &:hover {
-                background-color: rgba(9, 30, 66, 0.08); 
+                background-color: rgba(9, 30, 66, 0.08);
             }
-
+            
             img {
-                width: 0.875rem;  //  14px 
-                height: 0.875rem;  // 14px 
+                width: 0.875rem;  // 14px
+                height: 0.875rem;  // 14px
                 object-fit: contain;
                 opacity: 0.6;
             }
         }
     }
-
+    
     .collapsed-content {
         display: flex;
         align-items: center;
         gap: $spacing-xs;
         width: 100%;
+        min-width: 0; 
     }
-
+    
     &.collapsed {
         .title-actions {
             .collapse-btn {
@@ -85,9 +94,13 @@
                 margin: auto;
             }
         }
-
+        
         .collapsed-title {
             margin-left: $spacing-xs;
+            min-width: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 }
