@@ -2,59 +2,92 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 0;
-    transition: all 0.3s ease;
-    flex-shrink: 0; 
-    min-height: 40px; 
+    padding: 0;
+    min-height: 2rem;  //32px 
 
-    .title-container {
-        display: flex;
+    .title-container, .title-editor {
         flex-grow: 1;
-        justify-content: flex-start;
+        display: flex;
+        align-items: center;
+        gap: $spacing-xs;
+
+        .MuiTextField-root {
+            width: 100%;
+            margin: 0;
+
+            .MuiOutlinedInput-root {
+                height: 2rem;  // 32px
+                background-color: $background-white;
+            }
+
+            .MuiOutlinedInput-input {
+                padding: 0.25rem 0.5rem;  //  4px 8px 
+                font-size: 0.875rem;  // 14px 
+                font-weight: 600;
+                color: $text-primary;
+            }
+        }
 
         h5 {
+            font-size: 0.875rem;  // 14px
+            font-weight: 600;
+            color: $text-primary;
+            margin: 0;
+            padding: $spacing-xs $spacing-sm;
+            border-radius: $border-radius-small;
             cursor: pointer;
-            margin: 0.5rem;
-            transition: all 0.3s ease;
         }
     }
 
     .title-actions {
         display: flex;
         align-items: center;
+        gap: $spacing-xs;
 
         .collapse-btn,
         .menu-btn {
+            width: 1.75rem;  //  28px
+            height: 1.75rem;  // 28px
             display: flex;
             align-items: center;
             justify-content: center;
-
-            background: none;
+            background: transparent;
             border: none;
-            border-radius: $border-radius-large;
+            border-radius: $border-radius-medium;
             cursor: pointer;
-            padding: 0.25rem; 
-            transition: transform 0.3s ease;
+            padding: $spacing-xs;
+            margin: 0;
+
+            &:hover {
+                background-color: rgba(9, 30, 66, 0.08); 
+            }
 
             img {
-                width: 1.2rem;
-                height: 1.2rem;
+                width: 0.875rem;  //  14px 
+                height: 0.875rem;  // 14px 
                 object-fit: contain;
+                opacity: 0.6;
             }
         }
+    }
+
+    .collapsed-content {
+        display: flex;
+        align-items: center;
+        gap: $spacing-xs;
+        width: 100%;
     }
 
     &.collapsed {
         .title-actions {
             .collapse-btn {
-                width: 2.5rem;
-                padding: 0.25rem; 
-
-                img {
-                    width: 1.2rem;
-                    height: 1.2rem;
-                }
+                transform: rotate(-90deg);
+                margin: auto;
             }
+        }
+
+        .collapsed-title {
+            margin-left: $spacing-xs;
         }
     }
 }

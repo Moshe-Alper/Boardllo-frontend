@@ -1,97 +1,111 @@
 .add-group-form {
-    width: 17rem; // 272px
+    width: 17rem;
     background-color: $background-light;
     padding: $layoutPadding-small;
     border-radius: $border-radius-largest;
-    gap: $layoutPadding-small;
+    box-shadow: $shadow-small;
+    height: auto;
 
-    input {
+    textarea {
         width: 100%;
         padding: $layoutPadding-small;
-        border: 0.125rem solid transparent; // 2px
+        border: 0.125rem solid transparent;
         border-radius: $border-radius-small;
         background-color: $card-background;
-        font-size: 0.875rem; // 14px
+        font-size: 0.875rem;
         color: $text-primary;
         font-family: $workspace-font;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
-
+        transition: $hover-transition;
+        box-shadow: $input-shadow;
+        resize: none;
+        overflow: hidden;
+        height: auto;
+        min-height: 2.5rem;
+        display: block;
+        
         &:focus {
-            border-color: $primary-blue;
+            border-color: $secondary-blue;
             outline: none;
-            box-shadow: 0 0 0.25rem rgba($primary-blue, 0.5);
+            box-shadow: 0 0 0 2px rgba($secondary-blue, 0.25);
         }
-
+        
         &::placeholder {
             color: $text-secondary;
+            font-size: 0.875rem;
         }
     }
-
+    
     .buttons-container {
         margin-block-start: $layoutPadding-small;
         display: flex;
         align-items: center;
-
-        button {
-            border-radius: $border-radius-large;
-        }
-
-
+        
         .add-group-btn {
-            width: auto;
-            padding: 0.5rem 1rem; // 8px 16px
+            padding: $spacing-sm $spacing-md;
             background-color: $primary-blue;
             color: $button-text-light;
             border: none;
             border-radius: $border-radius-small;
             font-weight: 500;
-            font-size: 0.875rem; // 14px
+            font-size: 0.875rem;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.1s ease;
-
+            transition: $hover-transition;
+            
             &:hover {
                 background-color: $primary-hover-blue;
             }
+            
+            &:active {
+                background-color: darken($primary-hover-blue, 5%);
+            }
         }
-
+        
         .cancel-btn {
-            width: auto;
-            font-size: 1.25rem; // 20px
-            background-color: transparent;
-            padding: $layoutPadding-smallest 1rem; 
+            width: 2rem;
+            height: 2rem;
+            padding: $spacing-xs;
             border: none;
+            background-color: transparent;
+            color: $text-secondary;
             cursor: pointer;
-            color: $text-dark;
             display: flex;
             align-items: center;
             justify-content: center;
-            line-height: 1;
+            border-radius: $border-radius-small;
+            margin-inline-start: $spacing-xs;
+            transition: $hover-transition;
             
-            flex-grow: 0;
-            flex-shrink: 0;
-
+            svg {
+                width: 1.125rem;
+                height: 1.125rem;
+                opacity: 0.8;
+            }
+            
             &:hover {
+                background-color: $details-btn-txt-hover;
                 color: $text-primary;
-                background-color: $button-secondary-hover-bg;
+                
+                svg {
+                    opacity: 1;
+                }
             }
         }
     }
 }
 
-.add-list-btn {
-    width: 220px;
-    height: 32px;
+.add-group-btn {
+    width: 17rem;
+    height: 2rem;
     padding: $layoutPadding-small;
-    background-color: transparent;
+    background-color: rgba($background-light, 0.24);
     border: none;
-    border-radius: $border-radius;
+    border-radius: $border-radius-small;
     color: $details-btn-txt;
     cursor: pointer;
     font-size: 0.875rem;
     font-weight: 500;
-    transition: background-color 0.3s ease;
+    transition: $hover-transition;
     font-family: $workspace-font;
-    box-sizing: border-box;
     display: flex;
     align-items: center;
     gap: $layoutPadding-small;

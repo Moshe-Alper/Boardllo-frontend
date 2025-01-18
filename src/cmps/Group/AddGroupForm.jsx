@@ -1,9 +1,43 @@
+import { svgService } from "../../services/svg.service"
+import { useEffect, useRef } from "react"
 
-export function AddGroupForm({ newGroupTitle, setNewGroupTitle, onAddGroup, setIsAddingGroup, boardId }) {
+export function AddGroupForm({ 
+    newGroupTitle, 
+    setNewGroupTitle, 
+    onAddGroup, 
+    setIsAddingGroup,
+    isAddingGroup, 
+    board,
+    boardId 
+}) {
+    const textareaRef = useRef(null)
 
     function handleSubmit(ev) {
         ev.preventDefault()
         onAddGroup(boardId)
+    }
+
+    function adjustHeight() {
+        const textarea = textareaRef.current
+        if (textarea) {
+            textarea.style.height = 'inherit'
+            textarea.style.height = `${textarea.scrollHeight}px`
+        }
+    }
+
+    useEffect(() => {
+        adjustHeight()
+    }, [newGroupTitle])
+
+    if (!isAddingGroup) {
+        return (
+            <button
+                className="new-list-btn"
+                onClick={() => setIsAddingGroup(true)}
+            >
+                {board?.groups?.length ? 'Add another list' : 'Add a list'}
+            </button>
+        )
     }
 
     return (
@@ -11,11 +45,15 @@ export function AddGroupForm({ newGroupTitle, setNewGroupTitle, onAddGroup, setI
             className="add-group-form"
             onSubmit={handleSubmit}
         >
-            <input
-                type="text"
+            <textarea
+                ref={textareaRef}
                 placeholder="Enter list name..."
                 value={newGroupTitle}
-                onChange={(ev) => setNewGroupTitle(ev.target.value)}
+                onChange={(ev) => {
+                    setNewGroupTitle(ev.target.value)
+                }}
+                rows="1"
+                style={{ resize: 'none' }}
             />
             <div className="buttons-container">
                 <button
@@ -31,7 +69,7 @@ export function AddGroupForm({ newGroupTitle, setNewGroupTitle, onAddGroup, setI
                     aria-label="Cancel adding group"
                     onClick={() => setIsAddingGroup(false)}
                 >
-                    x
+                    <img src={svgService.closeIcon} alt="Cancel" />
                 </button>
             </div>
         </form>

@@ -27,9 +27,9 @@ export function BoardDetails() {
     const dispatch = useDispatch()
 
     const toggleSidebar = () => {
-       const newSidebarState = !isSidebarOpen
-       setIsSidebarOpen(newSidebarState)
-       localStorage.setItem('isSidebarOpen' , JSON.stringify(newSidebarState))
+        const newSidebarState = !isSidebarOpen
+        setIsSidebarOpen(newSidebarState)
+        localStorage.setItem('isSidebarOpen', JSON.stringify(newSidebarState))
     }
 
     useEffect(() => {
@@ -135,24 +135,14 @@ export function BoardDetails() {
                         )}
                     </GroupDragDropContainer>
 
-                    <div className="add-group-wrapper">
-                        {isAddingGroup ? (
-                            <AddGroupForm
-                                board={board}
-                                newGroupTitle={newGroupTitle}
-                                setNewGroupTitle={setNewGroupTitle}
-                                onAddGroup={() => onAddGroup(board._id)}
-                                setIsAddingGroup={setIsAddingGroup}
-                            />
-                        ) : (
-                            <button
-                                className="new-list-btn"
-                                onClick={() => setIsAddingGroup(true)}
-                            >
-                                {board.groups?.length ? 'Add another list' : 'Add a list'}
-                            </button>
-                        )}
-                    </div>
+                        <AddGroupForm
+                            board={board}
+                            newGroupTitle={newGroupTitle}
+                            setNewGroupTitle={setNewGroupTitle}
+                            onAddGroup={() => onAddGroup(board._id)}
+                            isAddingGroup={isAddingGroup}
+                            setIsAddingGroup={setIsAddingGroup}
+                        />
                 </main>
             </section>
         </div>

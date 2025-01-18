@@ -1,14 +1,45 @@
 .board-group-footer {
     width: 100%;
 
+    .add-task-btn-preview {
+        width: 220px;
+        height: 32px;
+        background-color: transparent;
+        color: $text-secondary;
+        border: none;
+        border-radius: $border-radius-large;
+        font-size: rem(14px);
+        font-weight: 600;
+        text-align: left;
+        cursor: pointer;
+        transition: background-color 0.2s ease, color 0.2s ease;
+        display: flex;
+        align-items: center;
+        margin-inline-start: 0;
+        
+        &:hover {
+            background-color: $details-add-hover;
+        }
+
+        img {
+            width: rem(16px);
+            height: rem(16px);
+            opacity: 0.8;
+            margin-inline-end: rem(8px);
+        }
+    }
+    
+
     .add-task-container {
         width: 100%;
         margin-block-start: rem(8px);
         box-sizing: border-box;
 
-        input {
+        textarea {
             width: 100%;
-            padding: rem(10px);
+            min-height: rem(56px);
+            max-height: rem(162px); 
+            padding: rem(8px) rem(10px);
             border: rem(2px) solid transparent;
             border-radius: $border-radius-large;
             box-sizing: border-box;
@@ -17,7 +48,10 @@
             font-family: $workspace-font;
             color: $text-primary;
             box-shadow: $input-shadow;
-
+            line-height: 1.2;
+            resize: none; 
+            overflow-y: auto; 
+            
             &:focus {
                 border-color: none;
                 outline: none;
@@ -27,13 +61,13 @@
         .buttons-container {
             display: flex;
             align-items: center;
-            margin-block-start: $layoutPadding-small;
+            margin-block: $layoutPadding-small 0;
 
             button {
                 border-radius: $border-radius-large;
             }
 
-            .add-card-btn {
+            .add-task-btn-active {
                 width: auto;
                 padding: rem(8px) rem(12px);
                 background-color: $primary-blue;
@@ -49,6 +83,7 @@
                 &:hover {
                     background-color: $primary-hover-blue;
                 }
+
             }
 
             .cancel-btn {
@@ -57,24 +92,25 @@
                 padding: rem(6px);
                 border: none;
                 background-color: transparent;
-                color: $text-secondary; // Using your variable instead of hardcoded #6b778c
+                color: $text-secondary;
                 cursor: pointer;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                border-radius: $border-radius-small; // Using your variable
-                margin-left: rem(4px);
-                transition: $hover-transition; // Using your variable for consistent transitions
+                border-radius: $border-radius-small;
+                margin-inline-start: rem(4px);
+                transition: $hover-transition;
+                margin: 0;
 
                 svg {
-                    width: rem(20px); // Adjusted to 20px as requested
-                    height: rem(20px); // Adjusted to 20px as requested
+                    width: rem(18px);
+                    height: rem(18px);
                     opacity: 0.8;
                 }
 
                 &:hover {
-                    background-color: $button-secondary-hover-bg; // Using your variable
-                    color: $text-primary; // Using your variable instead of hardcoded #172b4d
+                    background-color: $details-btn-txt-hover;
+                    color: $text-primary;
 
                     svg {
                         opacity: 0.8;

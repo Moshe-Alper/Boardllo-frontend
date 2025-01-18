@@ -63,6 +63,9 @@
                 align-items: center;
                 column-gap: rem(8px);
                 row-gap: rem(2px);
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                white-space: normal;
 
                 h2 {
                     font-size: rem(20px);
@@ -94,7 +97,6 @@
                     width: rem(660px);
                     border: 1px solid $primary-blue;
                     border-radius: $border-radius-small;
-                    
 
                     &:focus {
                         outline: none;

@@ -20,74 +20,29 @@
     flex-direction: column;
   }
 
- .group-container {
+  .group-container {
     display: flex;
     flex-wrap: nowrap;
     align-items: flex-start;
     padding: $spacing-sm;
-    height: calc(100% - 3rem); 
+    height: calc(100% - 3rem);
     gap: $layoutPadding-small;
     overflow-x: auto;
     overflow-y: hidden;
     min-height: 0;
     flex: 1;
 
-    
+
     @media (max-width: $breakpoint-tablet) {
-        padding: $spacing-sm;
-        gap: $spacing-sm;
+      padding: $spacing-sm;
+      gap: $spacing-sm;
     }
 
     @media (max-width: $breakpoint-mobile) {
-        padding: $spacing-xs $spacing-xs $spacing-lg $spacing-xs;
-        gap: $spacing-xs;
-        width: 15rem;
-    }
-}
-
-  .add-group-wrapper {
-    flex: 0 0 auto;
-    width: 17rem;
-    padding-block: rem(2px);
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: $border-radius-largest;
-    transition: background-color 0.2s ease;
-    margin: 0.5rem 0;
-    align-self: flex-start;
-
-    @media (max-width: $breakpoint-mobile) {
+      padding: $spacing-xs $spacing-xs $spacing-lg $spacing-xs;
+      gap: $spacing-xs;
       width: 15rem;
     }
-
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
   }
 
-
-
-  .new-list-btn {
-    width: 100%;
-    min-height: 2.5rem; // 40px
-    padding: 0.5rem ; 
-    color: $text-white;
-    font-size: 0.875rem; // 14px
-    font-weight: 500;
-    text-align: left;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    transition: color 0.2s ease;
-    margin: 0;
-
-    &::before {
-      content: '+';
-      margin-inline-end: rem(4px);
-      font-weight: 100;  
-      font-size: 1rem; 
-      padding: rem(10px);
-      display: inline-block;
-      line-height: 0;
-    }
-  }
 }
