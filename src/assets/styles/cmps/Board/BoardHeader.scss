@@ -6,7 +6,15 @@
     justify-content: space-between;
     align-items: center;
     color: $text-light;
+    transition: margin-right 0.3s ease;
 
+
+    &.menu-open {
+        margin-right: 300px; 
+        padding-right: 70px;
+    }
+
+    
     @media screen and (max-width: $breakpoint-mobile) {
         padding: $spacing-sm;
         height: auto;
