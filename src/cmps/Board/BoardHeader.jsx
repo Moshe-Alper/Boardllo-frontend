@@ -71,10 +71,7 @@ export function BoardHeader({ board, onUpdateBoard }) {
             <button className="star-btn">
                 <img src={svgService.starIcon} alt="Star" />
             </button>
-            <div className="workspace-info">
-                <span className="workspace-name">{demoWorkspace.name}</span>
-                <span className="visibility">{demoWorkspace.visibility}</span>
-            </div>
+            
         </div>
     
         <div className="board-header-right">
