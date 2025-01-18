@@ -92,7 +92,8 @@ export async function loadGroup(boardId, groupId) {
 
 // Group Actions
 export async function addGroup(boardId, group) {
-    const optimisticGroup = { ...group, id: 'temp-id' }
+    const tempId = `temp-${Date.now()}`
+    const optimisticGroup = { ...group, id: temp-id }
     store.dispatch(getCmdAddGroup(optimisticGroup))
     try {
         const savedGroup = await boardService.saveGroup(boardId, group)
@@ -131,7 +132,8 @@ export async function removeGroup(boardId, groupId) {
 
 // Task Actions
 export async function addTask(boardId, groupId, task) {
-    const optimisticTask = { ...task, _id: 'temp-id' }
+    const tempId = `temp-${Date.now()}`
+    const optimisticTask = { ...task, _id: tempId }
     store.dispatch(getCmdAddTask(optimisticTask))
     try {
         const savedTask = await boardService.saveTask(boardId, groupId, task)
