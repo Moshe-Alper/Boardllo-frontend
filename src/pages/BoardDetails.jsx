@@ -9,6 +9,8 @@ import { AddGroupForm } from '../cmps/Group/AddGroupForm'
 import { BoardHeader } from '../cmps/Board/BoardHeader'
 import { BoardSidebar } from '../cmps/Board/BoardSidebar'
 import { GroupDragDropContainer } from '../cmps/DragDropSystem'
+import { BoardMenu } from '../cmps/Board/BoardMenu'
+
 
 
 export function BoardDetails() {
@@ -22,6 +24,7 @@ export function BoardDetails() {
         return sidebarState ? JSON.parse(sidebarState) : (false)
     }
     )
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [activeItem, setActiveItem] = useState(null)
     const [activeType, setActiveType] = useState(null)
     const dispatch = useDispatch()
@@ -30,6 +33,9 @@ export function BoardDetails() {
         const newSidebarState = !isSidebarOpen
         setIsSidebarOpen(newSidebarState)
         localStorage.setItem('isSidebarOpen', JSON.stringify(newSidebarState))
+    }
+    const toggleBoardMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
     }
 
     useEffect(() => {
@@ -145,6 +151,11 @@ export function BoardDetails() {
                         />
                 </main>
             </section>
+            <BoardMenu
+                isOpen={isMenuOpen}
+                toggleMenu={toggleBoardMenu}
+                board={board}
+            />
         </div>
     )
 }
