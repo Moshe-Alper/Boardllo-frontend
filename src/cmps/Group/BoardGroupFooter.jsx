@@ -1,6 +1,7 @@
 import React from 'react'
+import { svgService } from '../../services/svg.service'
 
-export function BoardGroupFooter({ 
+export function BoardGroupFooter({
     isAddingTask, setIsAddingTask, newTaskTitle, handleTitleChange, onAddTask }) {
 
     return (
@@ -10,7 +11,7 @@ export function BoardGroupFooter({
                     <input
                         type="text"
                         placeholder="Enter task title or paste a link"
-                        value={newTaskTitle} 
+                        value={newTaskTitle}
                         onChange={handleTitleChange}
                     />
                     <div className="buttons-container">
@@ -20,7 +21,8 @@ export function BoardGroupFooter({
                             className="cancel-btn"
                             onClick={() => setIsAddingTask(false)}
                         >
-                            x
+                            <img src={svgService.closeIcon} alt="Cancel" />
+
                         </button>
                     </div>
                 </form>

@@ -3,7 +3,7 @@
     min-width: 17rem;
     max-width: 17rem;
     margin: $spacing-xs;
-    padding: $layoutPadding-small;
+    padding: rem(4px) rem(8px);
     min-height: 6.25rem; // 100px
     height: fit-content;
     max-height: calc(100vh - $navbar-height - 5rem); // 80px
@@ -33,7 +33,7 @@
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
-        padding-block-start: 0.5rem;
+        padding-block-start: rem(6px);
         overflow-y: auto;
         min-height: 0;
         max-height: calc(100vh - $navbar-height - 10rem); // 160px
@@ -49,11 +49,11 @@
     }
 
     .board-group-footer {
-        margin-top: auto;
+        margin-block-start: auto;
         position: sticky;
         bottom: 0;
         background-color: $background-light;
-        padding-top: $spacing-xs;
+        padding-block-start: $spacing-xs;
         z-index: 1;
     }
 

@@ -79,27 +79,35 @@
 }
 
 .add-list-btn {
-    width: 100%;
+    width: 220px;
+    height: 32px;
     padding: $layoutPadding-small;
-    background-color: rgba($background-white, 0.24);
+    background-color: transparent;
     border: none;
     border-radius: $border-radius;
-    color: $text-primary;
+    color: $details-btn-txt;
     cursor: pointer;
-    font-size: 0.875rem; // 14px
-    text-align: left;
+    font-size: 0.875rem;
+    font-weight: 500;
     transition: background-color 0.3s ease;
     font-family: $workspace-font;
     box-sizing: border-box;
-
+    display: flex;
+    align-items: center;
+    gap: $layoutPadding-small;
+    margin-inline-start: 0;
+    
     &:hover {
-        background-color: $button-secondary-hover-bg;
+        background-color: $details-btn-txt-hover;
     }
-
+    
     &::before {
         content: '+';
-        margin-inline-end: $layoutPadding-small;
-        font-size: 1.25rem; // 20px
-        font-weight: 500;
+        font-weight: 200;
+        font-size: 1.2rem;
+        display: inline-flex;
+        align-items: center;
+        line-height: 0;
+        margin-block-start: -2px;
     }
 }

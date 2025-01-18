@@ -87,7 +87,7 @@ export function TaskDetails({ group, task, onClose, onCoverColorSelect }) {
                                 <input
                                     type="text"
                                     value={editedTitle}
-                                    onChange={(e) => setEditedTitle(e.target.value)}
+                                    onChange={(ev) => setEditedTitle(ev.target.value)}
                                     onBlur={handleTitleBlur}
                                     onKeyDown={handleTitleKeyPress}
                                     className="title-input"

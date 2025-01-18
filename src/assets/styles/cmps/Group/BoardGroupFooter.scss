@@ -3,17 +3,17 @@
 
     .add-task-container {
         width: 100%;
-        margin-block-start: 0.5rem;
+        margin-block-start: rem(8px);
         box-sizing: border-box;
 
         input {
             width: 100%;
-            padding: 0.625rem;
-            border: 0.125rem solid transparent;
+            padding: rem(10px);
+            border: rem(2px) solid transparent;
             border-radius: $border-radius-large;
             box-sizing: border-box;
             background-color: $background-white;
-            font-size: 0.875rem;
+            font-size: rem(14px);
             font-family: $workspace-font;
             color: $text-primary;
             box-shadow: $input-shadow;
@@ -32,18 +32,19 @@
             button {
                 border-radius: $border-radius-large;
             }
-            
+
             .add-card-btn {
                 width: auto;
-                padding: 0.5rem 1rem;
+                padding: rem(8px) rem(12px);
                 background-color: $primary-blue;
                 color: $button-text-light;
                 border: none;
                 border-radius: $border-radius-small;
-                font-size: 0.875rem;
+                font-size: rem(14px);
                 font-weight: 500;
                 cursor: pointer;
                 transition: background-color 0.3s ease, transform 0.1s ease;
+                margin-inline-start: 0;
 
                 &:hover {
                     background-color: $primary-hover-blue;
@@ -51,26 +52,35 @@
             }
 
             .cancel-btn {
-                width: auto;
-                padding: $layoutPadding-smallest 1rem;
+                width: rem(32px);
+                height: rem(32px);
+                padding: rem(6px);
                 border: none;
                 background-color: transparent;
-                font-size: 1.25rem;
-                color: $text-dark;
+                color: $text-secondary; // Using your variable instead of hardcoded #6b778c
                 cursor: pointer;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                line-height: 1;
-                flex-grow: 0;
-                flex-shrink: 0;
+                border-radius: $border-radius-small; // Using your variable
+                margin-left: rem(4px);
+                transition: $hover-transition; // Using your variable for consistent transitions
+
+                svg {
+                    width: rem(20px); // Adjusted to 20px as requested
+                    height: rem(20px); // Adjusted to 20px as requested
+                    opacity: 0.8;
+                }
 
                 &:hover {
-                    color: $text-primary;
-                    background-color: $button-secondary-hover-bg;
+                    background-color: $button-secondary-hover-bg; // Using your variable
+                    color: $text-primary; // Using your variable instead of hardcoded #172b4d
+
+                    svg {
+                        opacity: 0.8;
+                    }
                 }
             }
         }
     }
-
 }
