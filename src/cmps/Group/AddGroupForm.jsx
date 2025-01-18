@@ -1,14 +1,14 @@
 import { svgService } from "../../services/svg.service"
 import { useEffect, useRef } from "react"
 
-export function AddGroupForm({ 
-    newGroupTitle, 
-    setNewGroupTitle, 
-    onAddGroup, 
+export function AddGroupForm({
+    newGroupTitle,
+    setNewGroupTitle,
+    onAddGroup,
     setIsAddingGroup,
-    isAddingGroup, 
+    isAddingGroup,
     board,
-    boardId 
+    boardId
 }) {
     const textareaRef = useRef(null)
 
@@ -32,9 +32,10 @@ export function AddGroupForm({
     if (!isAddingGroup) {
         return (
             <button
-                className="new-list-btn"
+                className="add-group-btn-preview"
                 onClick={() => setIsAddingGroup(true)}
             >
+                <img src={svgService.addIcon} alt="" className="add-icon" />
                 {board?.groups?.length ? 'Add another list' : 'Add a list'}
             </button>
         )
@@ -58,7 +59,7 @@ export function AddGroupForm({
             <div className="buttons-container">
                 <button
                     type="submit"
-                    className="add-group-btn"
+                    className="add-group-btn-active"
                     aria-label="Add new group"
                 >
                     Add List

@@ -26,7 +26,7 @@
     align-items: flex-start;
     padding: $spacing-sm;
     height: calc(100% - 3rem);
-    gap: $layoutPadding-small;
+    gap: rem(8px);
     overflow-x: auto;
     overflow-y: hidden;
     min-height: 0;

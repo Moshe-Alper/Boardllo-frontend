@@ -1,47 +1,50 @@
 .add-group-form {
-    width: 17rem;
+    width: rem(272px);
     background-color: $background-light;
-    padding: $layoutPadding-small;
-    border-radius: $border-radius-largest;
+    padding: 0 rem(8px); 
+    border-radius: $border-radius-large;
     box-shadow: $shadow-small;
     height: auto;
+    margin-block-start: rem(4px);
 
     textarea {
         width: 100%;
-        padding: $layoutPadding-small;
-        border: 0.125rem solid transparent;
+        padding: rem(8px) rem(12px); 
+        border: 2px solid $secondary-blue; 
         border-radius: $border-radius-small;
-        background-color: $card-background;
+        background-color: $background-light; 
         font-size: 0.875rem;
         color: $text-primary;
         font-family: $workspace-font;
         transition: $hover-transition;
-        box-shadow: $input-shadow;
         resize: none;
         overflow: hidden;
         height: auto;
-        min-height: 2.5rem;
+        min-height: rem(36px); 
         display: block;
-        
+
         &:focus {
             border-color: $secondary-blue;
             outline: none;
-            box-shadow: 0 0 0 2px rgba($secondary-blue, 0.25);
+            box-shadow: 0 0 0 1px $secondary-blue; 
         }
-        
+
         &::placeholder {
             color: $text-secondary;
             font-size: 0.875rem;
         }
     }
-    
+
     .buttons-container {
-        margin-block-start: $layoutPadding-small;
-        display: flex;
-        align-items: center;
-        
-        .add-group-btn {
-            padding: $spacing-sm $spacing-md;
+            margin-block-start: rem(8px);
+            display: flex;
+            align-items: center;
+            margin: 0;
+
+        }
+
+        .add-group-btn-active {
+            padding: rem(6px) rem(12px); 
             background-color: $primary-blue;
             color: $button-text-light;
             border: none;
@@ -50,20 +53,21 @@
             font-size: 0.875rem;
             cursor: pointer;
             transition: $hover-transition;
-            
+            height: rem(32px); 
+
             &:hover {
                 background-color: $primary-hover-blue;
             }
-            
+
             &:active {
                 background-color: darken($primary-hover-blue, 5%);
             }
         }
-        
+
         .cancel-btn {
-            width: 2rem;
-            height: 2rem;
-            padding: $spacing-xs;
+            width: rem(32px);
+            height: rem(32px);
+            padding: rem(8px);
             border: none;
             background-color: transparent;
             color: $text-secondary;
@@ -72,56 +76,56 @@
             align-items: center;
             justify-content: center;
             border-radius: $border-radius-small;
-            margin-inline-start: $spacing-xs;
+            margin-inline-start: rem(8px); 
             transition: $hover-transition;
-            
-            svg {
-                width: 1.125rem;
-                height: 1.125rem;
+
+            img {
+                width: rem(16px); 
+                height: rem(16px);
                 opacity: 0.8;
             }
-            
+
             &:hover {
-                background-color: $details-btn-txt-hover;
-                color: $text-primary;
+                background-color: rgba($text-secondary, 0.08); 
                 
-                svg {
+                img {
                     opacity: 1;
                 }
             }
         }
     }
-}
 
-.add-group-btn {
-    width: 17rem;
-    height: 2rem;
-    padding: $layoutPadding-small;
+.add-group-btn-preview {
+    width: rem(272px);
+    height: rem(40px); 
+    padding: rem(10px) rem(12px); 
     background-color: rgba($background-light, 0.24);
     border: none;
-    border-radius: $border-radius-small;
-    color: $details-btn-txt;
+    border-radius: $border-radius-largest;
+    color: $button-text-light;
     cursor: pointer;
     font-size: 0.875rem;
-    font-weight: 500;
+    font-weight: 400; 
     transition: $hover-transition;
     font-family: $workspace-font;
     display: flex;
     align-items: center;
-    gap: $layoutPadding-small;
     margin-inline-start: 0;
     
-    &:hover {
-        background-color: $details-btn-txt-hover;
+    img {
+        width: rem(16px);
+        height: rem(16px);
+        opacity: 0.8;
+        margin-inline-end: rem(8px); 
+        filter: brightness(0) invert(1); 
+
     }
-    
-    &::before {
-        content: '+';
-        font-weight: 200;
-        font-size: 1.2rem;
-        display: inline-flex;
-        align-items: center;
-        line-height: 0;
-        margin-block-start: -2px;
+
+    &:hover {
+        background-color: rgba($background-light, 0.32);
+        
+        img {
+            opacity: 1;
+        }
     }
 }
