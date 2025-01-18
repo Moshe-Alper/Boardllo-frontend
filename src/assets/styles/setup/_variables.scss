@@ -81,7 +81,7 @@ $layoutPadding-small: 0.75rem; // 12px
 $layoutPadding-medium: 1rem; // 16px
 $layoutPadding-large: 1.5rem; // 24px
 
-// Groups  
+// Groups
 $group-padding: 0.75rem; // 12px
 
 // New Specific Variables for Trello-Like Design
@@ -90,16 +90,16 @@ $input-shadow: 0 0.0625rem 0 rgba(9, 30, 66, 0.25); // Shadow for input fields
 $navbar-height: 3rem; // Height of the header/navbar (48px)
 $avatar-size: 2rem; // Profile or member avatar sizes (32px)
 $modal-background: rgba(0, 0, 0, 0.4); // Overlay background for modals
-$hover-transition: all 0.3s ease-in-out; // Consistent hover transition effect
+$hover-transition: all 0.2s ease-in-out; // Consistent hover transition effect
 // BORDERS
 
 $border-radius: 0.75rem;
 
 // Blue Theme Variables
-$blue-base: #0052cc;          
-$blue-header: #0747a6;          
-$blue-sidebar: #0a3d8f;        
-$blue-app-header: #092e6b;     
+$blue-base: #0052cc;
+$blue-header: #0747a6;
+$blue-sidebar: #0a3d8f;
+$blue-app-header: #092e6b;
 
 // Helper variables for hover states
 $blue-hover: darken($blue-base, 5%);

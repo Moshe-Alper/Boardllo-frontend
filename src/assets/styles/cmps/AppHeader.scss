@@ -4,13 +4,9 @@
   left: 0;
   right: 0;
   height: $navbar-height;
-  background-color: $blue-app-header;
+  background-color: white;
   box-shadow: $shadow-small;
   z-index: 100;
-
-  &.logged-in {
-    // box-shadow: inset 0 -1px 0 $border-light-gray;
-  }
 
   .nav-container {
     max-width: 100%;
@@ -74,14 +70,20 @@
       background-color: $button-secondary-hover-bg;
     }
 
-    .logo-img {
-      width: 24px;
-      height: 24px;
-      color: $text-white;
+    .icon-header {
+      width: 21px;
+      height: 21px;
+      color: $blue-header;
+    }
+
+    .icon-user {
+      width: 21px;
+      height: 21px;
+      color: $border-dark-gray;
     }
 
     .logo-text {
-      color: $text-white;
+      color: $border-dark-gray;
       font-weight: 700;
       font-size: 1.25rem;
 
@@ -94,11 +96,12 @@
   .create-btn {
     display: flex;
     align-items: center;
-    padding: $spacing-xs $spacing-md;
+    padding: $spacing-xs 0.4rem;
     background-color: $button-primary-bg;
     color: $button-text-light;
     border-radius: $border-radius-small;
     font-weight: 600;
+    font-size: 0.8rem;
     text-decoration: none;
     transition: $hover-transition;
 
@@ -196,14 +199,11 @@
   // Guest header specific styles
   .login-link {
     color: $text-primary;
+    font-weight: 500;
     text-decoration: none;
     padding: $spacing-xs $spacing-md;
     border-radius: $border-radius-small;
     transition: $hover-transition;
-
-    &:hover {
-      background-color: $button-secondary-hover-bg;
-    }
   }
 
   .signup-link {

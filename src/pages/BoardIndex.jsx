@@ -124,7 +124,7 @@ export function BoardIndex() {
               <Link key={board._id} to={`/board/${board._id}`} className='board-tile'>
                 <div className='board-tile-details'>
                   <h3>{board.title}</h3>
-                  <span className='workspace-label'>Trello Workspace</span>
+                  <span className='workspace-label'>Boardllo Workspace</span>
                 </div>
               </Link>
             ))}
@@ -148,7 +148,12 @@ export function BoardIndex() {
                   </div>
                 </Link>
                 <section className='workspace-crud'>
-                  <button onClick={() => onRemoveBoard(board._id)}>Remove</button>
+                  <button
+                    onClick={() => onRemoveBoard(board._id)}
+                    style={{ backgroundColor: '#505f79' }}
+                  >
+                    Remove
+                  </button>
                   <button
                     onClick={() => onUpdateBoard(board)}
                     style={{ backgroundColor: '#0052cc' }}

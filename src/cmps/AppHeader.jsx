@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
 import { svgService } from '../services/svg.service.js'
 import UserMenuDropdown from '../cmps/UserMenuDropdown.jsx'
-
-//TODO - Fix when logout from userProfile page, have an error with imguploader
+import { Layout } from 'lucide-react'
 
 export function AppHeader() {
   const user = useSelector((storeState) => storeState.userModule.user)
@@ -20,7 +19,7 @@ export function AppHeader() {
         <nav className='nav-container'>
           <div className='nav-left'>
             <NavLink className='logo-link' to='/'>
-              <img className='logo-img' src={svgService.logoIcon} alt='Logo' />
+              <Layout className='icon-user' />
               <span className='logo-text'>Boardllo</span>
             </NavLink>
 
@@ -69,7 +68,7 @@ export function AppHeader() {
       <nav className='nav-container'>
         <div className='nav-left'>
           <NavLink className='logo-link' to='/'>
-            <img className='logo-img' src={svgService.logoIcon} alt='Logo' />
+            <Layout className='icon-header' />
             <span className='logo-text'>Boardllo</span>
           </NavLink>
         </div>

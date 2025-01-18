@@ -12,6 +12,7 @@ export function LoginForm() {
   async function _login(credentials) {
     try {
       await login(credentials)
+      navigate('/board')
       showSuccessMsg('Logged in successfully')
     } catch (err) {
       console.log(`problem with login`, err)
