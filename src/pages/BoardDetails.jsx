@@ -45,8 +45,9 @@ export function BoardDetails() {
         }
         const group = boardService.getEmptyGroup()
         group.title = newGroupTitle
-
         try {
+            console.log('🚀 boardId', boardId)
+            console.log('🚀 group', group)
             const savedGroup = await addGroup(boardId, group)
             showSuccessMsg(`Group added (id: ${savedGroup.id})`)
             loadBoard(board._id)

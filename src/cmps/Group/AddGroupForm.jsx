@@ -14,7 +14,18 @@ export function AddGroupForm({
 
     function handleSubmit(ev) {
         ev.preventDefault()
+        if (!newGroupTitle.trim()) return
         onAddGroup(boardId)
+    }
+
+    function handleKeyDown(ev) {
+        if (ev.key === 'Enter') {
+            ev.preventDefault()
+            handleSubmit(ev)
+        }
+        if (ev.key === 'Escape') {
+            setIsAddingGroup(false)
+        }
     }
 
     function adjustHeight() {
@@ -53,6 +64,7 @@ export function AddGroupForm({
                 onChange={(ev) => {
                     setNewGroupTitle(ev.target.value)
                 }}
+                onKeyDown={handleKeyDown}
                 rows="1"
                 style={{ resize: 'none' }}
             />
