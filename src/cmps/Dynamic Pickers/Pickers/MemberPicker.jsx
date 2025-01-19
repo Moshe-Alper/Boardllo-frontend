@@ -5,10 +5,10 @@ import { updateTask } from '../../../store/actions/board.actions'
 
 // replace with API call later
 const demoMembers = [
-  { _id: 'u1', fullname: 'John Doe', username: 'johnd', imgUrl: '/api/placeholder/32/32' },
-  { _id: 'u2', fullname: 'Jane Smith', username: 'janes', imgUrl: '/api/placeholder/32/32' },
-  { _id: 'u3', fullname: 'Mike Johnson', username: 'mikej', imgUrl: '/api/placeholder/32/32' },
-  { _id: 'u4', fullname: 'Sarah Wilson', username: 'sarahw', imgUrl: '/api/placeholder/32/32' }
+  { _id: 'u1', fullname: 'Rivers Cuomo', username: 'riversc', imgUrl: '/api/placeholder/32/32' },
+  { _id: 'u2', fullname: 'Patrick Wilson', username: 'patrickw', imgUrl: '/api/placeholder/32/32' },
+  { _id: 'u3', fullname: 'Brian Bell', username: 'brianb', imgUrl: '/api/placeholder/32/32' },
+  { _id: 'u4', fullname: 'Scott Shriner', username: 'scotts', imgUrl: '/api/placeholder/32/32' }
 ]
 
 export function MemberPicker({ task, boardId, groupId, onClose }) {
