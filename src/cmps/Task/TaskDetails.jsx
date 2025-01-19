@@ -188,6 +188,8 @@ export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSel
                                         cmp: MemberPicker,
                                         title: 'Members',
                                         props: {
+                                            boardId: board._id,
+                                            groupId: currGroup.id,
                                             task,
                                             onClose: () => onTogglePicker()
                                         },
@@ -215,6 +217,8 @@ export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSel
                                         cmp: DatePicker,
                                         title: 'Dates',
                                         props: {
+                                            boardId: board._id,
+                                            groupId: currGroup.id,
                                             task,
                                             onClose: () => onTogglePicker()
                                         },

@@ -1,0 +1,119 @@
+.date-picker {
+    padding: $spacing-md;
+  
+    .date-picker__header {
+      margin-bottom: $spacing-md;
+      
+      .selected-date {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: $spacing-xs;
+        font-family: $workspace-font;
+        
+        .date-display {
+          font-size: rem(16px);
+          color: $text-primary;
+          font-weight: 500;
+        }
+  
+        .remove-date {
+          padding: $spacing-xs;
+          color: $text-secondary;
+          
+          &:hover {
+            color: $text-primary;
+            background-color: $background-light;
+          }
+        }
+      }
+    }
+  
+    .calendar {
+      width: 100%;
+      border-radius: $border-radius-medium;
+      background-color: $background-white;
+      
+      .MuiPickersDay-root {
+        font-family: $workspace-font;
+        
+        &.Mui-selected {
+          background-color: $primary-blue;
+          color: $text-white;
+          
+          &:hover {
+            background-color: darken($primary-blue, 10%);
+          }
+        }
+        
+        &:hover {
+          background-color: $background-light;
+        }
+      }
+  
+      .MuiPickersDay-today {
+        border: 1px solid $primary-blue;
+      }
+    }
+  
+    .quick-select-buttons {
+      display: flex;
+      gap: $spacing-sm;
+      margin-top: $spacing-md;
+      padding: $spacing-sm 0;
+      border-top: 1px solid $border-light-gray;
+  
+      .quick-select-btn {
+        flex: 1;
+        padding: $spacing-sm;
+        background-color: $background-light;
+        border: none;
+        border-radius: $border-radius-small;
+        font-family: $workspace-font;
+        font-size: rem(14px);
+        color: $text-primary;
+        cursor: pointer;
+        transition: background-color 0.2s;
+  
+        &:hover {
+          background-color: $background-light-hover;
+        }
+  
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+    }
+  
+    .time-select {
+      margin-top: $spacing-md;
+      display: flex;
+      justify-content: center;
+  
+      .MuiTextField-root {
+        width: auto;
+        
+        .MuiOutlinedInput-root {
+          background-color: $background-white;
+          
+          input {
+            font-family: $workspace-font;
+            font-size: rem(14px);
+            padding: $spacing-sm;
+            text-align: center;
+            
+            &::-webkit-calendar-picker-indicator {
+              display: none;
+            }
+          }
+          
+          &.Mui-focused {
+            .MuiOutlinedInput-notchedOutline {
+              border-color: $primary-blue;
+            }
+          }
+        }
+      }
+    }
+  }
