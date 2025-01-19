@@ -4,9 +4,10 @@ import { svgService } from "../../services/svg.service"
 import { showErrorMsg, showSuccessMsg } from '../../services/event-bus.service'
 import { updateTask } from '../../store/actions/board.actions'
 import { onTogglePicker } from '../../store/actions/app.actions'
-import { MemberPicker } from '../Dynamic Pickers/Pickers/MemberPicker'
-import { LabelPicker } from '../Dynamic Pickers/Pickers/LabelPicker'
-import { DatePicker } from '../Dynamic Pickers/Pickers/DatePicker'
+import { MemberPicker } from '../DynamicPickers/Pickers/MemberPicker'
+import { LabelPicker } from '../DynamicPickers/Pickers/LabelPicker'
+import { DatePicker } from '../DynamicPickers/Pickers/DatePicker'
+import { ChecklistPicker } from '../DynamicPickers/Pickers/ChecklistPicker'
 
 export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSelect }) {
     const board = useSelector(storeState => storeState.boardModule.board)
@@ -124,7 +125,7 @@ export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSel
                     <div className="main-content">
                         <section className="notifications-section">
                             <div className="section-header">
-                            <h3>Notifications</h3>
+                                <h3>Notifications</h3>
                             </div>
                             <button className="watch-btn">
                                 <img src={svgService.watchIcon} alt="Watch" />
@@ -134,8 +135,8 @@ export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSel
                         <section className="members-section">
                             <div className="section-header">
                                 <h3>Members</h3>
-                                </div>
-                                
+                            </div>
+
                         </section>
 
                         <section className="description-section">
@@ -212,7 +213,6 @@ export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSel
                                         <img src={svgService.labelsIcon} alt="Labels" />
                                         Labels
                                     </button>
-                                    <button><img src={svgService.checklistIcon} alt="Checklist" /> Checklist</button>
                                     <button onClick={(ev) => onTogglePicker({
                                         cmp: DatePicker,
                                         title: 'Dates',
@@ -226,6 +226,19 @@ export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSel
                                     })}>
                                         <img src={svgService.datesIcon} alt="Dates" />
                                         Dates
+                                    </button>
+                                    <button onClick={(ev) => onTogglePicker({
+                                        cmp: ChecklistPicker,
+                                        title: 'Checklist',
+                                        props: {
+                                            boardId: board._id,
+                                            groupId: currGroup.id,
+                                            task,
+                                            onClose: () => onTogglePicker()
+                                        },
+                                        triggerEl: ev.currentTarget
+                                    })}>
+                                        <img src={svgService.checklistIcon} alt="Checklist" /> Checklist
                                     </button>
                                     <button><img src={svgService.attachmentIcon} alt="Attachment" /> Attachment</button>
                                     <button><img src={svgService.coverIcon} alt="Cover" /> Cover</button>

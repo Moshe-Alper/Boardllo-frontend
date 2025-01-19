@@ -1,37 +1,37 @@
-import React, { useState } from 'react';
-import { TextField, IconButton } from '@mui/material';
-import { LocalizationProvider, DateCalendar } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { updateTask } from '../../../store/actions/board.actions';
-import dayjs from 'dayjs';
+import React, { useState } from 'react'
+import { TextField, IconButton } from '@mui/material'
+import { LocalizationProvider, DateCalendar } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { updateTask } from '../../../store/actions/board.actions'
+import dayjs from 'dayjs'
 
 export function DatePicker({ task, boardId, groupId, onClose }) {
   const [selectedDate, setSelectedDate] = useState(
     task.dueDate ? dayjs(task.dueDate) : null
-  );
-  const [isLoading, setIsLoading] = useState(false);
+  )
+  const [isLoading, setIsLoading] = useState(false)
 
   async function handleDateChange(date) {
-    if (!date) return;
+    if (!date) return
     
-    setIsLoading(true);
+    setIsLoading(true)
     try {
       const updatedTask = {
         ...task,
         dueDate: date.toISOString()
-      };
+      }
 
-      await updateTask(boardId, groupId, updatedTask);
-      setSelectedDate(date);
+      await updateTask(boardId, groupId, updatedTask)
+      setSelectedDate(date)
     } catch (err) {
-      console.error('Failed to update task date:', err);
+      console.error('Failed to update task date:', err)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
   }
 
   function handleRemoveDate() {
-    handleDateChange(null);
+    handleDateChange(null)
   }
 
   return (
@@ -97,9 +97,9 @@ export function DatePicker({ task, boardId, groupId, onClose }) {
             size="small"
             value={selectedDate.format('HH:mm')}
             onChange={(e) => {
-              const [hours, minutes] = e.target.value.split(':');
-              const newDate = selectedDate.hour(parseInt(hours)).minute(parseInt(minutes));
-              handleDateChange(newDate);
+              const [hours, minutes] = e.target.value.split(':')
+              const newDate = selectedDate.hour(parseInt(hours)).minute(parseInt(minutes))
+              handleDateChange(newDate)
             }}
             disabled={isLoading}
             InputLabelProps={{
@@ -112,5 +112,5 @@ export function DatePicker({ task, boardId, groupId, onClose }) {
         </div>
       )}
     </div>
-  );
+  )
 }
