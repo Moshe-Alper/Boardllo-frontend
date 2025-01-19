@@ -1,0 +1,203 @@
+.dynamic-picker-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: $modal-background;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: $spacing-xl;
+    z-index: 1000;
+}
+
+.dynamic-picker {
+    background-color: $background-white;
+    border-radius: $border-radius-large;
+    box-shadow: $shadow-large;
+    width: 304px; // Standard width for Trello pickers
+    max-height: calc(100vh - 100px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .picker-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: $spacing-md;
+        border-bottom: 1px solid $border-light-gray;
+        background-color: $background-white;
+
+        h3 {
+            font-family: $workspace-font;
+            font-size: 16px;
+            font-weight: 500;
+            color: $text-primary;
+            margin: 0;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            padding: $spacing-xs;
+            cursor: pointer;
+            color: $text-secondary;
+            font-size: 20px;
+            line-height: 1;
+            border-radius: $border-radius-small;
+
+            &:hover {
+                background-color: $background-light-hover;
+                color: $text-primary;
+            }
+        }
+    }
+
+    .picker-content {
+        padding: $spacing-md;
+        overflow-y: auto;
+        flex-grow: 1;
+
+        // Base styles for common picker elements
+        input[type="text"],
+        input[type="search"] {
+            width: 100%;
+            padding: $spacing-sm;
+            border: 2px solid $border-light-gray;
+            border-radius: $border-radius-medium;
+            font-family: $workspace-font;
+            font-size: 14px;
+            margin-bottom: $spacing-md;
+
+            &:focus {
+                border-color: $primary-blue;
+                outline: none;
+                box-shadow: $input-shadow;
+            }
+        }
+
+        // Calendar specific styles
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: $spacing-xs;
+            text-align: center;
+            margin-bottom: $spacing-md;
+
+            .calendar-day {
+                padding: $spacing-xs;
+                cursor: pointer;
+                border-radius: $border-radius-small;
+
+                &:hover {
+                    background-color: $background-light-hover;
+                }
+
+                &.selected {
+                    background-color: $primary-blue;
+                    color: $text-white;
+                }
+            }
+        }
+
+        // Label picker specific styles
+        .label-list {
+            display: flex;
+            flex-direction: column;
+            gap: $spacing-sm;
+
+            .label-item {
+                display: flex;
+                align-items: center;
+                padding: $spacing-sm;
+                border-radius: $border-radius-medium;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: $background-light-hover;
+                }
+
+                .color-bar {
+                    width: 100%;
+                    height: 32px;
+                    border-radius: $border-radius-small;
+                    display: flex;
+                    align-items: center;
+                    padding: 0 $spacing-sm;
+                }
+            }
+        }
+
+        // Member picker specific styles
+        .member-list {
+            .member-item {
+                display: flex;
+                align-items: center;
+                padding: $spacing-sm;
+                gap: $spacing-sm;
+                cursor: pointer;
+                border-radius: $border-radius-medium;
+
+                &:hover {
+                    background-color: $background-light-hover;
+                }
+
+                .member-avatar {
+                    width: $avatar-size;
+                    height: $avatar-size;
+                    border-radius: 50%;
+                    background-color: $primary-blue;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: $text-white;
+                    font-weight: 500;
+                }
+            }
+        }
+
+        // Checklist specific styles
+        .checklist-form {
+            .checklist-title {
+                width: 100%;
+                margin-bottom: $spacing-md;
+            }
+
+            .copy-from {
+                margin-bottom: $spacing-lg;
+            }
+        }
+    }
+
+    // Common button styles
+    .btn {
+        width: 100%;
+        padding: $spacing-sm $spacing-md;
+        border: none;
+        border-radius: $border-radius-medium;
+        font-family: $workspace-font;
+        font-size: 14px;
+        cursor: pointer;
+        transition: $hover-transition;
+
+        &.btn-primary {
+            background-color: $button-primary-bg;
+            color: $button-text-light;
+
+            &:hover {
+                background-color: $button-primary-hover-bg;
+            }
+        }
+
+        &.btn-secondary {
+            background-color: $button-secondary-bg;
+            color: $text-primary;
+
+            &:hover {
+                background-color: $button-secondary-hover-bg;
+            }
+        }
+    }
+}
