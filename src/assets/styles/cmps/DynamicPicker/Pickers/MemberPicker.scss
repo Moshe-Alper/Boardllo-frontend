@@ -1,0 +1,101 @@
+// Member picker specific styles
+.members-search {
+  position: relative;
+  margin-block-end: $spacing-md;
+  
+  .MuiTextField-root {
+    width: 100%;
+    
+    .MuiOutlinedInput-root {
+      background-color: $background-white;
+      transition: $hover-transition;
+      
+      &.Mui-focused {
+        background-color: $background-white;
+      }
+      
+      fieldset {
+        border: rem(2px) solid transparent;
+        transition: border-color 0.2s;
+      }
+    }
+    
+    input {
+      font-family: $workspace-font;
+      font-size: rem(14px);
+      
+      &::placeholder {
+        color: $text-secondary;
+      }
+    }
+  }
+}
+
+.members-list {
+  &__header {
+    color: $text-secondary;
+    font-size: rem(12px);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: rem(0.5px);
+    margin-block-end: $spacing-sm;
+  }
+  
+  .member-item {
+    padding-block: $spacing-xs;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: $border-radius-small;
+    transition: $hover-transition;
+    
+    &:hover {
+      background-color: $background-light;
+    }
+    
+    .member-info {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+      
+      .MuiAvatar-root {
+        width: $avatar-size;
+        height: $avatar-size;
+        font-size: rem(14px);
+        background-color: $border-gray;
+        color: $text-primary;
+      }
+      
+      .member-details {
+        .member-name {
+          font-size: rem(14px);
+          color: $text-primary;
+          font-family: $workspace-font;
+        }
+        
+        .member-username {
+          font-size: rem(12px);
+          color: $text-secondary;
+          font-family: $workspace-font;
+        }
+      }
+    }
+    
+    .MuiCheckbox-root {
+      color: $text-secondary;
+      padding: $spacing-xs;
+      
+      &.Mui-checked {
+        color: $primary-blue;
+      }
+    }
+  }
+}
+
+// Loading state
+.member-loading {
+  .MuiCircularProgress-root {
+    color: $primary-blue;
+  }
+}

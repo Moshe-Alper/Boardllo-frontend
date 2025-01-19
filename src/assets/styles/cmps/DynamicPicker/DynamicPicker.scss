@@ -3,8 +3,8 @@
     background-color: $background-white;
     border-radius: $border-radius-large;
     box-shadow: $shadow-large;
-    width: 304px;
-    max-height: calc(100vh - 100px);
+    width: rem(304px);
+    max-height: calc(100vh - rem(100px));
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -15,12 +15,11 @@
         align-items: center;
         justify-content: space-between;
         padding: $spacing-md;
-        border-bottom: 1px solid $border-light-gray;
         background-color: $background-white;
 
         h3 {
             font-family: $workspace-font;
-            font-size: 16px;
+            font-size: rem(16px);
             font-weight: 500;
             color: $text-primary;
             margin: 0;
@@ -41,8 +40,8 @@
             }
 
             img {
-                width: 16px;
-                height: 16px;
+                width: rem(16px);
+                height: rem(16px);
             }
         }
     }
@@ -56,138 +55,16 @@
         input[type="search"] {
             width: 100%;
             padding: $spacing-sm;
-            border: 2px solid $border-light-gray;
+            border: rem(2px) solid $border-light-gray;
             border-radius: $border-radius-medium;
             font-family: $workspace-font;
-            font-size: 14px;
-            margin-bottom: $spacing-md;
+            font-size: rem(14px);
+            margin-block-end: $spacing-md;
 
             &:focus {
                 border-color: $primary-blue;
                 outline: none;
                 box-shadow: $input-shadow;
-            }
-        }
-
-        // Calendar specific styles
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: $spacing-xs;
-            text-align: center;
-            margin-bottom: $spacing-md;
-
-            .calendar-day {
-                padding: $spacing-xs;
-                cursor: pointer;
-                border-radius: $border-radius-small;
-
-                &:hover {
-                    background-color: $background-light-hover;
-                }
-
-                &.selected {
-                    background-color: $primary-blue;
-                    color: $text-white;
-                }
-            }
-        }
-
-        // Label picker specific styles
-        .label-list {
-            display: flex;
-            flex-direction: column;
-            gap: $spacing-sm;
-
-            .label-item {
-                display: flex;
-                align-items: center;
-                padding: $spacing-sm;
-                border-radius: $border-radius-medium;
-                cursor: pointer;
-
-                &:hover {
-                    background-color: $background-light-hover;
-                }
-
-                .color-bar {
-                    width: 100%;
-                    height: 32px;
-                    border-radius: $border-radius-small;
-                    display: flex;
-                    align-items: center;
-                    padding: 0 $spacing-sm;
-                }
-            }
-        }
-
-        // Member picker specific styles
-        .member-list {
-            .member-item {
-                display: flex;
-                align-items: center;
-                padding: $spacing-sm;
-                gap: $spacing-sm;
-                cursor: pointer;
-                border-radius: $border-radius-medium;
-
-                &:hover {
-                    background-color: $background-light-hover;
-                }
-
-                .member-avatar {
-                    width: $avatar-size;
-                    height: $avatar-size;
-                    border-radius: 50%;
-                    background-color: $primary-blue;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    color: $text-white;
-                    font-weight: 500;
-                }
-            }
-        }
-
-        // Checklist specific styles
-        .checklist-form {
-            .checklist-title {
-                width: 100%;
-                margin-bottom: $spacing-md;
-            }
-
-            .copy-from {
-                margin-bottom: $spacing-lg;
-            }
-        }
-    }
-
-    // Common button styles
-    .btn {
-        width: 100%;
-        padding: $spacing-sm $spacing-md;
-        border: none;
-        border-radius: $border-radius-medium;
-        font-family: $workspace-font;
-        font-size: 14px;
-        cursor: pointer;
-        transition: $hover-transition;
-
-        &.btn-primary {
-            background-color: $button-primary-bg;
-            color: $button-text-light;
-
-            &:hover {
-                background-color: $button-primary-hover-bg;
-            }
-        }
-
-        &.btn-secondary {
-            background-color: $button-secondary-bg;
-            color: $text-primary;
-
-            &:hover {
-                background-color: $button-secondary-hover-bg;
             }
         }
     }

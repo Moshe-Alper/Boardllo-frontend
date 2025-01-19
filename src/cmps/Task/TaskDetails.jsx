@@ -124,12 +124,18 @@ export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSel
                     <div className="main-content">
                         <section className="notifications-section">
                             <div className="section-header">
-                            </div>
                             <h3>Notifications</h3>
+                            </div>
                             <button className="watch-btn">
                                 <img src={svgService.watchIcon} alt="Watch" />
                                 Watch
                             </button>
+                        </section>
+                        <section className="members-section">
+                            <div className="section-header">
+                                <h3>Members</h3>
+                                </div>
+                                
                         </section>
 
                         <section className="description-section">
@@ -194,6 +200,8 @@ export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSel
                                         cmp: LabelPicker,
                                         title: 'Labels',
                                         props: {
+                                            boardId: board._id,
+                                            groupId: currGroup.id,
                                             task,
                                             onClose: () => onTogglePicker()
                                         },
