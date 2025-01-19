@@ -78,7 +78,7 @@ export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
-                        padding: '5px',
+                        padding: '4.5px',
                         backgroundColor: '#0050CC',
                     }}
                 >

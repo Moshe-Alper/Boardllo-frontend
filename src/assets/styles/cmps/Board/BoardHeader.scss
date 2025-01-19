@@ -6,12 +6,12 @@
     justify-content: space-between;
     align-items: center;
     color: $text-light;
-    transition: margin-right 0.3s ease;
+    transition: margin-inline-end 0.3s ease;
 
 
     &.menu-open {
-        margin-right: 300px; 
-        padding-right: 70px;
+        margin-inline-end: 300px; 
+        padding-inline-end: 70px;
     }
 
     
@@ -71,10 +71,10 @@
             line-height: 1.25rem;
             color: $background-white;
             margin: 0;
-            font-weight: 600;
+            font-weight: 700;
+            letter-spacing: rem(1px);
             cursor: pointer;
             padding: $spacing-xs $spacing-sm;
-            border-radius: $border-radius-small;
             transition: $hover-transition;
 
             &:hover {

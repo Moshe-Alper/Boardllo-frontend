@@ -68,3 +68,10 @@
     background-color: darken($background-light, 3%);
     transition: $hover-transition;
   }
+
+  @mixin details-large-icon {
+    width: rem(24px);
+    height: rem(24px);
+    color: $text-secondary;
+    opacity: 0.8;
+}

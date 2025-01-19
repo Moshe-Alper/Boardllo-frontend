@@ -16,7 +16,7 @@
   }
 
   .search-input-container {
-    margin-bottom: $spacing-lg;
+    margin-block-end: $spacing-lg;
     display: flex;
     align-items: center;
 
@@ -33,7 +33,7 @@
     }
 
     .info-btn {
-      margin-left: $spacing-sm;
+      margin-inline-start: $spacing-sm;
       background: none;
       border: none;
 
@@ -47,12 +47,12 @@
   }
 
   section {
-    margin-bottom: $spacing-lg;
+    margin-block-end: $spacing-lg;
 
     h2 {
       font-size: 1rem;
       color: $text-primary;
-      margin-bottom: $spacing-sm;
+      margin-block-end: $spacing-sm;
     }
 
     .saved-search-item {
@@ -95,14 +95,14 @@
       background-color: $background-white;
       border: 1px solid $border-light-gray;
       border-radius: $border-radius-medium;
-      margin-bottom: $spacing-sm;
+      margin-block-end: $spacing-sm;
 
       .item-icon {
         width: 20px;
         height: 20px;
         background-color: $background-light;
         border-radius: 50%;
-        margin-right: $spacing-sm;
+        margin-inline-end: $spacing-sm;
       }
 
       .item-details {

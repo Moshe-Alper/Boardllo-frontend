@@ -58,14 +58,14 @@ export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSel
             showErrorMsg('Title cannot be empty')
             return
         }
-    
+
         if (editedTitle === task.title) {
             setIsEditingTitle(false)
             return
         }
-    
+
         const updatedTask = { ...task, title: editedTitle.trim() }
-        
+
         try {
             await updateTask(board._id, group.id, updatedTask)
             showSuccessMsg('Title updated successfully')
@@ -88,29 +88,27 @@ export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSel
                 }}>
                 {hasCover && <div className="cover" />}
                 <header className="details-header">
-                    <div className="header-content">
-                        <img src={svgService.cardIcon} alt="Card Icon" className="card-icon" />
-                        <div className="title-container">
-                            {isEditingTitle ? (
-                                <input
-                                    type="text"
-                                    value={editedTitle}
-                                    onChange={(ev) => setEditedTitle(ev.target.value)}
-                                    onBlur={handleTitleSubmit}
-                                    onKeyDown={handleTitleKeyPress}
-                                    className="title-input"
-                                    autoFocus
-                                />
-                            ) : (
-                                <h2 onClick={() => setIsEditingTitle(true)}>
-                                    {task.title}
-                                </h2>
-                            )}
-                        </div>
-                        <div className="list-info">
-                            <span>in list</span>
-                            <span className="list-name-btn">{group.title}</span>
-                        </div>
+                    <img src={svgService.cardIcon} alt="Card Icon" className="card-icon" />
+                    <div className="title-container">
+                        {isEditingTitle ? (
+                            <textarea
+                                value={editedTitle}
+                                onChange={(ev) => setEditedTitle(ev.target.value)}
+                                onBlur={handleTitleSubmit}
+                                onKeyDown={handleTitleKeyPress}
+                                className="title-input"
+                                autoFocus
+                                rows={1}
+                            />
+                        ) : (
+                            <h2 onClick={() => setIsEditingTitle(true)}>
+                                {task.title}
+                            </h2>
+                        )}
+                    </div>
+                    <div className="list-info">
+                        <span>in list</span>
+                        <span className="list-name-btn">{group.title}</span>
                     </div>
                     <button className="close-btn" onClick={onClose}>
                         <img src={svgService.closeIcon} alt="Close" />
@@ -131,7 +129,7 @@ export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSel
 
                         <section className="description-section">
                             <div className="section-header">
-                                <img src={svgService.descriptionIcon} alt="Description" />
+                                <img src={svgService.descriptionIcon} alt="Description" className="description-icon" />
                                 <h3>Description</h3>
                             </div>
                             {isEditingDescription ? (
@@ -154,7 +152,7 @@ export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSel
 
                         <section className="activity-section">
                             <div className="section-header">
-                                <img src={svgService.activityIcon} alt="Activity" />
+                                <img src={svgService.activityIcon} alt="Activity" className="activity-icon"/>
                                 <h3>Activity</h3>
                                 <button className="show-details-btn">Show details</button>
                             </div>
