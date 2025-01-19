@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TextField, IconButton } from '@mui/material'
+import { TextField, Select, MenuItem } from '@mui/material'
 import { LocalizationProvider, DateCalendar } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { updateTask } from '../../../store/actions/board.actions'
@@ -9,20 +9,29 @@ export function DatePicker({ task, boardId, groupId, onClose }) {
   const [selectedDate, setSelectedDate] = useState(
     task.dueDate ? dayjs(task.dueDate) : null
   )
+  const [dueTime, setDueTime] = useState(
+    task.dueDate ? dayjs(task.dueDate).format('HH:mm') : ''
+  )
+  const [reminder, setReminder] = useState('none')
   const [isLoading, setIsLoading] = useState(false)
 
-  async function handleDateChange(date) {
-    if (!date) return
-    
+  async function handleSave() {
+    if (!selectedDate) return
+
     setIsLoading(true)
     try {
+      const date = dueTime 
+        ? selectedDate.hour(dueTime.split(':')[0]).minute(dueTime.split(':')[1])
+        : selectedDate
+
       const updatedTask = {
         ...task,
-        dueDate: date.toISOString()
+        dueDate: date.toISOString(),
+        reminder
       }
 
       await updateTask(boardId, groupId, updatedTask)
-      setSelectedDate(date)
+      onClose()
     } catch (err) {
       console.error('Failed to update task date:', err)
     } finally {
@@ -30,87 +39,86 @@ export function DatePicker({ task, boardId, groupId, onClose }) {
     }
   }
 
-  function handleRemoveDate() {
-    handleDateChange(null)
+  async function handleRemove() {
+    setIsLoading(true)
+    try {
+      const updatedTask = {
+        ...task,
+        dueDate: null,
+        reminder: 'none'
+      }
+      await updateTask(boardId, groupId, updatedTask)
+      onClose()
+    } catch (err) {
+      console.error('Failed to remove dates:', err)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
-    <div className="date-picker">
-      <div className="date-picker__header">
-        <div className="selected-date">
-          {selectedDate && (
-            <>
-              <span className="date-display">
-                {selectedDate.format('MMM D, YYYY')}
-              </span>
-              <IconButton 
-                className="remove-date" 
-                onClick={handleRemoveDate}
-                disabled={isLoading}
-                size="small"
-              >
-                ×
-              </IconButton>
-            </>
-          )}
-        </div>
-      </div>
-
+    <div className="picker-content">
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DateCalendar
           value={selectedDate}
-          onChange={handleDateChange}
+          onChange={setSelectedDate}
           disabled={isLoading}
           className="calendar"
-          disablePast
         />
       </LocalizationProvider>
 
-      <div className="quick-select-buttons">
+      {selectedDate && (
+        <>
+          <div className="form-group">
+            <TextField
+              type="time"
+              size="small"
+              fullWidth
+              value={dueTime}
+              onChange={(e) => setDueTime(e.target.value)}
+              disabled={isLoading}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Set due date reminder</label>
+            <Select
+              fullWidth
+              size="small"
+              value={reminder}
+              onChange={(e) => setReminder(e.target.value)}
+              disabled={isLoading}
+            >
+              <MenuItem value="none">None</MenuItem>
+              <MenuItem value="15">15 Minutes before</MenuItem>
+              <MenuItem value="30">30 Minutes before</MenuItem>
+              <MenuItem value="60">1 Hour before</MenuItem>
+              <MenuItem value="1440">1 Day before</MenuItem>
+            </Select>
+          </div>
+
+          <div className="reminder-text">
+            Reminders will be sent to all members and watchers of this card.
+          </div>
+        </>
+      )}
+
+      <div className="button-group">
         <button 
-          className="quick-select-btn"
-          onClick={() => handleDateChange(dayjs())}
+          className="primary-button" 
+          onClick={handleSave}
           disabled={isLoading}
         >
-          Today
+          Save
         </button>
         <button 
-          className="quick-select-btn"
-          onClick={() => handleDateChange(dayjs().add(1, 'day'))}
+          className="secondary-button"
+          onClick={handleRemove}
           disabled={isLoading}
         >
-          Tomorrow
-        </button>
-        <button 
-          className="quick-select-btn"
-          onClick={() => handleDateChange(dayjs().add(7, 'day'))}
-          disabled={isLoading}
-        >
-          Next week
+          Remove
         </button>
       </div>
-
-      {selectedDate && (
-        <div className="time-select">
-          <TextField
-            type="time"
-            size="small"
-            value={selectedDate.format('HH:mm')}
-            onChange={(e) => {
-              const [hours, minutes] = e.target.value.split(':')
-              const newDate = selectedDate.hour(parseInt(hours)).minute(parseInt(minutes))
-              handleDateChange(newDate)
-            }}
-            disabled={isLoading}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            inputProps={{
-              step: 300, // 5 min
-            }}
-          />
-        </div>
-      )}
     </div>
   )
 }

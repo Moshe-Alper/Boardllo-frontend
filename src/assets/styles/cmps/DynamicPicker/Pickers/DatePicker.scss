@@ -1,127 +1,27 @@
-.date-picker {
-  padding: $spacing-md;
+.date-time-inputs {
+  display: flex;
+  gap: $spacing-sm;
+}
 
-  .date-picker__header {
-    margin-bottom: $spacing-md;
-    
-    .selected-date {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: $spacing-xs;
-      font-family: $workspace-font;
-      
-      .date-display {
-        font-size: rem(16px);
-        color: $text-primary;
-        font-weight: 500;
-      }
+.date-label {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  margin-bottom: $spacing-xs;
+}
 
-      .remove-date {
-        padding: $spacing-xs;
-        color: $text-secondary;
-        background: none;
-        border: none;
-        cursor: pointer;
-        border-radius: $border-radius-small;
-        font-size: rem(18px);
-        line-height: 1;
-        
-        &:hover {
-          color: $text-primary;
-          background-color: $background-light;
-        }
+.reminder-text {
+  color: $text-secondary;
+  font-size: rem(14px);
+  margin-bottom: $spacing-md;
+}
 
-        &:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
-      }
-    }
-  }
+.calendar {
+  margin-bottom: $spacing-md;
+}
 
-  .date-input {
-    margin-bottom: $spacing-md;
-
-    .MuiTextField-root {
-      width: 100%;
-      
-      .MuiOutlinedInput-root {
-        background-color: $background-white;
-        
-        input {
-          font-family: $workspace-font;
-          font-size: rem(14px);
-          padding: $spacing-sm $spacing-md;
-          
-          &::-webkit-calendar-picker-indicator {
-            cursor: pointer;
-          }
-        }
-        
-        &.Mui-focused {
-          .MuiOutlinedInput-notchedOutline {
-            border-color: $primary-blue;
-          }
-        }
-      }
-    }
-  }
-
-  .quick-select-buttons {
-    display: flex;
-    gap: $spacing-sm;
-    margin-top: $spacing-md;
-    padding: $spacing-sm 0;
-    border-top: 1px solid $border-light-gray;
-
-    .quick-select-btn {
-      flex: 1;
-      padding: $spacing-sm;
-      background-color: $background-light;
-      border: none;
-      border-radius: $border-radius-small;
-      font-family: $workspace-font;
-      font-size: rem(14px);
-      color: $text-primary;
-      cursor: pointer;
-      transition: background-color 0.2s;
-
-      &:hover {
-        background-color: $background-light-hover;
-      }
-
-      &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-    }
-  }
-
-  .time-select {
-    margin-top: $spacing-md;
-    display: flex;
-    justify-content: center;
-
-    .MuiTextField-root {
-      width: auto;
-      
-      .MuiOutlinedInput-root {
-        background-color: $background-white;
-        
-        input {
-          font-family: $workspace-font;
-          font-size: rem(14px);
-          padding: $spacing-sm;
-          text-align: center;
-        }
-        
-        &.Mui-focused {
-          .MuiOutlinedInput-notchedOutline {
-            border-color: $primary-blue;
-          }
-        }
-      }
-    }
-  }
+.reminder-text {
+  color: $text-secondary;
+  font-size: rem(14px);
+  margin-bottom: $spacing-md;
 }

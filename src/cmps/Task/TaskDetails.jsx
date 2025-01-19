@@ -8,6 +8,7 @@ import { MemberPicker } from '../DynamicPickers/Pickers/MemberPicker'
 import { LabelPicker } from '../DynamicPickers/Pickers/LabelPicker'
 import { DatePicker } from '../DynamicPickers/Pickers/DatePicker'
 import { ChecklistPicker } from '../DynamicPickers/Pickers/ChecklistPicker'
+import { CoverPicker } from '../DynamicPickers/Pickers/CoverPicker'
 
 export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSelect }) {
     const board = useSelector(storeState => storeState.boardModule.board)
@@ -240,8 +241,20 @@ export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSel
                                     })}>
                                         <img src={svgService.checklistIcon} alt="Checklist" /> Checklist
                                     </button>
+                                    <button onClick={(ev) => onTogglePicker({
+                                        cmp: CoverPicker,
+                                        title: 'Cover',
+                                        props: {
+                                            boardId: board._id,
+                                            groupId: currGroup.id,
+                                            task,
+                                            onClose: () => onTogglePicker()
+                                        },
+                                        triggerEl: ev.currentTarget
+                                    })}>
+                                        <img src={svgService.coverIcon} alt="Cover" /> Cover
+                                    </button>
                                     <button><img src={svgService.attachmentIcon} alt="Attachment" /> Attachment</button>
-                                    <button><img src={svgService.coverIcon} alt="Cover" /> Cover</button>
                                     <button><img src={svgService.customFieldIcon} alt="Custom Fields" /> Custom Fields</button>
                                 </div>
                             </section>

@@ -14,7 +14,7 @@ import { DynamicModal } from './cmps/DynamicModal.jsx'
 import { LoginForm } from './cmps/LoginForm.jsx'
 import { SignupForm } from './cmps/SignupForm.jsx'
 import { MobileSearch } from './cmps/MobileSearch.jsx'
-import { DynamicPicker } from './cmps/Dynamic Pickers/DynamicPicker.jsx'
+import { DynamicPicker } from './cmps/DynamicPickers/DynamicPicker.jsx'
 
 export function RootCmp() {
   return (

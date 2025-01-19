@@ -1,0 +1,28 @@
+.colors-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: $spacing-sm;
+    margin-bottom: $spacing-md;
+  }
+  
+  .color-option {
+    width: rem(32px);
+    height: rem(32px);
+    border-radius: $border-radius-small;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s;
+  
+    &:hover {
+      transform: scale(1.1);
+    }
+  
+    &.selected {
+      box-shadow: 0 0 0 2px $primary-blue;
+    }
+  
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
