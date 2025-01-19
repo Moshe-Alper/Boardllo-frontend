@@ -3,6 +3,10 @@ import { useSelector } from 'react-redux'
 import { svgService } from "../../services/svg.service"
 import { showErrorMsg, showSuccessMsg } from '../../services/event-bus.service'
 import { updateTask } from '../../store/actions/board.actions'
+import { onTogglePicker } from '../../store/actions/app.actions'
+import { MemberPicker } from '../Dynamic Pickers/Pickers/MemberPicker'
+import { LabelPicker } from '../Dynamic Pickers/Pickers/LabelPicker'
+import { DatePicker } from '../Dynamic Pickers/Pickers/DatePicker'
 
 export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSelect }) {
     const board = useSelector(storeState => storeState.boardModule.board)
@@ -13,7 +17,6 @@ export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSel
     const [editedTitle, setEditedTitle] = useState(task?.title || '')
     const [isEditingDescription, setIsEditingDescription] = useState(false)
     const [editedDescription, setEditedDescription] = useState(task?.description || '')
-    const [comment, setComment] = useState('')
 
     const hasCover = task?.style?.coverColor ? true : false
 
@@ -33,11 +36,11 @@ export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSel
         }
     }
 
-    function handleTitleKeyPress(e) {
-        if (e.key === 'Enter') {
-            e.target.blur()
+    function handleTitleKeyPress(ev) {
+        if (ev.key === 'Enter') {
+            ev.target.blur()
         }
-        if (e.key === 'Escape') {
+        if (ev.key === 'Escape') {
             setEditedTitle(task.title)
             setIsEditingTitle(false)
         }
@@ -58,14 +61,14 @@ export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSel
             showErrorMsg('Title cannot be empty')
             return
         }
-    
+
         if (editedTitle === task.title) {
             setIsEditingTitle(false)
             return
         }
-    
+
         const updatedTask = { ...task, title: editedTitle.trim() }
-        
+
         try {
             await updateTask(board._id, group.id, updatedTask)
             showSuccessMsg('Title updated successfully')
@@ -175,10 +178,43 @@ export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSel
                             <section>
                                 <div className="action-buttons">
                                     <button><img src={svgService.joinIcon} alt="Join" /> Join</button>
-                                    <button><img src={svgService.memberIcon} alt="Members" /> Members</button>
-                                    <button><img src={svgService.labelsIcon} alt="Labels" /> Labels</button>
+                                    <button onClick={(ev) => onTogglePicker({
+                                        cmp: MemberPicker,
+                                        title: 'Members',
+                                        props: {
+                                            task,
+                                            onClose: () => onTogglePicker()
+                                        },
+                                        triggerEl: ev.currentTarget
+                                    })}>
+                                        <img src={svgService.memberIcon} alt="Members" />
+                                        Members
+                                    </button>
+                                    <button onClick={(ev) => onTogglePicker({
+                                        cmp: LabelPicker,
+                                        title: 'Labels',
+                                        props: {
+                                            task,
+                                            onClose: () => onTogglePicker()
+                                        },
+                                        triggerEl: ev.currentTarget
+                                    })}>
+                                        <img src={svgService.labelsIcon} alt="Labels" />
+                                        Labels
+                                    </button>
                                     <button><img src={svgService.checklistIcon} alt="Checklist" /> Checklist</button>
-                                    <button><img src={svgService.datesIcon} alt="Dates" /> Dates</button>
+                                    <button onClick={(ev) => onTogglePicker({
+                                        cmp: DatePicker,
+                                        title: 'Dates',
+                                        props: {
+                                            task,
+                                            onClose: () => onTogglePicker()
+                                        },
+                                        triggerEl: ev.currentTarget
+                                    })}>
+                                        <img src={svgService.datesIcon} alt="Dates" />
+                                        Dates
+                                    </button>
                                     <button><img src={svgService.attachmentIcon} alt="Attachment" /> Attachment</button>
                                     <button><img src={svgService.coverIcon} alt="Cover" /> Cover</button>
                                     <button><img src={svgService.customFieldIcon} alt="Custom Fields" /> Custom Fields</button>

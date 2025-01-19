@@ -14,6 +14,7 @@ import { DynamicModal } from './cmps/DynamicModal.jsx'
 import { LoginForm } from './cmps/LoginForm.jsx'
 import { SignupForm } from './cmps/SignupForm.jsx'
 import { MobileSearch } from './cmps/MobileSearch.jsx'
+import { DynamicPicker } from './cmps/Dynamic Pickers/DynamicPicker.jsx'
 
 export function RootCmp() {
   return (
@@ -21,6 +22,8 @@ export function RootCmp() {
       <AppHeader />
       <UserMsg />
       <DynamicModal/>
+      <DynamicPicker />
+      
 
       <main>
         <Routes>

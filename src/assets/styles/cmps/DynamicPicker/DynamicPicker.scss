@@ -1,26 +1,14 @@
-.dynamic-picker-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: $modal-background;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: $spacing-xl;
-    z-index: 1000;
-}
-
 .dynamic-picker {
+    position: fixed;
     background-color: $background-white;
     border-radius: $border-radius-large;
     box-shadow: $shadow-large;
-    width: 304px; // Standard width for Trello pickers
+    width: 304px;
     max-height: calc(100vh - 100px);
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    z-index: 10000;
 
     .picker-header {
         display: flex;
@@ -43,14 +31,18 @@
             border: none;
             padding: $spacing-xs;
             cursor: pointer;
-            color: $text-secondary;
-            font-size: 20px;
-            line-height: 1;
             border-radius: $border-radius-small;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
             &:hover {
                 background-color: $background-light-hover;
-                color: $text-primary;
+            }
+
+            img {
+                width: 16px;
+                height: 16px;
             }
         }
     }
@@ -60,7 +52,6 @@
         overflow-y: auto;
         flex-grow: 1;
 
-        // Base styles for common picker elements
         input[type="text"],
         input[type="search"] {
             width: 100%;
