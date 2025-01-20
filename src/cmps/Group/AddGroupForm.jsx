@@ -52,6 +52,7 @@ export function AddGroupForm({
         )
     }
 
+    if (!board) return <div>Loading...</div>
     return (
         <form
             className="add-group-form"

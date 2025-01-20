@@ -10,7 +10,27 @@ import { DatePicker } from '../DynamicPickers/Pickers/DatePicker'
 import { ChecklistPicker } from '../DynamicPickers/Pickers/ChecklistPicker'
 import { CoverPicker } from '../DynamicPickers/Pickers/CoverPicker'
 
-export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSelect }) {
+const PICKERS = [
+    { icon: 'joinIcon', label: 'Join', picker: null },
+    { icon: 'memberIcon', label: 'Members', picker: MemberPicker },
+    { icon: 'labelsIcon', label: 'Labels', picker: LabelPicker },
+    { icon: 'datesIcon', label: 'Dates', picker: DatePicker },
+    { icon: 'checklistIcon', label: 'Checklist', picker: ChecklistPicker },
+    { icon: 'coverIcon', label: 'Cover', picker: CoverPicker },
+    { icon: 'attachmentIcon', label: 'Attachment', picker: null },
+    { icon: 'customFieldIcon', label: 'Custom Fields', picker: null }
+]
+
+const ACTION_BUTTONS = [
+    { icon: 'rightArrowIcon', label: 'Move' },
+    { icon: 'copyIcon', label: 'Copy' },
+    { icon: 'cardIcon', label: 'Mirror' },
+    { icon: 'templateIcon', label: 'Make template' },
+    { icon: 'archiveIcon', label: 'Archive' },
+    { icon: 'shareIcon', label: 'Share' }
+]
+
+export function TaskDetails({ group, task: initialTask, onClose }) {
     const board = useSelector(storeState => storeState.boardModule.board)
     const currGroup = board?.groups?.find(g => g.id === group.id)
     const task = currGroup?.tasks?.find(t => t.id === initialTask.id) || initialTask
@@ -26,18 +46,6 @@ export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSel
         setEditedTitle(task?.title || '')
     }, [task])
 
-    function handleEscape(ev) {
-        if (ev.key === 'Escape') {
-            onClose()
-        }
-    }
-
-    function handleOverlayClick(ev) {
-        if (ev.target === ev.currentTarget) {
-            onClose()
-        }
-    }
-
     function handleTitleKeyPress(ev) {
         if (ev.key === 'Enter') {
             ev.target.blur()
@@ -47,14 +55,6 @@ export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSel
             setIsEditingTitle(false)
         }
     }
-
-    useEffect(() => {
-        document.addEventListener('keydown', handleEscape)
-        return () => {
-            document.removeEventListener('keydown', handleEscape)
-        }
-    }, [])
-
 
     async function handleTitleSubmit() {
         if (!editedTitle.trim()) {
@@ -82,198 +82,149 @@ export function TaskDetails({ group, task: initialTask, onClose, onCoverColorSel
         }
     }
 
+    function handlePickerToggle(Picker, title, ev) {
+        if (!Picker) return
+        
+        onTogglePicker({
+            cmp: Picker,
+            title,
+            props: {
+                boardId: board._id,
+                groupId: currGroup.id,
+                task,
+                onClose: () => onTogglePicker()
+            },
+            triggerEl: ev.currentTarget
+        })
+    }
+
     if (!task) return <div>Loading...</div>
 
     return (
-        <div className="task-details-overlay" onClick={handleOverlayClick}>
-            <section
-                className={`task-details ${hasCover ? 'has-cover' : ''}`}
-                style={{
-                    '--cover-color': hasCover ? task.style.coverColor : 'transparent'
-                }}>
-                {hasCover && <div className="cover" />}
-                <header className="details-header">
-                    <div className="header-content">
-                        <img src={svgService.cardIcon} alt="Card Icon" className="card-icon" />
-                        <div className="title-container">
-                            {isEditingTitle ? (
-                                <input
-                                    type="text"
-                                    value={editedTitle}
-                                    onChange={(ev) => setEditedTitle(ev.target.value)}
-                                    onBlur={handleTitleSubmit}
-                                    onKeyDown={handleTitleKeyPress}
-                                    className="title-input"
-                                    autoFocus
-                                />
-                            ) : (
-                                <h2 onClick={() => setIsEditingTitle(true)}>
-                                    {task.title}
-                                </h2>
-                            )}
-                        </div>
-                        <div className="list-info">
-                            <span>in list</span>
-                            <span className="list-name-btn">{group.title}</span>
-                        </div>
+        <dialog 
+            open
+            className={`task-details ${hasCover ? 'has-cover' : ''}`}
+            style={{
+                '--cover-color': hasCover ? task.style.coverColor : 'transparent'
+            }}
+            onClose={onClose}
+        >
+            {hasCover && <div className="cover" />}
+            <header className="details-header">
+                <div className="header-content">
+                    <img src={svgService.cardIcon} alt="Card Icon" className="card-icon" />
+                    <div className="title-container">
+                        {isEditingTitle ? (
+                            <input
+                                type="text"
+                                value={editedTitle}
+                                onChange={(ev) => setEditedTitle(ev.target.value)}
+                                onBlur={handleTitleSubmit}
+                                onKeyDown={handleTitleKeyPress}
+                                className="title-input"
+                                autoFocus
+                            />
+                        ) : (
+                            <h2 onClick={() => setIsEditingTitle(true)}>
+                                {task.title}
+                            </h2>
+                        )}
                     </div>
+                    <div className="list-info">
+                        <span>in list</span>
+                        <span className="list-name-btn">{group.title}</span>
+                    </div>
+                </div>
+                <form method="dialog">
                     <button className="close-btn" onClick={onClose}>
                         <img src={svgService.closeIcon} alt="Close" />
                     </button>
-                </header>
+                </form>
+            </header>
 
-                <div className="details-grid">
-                    <div className="main-content">
-                        <section className="notifications-section">
-                            <div className="section-header">
-                                <h3>Notifications</h3>
-                            </div>
-                            <button className="watch-btn">
-                                <img src={svgService.watchIcon} alt="Watch" />
-                                Watch
-                            </button>
-                        </section>
-                        <section className="members-section">
-                            <div className="section-header">
-                                <h3>Members</h3>
-                            </div>
+            <div className="details-grid">
+                <div className="main-content">
+                    <section className="notifications-section">
+                        <div className="section-header">
+                            <h3>Notifications</h3>
+                        </div>
+                        <button className="watch-btn">
+                            <img src={svgService.watchIcon} alt="Watch" />
+                            Watch
+                        </button>
+                    </section>
 
-                        </section>
-
-                        <section className="description-section">
-                            <div className="section-header">
-                                <img src={svgService.descriptionIcon} alt="Description" />
-                                <h3>Description</h3>
+                    <section className="description-section">
+                        <div className="section-header">
+                            <img src={svgService.descriptionIcon} alt="Description" />
+                            <h3>Description</h3>
+                        </div>
+                        {isEditingDescription ? (
+                            <textarea
+                                value={editedDescription}
+                                onChange={(ev) => setEditedDescription(ev.target.value)}
+                                className="description-textarea"
+                                placeholder="Add a more detailed description..."
+                                autoFocus
+                            />
+                        ) : (
+                            <div
+                                onClick={() => setIsEditingDescription(true)}
+                                className={`description-content ${!task.description ? 'empty' : ''}`}
+                            >
+                                {task.description || 'Add a more detailed description...'}
                             </div>
-                            {isEditingDescription ? (
-                                <textarea
-                                    value={editedDescription}
-                                    onChange={(ev) => setEditedDescription(ev.target.value)}
-                                    className="description-textarea"
-                                    placeholder="Add a more detailed description..."
-                                    autoFocus
-                                />
-                            ) : (
-                                <div
-                                    onClick={() => setIsEditingDescription(true)}
-                                    className={`description-content ${!task.description ? 'empty' : ''}`}
-                                >
-                                    {task.description || 'Add a more detailed description...'}
+                        )}
+                    </section>
+
+                    <section className="activity-section">
+                        <div className="section-header">
+                            <img src={svgService.activityIcon} alt="Activity" />
+                            <h3>Activity</h3>
+                            <button className="show-details-btn">Show details</button>
+                        </div>
+                        <div className="activity-content">
+                            <div className="activity-item">
+                                <div className="user-avatar"></div>
+                                <div className="activity-details">
+                                    <p><span className="user-name">User</span> added this card to {group.title}</p>
+                                    <span className="timestamp">8 Jan 2025, 15:01</span>
                                 </div>
-                            )}
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <aside className="sidebar">
+                    <div className="actions-list">
+                        <section>
+                            <div className="action-buttons">
+                                {PICKERS.map(({ icon, label, picker }) => (
+                                    <button 
+                                        key={label}
+                                        onClick={(ev) => handlePickerToggle(picker, label, ev)}
+                                    >
+                                        <img src={svgService[icon]} alt={label} />
+                                        {label}
+                                    </button>
+                                ))}
+                            </div>
                         </section>
 
-                        <section className="activity-section">
-                            <div className="section-header">
-                                <img src={svgService.activityIcon} alt="Activity" />
-                                <h3>Activity</h3>
-                                <button className="show-details-btn">Show details</button>
-                            </div>
-                            <div className="activity-content">
-                                <div className="activity-item">
-                                    <div className="user-avatar"></div>
-                                    <div className="activity-details">
-                                        <p><span className="user-name">User</span> added this card to {group.title}</p>
-                                        <span className="timestamp">8 Jan 2025, 15:01</span>
-                                    </div>
-                                </div>
+                        <section>
+                            <h3>Actions</h3>
+                            <div className="action-buttons">
+                                {ACTION_BUTTONS.map(({ icon, label }) => (
+                                    <button key={label}>
+                                        <img src={svgService[icon]} alt={label} />
+                                        {label}
+                                    </button>
+                                ))}
                             </div>
                         </section>
                     </div>
-
-                    <aside className="sidebar">
-                        <div className="actions-list">
-                            <section>
-                                <div className="action-buttons">
-                                    <button><img src={svgService.joinIcon} alt="Join" /> Join</button>
-                                    <button onClick={(ev) => onTogglePicker({
-                                        cmp: MemberPicker,
-                                        title: 'Members',
-                                        props: {
-                                            boardId: board._id,
-                                            groupId: currGroup.id,
-                                            task,
-                                            onClose: () => onTogglePicker()
-                                        },
-                                        triggerEl: ev.currentTarget
-                                    })}>
-                                        <img src={svgService.memberIcon} alt="Members" />
-                                        Members
-                                    </button>
-                                    <button onClick={(ev) => onTogglePicker({
-                                        cmp: LabelPicker,
-                                        title: 'Labels',
-                                        props: {
-                                            boardId: board._id,
-                                            groupId: currGroup.id,
-                                            task,
-                                            onClose: () => onTogglePicker()
-                                        },
-                                        triggerEl: ev.currentTarget
-                                    })}>
-                                        <img src={svgService.labelsIcon} alt="Labels" />
-                                        Labels
-                                    </button>
-                                    <button onClick={(ev) => onTogglePicker({
-                                        cmp: DatePicker,
-                                        title: 'Dates',
-                                        props: {
-                                            boardId: board._id,
-                                            groupId: currGroup.id,
-                                            task,
-                                            onClose: () => onTogglePicker()
-                                        },
-                                        triggerEl: ev.currentTarget
-                                    })}>
-                                        <img src={svgService.datesIcon} alt="Dates" />
-                                        Dates
-                                    </button>
-                                    <button onClick={(ev) => onTogglePicker({
-                                        cmp: ChecklistPicker,
-                                        title: 'Checklist',
-                                        props: {
-                                            boardId: board._id,
-                                            groupId: currGroup.id,
-                                            task,
-                                            onClose: () => onTogglePicker()
-                                        },
-                                        triggerEl: ev.currentTarget
-                                    })}>
-                                        <img src={svgService.checklistIcon} alt="Checklist" /> Checklist
-                                    </button>
-                                    <button onClick={(ev) => onTogglePicker({
-                                        cmp: CoverPicker,
-                                        title: 'Cover',
-                                        props: {
-                                            boardId: board._id,
-                                            groupId: currGroup.id,
-                                            task,
-                                            onClose: () => onTogglePicker()
-                                        },
-                                        triggerEl: ev.currentTarget
-                                    })}>
-                                        <img src={svgService.coverIcon} alt="Cover" /> Cover
-                                    </button>
-                                    <button><img src={svgService.attachmentIcon} alt="Attachment" /> Attachment</button>
-                                    <button><img src={svgService.customFieldIcon} alt="Custom Fields" /> Custom Fields</button>
-                                </div>
-                            </section>
-
-                            <section>
-                                <h3>Actions</h3>
-                                <div className="action-buttons">
-                                    <button><img src={svgService.rightArrowIcon} alt="Move" /> Move</button>
-                                    <button><img src={svgService.copyIcon} alt="Copy" /> Copy</button>
-                                    <button><img src={svgService.cardIcon} alt="Mirror" /> Mirror</button>
-                                    <button><img src={svgService.templateIcon} alt="Template" /> Make template</button>
-                                    <button><img src={svgService.archiveIcon} alt="Archive" /> Archive</button>
-                                    <button><img src={svgService.shareIcon} alt="Share" /> Share</button>
-                                </div>
-                            </section>
-                        </div>
-                    </aside>
-                </div>
-            </section>
-        </div>
+                </aside>
+            </div>
+        </dialog>
     )
 }

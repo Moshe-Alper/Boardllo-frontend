@@ -141,8 +141,8 @@ export function BoardIndex() {
           </div>
           <div className='board-grid'>
             {workspaceBoards.map((board) => (
-              <>
-                <Link key={board._id} to={`/board/${board._id}`} className='board-tile'>
+              <div key={board._id} className="board-wrapper flex column">
+                <Link to={`/board/${board._id}`} className='board-tile'>
                   <div className='board-tile-details'>
                     <h3>{board.title}</h3>
                   </div>
@@ -156,7 +156,7 @@ export function BoardIndex() {
                     Edit
                   </button>
                 </section>
-              </>
+              </div>
             ))}
             <button onClick={onAddBoard} className='create-board-tile'>
               <Plus size={24} />

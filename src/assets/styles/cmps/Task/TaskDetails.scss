@@ -1,23 +1,18 @@
-.task-details-overlay {
-    position: fixed;
-    inset: 0;
-    background-color: $modal-background;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    z-index: 9999;
-    overflow-y: auto;  
-}
-
 .task-details {
-    position: relative;
-    margin: $navbar-height auto; 
+    margin: $navbar-height auto;
     inline-size: 48rem;
-    min-block-size: calc(100vh - #{2 * $spacing-xl});  
-    max-block-size: none; 
+    min-block-size: calc(100vh - #{2 * $spacing-xl});
+    max-block-size: none;
     background-color: $background-light;
     border-radius: rem(12px);
     box-shadow: $shadow-large;
+    border: none;
+    padding: 0;
+    z-index: 10000;
+
+    &::backdrop {
+        background-color: $modal-background;
+    }
 
     &.has-cover {
         .cover {
@@ -139,15 +134,6 @@
             justify-content: center;
             transition: background-color 0.2s ease;
             background-color: transparent;
-            
-            &:hover {
-                background-color: rgba($background-dark, 0.08);
-            }
-            
-            img {
-                width: 1.5rem;
-                height: 1.5rem;
-            }
             
             &:hover {
                 background-color: $details-btn-txt-hover;
@@ -307,7 +293,7 @@
                     margin-block-end: $spacing-lg;
 
                     h3 {
-                        font-size: 0.5rem;
+                        font-size: 0.75rem;
                         font-weight: 600;
                         color: $text-secondary;
                         text-transform: uppercase;
