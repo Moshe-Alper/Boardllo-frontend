@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Popover from '@mui/material/Popover'
 import { svgService } from "../../services/svg.service"
 import { onToggleModal } from "../../store/actions/app.actions"
@@ -8,23 +9,12 @@ import { TaskQuickActions } from "./TaskQuickActions"
 export function TaskPreview({ task, boardId, group, isDragging }) {
     const [anchorEl, setAnchorEl] = useState(null)
     const isPopoverOpen = Boolean(anchorEl)
+    const navigate = useNavigate()
 
     function onOpenTaskDetails(ev) {
         if (ev.target.closest('.edit-icon-container')) return
         if (ev.target.closest('.MuiPopover-root')) return
-
-        onToggleModal({
-            cmp: TaskDetails,
-            props: {
-                group,
-                task,
-                onClose: onCloseTaskDetails,
-            }
-        })
-    }
-
-    function onCloseTaskDetails() {
-        onToggleModal()
+        navigate(`/board/${boardId}/${task.id}`)
     }
 
     function onOpenPopover(ev) {

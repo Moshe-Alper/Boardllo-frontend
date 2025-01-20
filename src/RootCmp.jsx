@@ -14,12 +14,15 @@ import { LoginForm } from './cmps/LoginForm.jsx'
 import { SignupForm } from './cmps/SignupForm.jsx'
 import { MobileSearch } from './cmps/MobileSearch.jsx'
 import { DynamicPicker } from './cmps/DynamicPickers/DynamicPicker.jsx'
+import { DynamicModal } from './cmps/DynamicModal.jsx'
+import { TaskDetails } from './cmps/Task/TaskDetails.jsx'
 
 export function RootCmp() {
   return (
     <div className='main-container'>
       <AppHeader />
       <UserMsg />
+      <DynamicModal />
       <DynamicPicker />
       
 
@@ -28,6 +31,12 @@ export function RootCmp() {
           <Route path='' element={<HomePage />} />
           <Route path='board' element={<BoardIndex />} />
           <Route path='board/:boardId' element={<BoardDetails />} />
+          <Route path='board/:boardId/:taskId' element={
+            <>
+              <BoardDetails />
+              <TaskDetails />
+            </>
+          } />
           <Route path='user/:id' element={<UserProfile />} />
           <Route path='admin' element={<AdminIndex />} />
           <Route path='login' element={<LoginForm />}></Route>

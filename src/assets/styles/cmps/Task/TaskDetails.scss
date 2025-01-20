@@ -1,3 +1,17 @@
+.task-details-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: $modal-background;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    z-index: 9999;
+    overflow-y: auto;
+    scroll-behavior: hidden;
+    padding: $spacing-md;
+
+}
+
 .task-details {
     margin: $navbar-height auto;
     inline-size: 48rem;
