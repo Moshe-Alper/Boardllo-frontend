@@ -1,25 +1,127 @@
 .board-header {
     background-color: $blue-header;
     min-height: 2rem;
-    padding: 0.75rem;
+    padding: 0.75rem 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     color: $text-light;
     transition: margin-right 0.3s ease;
 
-
     &.menu-open {
-        margin-right: 300px; 
-        padding-right: 70px;
+        margin-right: 18.75rem;
+        padding-right: 4.375rem;
     }
 
-    
+    .board-header-left {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        h1 {
+            font-size: 1.125rem;
+            line-height: 1.25rem;
+            color: $background-white;
+            margin: 0;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0.5rem 0.75rem;
+            border-radius: $border-radius-small;
+            transition: $hover-transition;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        .board-title-input {
+            font-size: 1.125rem;
+            line-height: 1.25rem;
+            color: $background-white;
+            margin: 0;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.2);
+            border: 0.125rem solid rgba(255, 255, 255, 0.3);
+            border-radius: $border-radius-small;
+            padding: 0.375rem 0.625rem;
+            width: auto;
+            min-width: 7.5rem;
+            transition: $hover-transition;
+
+            &:focus {
+                outline: none;
+                border-color: rgba(255, 255, 255, 0.5);
+                background: rgba(255, 255, 255, 0.3);
+            }
+
+            &::placeholder {
+                color: rgba(255, 255, 255, 0.7);
+            }
+        }
+
+        .star-btn {
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            cursor: pointer;
+            color: $background-white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: $border-radius-small;
+            transition: $hover-transition;
+
+            img {
+                width: 1rem;
+                height: 1rem;
+                filter: brightness(0) invert(1);
+            }
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.2);
+            }
+        }
+    }
+
+    .board-header-right {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        .header-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            background: rgba(255, 255, 255, 0.16);
+            border: none;
+            padding: 0.5rem 0.75rem;
+            border-radius: $border-radius-small;
+            color: $background-white;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: $hover-transition;
+            min-width: max-content;
+
+            img {
+                width: 1rem;
+                height: 1rem;
+                filter: brightness(0) invert(1);
+            }
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.25);
+            }
+        }
+
+        .members-btn {
+            padding: 0.5rem;
+        }
+    }
+
     @media screen and (max-width: $breakpoint-mobile) {
-        padding: $spacing-sm;
-        height: auto;
+        padding: 0.5rem;
         flex-direction: column;
-        gap: $spacing-sm;
+        gap: 0.5rem;
 
         .board-header-left {
             width: 100%;
@@ -40,7 +142,7 @@
     }
 
     @media screen and (max-width: $breakpoint-tablet) and (min-width: #{$breakpoint-mobile + 1}) {
-        padding: $spacing-md;
+        padding: 0.75rem;
 
         .board-header-left {
             .workspace-info {
@@ -52,123 +154,12 @@
 
         .board-header-right {
             .header-btn {
-                padding: $spacing-xs;
+                padding: 0.5rem;
 
                 span {
                     display: none;
                 }
             }
-        }
-    }
-
-    .board-header-left {
-        display: flex;
-        align-items: center;
-        gap: $spacing-sm;
-
-        h1 {
-            font-size: 1.125rem;
-            line-height: 1.25rem;
-            color: $background-white;
-            margin: 0;
-            font-weight: 600;
-            cursor: pointer;
-            padding: $spacing-xs $spacing-sm;
-            border-radius: $border-radius-small;
-            transition: $hover-transition;
-
-            &:hover {
-                background-color: rgba(255, 255, 255, 0.2);
-            }
-        }
-
-        .board-title-input {
-            font-size: 1.125rem;
-            line-height: 1.25rem;
-            color: $background-white;
-            margin: 0;
-            font-weight: 600;
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: $border-radius-small;
-            padding: calc(#{$spacing-xs} - 2px) calc(#{$spacing-sm} - 2px); // Subtracting border width
-            width: auto;
-            min-width: 120px;
-            transition: $hover-transition;
-
-            &:focus {
-                outline: none;
-                border-color: rgba(255, 255, 255, 0.5);
-                background: rgba(255, 255, 255, 0.3);
-            }
-
-            &::placeholder {
-                color: rgba(255, 255, 255, 0.7);
-            }
-        }
-
-        .star-btn {
-            background: none;
-            border: none;
-            padding: $spacing-xs;
-            cursor: pointer;
-            color: $background-white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: $hover-transition;
-
-            img {
-                width: 16px;
-                height: 16px;
-                filter: brightness(0) invert(1);
-            }
-
-            &:hover {
-                background-color: rgba(255, 255, 255, 0.2);
-            }
-        }
-    }
-
-    .board-header-right {
-        display: flex;
-        align-items: center;
-        gap: $spacing-sm;
-
-        .header-btn {
-            display: flex;
-            align-items: center;
-            gap: $spacing-xs;
-            background: $blue-header;
-            border: none;
-            padding: $spacing-xs $spacing-sm;
-            border-radius: $border-radius-small;
-            color: $background-white;
-            cursor: pointer;
-            font-size: 0.875rem;
-            transition: $hover-transition;
-
-            img {
-                width: 16px;
-                height: 16px;
-                filter: brightness(0) invert(1);
-            }
-
-            &:hover {
-                background: rgba(255, 255, 255, 0.3);
-            }
-
-            .power-up-count {
-                background: rgba(255, 255, 255, 0.3);
-                padding: 0 $spacing-xs;
-                border-radius: $border-radius-small;
-                font-size: 0.75rem;
-            }
-        }
-
-        .members-btn {
-            padding: $spacing-xs;
-            background: $blue-header;
         }
     }
 }

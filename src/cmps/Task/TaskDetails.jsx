@@ -132,130 +132,97 @@ export function TaskDetails() {
         })
     }
 
-    if (!task) return <div>Loading...</div>
-
-    return (
-        <div className="task-details-overlay" onClick={handleOverlayClick}>
-            <section
-                className={`task-details ${hasCover ? 'has-cover' : ''}`}
-                style={{
-                    '--cover-color': hasCover ? task.style.coverColor : 'transparent'
-                }}>
-                {hasCover && <div className="cover" />}
-                <header className="details-header">
-                    <div className="header-content">
-                        <img src={svgService.cardIcon} alt="Card Icon" className="card-icon" />
-                        <div className="title-container">
-                            {isEditingTitle ? (
-                                <input
-                                    type="text"
-                                    value={editedTitle}
-                                    onChange={(ev) => setEditedTitle(ev.target.value)}
-                                    onBlur={handleTitleSubmit}
-                                    onKeyDown={handleTitleKeyPress}
-                                    className="title-input"
-                                    autoFocus
-                                />
-                            ) : (
-                                <h2 onClick={() => setIsEditingTitle(true)}>
-                                    {task.title}
-                                </h2>
-                            )}
-                        </div>
-                        <div className="list-info">
-                            <span>in list</span>
-                            <span className="list-name-btn">{currGroup.title}</span>
-                        </div>
-                    </div>
+    
+        if (!task) return <div>Loading...</div>
+    
+        return (
+            <div className="task-details-overlay" onClick={handleOverlayClick}>
+                <article className={`task-details ${hasCover ? 'has-cover' : ''}`}>
+                    {hasCover && <div className="cover" style={{backgroundColor: task.style.coverColor}} />}
+                    
+                    <img src={svgService.cardIcon} alt="Card Icon" className="card-icon" />
+                    <h2 className="task-title">
+                        {isEditingTitle ? (
+                            <input
+                                type="text"
+                                value={editedTitle}
+                                onChange={(ev) => setEditedTitle(ev.target.value)}
+                                onBlur={handleTitleSubmit}
+                                onKeyDown={handleTitleKeyPress}
+                                autoFocus
+                            />
+                        ) : (
+                            <span onClick={() => setIsEditingTitle(true)}>{task.title}</span>
+                        )}
+                    </h2>
+                    <div className="task-list">in list <span className="list-name">{currGroup.title}</span></div>
                     <button className="close-btn" onClick={() => navigate(`/board/${boardId}`)}>
-                            <img src={svgService.closeIcon} alt="Close" />
-                        </button>
-                </header>
-
-                <div className="details-grid">
-                    <div className="main-content">
-                        <section className="notifications-section">
-                            <div className="section-header">
-                                <h3>Notifications</h3>
-                            </div>
-                            <button className="watch-btn">
-                                <img src={svgService.watchIcon} alt="Watch" />
-                                Watch
-                            </button>
+                        <img src={svgService.closeIcon} alt="Close" />
+                    </button>
+    
+                    <main className="task-content">
+                        <section className="notifications">
+                            <img src={svgService.watchIcon} alt="Watch" />
+                            <h3>Notifications</h3>
+                            <button className="watch-btn">Watch</button>
                         </section>
-
-                        <section className="description-section">
-                            <div className="section-header">
-                                <img src={svgService.descriptionIcon} alt="Description" />
-                                <h3>Description</h3>
-                            </div>
+    
+                        <section className="description">
+                            <img src={svgService.descriptionIcon} alt="Description" />
+                            <h3>Description</h3>
                             {isEditingDescription ? (
                                 <textarea
                                     value={editedDescription}
                                     onChange={(ev) => setEditedDescription(ev.target.value)}
-                                    className="description-textarea"
                                     placeholder="Add a more detailed description..."
                                     autoFocus
                                 />
                             ) : (
-                                <div
+                                <div 
                                     onClick={() => setIsEditingDescription(true)}
-                                    className={`description-content ${!task.description ? 'empty' : ''}`}
+                                    className={!task.description ? 'empty' : ''}
                                 >
                                     {task.description || 'Add a more detailed description...'}
                                 </div>
                             )}
                         </section>
-
-                        <section className="activity-section">
-                            <div className="section-header">
-                                <img src={svgService.activityIcon} alt="Activity" />
-                                <h3>Activity</h3>
-                                <button className="show-details-btn">Show details</button>
-                            </div>
-                            <div className="activity-content">
-                                <div className="activity-item">
-                                    <div className="user-avatar"></div>
-                                    <div className="activity-details">
-                                        <p><span className="user-name">User</span> added this card to {currGroup.title}</p>
-                                        <span className="timestamp">8 Jan 2025, 15:01</span>
-                                    </div>
-                                </div>
+    
+                        <section className="activity">
+                            <img src={svgService.activityIcon} alt="Activity" />
+                            <h3>Activity</h3>
+                            <button className="show-details">Show details</button>
+                            <div className="activity-item">
+                                <div className="user-avatar"></div>
+                                <p><span>User</span> added this card to {currGroup.title}</p>
+                                <time>8 Jan 2025, 15:01</time>
                             </div>
                         </section>
-                    </div>
-
-                    <aside className="sidebar">
-                        <div className="actions-list">
-                            <section>
-                                <div className="action-buttons">
-                                    {PICKERS.map(({ icon, label, picker }) => (
-                                        <button
-                                            key={label}
-                                            onClick={(ev) => handlePickerToggle(picker, label, ev)}
-                                        >
-                                            <img src={svgService[icon]} alt={label} />
-                                            {label}
-                                        </button>
-                                    ))}
-                                </div>
-                            </section>
-
-                            <section>
-                                <h3>Actions</h3>
-                                <div className="action-buttons">
-                                    {ACTION_BUTTONS.map(({ icon, label }) => (
-                                        <button key={label}>
-                                            <img src={svgService[icon]} alt={label} />
-                                            {label}
-                                        </button>
-                                    ))}
-                                </div>
-                            </section>
+                    </main>
+    
+                    <aside className="task-sidebar">
+                        <div className="add-to-card">
+                            {PICKERS.map(({ icon, label, picker }) => (
+                                <button
+                                    key={label}
+                                    onClick={(ev) => handlePickerToggle(picker, label, ev)}
+                                >
+                                    <img src={svgService[icon]} alt={label} />
+                                    {label}
+                                </button>
+                            ))}
+                        </div>
+    
+                        <div className="actions">
+                            <h3>Actions</h3>
+                            {ACTION_BUTTONS.map(({ icon, label }) => (
+                                <button key={label}>
+                                    <img src={svgService[icon]} alt={label} />
+                                    {label}
+                                </button>
+                            ))}
                         </div>
                     </aside>
-                </div>
-            </section>
-        </div>
-    )
-}
+                </article>
+            </div>
+        )
+    }

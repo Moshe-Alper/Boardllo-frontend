@@ -8,10 +8,6 @@
   box-shadow: $shadow-small;
   z-index: 100;
 
-  &.logged-in {
-    // box-shadow: inset 0 -1px 0 $border-light-gray;
-  }
-
   .nav-container {
     max-width: 100%;
     height: 100%;
