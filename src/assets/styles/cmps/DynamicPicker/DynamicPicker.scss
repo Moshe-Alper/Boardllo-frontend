@@ -4,7 +4,6 @@
     border-radius: $border-radius-large;
     box-shadow: $shadow-large;
     width: rem(304px);
-    max-height: calc(100vh - rem(100px));
     display: flex;
     flex-direction: column;
     overflow: hidden;

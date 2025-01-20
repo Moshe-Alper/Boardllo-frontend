@@ -1,8 +1,8 @@
 .board-layout {
+  height: 100%;
   display: grid;
-  grid-template-columns: 0 1fr;
   transition: grid-template-columns 0.3s ease-in-out;
-  width: 100%;
+  overflow-y: auto;
   overflow-x: hidden;
   
   &.sidebar-open {
@@ -12,16 +12,15 @@
   .board-details {
     display: grid;
     grid-template-rows: $navbar-height 1fr;
-    max-width: 100%;
     background-color: $blue-base;
     color: $text-primary;
     box-shadow: $shadow-small;
+    overflow-y: hidden;
   }
   
   .group-container {
     display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: min-content;
+    grid-template-columns: max-content max-content;
     gap: rem(8px);
     padding: $spacing-sm;
     overflow-x: auto;

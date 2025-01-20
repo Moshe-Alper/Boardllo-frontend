@@ -118,7 +118,7 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
 
     return (
         <section
-            className={`board-group flex column ${isCollapsed ? 'collapsed' : ''} 
+            className={`board-group ${isCollapsed ? 'collapsed' : ''} 
                       ${isDragging ? 'dragging' : ''}`}
             onClick={handleGroupClick}
         >

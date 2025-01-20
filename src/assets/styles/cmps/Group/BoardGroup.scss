@@ -4,18 +4,18 @@
     max-width: 17rem;
     margin: $spacing-xs;
     padding: rem(4px) rem(8px);
-    height: fit-content;
-    max-height: calc(100vh - $navbar-height - 5rem); // 80px
     border-radius: $border-radius;
     box-shadow: $card-shadow;
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
     transition: min-width 0.3s ease-in-out,
         max-width 0.3s ease-in-out,
         padding 0.3s ease-in-out,
         background-color 0.3s ease-in-out;
-
+    
+    // Use grid layout for the entire board group
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: 100%;
+    
     @media (max-width: $breakpoint-tablet) {
         min-width: 15rem;
         max-width: 15rem;
@@ -32,25 +32,15 @@
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
-        padding-block-start: rem(6px);
+        padding-block: rem(6px) 0.125rem;
         overflow-y: auto;
-        min-height: 0;
-        max-height: calc(100vh - $navbar-height - 10rem); // 160px
-        padding-block-end: 0.125rem;
-
-        @media (max-width: $breakpoint-tablet) {
-            max-height: calc(100vh - $navbar-height - 8.75rem); // 140px
-        }
-
-        @media (max-width: $breakpoint-mobile) {
-            max-height: calc(100vh - $navbar-height - 7.5rem); // 120px
-        }
+        
+        // Remove fixed heights, let grid handle the sizing
+        min-height: 0; // Important for scroll to work in grid
     }
 
     .board-group-footer {
         margin-block-start: 0;
-        position: sticky;
-        bottom: 0;
         background-color: $background-light;
         padding-block-start: $spacing-xs;
         z-index: 1;
@@ -60,6 +50,7 @@
         min-width: 2.5rem;
         max-width: 2.5rem;
         padding: $layoutPadding-small 0;
+        display: block; // Override grid for collapsed state
 
         @media (max-width: $breakpoint-mobile) {
             min-width: 2rem;
@@ -110,9 +101,9 @@
                     .vertical-text-field {
                         transform: rotate(-90deg);
                         transform-origin: center;
-                        width: 9.375rem; // 150px
+                        width: 9.375rem;
                         position: relative;
-                        left: -3.4375rem; // 55px
+                        left: -3.4375rem;
 
                         input {
                             text-align: center;
