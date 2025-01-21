@@ -1,0 +1,141 @@
+.label-picker {
+    .labels-search {
+        margin-bottom: $spacing-md;
+
+        .MuiTextField-root {
+            width: 100%;
+
+            .MuiOutlinedInput-root {
+                background-color: $background-white;
+                transition: $hover-transition;
+
+                &.Mui-focused {
+                    background-color: $background-white;
+                }
+
+                fieldset {
+                    border: rem(2px) solid transparent;
+                    transition: border-color 0.2s;
+                }
+            }
+
+            input {
+                font-family: $workspace-font;
+                font-size: rem(14px);
+
+                &::placeholder {
+                    color: $text-secondary;
+                }
+            }
+        }
+    }
+
+    .labels-list {
+        &__header {
+            color: $text-secondary;
+            font-size: rem(12px);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: rem(0.5px);
+            margin-bottom: $spacing-sm;
+        }
+
+        .label-item {
+            padding: $spacing-sm;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: $border-radius-small;
+            transition: $hover-transition;
+            margin-bottom: $spacing-xs;
+
+            &:hover {
+                background-color: $background-light;
+            }
+
+            .label-info {
+                display: flex;
+                align-items: center;
+                gap: $spacing-sm;
+
+                .label-color {
+                    width: rem(32px);
+                    height: rem(32px);
+                    border-radius: $border-radius-small;
+                }
+
+                .label-title {
+                    font-size: rem(14px);
+                    color: $text-primary;
+                    font-family: $workspace-font;
+                }
+            }
+
+            .label-actions {
+                display: flex;
+                align-items: center;
+                gap: $spacing-xs;
+
+                .MuiCheckbox-root {
+                    color: $text-secondary;
+                    padding: $spacing-xs;
+
+                    &.Mui-checked {
+                        color: $primary-blue;
+                    }
+                }
+
+                .edit-button {
+                    background: none;
+                    border: none;
+                    padding: $spacing-xs;
+                    cursor: pointer;
+                    border-radius: $border-radius-small;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    opacity: 0;
+                    transition: opacity 0.2s, background-color 0.2s;
+
+                    &:hover {
+                        background-color: $background-light-hover;
+                    }
+
+                    .edit-icon {
+                        font-size: rem(14px);
+                        color: $text-secondary;
+                    }
+                }
+            }
+
+            &:hover .edit-button {
+                opacity: 1;
+            }
+        }
+
+        .create-label-button,
+        .colorblind-toggle {
+            width: 100%;
+            padding: $spacing-md;
+            background-color: $background-light;
+            border: none;
+            border-radius: $border-radius-small;
+            font-family: $workspace-font;
+            font-size: rem(14px);
+            color: $text-primary;
+            cursor: pointer;
+            margin-top: $spacing-md;
+            transition: background-color 0.2s;
+
+            &:hover {
+                background-color: $background-light-hover;
+            }
+        }
+
+        .colorblind-toggle {
+            margin-top: $spacing-sm;
+            color: $text-secondary;
+        }
+    }
+}

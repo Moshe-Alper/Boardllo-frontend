@@ -90,6 +90,27 @@ export function boardReducer(state = initialState, action) {
         newState = { ...state, groups: [...state.groups, state.lastGroup], lastGroup: null }
       }
       break
+    // Group reducers
+    case ADD_GROUP:
+      newState = { ...state, groups: [...state.groups, action.group] }
+      break
+    case UPDATE_GROUP:
+      groups = state.groups.map((group) => (group.id === action.group.id ? action.group : group))
+      newState = { ...state, groups }
+      break
+    case REMOVE_GROUP:
+      const removedGroup = state.groups.find((group) => group.id === action.groupId)
+      newState = {
+        ...state,
+        groups: state.groups.filter((group) => group.id !== action.groupId),
+        lastGroup: removedGroup
+      }
+      break
+    case UNDO_REMOVE_GROUP:
+      if (state.lastGroup) {
+        newState = { ...state, groups: [...state.groups, state.lastGroup], lastGroup: null }
+      }
+      break
 
     // Task reducers
     case ADD_TASK:
@@ -104,6 +125,42 @@ export function boardReducer(state = initialState, action) {
       newState = {
         ...state,
         tasks: state.tasks.filter((task) => task._id !== action.taskId),
+        lastTask: removedTask
+      }
+      break
+    case UNDO_REMOVE_TASK:
+      if (state.lastTask) {
+        newState = { ...state, tasks: [...state.tasks, state.lastTask], lastTask: null }
+      }
+      break
+    // Task reducers
+    case ADD_TASK:
+      newState = { ...state, tasks: [...state.tasks, action.task] }
+      break
+    case UPDATE_TASK:
+      newState = {
+        ...state,
+        board: {
+          ...state.board,
+          groups: state.board.groups.map((group) => {
+            const taskExists = group.tasks.some((t) => t.id === action.task.id)
+            if (!taskExists) return group
+
+            return {
+              ...group,
+              tasks: group.tasks.map((task) =>
+                task.id === action.task.id ? { ...task, ...action.task } : task
+              )
+            }
+          })
+        }
+      }
+      break
+    case REMOVE_TASK:
+      const removedTask = state.tasks.find((task) => task.id === action.taskId)
+      newState = {
+        ...state,
+        tasks: state.tasks.filter((task) => task.id !== action.taskId),
         lastTask: removedTask
       }
       break

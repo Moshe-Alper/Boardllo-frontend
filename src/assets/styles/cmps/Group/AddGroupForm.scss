@@ -1,105 +1,132 @@
 .add-group-form {
-    width: 17rem; // 272px
+    width: rem(272px);
+    max-height: fit-content;
     background-color: $background-light;
-    padding: $layoutPadding-small;
-    border-radius: $border-radius-largest;
-    gap: $layoutPadding-small;
+    padding: 0 rem(8px); 
+    border-radius: $border-radius-large;
+    box-shadow: $shadow-small;
+    height: auto;
+    margin-block-start: rem(4px);
 
-    input {
+    textarea {
         width: 100%;
-        padding: $layoutPadding-small;
-        border: 0.125rem solid transparent; // 2px
+        padding: rem(8px) rem(12px); 
+        border: 2px solid $secondary-blue; 
         border-radius: $border-radius-small;
-        background-color: $card-background;
-        font-size: 0.875rem; // 14px
+        background-color: $background-light; 
+        font-size: 0.875rem;
         color: $text-primary;
         font-family: $workspace-font;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        transition: $hover-transition;
+        resize: none;
+        overflow: hidden;
+        height: auto;
+        min-height: rem(36px); 
+        display: block;
 
         &:focus {
-            border-color: $primary-blue;
+            border-color: $secondary-blue;
             outline: none;
-            box-shadow: 0 0 0.25rem rgba($primary-blue, 0.5);
+            box-shadow: 0 0 0 1px $secondary-blue; 
         }
 
         &::placeholder {
             color: $text-secondary;
+            font-size: 0.875rem;
         }
     }
 
     .buttons-container {
-        margin-block-start: $layoutPadding-small;
-        display: flex;
-        align-items: center;
+            margin-block-start: rem(8px);
+            display: flex;
+            align-items: center;
+            margin: 0;
 
-        button {
-            border-radius: $border-radius-large;
         }
 
-
-        .add-group-btn {
-            width: auto;
-            padding: 0.5rem 1rem; // 8px 16px
+        .add-group-btn-active {
+            padding: rem(6px) rem(12px); 
             background-color: $primary-blue;
             color: $button-text-light;
             border: none;
             border-radius: $border-radius-small;
             font-weight: 500;
-            font-size: 0.875rem; // 14px
+            font-size: 0.875rem;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.1s ease;
+            transition: $hover-transition;
+            height: rem(32px); 
 
             &:hover {
                 background-color: $primary-hover-blue;
             }
+
+            &:active {
+                background-color: darken($primary-hover-blue, 5%);
+            }
         }
 
         .cancel-btn {
-            width: auto;
-            font-size: 1.25rem; // 20px
-            background-color: transparent;
-            padding: $layoutPadding-smallest 1rem; 
+            width: rem(32px);
+            height: rem(32px);
+            padding: rem(8px);
             border: none;
+            background-color: transparent;
+            color: $text-secondary;
             cursor: pointer;
-            color: $text-dark;
             display: flex;
             align-items: center;
             justify-content: center;
-            line-height: 1;
-            
-            flex-grow: 0;
-            flex-shrink: 0;
+            border-radius: $border-radius-small;
+            margin-inline-start: rem(8px); 
+            transition: $hover-transition;
+
+            img {
+                width: rem(16px); 
+                height: rem(16px);
+                opacity: 0.8;
+            }
 
             &:hover {
-                color: $text-primary;
-                background-color: $button-secondary-hover-bg;
+                background-color: rgba($text-secondary, 0.08); 
+                
+                img {
+                    opacity: 1;
+                }
             }
         }
     }
-}
 
-.add-list-btn {
-    width: 100%;
-    padding: $layoutPadding-small;
-    background-color: rgba($background-white, 0.24);
+.add-group-btn-preview {
+    width: rem(272px);
+    height: rem(40px); 
+    padding: rem(10px) rem(12px); 
+    background-color: rgba($background-light, 0.24);
     border: none;
-    border-radius: $border-radius;
-    color: $text-primary;
+    border-radius: $border-radius-largest;
+    color: $button-text-light;
     cursor: pointer;
-    font-size: 0.875rem; // 14px
-    text-align: left;
-    transition: background-color 0.3s ease;
+    font-size: 0.875rem;
+    font-weight: 400; 
+    transition: $hover-transition;
     font-family: $workspace-font;
-    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    margin-inline-start: 0;
+    
+    img {
+        width: rem(16px);
+        height: rem(16px);
+        opacity: 0.8;
+        margin-inline-end: rem(8px); 
+        filter: brightness(0) invert(1); 
 
-    &:hover {
-        background-color: $button-secondary-hover-bg;
     }
 
-    &::before {
-        content: '+';
-        margin-inline-end: $layoutPadding-small;
-        font-size: 1.25rem; // 20px
-        font-weight: 500;
+    &:hover {
+        background-color: rgba($background-light, 0.32);
+        
+        img {
+            opacity: 1;
+        }
     }
 }

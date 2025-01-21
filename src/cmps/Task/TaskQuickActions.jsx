@@ -1,21 +1,17 @@
 import React, { useState } from 'react'
-import { CoverColorPicker } from '../../cmps/Picker/CoverColorPicker'
+import { CoverPicker } from '../DynamicPickers/Pickers/CoverPicker'
 
-export function TaskQuickActions({ task, onClose, onCoverColorSelect }) {
+export function TaskQuickActions({ task, onClose, }) {
     const [showColorPicker, setShowColorPicker] = useState(false)
 
     function onOpenCard() {
         if (onClose) onClose()
     }
 
-    async function handleColorSelect(color) {
-        await onCoverColorSelect(color)
-        onClose()
-    }
 
     if (showColorPicker) {
         return (
-            <CoverColorPicker
+            <CoverPicker
                 selectedColor={task.style?.coverColor || ''}
                 onColorSelect={handleColorSelect}
             />

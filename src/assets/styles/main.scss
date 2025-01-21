@@ -34,6 +34,7 @@
 @import 'cmps/Board/BoardFilter';
 @import 'cmps/Board/BoardList';
 @import 'cmps/Board/BoardPreview';
+@import 'cmps/Board/BoardMenu.scss';
 
 // Group
 @import 'cmps/Group/BoardGroup.scss';
@@ -49,3 +50,10 @@
 
 // Picker
 @import 'cmps/Picker/CoverColorPicker';
+
+@import 'cmps/DynamicPicker/DynamicPicker';
+@import 'cmps/DynamicPicker/Pickers/MemberPicker';
+@import 'cmps/DynamicPicker/Pickers/LabelPicker';
+@import 'cmps/DynamicPicker/Pickers/DatePicker';
+@import 'cmps/DynamicPicker/Pickers/ChecklistPicker';
+@import 'cmps/DynamicPicker/Pickers/CoverPicker';

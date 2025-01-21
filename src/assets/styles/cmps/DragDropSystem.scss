@@ -4,106 +4,68 @@
   opacity: 0.9;
   transform: rotate(2deg);
   transition: $hover-transition;
+  height: 100%;
 }
 
 .board-content {
-  .dragging {
-    cursor: grabbing;
-    box-shadow: $shadow-medium;
-    opacity: 0.9;
-    transform: rotate(2deg);
-    transition: $hover-transition;
-  }
-
-  .board-groups-container {
-    display: flex;
-    align-items: flex-start;
-    gap: $spacing-sm;
-    flex-direction: row;
-    min-height: 100%; 
-  }
-  .board-group {
-    min-width: 17rem;
-    max-width: 17rem;
-    transition: $hover-transition;
-
-    &.dragging {
-      opacity: 0.8;
-      transform: rotate(2deg) scale(1.02);
-      box-shadow: $shadow-large;
-      background-color: darken($background-light, 2%);
-    }
-
-    .tasks-container {
-      min-height: 0.125rem;
-    }
-  }
-
-  .task-preview {
-    cursor: grab;
-    transition: $hover-transition;
-
-    &.dragging {
-      transform: rotate(2deg) scale(1.02);
-      cursor: grabbing;
-      box-shadow: $shadow-medium;
-      background-color: $background-white;
-    }
-  }
-
-  .task-drag-placeholder {
-    background-color: darken($background-light, 5%);
-    border-radius: $border-radius-small;
-    margin-block-end: $spacing-sm;
-    height: 2.5rem;
-    transition: $hover-transition;
-  }
-
   display: flex;
   align-items: flex-start;
   overflow-x: auto;
-  height: calc(100vh - $navbar-height);
+  gap: rem(4px);
+  overflow-y: hidden;
+  min-height: 100%;
 }
 
 .board-groups-container {
   display: flex;
   align-items: flex-start;
   gap: $spacing-sm;
+  flex-direction: row;
+  min-height: 100%;
 }
 
 .board-group {
   min-width: 17rem;
   max-width: 17rem;
   transition: $hover-transition;
-
+  
   &.dragging {
     opacity: 0.8;
     transform: rotate(2deg) scale(1.02);
     box-shadow: $shadow-large;
     background-color: darken($background-light, 2%);
   }
+}
 
-  .tasks-container {
-    min-height: 0.125rem;
+.tasks-container {
+  display: grid;
+  gap: 0.5rem;
+  padding-bottom: 8px;
+  min-height: 0.125rem;
+  grid-auto-rows: min-content;
+  overflow-y: auto;
+  max-height: calc(100vh - 200px); 
+  position: relative; 
+
+  > *:last-child {
+    
+    &::after {
+      content: '';
+      display: block;
+      height: rem(8px);
+    }
   }
 }
+
 
 .task-preview {
   cursor: grab;
   transition: $hover-transition;
-
+  
   &.dragging {
     transform: rotate(2deg) scale(1.02);
     cursor: grabbing;
     box-shadow: $shadow-medium;
     background-color: $background-white;
   }
-}
-
-.task-drag-placeholder {
-  background-color: darken($background-light, 5%);
-  border-radius: $border-radius-small;
-  margin-block-end: $spacing-sm;
-  height: 2.5rem;
-  transition: $hover-transition;
 }

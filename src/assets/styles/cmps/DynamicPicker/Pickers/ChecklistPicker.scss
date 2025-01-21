@@ -1,0 +1,14 @@
+.checklist-form {
+    .MuiTextField-root,
+    .MuiSelect-root {
+      .MuiOutlinedInput-root {
+        background-color: $background-white;
+        
+        input, .MuiSelect-select {
+          font-family: $workspace-font;
+          font-size: rem(14px);
+          padding: $spacing-sm $spacing-md;
+        }
+      }
+    }
+  }

@@ -1,7 +1,5 @@
-/* eslint-disable react/prop-types */
-
-import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { json, useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { boardService } from '../services/board'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
@@ -17,6 +15,7 @@ import { AddGroupForm } from '../cmps/Group/AddGroupForm'
 import { BoardHeader } from '../cmps/Board/BoardHeader'
 import { BoardSidebar } from '../cmps/Board/BoardSidebar'
 import { GroupDragDropContainer } from '../cmps/DragDropSystem'
+import { BoardMenu } from '../cmps/Board/BoardMenu'
 
 export function BoardDetails() {
   const { boardId } = useParams()
@@ -28,6 +27,7 @@ export function BoardDetails() {
     const sidebarState = localStorage.getItem('isSidebarOpen')
     return sidebarState ? JSON.parse(sidebarState) : false
   })
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [activeItem, setActiveItem] = useState(null)
   const [activeType, setActiveType] = useState(null)
   const dispatch = useDispatch()
@@ -36,6 +36,9 @@ export function BoardDetails() {
     const newSidebarState = !isSidebarOpen
     setIsSidebarOpen(newSidebarState)
     localStorage.setItem('isSidebarOpen', JSON.stringify(newSidebarState))
+  }
+  const toggleBoardMenu = () => {
+    setIsMenuOpen(!isMenuOpen)
   }
 
   useEffect(() => {
@@ -51,7 +54,6 @@ export function BoardDetails() {
     }
     const group = boardService.getEmptyGroup()
     group.title = newGroupTitle
-
     try {
       const savedGroup = await addGroup(boardId, group)
       showSuccessMsg(`Group added (id: ${savedGroup.id})`)
@@ -126,7 +128,7 @@ export function BoardDetails() {
       <BoardSidebar isOpen={isSidebarOpen} toggleDrawer={toggleSidebar} boards={boards} />
       <section className='board-details'>
         <BoardHeader board={board} />
-        <div className='group-container'>
+        <main className='group-container'>
           <GroupDragDropContainer items={board.groups} onDragEnd={handleDragEnd}>
             {(group, index, isDragging) => (
               <BoardGroup
@@ -140,23 +142,17 @@ export function BoardDetails() {
             )}
           </GroupDragDropContainer>
 
-          <div className='add-group-wrapper'>
-            {isAddingGroup ? (
-              <AddGroupForm
-                board={board}
-                newGroupTitle={newGroupTitle}
-                setNewGroupTitle={setNewGroupTitle}
-                onAddGroup={() => onAddGroup(board._id)}
-                setIsAddingGroup={setIsAddingGroup}
-              />
-            ) : (
-              <button className='new-list-btn' onClick={() => setIsAddingGroup(true)}>
-                {board.groups?.length ? 'Add another list' : 'Add a list'}
-              </button>
-            )}
-          </div>
-        </div>
+          <AddGroupForm
+            board={board}
+            newGroupTitle={newGroupTitle}
+            setNewGroupTitle={setNewGroupTitle}
+            onAddGroup={() => onAddGroup(board._id)}
+            isAddingGroup={isAddingGroup}
+            setIsAddingGroup={setIsAddingGroup}
+          />
+        </main>
       </section>
+      <BoardMenu isOpen={isMenuOpen} toggleMenu={toggleBoardMenu} board={board} />
     </div>
   )
 }

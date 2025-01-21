@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
-import { addTask, loadBoard, updateGroup } from '../../store/actions/board.actions'
+import { addTask, loadBoard, updateBoard, updateGroup } from '../../store/actions/board.actions'
 import { boardService } from '../../services/board'
 import { showSuccessMsg, showErrorMsg } from '../../services/event-bus.service'
 import { BoardGroupHeader } from './BoardGroupHeader'
 import { BoardGroupFooter } from './BoardGroupFooter'
 import { TaskPreview } from '../Task/TaskPreview'
 import { TaskDragDropContainer } from '../DragDropSystem'
+import { store } from '../../store/store'
 
 export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
     const [isEditingGroupTitle, setIsEditingGroupTitle] = useState(false)
@@ -31,36 +32,45 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
 
     async function onAddTask(ev) {
         ev.preventDefault()
-
+        
         if (!newTaskTitle.trim()) {
             showErrorMsg('Task title cannot be empty')
             return
         }
-
+        
         const task = boardService.getEmptyTask()
         task.title = newTaskTitle
-
+        
         const tempTask = { ...task, id: 'temp-id' }
-
-        // Update the group directly
-        group.tasks = [...(group.tasks || []), tempTask]
-        onUpdateGroup({ ...group })
-
+        
+        const updatedGroup = {
+            ...group,
+            tasks: [...(group.tasks || []), tempTask]
+        }
+        
+        onUpdateGroup(updatedGroup)
+        
         try {
             const savedTask = await addTask(board._id, group.id, task)
-
-            group.tasks = group.tasks.map(t => t.id === 'temp-id' ? savedTask : t)
-            onUpdateGroup({ ...group })
-
-            loadBoard(board._id)
-            showSuccessMsg(`Task added (id: ${savedTask.id})`)
+            
+            const finalGroup = {
+                ...group,
+                tasks: updatedGroup.tasks.map(task => 
+                    task.id === 'temp-id' ? savedTask : task
+                )
+            }
+            
+            onUpdateGroup(finalGroup)
             setNewTaskTitle('')
+            showSuccessMsg(`Task added (id: ${savedTask.id})`)
         } catch (err) {
             console.log('Cannot add task', err)
             showErrorMsg('Cannot add task')
-
-            group.tasks = group.tasks.filter(t => t.id !== 'temp-id')
-            onUpdateGroup({ ...group })
+            const revertedGroup = {
+                ...group,
+                tasks: group.tasks.filter(task => task.id !== 'temp-id')
+            }
+            onUpdateGroup(revertedGroup)
         }
     }
 
@@ -108,7 +118,7 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
 
     return (
         <section
-            className={`board-group flex column ${isCollapsed ? 'collapsed' : ''} 
+            className={`board-group ${isCollapsed ? 'collapsed' : ''} 
                       ${isDragging ? 'dragging' : ''}`}
             onClick={handleGroupClick}
         >

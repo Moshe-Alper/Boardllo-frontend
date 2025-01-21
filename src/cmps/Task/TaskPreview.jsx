@@ -1,35 +1,20 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Popover from '@mui/material/Popover'
 import { svgService } from "../../services/svg.service"
 import { onToggleModal } from "../../store/actions/app.actions"
 import { TaskDetails } from "./TaskDetails"
 import { TaskQuickActions } from "./TaskQuickActions"
-import { loadBoard, updateTask } from '../../store/actions/board.actions'
-import { showErrorMsg, showSuccessMsg } from '../../services/event-bus.service'
 
 export function TaskPreview({ task, boardId, group, isDragging }) {
     const [anchorEl, setAnchorEl] = useState(null)
     const isPopoverOpen = Boolean(anchorEl)
-
-    const hasCover = task?.style?.coverColor ? true : false
+    const navigate = useNavigate()
 
     function onOpenTaskDetails(ev) {
         if (ev.target.closest('.edit-icon-container')) return
         if (ev.target.closest('.MuiPopover-root')) return
-
-        onToggleModal({
-            cmp: TaskDetails,
-            props: {
-                group,
-                task,
-                onClose: onCloseTaskDetails,
-                onCoverColorSelect: handleCoverColorSelect
-            }
-        })
-    }
-
-    function onCloseTaskDetails() {
-        onToggleModal()
+        navigate(`/board/${boardId}/${task.id}`)
     }
 
     function onOpenPopover(ev) {
@@ -37,36 +22,16 @@ export function TaskPreview({ task, boardId, group, isDragging }) {
         setAnchorEl(ev.currentTarget)
     }
 
-    function onClosePopover() {  
+    function onClosePopover() {
         setAnchorEl(null)
-    }
-
-    async function handleCoverColorSelect(color) {
-        const updatedTask = {
-            ...task,
-            style: {
-                ...task.style,
-                coverColor: color
-            }
-        }
-
-        try {
-            await updateTask(boardId, group.id, updatedTask)
-            loadBoard(boardId)
-            showSuccessMsg('Task cover color updated')
-        } catch (err) {
-            console.log('Failed to update task cover color:', err)
-            showErrorMsg('Failed to update task cover color')
-        }
     }
 
     if (!task) return <div>Loading...</div>
 
     return (
         <article
-            className={`task-preview flex column ${isDragging ? 'dragging' : ''} ${hasCover ? 'has-cover' : ''}`}
+            className={`task-preview flex column ${isDragging ? 'dragging' : ''}`}
             style={{
-                '--cover-color': hasCover ? task.style.coverColor : 'transparent',
                 opacity: isDragging ? 0.5 : 1,
                 transform: isDragging ? 'scale(1.02)' : 'scale(1)',
                 transition: 'all 0.2s ease'
@@ -97,7 +62,6 @@ export function TaskPreview({ task, boardId, group, isDragging }) {
                 <TaskQuickActions
                     task={task}
                     onClose={onClosePopover}
-                    onCoverColorSelect={handleCoverColorSelect}
                 />
             </Popover>
         </article>

@@ -1,12 +1,11 @@
 .main-container {
     display: grid;
+    height: 100vh;
     grid-template-columns: 1fr;
-    
-    min-height: 100vh;
+    grid-template-rows: auto 1fr;
     overflow-x: hidden;
     >* {
         grid-column: 1;
-
         &.full {
             width: 1 / -1;
         }
@@ -38,6 +37,5 @@
     grid-gap: $spacing-sm;
     grid-template-columns: 1fr;
     padding: $spacing-sm;
-    overflow-y: auto;
-    max-height: calc(100vh - $navbar-height - 80px);
+    overflow-y: hidden;
 }
