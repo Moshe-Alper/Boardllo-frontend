@@ -5,12 +5,7 @@ import { useSelector } from 'react-redux'
 import { Layout, Plus, Users } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-import {
-  loadBoards,
-  updateBoard,
-  removeBoard,
-  loadBoardsToSidebar
-} from '../store/actions/board.actions.js'
+import { loadBoards, removeBoard, loadBoardsToSidebar } from '../store/actions/board.actions.js'
 
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import { boardService } from '../services/board'
@@ -47,16 +42,6 @@ export function BoardIndex() {
       showSuccessMsg('Board removed')
     } catch (err) {
       showErrorMsg('Cannot remove board')
-    }
-  }
-
-  async function onUpdateBoard(boardData) {
-    try {
-      const savedBoard = await updateBoard(boardData)
-      showSuccessMsg(`Board updated, new title: ${savedBoard.title}`)
-      setEditingBoard(null)
-    } catch (err) {
-      showErrorMsg('Cannot update board')
     }
   }
 
@@ -110,18 +95,10 @@ export function BoardIndex() {
           <h2>Recently viewed</h2>
           <div className='board-grid'>
             {workspaceBoards.slice(0, 4).map((board) => (
-              <Link
-                key={board._id}
-                to={`/board/${board._id}`}
-                className='board-tile'
-                style={{ backgroundColor: board.style || '#0052cc' }}
-              >
+              <Link key={board._id} to={`/board/${board._id}`} className='board-tile'>
                 <div className='board-tile-details'>
                   <h3>{board.title}</h3>
-                  <span className='workspace-label'>
-                    <span className='workspace-icon'>B</span>
-                    Boardllo Workspace
-                  </span>
+                  <span className='workspace-label'>Boardllo Workspace</span>
                 </div>
               </Link>
             ))}
@@ -138,20 +115,31 @@ export function BoardIndex() {
           </div>
 
           <div className='board-grid'>
-            {workspaceBoards.map((board) => (
-              <div key={board._id}>
-                <Link to={`/board/${board._id}`} className='board-tile'>
+            {workspaceBoards.slice(0, 4).map((board) => (
+              <>
+                <Link key={board._id} to={`/board/${board._id}`} className='board-tile'>
                   <div className='board-tile-details'>
                     <h3>{board.title}</h3>
+                    <span className='workspace-label'>Boardllo Workspace</span>
                   </div>
                 </Link>
+
                 <section className='workspace-crud'>
-                  <button onClick={() => onRemoveBoard(board._id)}>Remove</button>
-                  <button ref={editButtonRef} onClick={() => setEditingBoard(board)}>
+                  <button
+                    style={{ backgroundColor: '#000' }}
+                    onClick={() => onRemoveBoard(board._id)}
+                  >
+                    Remove
+                  </button>
+                  <button
+                    style={{ backgroundColor: '#888' }}
+                    ref={editButtonRef}
+                    onClick={() => setEditingBoard(board)}
+                  >
                     Edit
                   </button>
                 </section>
-              </div>
+              </>
             ))}
             <button
               ref={createButtonRef}

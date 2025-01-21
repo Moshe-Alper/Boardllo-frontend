@@ -10,10 +10,7 @@ function getEmptyBoard() {
     isStarred: false,
     archivedAt: null,
     groups: [],
-    msgs: [],
-    style: {
-      backgroundColor: ''
-    }
+    msgs: []
   }
 }
 

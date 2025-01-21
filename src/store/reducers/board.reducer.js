@@ -68,17 +68,6 @@ export function boardReducer(state = initialState, action) {
       boards = state.boards.map((board) => (board._id === action.board._id ? action.board : board))
       newState = { ...state, boards }
       break
-    case SET_BOARD_BACKGROUND:
-      return {
-        ...state,
-        currentBackground: action.background,
-        board: state.board
-          ? {
-              ...state.board,
-              style: action.background
-            }
-          : null
-      }
 
     // Group reducers
     case ADD_GROUP:

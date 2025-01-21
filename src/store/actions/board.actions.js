@@ -87,19 +87,6 @@ export async function removeBoard(boardId) {
   }
 }
 
-export function setBoardBackground(background) {
-  store.dispatch({ type: SET_BOARD_BACKGROUND, background })
-
-  // If you want to persist the change to your backend
-  if (store.getState().boardModule.board) {
-    const updatedBoard = {
-      ...store.getState().boardModule.board,
-      style: background
-    }
-    return updateBoard(updatedBoard)
-  }
-}
-
 export async function loadBoardsToSidebar() {
   try {
     const boards = await boardService.query()
