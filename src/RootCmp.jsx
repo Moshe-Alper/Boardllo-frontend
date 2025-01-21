@@ -26,7 +26,7 @@ export function RootCmp() {
       <DynamicPicker />
       
 
-      <main style={{ height: '100%', overflowY: 'auto' }}>
+      <main>
         <Routes>
           <Route path='' element={<HomePage />} />
           <Route path='board' element={<BoardIndex />} />

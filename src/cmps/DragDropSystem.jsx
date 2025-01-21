@@ -9,6 +9,7 @@ export function GroupDragDropContainer({ items = [], onDragEnd, children }) {
                         className="board-content"
                         ref={provided.innerRef} 
                         {...provided.droppableProps}
+                        
                     >
                         {items.map((item, index) => (
                             <Draggable 
@@ -21,6 +22,7 @@ export function GroupDragDropContainer({ items = [], onDragEnd, children }) {
                                         ref={provided.innerRef}
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
+                                        
                                     >
                                         {children(item, index, snapshot.isDragging)}
                                     </div>

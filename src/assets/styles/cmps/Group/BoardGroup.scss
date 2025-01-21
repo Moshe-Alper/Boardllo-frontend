@@ -29,14 +29,11 @@
     }
 
     .tasks-container {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
+        display: grid;
+        gap: $spacing-sm;
         padding-block: rem(6px) 0.125rem;
         overflow-y: auto;
-        
-        // Remove fixed heights, let grid handle the sizing
-        min-height: 0; // Important for scroll to work in grid
+
     }
 
     .board-group-footer {
