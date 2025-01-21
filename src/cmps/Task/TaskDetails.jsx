@@ -168,10 +168,44 @@ export function TaskDetails() {
                 </header>
 
                 <main className="task-content">
-                    <section className="notifications">
-                        <img src={svgService.watchIcon} alt="Watch" />
-                        <h3>Notifications</h3>
-                        <button className="watch-btn">Watch</button>
+
+
+                    <section className="task-metadata">
+
+                        <div className="metadata-container members">
+                            <h3>Members</h3>
+                            <div className="members-list">
+                                <div className="member" title="John Doe">JD</div>
+                                <div className="member" title="Sarah Smith">SS</div>
+                                <button className="add-member">+</button>
+                            </div>
+                        </div>
+
+                        <div className="metadata-container labels">
+                            <h3>Labels</h3>
+                            <div className="labels-list">
+                                <span className="label" style={{ backgroundColor: '#61bd4f' }}>Important</span>
+                                <span className="label" style={{ backgroundColor: '#ff9f1a' }}>Urgent</span>
+                                <button className="add-label">+</button>
+                            </div>
+                        </div>
+
+                        <div className="metadata-container notification">
+                        <h3>Notification</h3>
+
+                            <button className="watch-btn">
+                            <img src={svgService.watchIcon} alt="Watch" />
+                                <span>Watch</span>
+                            </button>
+                        </div>
+
+                        <div className="metadata-container due-date">
+                            <h3>Due Date</h3>
+                            <div className="date-info">
+                                <input type="checkbox" className="due-date-checkbox" />
+                                <span>Jan 25 at 12:00 PM</span>
+                            </div>
+                        </div>
                     </section>
 
                     <section className="description">
@@ -198,6 +232,7 @@ export function TaskDetails() {
                         <img src={svgService.activityIcon} alt="Activity" />
                         <h3>Activity</h3>
                         <button className="show-details">Show details</button>
+                        
                         <div className="activity-item">
                             <div className="user-avatar"></div>
                             <p><span>User</span> added this card to {currGroup.title}</p>

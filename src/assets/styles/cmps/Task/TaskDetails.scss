@@ -34,7 +34,7 @@
     header.task-header {
         display: grid;
         grid-template-columns: rem(40px) minmax(0, 1fr); //icon , body
-        margin-block-end: rem(24px);
+        margin-block-end: rem(16px);
         margin-block-start: rem(2px);
         grid-column: -1 / 1;
 
@@ -43,16 +43,19 @@
             justify-self: end;
             align-self: center;
             opacity: 0.7;
+            width: rem(24px);
+            height: rem(24px);
         }
 
         .task-title {
-            padding: $spacing-md $spacing-lg;
+            max-width: rem(660px);
+            padding: $spacing-sm $spacing-lg;
+            padding-inline-start: rem(10px);
             margin: 0;
             color: $text-primary;
             font-family: $heading-font;
             font-size: rem(20px);
             grid-column: 2;
-            max-width: 660px;
 
             span {
                 word-wrap: break-word;
@@ -65,45 +68,50 @@
                 width: 100%;
                 border: 2px solid $button-primary-bg;
                 border-radius: $border-radius-medium;
-                padding: $spacing-xs;
+                color: $text-primary;
                 font-size: rem(20px);
+                font-weight: 600;
                 font-family: $heading-font;
-                resize: none;            // Prevents manual resizing
-                overflow: hidden;        // Hides scrollbar
-                min-height: rem(24px);  // Set minimum height
+                resize: none;            
+                overflow: hidden;        
+                min-height: rem(24px);  
                 display: block;
             }
         }
         
 
         .task-list {
-            padding: 0 $spacing-lg $spacing-md;
+            padding-inline-start: rem(10px);
             color: $text-secondary;
             font-size: rem(14px);
             grid-column: 2;
+            
 
             .list-name {
-                text-decoration: underline;
                 cursor: pointer;
+                background-color: $details-btn-txt-hover;
+                padding-inline: rem(4px);
+                border-radius: $border-radius-small;
 
                 &:hover {
-                    color: $text-primary;
+                    background-color: $details-new-list-background-hover;
                 }
             }
         }
 
         .close-btn {
             position: absolute;
-            top: $spacing-md;
-            right: $spacing-md;
+            top: $spacing-sm;
+            right: $spacing-sm;
             padding: $spacing-xs;
-            border-radius: $border-radius-medium;
+            border-radius: 50%;
             background: transparent;
             border: none;
             cursor: pointer;
+            opacity: 0.7;
 
             &:hover {
-                background-color: $background-light-hover;
+                background-color: $details-new-list-background-hover;
             }
         }
     }
@@ -111,10 +119,10 @@
 }
 
 .task-content {
-    padding: $spacing-md $spacing-lg;
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-lg;
+    padding: 0 $spacing-lg;
+    display: grid;
+    grid-auto-flow: row;
+    gap: $spacing-sm;
     grid-column: 1;
     grid-row: 2;
 
@@ -122,15 +130,151 @@
         h3 {
             font-size: rem(16px);
             font-weight: 600;
-            margin-bottom: $spacing-sm;
             color: $text-primary;
         }
     }
 
+    .task-metadata {
+        display: flex;
+        flex-wrap: wrap;
+
+        gap: $spacing-sm;
+        margin-inline-start: rem(40px);
+
+        .metadata-container {
+            border-radius: $border-radius-medium;
+
+            h3 {
+                font-size: rem(12px);
+                font-weight: 600;
+                color: $text-secondary;
+                margin-bottom: $spacing-xs;
+            }
+
+            
+            .members-list {
+                display: grid;
+                grid-auto-flow: column;
+                gap: rem(2px);
+                align-items: center;
+                
+                .member {
+                    width: rem(32px);
+                    height: rem(32px);
+                    border-radius: 50%;
+                    background-color: $button-primary-bg;
+                    color: white;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: rem(14px);
+                    font-weight: 500;
+                }
+                
+                .add-member {
+                    width: rem(32px);
+                    height: rem(32px);
+                    border-radius: 50%;
+                    border: none;
+                    background-color: $button-secondary-hover-bg;
+                    color: $text-primary;
+                    cursor: pointer;
+                    font-size: rem(16px);
+                    
+                    &:hover {
+                        background-color: $details-new-list-background-hover;
+                    }
+                }
+            }
+            
+            .labels-list {
+                display: grid;
+                grid-auto-flow: column;
+                gap: $spacing-xs;
+                flex-direction: row;
+                
+                .label {
+                    padding: $spacing-xs $spacing-sm;
+                    border-radius: $border-radius-small;
+                    color: white;
+                    font-size: rem(12px);
+                    font-weight: 500;
+                }
+                
+                .add-label {
+                    padding: $spacing-xs $spacing-sm;
+                    border: none;
+                    border-radius: $border-radius-small;
+                    background-color: $button-secondary-hover-bg;
+                    color: $text-primary;
+                    cursor: pointer;
+                    font-size: rem(14px);
+                    
+                    &:hover {
+                        background-color: $details-new-list-background-hover;
+                    }
+                }
+            }
+            
+            &.notification {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                .watch-btn {
+                    display: flex;
+                    align-items: center;
+                    gap: $spacing-xs;
+                    padding: $spacing-sm $spacing-sm;
+                    border: none;
+                    border-radius: $border-radius-small;
+                    background-color: $button-secondary-hover-bg;
+                    color: $text-primary;
+                    cursor: pointer;
+                    font-size: rem(14px);
+
+                    img {
+                        width: rem(16px);
+                        height: rem(16px);
+                    }
+
+                    &:hover {
+                        background-color: $button-secondary-hover-bg;
+                    }
+                }
+            }
+
+            .date-info {
+                display: flex;
+                align-items: center;
+                gap: $spacing-sm;
+                padding: $spacing-xs;
+                background-color: $button-secondary-bg;
+                border-radius: $border-radius-medium;
+                font-size: rem(14px);
+                color: $text-primary;
+
+                img {
+                    width: rem(16px);
+                    height: rem(16px);
+                }
+            }
+        }
+    }
+
     .description {
+        display: grid;
+        grid-template-columns: rem(40px) minmax(0, 1fr); //icon , body'
+        height: fit-content;
+
+
+        img {
+            grid-column: 1;
+        }
 
         textarea,
         div {
+            grid-column: 2;
             width: 100%;
             min-height: rem(108px);
             padding: $spacing-sm;
@@ -151,7 +295,16 @@
     }
 
     .activity {
+        display: grid;
+        grid-template-columns: rem(40px) minmax(0, 1fr); //icon , body'
+        height: fit-content;
+
+        img {
+            grid-column: 1;
+        }
+
         .activity-item {
+            grid-column: 2;
             display: flex;
             align-items: flex-start;
             gap: $spacing-sm;
@@ -183,33 +336,36 @@
 
     h3 {
         font-size: rem(12px);
-        text-transform: uppercase;
         color: $text-secondary;
         margin: $spacing-md 0 $spacing-xs;
     }
 
     .add-to-card,
     .actions {
-        display: flex;
+        display: grid;
         flex-direction: column;
         gap: $spacing-xs;
 
         button {
-            display: flex;
+            display: grid;
+            grid-template-columns: rem(24px) 1fr;
+            justify-content: center;
             align-items: center;
             gap: $spacing-xs;
             padding: $spacing-xs;
             border: none;
             border-radius: $border-radius-medium;
-            background-color: $button-secondary-bg;
+            background-color: $button-secondary-hover-bg;
             color: $text-primary;
             cursor: pointer;
             font-size: rem(14px);
             width: 100%;
             text-align: left;
+            padding: 6px 12px;
 
+            
             &:hover {
-                background-color: $button-secondary-hover-bg;
+                background-color: $details-new-list-background-hover;
             }
 
             img {
