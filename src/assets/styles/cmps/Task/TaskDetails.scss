@@ -1,26 +1,221 @@
 .task-details-overlay {
     position: fixed;
     inset: 0;
+    z-index: 9999;
     background-color: $modal-background;
+    display: flex;
     justify-content: center;
     align-items: flex-start;
-    z-index: 9999;
     overflow-y: auto;
-    scroll-behavior: hidden;
     padding: $spacing-md;
-
 }
 
 .task-details {
-    display: grid;
-    margin: $navbar-height auto;
-    inline-size: 48rem;
-    min-block-size: calc(100vh - #{2 * $spacing-xl});
-    max-block-size: none;
+    position: relative;
+    margin: rem(32px) auto;
+    width: rem(768px);
     background-color: $background-light;
-    border-radius: rem(12px);
+    border-radius: $border-radius;
     box-shadow: $shadow-large;
-    border: none;
-    padding: 0;
-    z-index: 10000;
+    display: grid;
+    grid-template-columns: minmax(rem(552px), 1fr) rem(216px); // Main content + sidebar
+    min-height: rem(600px);
+
+
+    &.has-cover {
+        .cover {
+            width: 100%;
+            height: rem(116px);
+            border-top-left-radius: $border-radius;
+            border-top-right-radius: $border-radius;
+        }
+    }
+
+    header.task-header {
+        display: grid;
+        grid-template-columns: rem(40px) minmax(0, 1fr); //icon , body
+        margin-block-end: rem(24px);
+        margin-block-start: rem(2px);
+        grid-column: -1 / 1;
+
+        .card-icon {
+            grid-column: 1;
+            justify-self: end;
+            align-self: center;
+            opacity: 0.7;
+        }
+
+        .task-title {
+            padding: $spacing-md $spacing-lg;
+            margin: 0;
+            color: $text-primary;
+            font-family: $heading-font;
+            font-size: rem(20px);
+            grid-column: 2;
+            max-width: 660px;
+
+            span {
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                white-space: normal;
+                display: block;
+            }
+
+            textarea {
+                width: 100%;
+                border: 2px solid $button-primary-bg;
+                border-radius: $border-radius-medium;
+                padding: $spacing-xs;
+                font-size: rem(20px);
+                font-family: $heading-font;
+                resize: none;            // Prevents manual resizing
+                overflow: hidden;        // Hides scrollbar
+                min-height: rem(24px);  // Set minimum height
+                display: block;
+            }
+        }
+        
+
+        .task-list {
+            padding: 0 $spacing-lg $spacing-md;
+            color: $text-secondary;
+            font-size: rem(14px);
+            grid-column: 2;
+
+            .list-name {
+                text-decoration: underline;
+                cursor: pointer;
+
+                &:hover {
+                    color: $text-primary;
+                }
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: $spacing-md;
+            right: $spacing-md;
+            padding: $spacing-xs;
+            border-radius: $border-radius-medium;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+
+            &:hover {
+                background-color: $background-light-hover;
+            }
+        }
+    }
+
+}
+
+.task-content {
+    padding: $spacing-md $spacing-lg;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+    grid-column: 1;
+    grid-row: 2;
+
+    section {
+        h3 {
+            font-size: rem(16px);
+            font-weight: 600;
+            margin-bottom: $spacing-sm;
+            color: $text-primary;
+        }
+    }
+
+    .description {
+
+        textarea,
+        div {
+            width: 100%;
+            min-height: rem(108px);
+            padding: $spacing-sm;
+            border: 1px solid $border-gray;
+            border-radius: $border-radius-medium;
+            font-family: $body-font;
+
+            &.empty {
+                color: $text-secondary;
+                background-color: $background-light-hover;
+                cursor: pointer;
+            }
+        }
+
+        textarea {
+            resize: vertical;
+        }
+    }
+
+    .activity {
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            gap: $spacing-sm;
+            margin-top: $spacing-sm;
+
+            .user-avatar {
+                width: $avatar-size;
+                height: $avatar-size;
+                border-radius: 50%;
+                background-color: $border-gray;
+            }
+
+            time {
+                color: $text-secondary;
+                font-size: rem(12px);
+            }
+        }
+    }
+}
+
+.task-sidebar {
+    padding: $spacing-lg;
+    border-left: 1px solid $border-light-gray;
+    background-color: $background-light;
+    border-top-right-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+    grid-column: 2;
+    grid-row: 2;
+
+    h3 {
+        font-size: rem(12px);
+        text-transform: uppercase;
+        color: $text-secondary;
+        margin: $spacing-md 0 $spacing-xs;
+    }
+
+    .add-to-card,
+    .actions {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-xs;
+
+        button {
+            display: flex;
+            align-items: center;
+            gap: $spacing-xs;
+            padding: $spacing-xs;
+            border: none;
+            border-radius: $border-radius-medium;
+            background-color: $button-secondary-bg;
+            color: $text-primary;
+            cursor: pointer;
+            font-size: rem(14px);
+            width: 100%;
+            text-align: left;
+
+            &:hover {
+                background-color: $button-secondary-hover-bg;
+            }
+
+            img {
+                width: rem(16px);
+                height: rem(16px);
+            }
+        }
+    }
 }

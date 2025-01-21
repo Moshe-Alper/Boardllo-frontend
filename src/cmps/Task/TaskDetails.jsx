@@ -35,11 +35,11 @@ export function TaskDetails() {
     const navigate = useNavigate()
     const { boardId, taskId } = useParams() // Get IDs from URL
     const board = useSelector(storeState => storeState.boardModule.board)
-    
+
     // Find the task and its group
     const [currGroup, task] = React.useMemo(() => {
         if (!board?.groups) return [null, null]
-        
+
         for (const group of board.groups) {
             const foundTask = group.tasks?.find(t => t.id === taskId)
             if (foundTask) {
@@ -132,24 +132,30 @@ export function TaskDetails() {
         })
     }
 
-    
-        if (!task) return <div>Loading...</div>
-    
-        return (
-            <div className="task-details-overlay" onClick={handleOverlayClick}>
-                <article className={`task-details ${hasCover ? 'has-cover' : ''}`}>
-                    {hasCover && <div className="cover" style={{backgroundColor: task.style.coverColor}} />}
-                    
+    if (!task) return <div>Loading...</div>
+
+    return (
+        <div className="task-details-overlay" onClick={handleOverlayClick}>
+            <article className={`task-details ${hasCover ? 'has-cover' : ''}`}>
+                {hasCover && <div className="cover" style={{ backgroundColor: task.style.coverColor }} />}
+
+                <header className="task-header">
                     <img src={svgService.cardIcon} alt="Card Icon" className="card-icon" />
+
                     <h2 className="task-title">
                         {isEditingTitle ? (
-                            <input
-                                type="text"
+                            <textarea
                                 value={editedTitle}
-                                onChange={(ev) => setEditedTitle(ev.target.value)}
+                                onChange={(ev) => {
+                                    const textarea = ev.target
+                                    textarea.style.height = 'auto'
+                                    textarea.style.height = `${textarea.scrollHeight}px`
+                                    setEditedTitle(ev.target.value)
+                                }}
                                 onBlur={handleTitleSubmit}
                                 onKeyDown={handleTitleKeyPress}
                                 autoFocus
+                                rows={1}
                             />
                         ) : (
                             <span onClick={() => setIsEditingTitle(true)}>{task.title}</span>
@@ -159,70 +165,71 @@ export function TaskDetails() {
                     <button className="close-btn" onClick={() => navigate(`/board/${boardId}`)}>
                         <img src={svgService.closeIcon} alt="Close" />
                     </button>
-    
-                    <main className="task-content">
-                        <section className="notifications">
-                            <img src={svgService.watchIcon} alt="Watch" />
-                            <h3>Notifications</h3>
-                            <button className="watch-btn">Watch</button>
-                        </section>
-    
-                        <section className="description">
-                            <img src={svgService.descriptionIcon} alt="Description" />
-                            <h3>Description</h3>
-                            {isEditingDescription ? (
-                                <textarea
-                                    value={editedDescription}
-                                    onChange={(ev) => setEditedDescription(ev.target.value)}
-                                    placeholder="Add a more detailed description..."
-                                    autoFocus
-                                />
-                            ) : (
-                                <div 
-                                    onClick={() => setIsEditingDescription(true)}
-                                    className={!task.description ? 'empty' : ''}
-                                >
-                                    {task.description || 'Add a more detailed description...'}
-                                </div>
-                            )}
-                        </section>
-    
-                        <section className="activity">
-                            <img src={svgService.activityIcon} alt="Activity" />
-                            <h3>Activity</h3>
-                            <button className="show-details">Show details</button>
-                            <div className="activity-item">
-                                <div className="user-avatar"></div>
-                                <p><span>User</span> added this card to {currGroup.title}</p>
-                                <time>8 Jan 2025, 15:01</time>
+                </header>
+
+                <main className="task-content">
+                    <section className="notifications">
+                        <img src={svgService.watchIcon} alt="Watch" />
+                        <h3>Notifications</h3>
+                        <button className="watch-btn">Watch</button>
+                    </section>
+
+                    <section className="description">
+                        <img src={svgService.descriptionIcon} alt="Description" />
+                        <h3>Description</h3>
+                        {isEditingDescription ? (
+                            <textarea
+                                value={editedDescription}
+                                onChange={(ev) => setEditedDescription(ev.target.value)}
+                                placeholder="Add a more detailed description..."
+                                autoFocus
+                            />
+                        ) : (
+                            <div
+                                onClick={() => setIsEditingDescription(true)}
+                                className={!task.description ? 'empty' : ''}
+                            >
+                                {task.description || 'Add a more detailed description...'}
                             </div>
-                        </section>
-                    </main>
-    
-                    <aside className="task-sidebar">
-                        <div className="add-to-card">
-                            {PICKERS.map(({ icon, label, picker }) => (
-                                <button
-                                    key={label}
-                                    onClick={(ev) => handlePickerToggle(picker, label, ev)}
-                                >
-                                    <img src={svgService[icon]} alt={label} />
-                                    {label}
-                                </button>
-                            ))}
+                        )}
+                    </section>
+
+                    <section className="activity">
+                        <img src={svgService.activityIcon} alt="Activity" />
+                        <h3>Activity</h3>
+                        <button className="show-details">Show details</button>
+                        <div className="activity-item">
+                            <div className="user-avatar"></div>
+                            <p><span>User</span> added this card to {currGroup.title}</p>
+                            <time>8 Jan 2025, 15:01</time>
                         </div>
-    
-                        <div className="actions">
-                            <h3>Actions</h3>
-                            {ACTION_BUTTONS.map(({ icon, label }) => (
-                                <button key={label}>
-                                    <img src={svgService[icon]} alt={label} />
-                                    {label}
-                                </button>
-                            ))}
-                        </div>
-                    </aside>
-                </article>
-            </div>
-        )
-    }
+                    </section>
+                </main>
+
+                <aside className="task-sidebar">
+                    <div className="add-to-card">
+                        {PICKERS.map(({ icon, label, picker }) => (
+                            <button
+                                key={label}
+                                onClick={(ev) => handlePickerToggle(picker, label, ev)}
+                            >
+                                <img src={svgService[icon]} alt={label} />
+                                {label}
+                            </button>
+                        ))}
+                    </div>
+
+                    <div className="actions">
+                        <h3>Actions</h3>
+                        {ACTION_BUTTONS.map(({ icon, label }) => (
+                            <button key={label}>
+                                <img src={svgService[icon]} alt={label} />
+                                {label}
+                            </button>
+                        ))}
+                    </div>
+                </aside>
+            </article>
+        </div>
+    )
+}
