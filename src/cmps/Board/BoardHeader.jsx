@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { svgService } from '../../services/svg.service'
 import { showErrorMsg, showSuccessMsg } from '../../services/event-bus.service'
 import { loadBoard, updateBoard } from '../../store/actions/board.actions'
