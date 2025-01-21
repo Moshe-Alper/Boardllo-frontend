@@ -35,6 +35,7 @@ export function BoardIndex() {
   function onSetFilterBy(filterBy) {
     setFilterBy((prevFilterBy) => ({ ...prevFilterBy, ...filterBy }))
   }
+  console.log(workspaceBoards)
 
   async function onRemoveBoard(boardId) {
     try {
