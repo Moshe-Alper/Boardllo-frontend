@@ -4,9 +4,13 @@ import { useSelector } from 'react-redux'
 import { svgService } from '../services/svg.service.js'
 import UserMenuDropdown from '../cmps/UserMenuDropdown.jsx'
 import { Layout } from 'lucide-react'
+import { useRef, useState } from 'react'
+import { BoardCreateModal } from './Board/BoardCreateModal.jsx'
 
 export function AppHeader() {
   const user = useSelector((storeState) => storeState.userModule.user)
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const createButtonRef = useRef(null)
   const navigate = useNavigate()
 
   const handleNavigate = (path) => {
@@ -23,9 +27,24 @@ export function AppHeader() {
               <span className='logo-text'>Boardllo</span>
             </NavLink>
 
-            <NavLink className='create-btn' to='/board'>
+            <button
+              ref={createButtonRef}
+              className='create-btn'
+              onClick={() => setIsCreateModalOpen(!isCreateModalOpen)}
+            >
               Create
-            </NavLink>
+            </button>
+
+            {isCreateModalOpen && (
+              <BoardCreateModal
+                isOpen={isCreateModalOpen}
+                onClose={() => setIsCreateModalOpen(false)}
+                position={{
+                  top: createButtonRef.current?.getBoundingClientRect().bottom + 4,
+                  left: createButtonRef.current?.getBoundingClientRect().left
+                }}
+              />
+            )}
 
             {user?.isAdmin && (
               <NavLink className='admin-link' to='/admin'>

@@ -20,7 +20,7 @@ export function RootCmp() {
     <div className='main-container'>
       <AppHeader />
       <UserMsg />
-      <DynamicModal/>
+      <DynamicModal />
 
       <main>
         <Routes>

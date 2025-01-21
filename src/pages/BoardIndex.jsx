@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react'
+/* eslint-disable react/prop-types */
+
+import { useState, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { Layout, Plus, Users } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 import {
   loadBoards,
-  addBoard,
   updateBoard,
   removeBoard,
   loadBoardsToSidebar
@@ -14,6 +15,7 @@ import {
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import { boardService } from '../services/board'
 import { Loader } from '../cmps/Loader.jsx'
+import { BoardCreateModal } from '../cmps/Board/BoardCreateModal.jsx'
 
 // import { BoardFilter } from '../cmps/Board/BoardFilter.jsx'
 // import { BoardList } from '../cmps/Board/BoardList.jsx'
@@ -23,6 +25,12 @@ export function BoardIndex() {
   const boards = useSelector((storeState) => storeState.boardModule.boards)
   const workspaceBoards = boards?.filter((board) => !board.isGuest) || []
   const guestBoards = boards?.filter((board) => board.isGuest) || []
+
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [editingBoard, setEditingBoard] = useState(null)
+
+  const createButtonRef = useRef(null)
+  const editButtonRef = useRef(null)
 
   useEffect(() => {
     loadBoards(filterBy)
@@ -42,30 +50,11 @@ export function BoardIndex() {
     }
   }
 
-  async function onAddBoard() {
-    const board = boardService.getEmptyBoard()
-    board.title = prompt('Board Title?')
-    if (!board.title) return
+  async function onUpdateBoard(boardData) {
     try {
-      const savedBoard = await addBoard(board)
-      showSuccessMsg(`Board added (id: ${savedBoard._id})`)
-    } catch (err) {
-      showErrorMsg('Cannot add board')
-    }
-  }
-
-  async function onUpdateBoard(board) {
-    const title = prompt('New title?', board.title)
-    if (!title) return
-
-    const updatedBoard = {
-      ...board,
-      title: title
-    }
-
-    try {
-      const savedBoard = await updateBoard(updatedBoard)
+      const savedBoard = await updateBoard(boardData)
       showSuccessMsg(`Board updated, new title: ${savedBoard.title}`)
+      setEditingBoard(null)
     } catch (err) {
       showErrorMsg('Cannot update board')
     }
@@ -121,10 +110,18 @@ export function BoardIndex() {
           <h2>Recently viewed</h2>
           <div className='board-grid'>
             {workspaceBoards.slice(0, 4).map((board) => (
-              <Link key={board._id} to={`/board/${board._id}`} className='board-tile'>
+              <Link
+                key={board._id}
+                to={`/board/${board._id}`}
+                className='board-tile'
+                style={{ backgroundColor: board.style || '#0052cc' }}
+              >
                 <div className='board-tile-details'>
                   <h3>{board.title}</h3>
-                  <span className='workspace-label'>Boardllo Workspace</span>
+                  <span className='workspace-label'>
+                    <span className='workspace-icon'>B</span>
+                    Boardllo Workspace
+                  </span>
                 </div>
               </Link>
             ))}
@@ -139,36 +136,58 @@ export function BoardIndex() {
               <h3>Boardllo Workspace</h3>
             </div>
           </div>
+
           <div className='board-grid'>
             {workspaceBoards.map((board) => (
-              <>
-                <Link key={board._id} to={`/board/${board._id}`} className='board-tile'>
+              <div key={board._id}>
+                <Link to={`/board/${board._id}`} className='board-tile'>
                   <div className='board-tile-details'>
                     <h3>{board.title}</h3>
                   </div>
                 </Link>
                 <section className='workspace-crud'>
-                  <button
-                    onClick={() => onRemoveBoard(board._id)}
-                    style={{ backgroundColor: '#505f79' }}
-                  >
-                    Remove
-                  </button>
-                  <button
-                    onClick={() => onUpdateBoard(board)}
-                    style={{ backgroundColor: '#0052cc' }}
-                  >
+                  <button onClick={() => onRemoveBoard(board._id)}>Remove</button>
+                  <button ref={editButtonRef} onClick={() => setEditingBoard(board)}>
                     Edit
                   </button>
                 </section>
-              </>
+              </div>
             ))}
-            <button onClick={onAddBoard} className='create-board-tile'>
+            <button
+              ref={createButtonRef}
+              onClick={() => setIsCreateModalOpen(true)}
+              className='create-board-tile'
+            >
               <Plus size={24} />
               <span>Create new board</span>
             </button>
           </div>
         </section>
+
+        {/* Create Modal */}
+        {isCreateModalOpen && (
+          <BoardCreateModal
+            isOpen={isCreateModalOpen}
+            onClose={() => setIsCreateModalOpen(false)}
+            position={{
+              top: createButtonRef.current?.getBoundingClientRect().bottom + 4,
+              left: createButtonRef.current?.getBoundingClientRect().left
+            }}
+          />
+        )}
+
+        {/* Edit Modal */}
+        {editingBoard && (
+          <BoardCreateModal
+            isOpen={!!editingBoard}
+            onClose={() => setEditingBoard(null)}
+            position={{
+              top: editButtonRef.current?.getBoundingClientRect().bottom + 4,
+              left: editButtonRef.current?.getBoundingClientRect().left
+            }}
+            board={editingBoard}
+          />
+        )}
 
         <section className='guest-workspaces'>
           <h2>GUEST WORKSPACES</h2>
@@ -187,11 +206,3 @@ export function BoardIndex() {
     </div>
   )
 }
-
-/*
- ;<main className='board-index'>
-   {userService.getLoggedinUser() && <button onClick={onAddBoard}>Add a Board</button>}
- </main>
- <BoardFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
-<BoardList boards={boards} onRemoveBoard={onRemoveBoard} onUpdateBoard={onUpdateBoard} /> 
-*/

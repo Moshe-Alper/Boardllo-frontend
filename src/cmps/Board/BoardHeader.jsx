@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+/* eslint-disable react/prop-types */
+
+import { useState } from 'react'
 import { svgService } from '../../services/svg.service'
 import { showErrorMsg, showSuccessMsg } from '../../services/event-bus.service'
 import { loadBoard, updateBoard } from '../../store/actions/board.actions'
+import { useSelector } from 'react-redux'
 
 export function BoardHeader({ board, onUpdateBoard }) {
   const [isEditingTitle, setIsEditingTitle] = useState(false)
@@ -52,7 +55,7 @@ export function BoardHeader({ board, onUpdateBoard }) {
   }
 
   return (
-    <section style={{ backgroundColor: '' }} className='board-header'>
+    <section className='board-header' style=''>
       <div className='board-header-left'>
         {isEditingTitle ? (
           <input
