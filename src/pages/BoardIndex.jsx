@@ -1,19 +1,16 @@
-import { useState, useEffect } from 'react'
+/* eslint-disable react/prop-types */
+
+import { useState, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { Layout, Plus, Users } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-import {
-  loadBoards,
-  addBoard,
-  updateBoard,
-  removeBoard,
-  loadBoardsToSidebar
-} from '../store/actions/board.actions.js'
+import { loadBoards, removeBoard, loadBoardsToSidebar } from '../store/actions/board.actions.js'
 
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import { boardService } from '../services/board'
 import { Loader } from '../cmps/Loader.jsx'
+import { BoardCreateModal } from '../cmps/Board/BoardCreateModal.jsx'
 
 // import { BoardFilter } from '../cmps/Board/BoardFilter.jsx'
 // import { BoardList } from '../cmps/Board/BoardList.jsx'
@@ -23,6 +20,12 @@ export function BoardIndex() {
   const boards = useSelector((storeState) => storeState.boardModule.boards)
   const workspaceBoards = boards?.filter((board) => !board.isGuest) || []
   const guestBoards = boards?.filter((board) => board.isGuest) || []
+
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [editingBoard, setEditingBoard] = useState(null)
+
+  const createButtonRef = useRef(null)
+  const editButtonRef = useRef(null)
 
   useEffect(() => {
     loadBoards(filterBy)
@@ -39,35 +42,6 @@ export function BoardIndex() {
       showSuccessMsg('Board removed')
     } catch (err) {
       showErrorMsg('Cannot remove board')
-    }
-  }
-
-  async function onAddBoard() {
-    const board = boardService.getEmptyBoard()
-    board.title = prompt('Board Title?')
-    if (!board.title) return
-    try {
-      const savedBoard = await addBoard(board)
-      showSuccessMsg(`Board added (id: ${savedBoard._id})`)
-    } catch (err) {
-      showErrorMsg('Cannot add board')
-    }
-  }
-
-  async function onUpdateBoard(board) {
-    const title = prompt('New title?', board.title)
-    if (!title) return
-
-    const updatedBoard = {
-      ...board,
-      title: title
-    }
-
-    try {
-      const savedBoard = await updateBoard(updatedBoard)
-      showSuccessMsg(`Board updated, new title: ${savedBoard.title}`)
-    } catch (err) {
-      showErrorMsg('Cannot update board')
     }
   }
 
@@ -124,7 +98,7 @@ export function BoardIndex() {
               <Link key={board._id} to={`/board/${board._id}`} className='board-tile'>
                 <div className='board-tile-details'>
                   <h3>{board.title}</h3>
-                  <span className='workspace-label'>Trello Workspace</span>
+                  <span className='workspace-label'>Boardllo Workspace</span>
                 </div>
               </Link>
             ))}
@@ -139,31 +113,69 @@ export function BoardIndex() {
               <h3>Boardllo Workspace</h3>
             </div>
           </div>
+
           <div className='board-grid'>
-            {workspaceBoards.map((board) => (
-              <div key={board._id} className="board-wrapper flex column">
-                <Link to={`/board/${board._id}`} className='board-tile'>
+            {workspaceBoards.slice(0, 4).map((board) => (
+              <>
+                <Link key={board._id} to={`/board/${board._id}`} className='board-tile'>
                   <div className='board-tile-details'>
                     <h3>{board.title}</h3>
+                    <span className='workspace-label'>Boardllo Workspace</span>
                   </div>
                 </Link>
+
                 <section className='workspace-crud'>
-                  <button onClick={() => onRemoveBoard(board._id)}>Remove</button>
                   <button
-                    onClick={() => onUpdateBoard(board)}
-                    style={{ backgroundColor: '#0052cc' }}
+                    style={{ backgroundColor: '#000' }}
+                    onClick={() => onRemoveBoard(board._id)}
+                  >
+                    Remove
+                  </button>
+                  <button
+                    style={{ backgroundColor: '#888' }}
+                    ref={editButtonRef}
+                    onClick={() => setEditingBoard(board)}
                   >
                     Edit
                   </button>
                 </section>
-              </div>
+              </>
             ))}
-            <button onClick={onAddBoard} className='create-board-tile'>
+            <button
+              ref={createButtonRef}
+              onClick={() => setIsCreateModalOpen(true)}
+              className='create-board-tile'
+            >
               <Plus size={24} />
               <span>Create new board</span>
             </button>
           </div>
         </section>
+
+        {/* Create Modal */}
+        {isCreateModalOpen && (
+          <BoardCreateModal
+            isOpen={isCreateModalOpen}
+            onClose={() => setIsCreateModalOpen(false)}
+            position={{
+              top: createButtonRef.current?.getBoundingClientRect().bottom + 4,
+              left: createButtonRef.current?.getBoundingClientRect().left
+            }}
+          />
+        )}
+
+        {/* Edit Modal */}
+        {editingBoard && (
+          <BoardCreateModal
+            isOpen={!!editingBoard}
+            onClose={() => setEditingBoard(null)}
+            position={{
+              top: editButtonRef.current?.getBoundingClientRect().bottom + 4,
+              left: editButtonRef.current?.getBoundingClientRect().left
+            }}
+            board={editingBoard}
+          />
+        )}
 
         <section className='guest-workspaces'>
           <h2>GUEST WORKSPACES</h2>
@@ -182,11 +194,3 @@ export function BoardIndex() {
     </div>
   )
 }
-
-/*
- ;<main className='board-index'>
-   {userService.getLoggedinUser() && <button onClick={onAddBoard}>Add a Board</button>}
- </main>
- <BoardFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
-<BoardList boards={boards} onRemoveBoard={onRemoveBoard} onUpdateBoard={onUpdateBoard} /> 
-*/

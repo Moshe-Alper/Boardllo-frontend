@@ -16,7 +16,7 @@ export const boardService = {
   saveTask,
   removeTask,
 
-  addBoardMsg,
+  addBoardMsg
 }
 
 window.cs = boardService
