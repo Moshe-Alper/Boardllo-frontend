@@ -169,7 +169,6 @@ export function TaskDetails() {
 
                 <main className="task-content">
 
-
                     <section className="task-metadata">
 
                         <div className="metadata-container members">
@@ -192,7 +191,6 @@ export function TaskDetails() {
 
                         <div className="metadata-container notification">
                         <h3>Notification</h3>
-
                             <button className="watch-btn">
                             <img src={svgService.watchIcon} alt="Watch" />
                                 <span>Watch</span>
@@ -210,7 +208,10 @@ export function TaskDetails() {
 
                     <section className="description">
                         <img src={svgService.descriptionIcon} alt="Description" />
+                        <header className="description-header">
                         <h3>Description</h3>
+                        <button>Edit</button>
+                        </header>
                         {isEditingDescription ? (
                             <textarea
                                 value={editedDescription}
@@ -230,8 +231,10 @@ export function TaskDetails() {
 
                     <section className="activity">
                         <img src={svgService.activityIcon} alt="Activity" />
+                        <header className="activity-header">
                         <h3>Activity</h3>
-                        <button className="show-details">Show details</button>
+                        <button>Show details</button>
+                        </header>
                         
                         <div className="activity-item">
                             <div className="user-avatar"></div>

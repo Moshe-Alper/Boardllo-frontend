@@ -72,20 +72,20 @@
                 font-size: rem(20px);
                 font-weight: 600;
                 font-family: $heading-font;
-                resize: none;            
-                overflow: hidden;        
-                min-height: rem(24px);  
+                resize: none;
+                overflow: hidden;
+                min-height: rem(24px);
                 display: block;
             }
         }
-        
+
 
         .task-list {
             padding-inline-start: rem(10px);
             color: $text-secondary;
             font-size: rem(14px);
             grid-column: 2;
-            
+
 
             .list-name {
                 cursor: pointer;
@@ -151,13 +151,13 @@
                 margin-bottom: $spacing-xs;
             }
 
-            
+
             .members-list {
                 display: grid;
                 grid-auto-flow: column;
                 gap: rem(2px);
                 align-items: center;
-                
+
                 .member {
                     width: rem(32px);
                     height: rem(32px);
@@ -170,7 +170,7 @@
                     font-size: rem(14px);
                     font-weight: 500;
                 }
-                
+
                 .add-member {
                     width: rem(32px);
                     height: rem(32px);
@@ -180,19 +180,19 @@
                     color: $text-primary;
                     cursor: pointer;
                     font-size: rem(16px);
-                    
+
                     &:hover {
                         background-color: $details-new-list-background-hover;
                     }
                 }
             }
-            
+
             .labels-list {
                 display: grid;
                 grid-auto-flow: column;
                 gap: $spacing-xs;
                 flex-direction: row;
-                
+
                 .label {
                     padding: $spacing-xs $spacing-sm;
                     border-radius: $border-radius-small;
@@ -200,7 +200,7 @@
                     font-size: rem(12px);
                     font-weight: 500;
                 }
-                
+
                 .add-label {
                     padding: $spacing-xs $spacing-sm;
                     border: none;
@@ -209,13 +209,13 @@
                     color: $text-primary;
                     cursor: pointer;
                     font-size: rem(14px);
-                    
+
                     &:hover {
                         background-color: $details-new-list-background-hover;
                     }
                 }
             }
-            
+
             &.notification {
                 display: flex;
                 flex-direction: column;
@@ -267,6 +267,14 @@
         grid-template-columns: rem(40px) minmax(0, 1fr); //icon , body'
         height: fit-content;
 
+        .description-header {
+            display: grid;
+            grid-auto-flow: column;
+
+            button {
+                @include task-content-btn;
+            }
+        }
 
         img {
             grid-column: 1;
@@ -299,22 +307,40 @@
         grid-template-columns: rem(40px) minmax(0, 1fr); //icon , body'
         height: fit-content;
 
+        .activity-header {
+            display: grid;
+            grid-auto-flow: column;
+
+            button {
+                @include task-content-btn;
+            }
+        }
+
         img {
             grid-column: 1;
         }
 
         .activity-item {
             grid-column: 2;
-            display: flex;
-            align-items: flex-start;
-            gap: $spacing-sm;
             margin-top: $spacing-sm;
+        
+            display: grid;
+            grid-template-columns: rem(40px) minmax(0, 1fr); //icon , body'
+            
+            >* {
+                grid-column: 2;
+            }
 
+            p {
+                margin: 0;
+            }
             .user-avatar {
+                grid-column: 1;
                 width: $avatar-size;
                 height: $avatar-size;
                 border-radius: 50%;
                 background-color: $border-gray;
+                margin-block-end: 0;
             }
 
             time {
@@ -327,7 +353,6 @@
 
 .task-sidebar {
     padding: $spacing-lg;
-    border-left: 1px solid $border-light-gray;
     background-color: $background-light;
     border-top-right-radius: $border-radius;
     border-bottom-right-radius: $border-radius;
@@ -363,7 +388,7 @@
             text-align: left;
             padding: 6px 12px;
 
-            
+
             &:hover {
                 background-color: $details-new-list-background-hover;
             }
