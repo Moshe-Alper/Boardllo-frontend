@@ -139,7 +139,7 @@ export function BoardIndex() {
                     Edit
                   </button>
                 </section>
-              </div>
+              </>
             ))}
             <button
               ref={createButtonRef}

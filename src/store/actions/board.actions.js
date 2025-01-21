@@ -15,8 +15,7 @@ import {
   UNDO_REMOVE_BOARD,
   UNDO_REMOVE_GROUP,
   REMOVE_TASK,
-  UNDO_REMOVE_TASK,
-  SET_BOARD_BACKGROUND
+  UNDO_REMOVE_TASK
 } from '../reducers/board.reducer'
 
 // Board Actions

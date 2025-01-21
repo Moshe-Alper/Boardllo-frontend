@@ -14,7 +14,6 @@ export const ADD_TASK = 'ADD_TASK'
 export const UPDATE_TASK = 'UPDATE_TASK'
 export const REMOVE_TASK = 'REMOVE_TASK'
 export const UNDO_REMOVE_TASK = 'UNDO_REMOVE_TASK'
-export const SET_BOARD_BACKGROUND = 'SET_BOARD_BACKGROUND'
 
 export const ADD_BOARD_MSG = 'ADD_BOARD_MSG'
 
@@ -23,7 +22,6 @@ const initialState = {
   lastBoards: [],
   board: null,
   lastBoard: null,
-  currentBackground: '#0079BF',
 
   groups: [],
   lastGroups: [],
@@ -74,27 +72,6 @@ export function boardReducer(state = initialState, action) {
       newState = { ...state, groups: [...state.groups, action.group] }
       break
     case UPDATE_GROUP:
-      groups = state.groups.map((group) => (group._id === action.group._id ? action.group : group))
-      newState = { ...state, groups }
-      break
-    case REMOVE_GROUP:
-      const removedGroup = state.groups.find((group) => group._id === action.groupId)
-      newState = {
-        ...state,
-        groups: state.groups.filter((group) => group._id !== action.groupId),
-        lastGroup: removedGroup
-      }
-      break
-    case UNDO_REMOVE_GROUP:
-      if (state.lastGroup) {
-        newState = { ...state, groups: [...state.groups, state.lastGroup], lastGroup: null }
-      }
-      break
-    // Group reducers
-    case ADD_GROUP:
-      newState = { ...state, groups: [...state.groups, action.group] }
-      break
-    case UPDATE_GROUP:
       groups = state.groups.map((group) => (group.id === action.group.id ? action.group : group))
       newState = { ...state, groups }
       break
@@ -112,27 +89,6 @@ export function boardReducer(state = initialState, action) {
       }
       break
 
-    // Task reducers
-    case ADD_TASK:
-      newState = { ...state, tasks: [...state.tasks, action.task] }
-      break
-    case UPDATE_TASK:
-      tasks = state.tasks.map((task) => (task._id === action.task._id ? action.task : task))
-      newState = { ...state, tasks }
-      break
-    case REMOVE_TASK:
-      const removedTask = state.tasks.find((task) => task._id === action.taskId)
-      newState = {
-        ...state,
-        tasks: state.tasks.filter((task) => task._id !== action.taskId),
-        lastTask: removedTask
-      }
-      break
-    case UNDO_REMOVE_TASK:
-      if (state.lastTask) {
-        newState = { ...state, tasks: [...state.tasks, state.lastTask], lastTask: null }
-      }
-      break
     // Task reducers
     case ADD_TASK:
       newState = { ...state, tasks: [...state.tasks, action.task] }
