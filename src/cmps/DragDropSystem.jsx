@@ -22,7 +22,6 @@ export function GroupDragDropContainer({ items = [], onDragEnd, children }) {
                                         ref={provided.innerRef}
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
-                                        
                                     >
                                         {children(item, index, snapshot.isDragging)}
                                     </div>

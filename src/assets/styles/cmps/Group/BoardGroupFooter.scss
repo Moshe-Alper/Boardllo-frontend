@@ -1,5 +1,9 @@
 .board-group-footer {
     width: 100%;
+    position: relative; 
+    
+    max-height: rem(40px); 
+    grid-row: 3;
 
     .add-task-btn-preview {
         width: rem(220px);
@@ -34,6 +38,7 @@
         width: 100%;
         margin-block-start: rem(8px);
         box-sizing: border-box;
+        position: relative; // Add this
 
         textarea {
             width: 100%;

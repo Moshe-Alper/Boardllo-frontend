@@ -10,44 +10,35 @@
         max-width 0.3s ease-in-out,
         padding 0.3s ease-in-out,
         background-color 0.3s ease-in-out;
-    
-    // Use grid layout for the entire board group
+
     display: grid;
     grid-template-rows: auto 1fr auto;
     height: 100%;
     
-    @media (max-width: $breakpoint-tablet) {
-        min-width: 15rem;
-        max-width: 15rem;
-        margin: $spacing-xs $spacing-xs $spacing-md $spacing-xs;
+    > * {
+        min-width: 0;
     }
-
-    @media (max-width: $breakpoint-mobile) {
-        min-width: calc(100vw - #{$spacing-md});
-        max-width: calc(100vw - #{$spacing-md});
-        margin: $spacing-xs 0 $spacing-md 0;
+    
+    .board-group-header {
+        grid-row: 1;
     }
-
+    
     .tasks-container {
+        grid-row: 2;
         display: grid;
         gap: $spacing-sm;
         padding-block: rem(6px) 0.125rem;
         overflow-y: auto;
-
+        min-height: 0; 
     }
 
-    .board-group-footer {
-        margin-block-start: 0;
-        background-color: $background-light;
-        padding-block-start: $spacing-xs;
-        z-index: 1;
-    }
+
 
     &.collapsed {
         min-width: 2.5rem;
         max-width: 2.5rem;
         padding: $layoutPadding-small 0;
-        display: block; // Override grid for collapsed state
+        display: block; 
 
         @media (max-width: $breakpoint-mobile) {
             min-width: 2rem;
