@@ -4,16 +4,34 @@ import { useSelector } from 'react-redux'
 import { svgService } from '../services/svg.service.js'
 import UserMenuDropdown from '../cmps/UserMenuDropdown.jsx'
 import { Layout } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { BoardCreateModal } from './Board/BoardCreateModal.jsx'
 
 export function AppHeader() {
+  const boards = useSelector((storeState) => storeState.boardModule.boards)
   const user = useSelector((storeState) => storeState.userModule.user)
   const [filterBy, setFilterBy] = useState(boardService.getDefaultFilter())
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
-  const [isSearch, setIsSearch] = useState(false) 
   const createButtonRef = useRef(null)
   const navigate = useNavigate()
+
+  const [isSearch, setIsSearch] = useState(false)
+  const [isFocused, setIsFocused] = useState(false)
+  const searchInputRef = useRef(null)
+  const dropdownRef = useRef(null)
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target) &&
+        !searchInputRef.current.contains(event.target)) {
+        setIsSearch(false)
+        setIsFocused(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   function handleNavigate(path) {
     navigate(path)
@@ -38,11 +56,18 @@ export function AppHeader() {
     setFilterBy(prevFilter => ({ ...prevFilter, [field]: value }))
   }
 
-   function handleSearchFocus() {
+  function handleSearchFocus() {
     setIsSearch(true)
+    setIsFocused(true)
   }
 
-  console.log('🚀 filterBy, isSearch', filterBy.txt, isSearch)
+  function handleBoardClick(boardId) {
+    setIsSearch(false)
+    setIsFocused(false)
+    navigate(`/board/${boardId}`)
+  }
+
+  // console.log('🚀 filterBy, isSearch', filterBy.txt, isSearch)
   if (user) {
     return (
       <header className='app-header logged-in'>
@@ -84,6 +109,7 @@ export function AppHeader() {
               <div className='search-wrapper'>
                 <img className='search-icon' src={svgService.searchIcon} alt='Search' />
                 <input
+                  ref={searchInputRef}
                   type='search'
                   className='search-input'
                   placeholder='Search'
@@ -93,8 +119,27 @@ export function AppHeader() {
                   onChange={handleChange}
                   onFocus={handleSearchFocus}
                 />
+
+                {isSearch && isFocused && (
+                  <section ref={dropdownRef} className="search-boards-dropdown">
+                    <h1>Recent Boards</h1>
+                    <ul className='search-boards-list'>
+                      {boards
+                        .filter(board =>
+                          board.title.toLowerCase().includes(filterBy.txt.toLowerCase())
+                        )
+                        .map(board => (
+                          <li className='search-boards-items' key={board._id} onClick={() => handleBoardClick(board._id)}>
+                            {board.title}
+                            <h2>Trello Workspace</h2>
+                          </li>
+                        ))}
+                    </ul>
+                  </section>
+                )}
               </div>
             </div>
+
             <Link className='search-icon-mobile' to='search'>
               <img className='search-icon-mobile' src={svgService.searchIcon} alt='Search' />
             </Link>
