@@ -8,12 +8,19 @@
 }
 
 .board-content {
-  display: flex;
+  display: flex; // Back to basic flex
   align-items: flex-start;
-  overflow-x: auto;
   gap: rem(4px);
-  overflow-y: hidden;
+  padding: 0 8px;
+  padding-top: 0;
+  margin: 0;
+  list-style: none;
+  width: fit-content; // This should prevent stretching
   min-height: 100%;
+  
+  > * { // For the Draggable wrapper elements
+    flex: 0 0 auto; // Prevent flex items from growing/shrinking
+  }
 }
 
 .board-groups-container {
@@ -27,7 +34,9 @@
 .board-group {
   min-width: 17rem;
   max-width: 17rem;
+  width: 17rem;
   transition: $hover-transition;
+  flex-shrink: 0; // Prevent shrinking
   
   &.dragging {
     opacity: 0.8;

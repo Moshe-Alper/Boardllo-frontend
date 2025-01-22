@@ -5,7 +5,7 @@ export function GroupDragDropContainer({ items = [], onDragEnd, children }) {
         <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="board" type="group" direction="horizontal">
                 {(provided) => (
-                    <div 
+                    <ul 
                         className="board-content"
                         ref={provided.innerRef} 
                         {...provided.droppableProps}
@@ -29,7 +29,7 @@ export function GroupDragDropContainer({ items = [], onDragEnd, children }) {
                             </Draggable>
                         ))}
                         {provided.placeholder}
-                    </div>
+                    </ul>
                 )}
             </Droppable>
         </DragDropContext>
@@ -40,7 +40,7 @@ export function TaskDragDropContainer({ groupId, tasks = [], children }) {
     return (
         <Droppable droppableId={groupId} type="task">
             {(provided) => (
-                <div 
+                <li 
                     className="tasks-container"
                     ref={provided.innerRef} 
                     {...provided.droppableProps}
@@ -63,7 +63,7 @@ export function TaskDragDropContainer({ groupId, tasks = [], children }) {
                         </Draggable>
                     ))}
                     {provided.placeholder}
-                </div>
+                </li>
             )}
         </Droppable>
     )

@@ -1,9 +1,5 @@
 .board-group-footer {
     width: 100%;
-    position: relative; 
-    
-    max-height: rem(40px); 
-    grid-row: 3;
 
     .add-task-btn-preview {
         width: rem(220px);
@@ -36,13 +32,12 @@
     
     .add-task-container {
         width: 100%;
-        margin-block-start: rem(8px);
         box-sizing: border-box;
-        position: relative; // Add this
 
         textarea {
             width: 100%;
             min-height: rem(56px);
+            max-height: rem(162px); 
             padding: rem(8px) rem(10px);
             border: rem(2px) solid transparent;
             border-radius: $border-radius-large;
@@ -64,16 +59,18 @@
         }
 
         .buttons-container {
-            display: flex;
-            align-items: center;
-            margin-block: $layoutPadding-small 0;
+            display: grid;
+            grid-template-columns: max-content auto;
+            align-content: start; // Changed from center to start
+            align-items: start; // Added this to align items to top
+            margin-block: rem(8px) 0;
 
             button {
                 border-radius: $border-radius-large;
             }
 
             .add-task-btn-active {
-                width: auto;
+                width: rem(82px);
                 padding: rem(8px) rem(12px);
                 background-color: $primary-blue;
                 color: $button-text-light;
@@ -84,6 +81,7 @@
                 cursor: pointer;
                 transition: background-color 0.3s ease, transform 0.1s ease;
                 margin-inline-start: 0;
+                margin-block-start: 0;
 
                 &:hover {
                     background-color: $primary-hover-blue;
