@@ -51,7 +51,7 @@
     color: $text-white;
     margin: 0;
     cursor: pointer;
-    padding: $spacing-sm $spacing-sm;
+    padding: $spacing-sm 1.5rem;
     border-radius: $border-radius-small;
     transition: $hover-transition;
     line-height: 1.25rem;
@@ -76,6 +76,7 @@
     color: $text-white;
     cursor: pointer;
     transition: $hover-transition;
+    
 
     img {
       width: 1rem;

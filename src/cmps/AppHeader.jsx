@@ -65,10 +65,11 @@ export function AppHeader() {
   }
 
   function handleBoardClick(boardId) {
-    setIsSearch(false)
-
-    setIsFocused(false)
     navigate(`/board/${boardId}`)
+    setTimeout(() => {
+      setIsSearch(false)
+      setIsFocused(false)
+    }, 0)
   }
 
   // console.log('🚀 filterBy, isSearch', filterBy.txt, isSearch)
@@ -136,8 +137,8 @@ export function AppHeader() {
                         .map(board => (
                           <div
                             className='search-boards-items'
-                            key={board._id} onClick={() =>
-                            handleBoardClick(board._id)}
+                            key={board._id}
+                            onMouseDown={() => handleBoardClick(board._id)}
                           >
                             {board.title}
                             <h2>Trello Workspace</h2>

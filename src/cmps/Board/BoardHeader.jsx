@@ -65,7 +65,7 @@ export function BoardHeader({ board, isSidebarOpen }) {
         <h1 onClick={() => board?._id && setIsEditingTitle(true)}>{board.title}</h1>
       )}
       <button className='header-btn' onClick={() => setIsMenuOpen(!isMenuOpen)}>
-        <img src={svgService.menuBarIcon} alt='Menu' />
+        <img src={svgService.threeDotsIcon} alt='Menu' />
       </button>
       <BoardMenu isOpen={isMenuOpen} toggleMenu={() => setIsMenuOpen(!isMenuOpen)} board={board} />
     </section>

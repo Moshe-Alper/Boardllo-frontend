@@ -21,7 +21,7 @@ export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
     const menuItems = [
         { text: 'Boards', icon: <DashboardIcon sx={{ fontSize: '1rem', marginLeft: '0.25rem' }} />, path: '/board' },
         { text: 'Members', icon: <GroupIcon sx={{ fontSize: '1rem', marginLeft: '0.25rem' }} />, extra: <AddIcon sx={{ fontSize: '1rem', marginLeft: '3px' }} /> },
-        { text: 'Workspace settings', icon: <SettingsIcon sx={{ fontSize: '1rem', marginLeft: '0.25rem' }} /> },
+       
     ]
 
     const premiumItems = [
@@ -40,7 +40,7 @@ export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
                     onClick={toggleDrawer}
                     sx={{
                         position: 'fixed',
-                        top: '70px',
+                        top: '65px',
                         left: '5px',
                         height: '1.5rem',
                         width: '1.5rem',
