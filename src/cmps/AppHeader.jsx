@@ -21,9 +21,12 @@ export function AppHeader() {
   const dropdownRef = useRef(null)
 
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target) &&
-        !searchInputRef.current.contains(event.target)) {
+    function handleClickOutside(ev) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(ev.target) &&
+        !searchInputRef.current.contains(ev.target)
+      ) {
         setIsSearch(false)
         setIsFocused(false)
       }
@@ -63,6 +66,7 @@ export function AppHeader() {
 
   function handleBoardClick(boardId) {
     setIsSearch(false)
+
     setIsFocused(false)
     navigate(`/board/${boardId}`)
   }
@@ -106,6 +110,7 @@ export function AppHeader() {
 
           <div className='nav-right'>
             <div className='nav-center'>
+
               <div className='search-wrapper'>
                 <img className='search-icon' src={svgService.searchIcon} alt='Search' />
                 <input
@@ -129,10 +134,14 @@ export function AppHeader() {
                           board.title.toLowerCase().includes(filterBy.txt.toLowerCase())
                         )
                         .map(board => (
-                          <li className='search-boards-items' key={board._id} onClick={() => handleBoardClick(board._id)}>
+                          <div
+                            className='search-boards-items'
+                            key={board._id} onClick={() =>
+                            handleBoardClick(board._id)}
+                          >
                             {board.title}
                             <h2>Trello Workspace</h2>
-                          </li>
+                          </div>
                         ))}
                     </ul>
                   </section>
