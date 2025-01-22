@@ -138,7 +138,7 @@
       transition: $hover-transition;
 
       &:hover {
-        background-color: $button-secondary-hover-bg;
+        background-color: $details-btn-main-clr;
       }
     }
 
@@ -217,7 +217,7 @@
         transition: $hover-transition;
 
         &:hover {
-          background-color: $button-secondary-hover-bg;
+          background-color: $details-btn-main-clr;
         }
       }
     }

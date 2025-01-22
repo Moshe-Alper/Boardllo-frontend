@@ -41,7 +41,7 @@
             line-height: 1;
 
             &:hover {
-                background-color: $button-secondary-hover-bg;
+                background-color: $details-btn-main-clr;
                 color: $text-primary;
             }
         }
@@ -73,7 +73,7 @@
             text-align: start;
 
             &:hover {
-                background-color: $button-secondary-hover-bg;
+                background-color: $details-btn-main-clr;
             }
 
             &.action-btn-danger {

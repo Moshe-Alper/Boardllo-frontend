@@ -74,7 +74,7 @@
 
 //  Task Content Button
 @mixin task-content-btn {
-  background-color: $button-secondary-hover-bg;
+  background-color: $details-btn-main-clr;
   color: $text-primary;
   justify-self: end;
   padding: rem(6px), rem(12px);

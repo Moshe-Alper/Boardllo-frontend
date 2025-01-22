@@ -33,7 +33,7 @@
             inline-size: 1.5rem;
 
             &:hover {
-                background-color: $button-secondary-hover-bg;
+                background-color: $details-btn-main-clr;
                 color: $text-primary;
             }
         }
@@ -74,7 +74,7 @@
         transition: $hover-transition;
 
         &:hover {
-            background-color: $button-secondary-hover-bg;
+            background-color: $details-btn-main-clr;
         }
     }
 }

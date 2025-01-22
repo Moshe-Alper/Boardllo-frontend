@@ -33,7 +33,7 @@
 
     header.task-header {
         display: grid;
-        grid-template-columns: rem(40px) minmax(0, 1fr); //icon , body
+        grid-template-columns: rem(48px) minmax(0, 1fr); //icon , body
         margin-block-end: rem(16px);
         margin-block-start: rem(2px);
         grid-column: -1 / 1;
@@ -177,7 +177,7 @@
                     height: rem(32px);
                     border-radius: 50%;
                     border: none;
-                    background-color: $button-secondary-hover-bg;
+                    background-color: $details-btn-main-clr;
                     color: $text-primary;
                     cursor: pointer;
                     font-size: rem(16px);
@@ -206,7 +206,7 @@
                     padding: $spacing-xs $spacing-sm;
                     border: none;
                     border-radius: $border-radius-small;
-                    background-color: $button-secondary-hover-bg;
+                    background-color: $details-btn-main-clr;
                     color: $text-primary;
                     cursor: pointer;
                     font-size: rem(14px);
@@ -229,7 +229,7 @@
                     padding: $spacing-sm $spacing-sm;
                     border: none;
                     border-radius: $border-radius-small;
-                    background-color: $button-secondary-hover-bg;
+                    background-color: $details-btn-main-clr;
                     color: $text-primary;
                     cursor: pointer;
                     font-size: rem(14px);
@@ -240,7 +240,7 @@
                     }
 
                     &:hover {
-                        background-color: $button-secondary-hover-bg;
+                        background-color: $details-btn-main-clr;
                     }
                 }
             }
@@ -335,6 +335,7 @@
             p {
                 margin: 0;
             }
+            
             .user-avatar {
                 grid-column: 1;
                 width: $avatar-size;
@@ -381,7 +382,7 @@
             padding: $spacing-xs;
             border: none;
             border-radius: $border-radius-medium;
-            background-color: $button-secondary-hover-bg;
+            background-color: $details-btn-main-clr;
             color: $text-primary;
             cursor: pointer;
             font-size: rem(14px);
