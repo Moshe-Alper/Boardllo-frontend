@@ -9,6 +9,7 @@ export function BoardGroupFooter({isAddingTask, setIsAddingTask, newTaskTitle, h
             onAddTask(ev)
         }
     }
+    console.log('🚀 isAddingTask', isAddingTask)
 
     return (
         <footer className="board-group-footer">

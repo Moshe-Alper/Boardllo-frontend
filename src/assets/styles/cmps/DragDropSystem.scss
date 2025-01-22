@@ -8,18 +8,18 @@
 }
 
 .board-content {
-  display: flex; // Back to basic flex
+  display: flex; 
   align-items: flex-start;
   gap: rem(4px);
   padding: 0 8px;
   padding-top: 0;
   margin: 0;
   list-style: none;
-  width: fit-content; // This should prevent stretching
+  width: fit-content; 
   min-height: 100%;
   
-  > * { // For the Draggable wrapper elements
-    flex: 0 0 auto; // Prevent flex items from growing/shrinking
+  > * { 
+    flex: 0 0 auto; 
   }
 }
 
@@ -36,7 +36,7 @@
   max-width: 17rem;
   width: 17rem;
   transition: $hover-transition;
-  flex-shrink: 0; // Prevent shrinking
+  flex-shrink: 0; 
   
   &.dragging {
     opacity: 0.8;
@@ -44,6 +44,13 @@
     box-shadow: $shadow-large;
     background-color: darken($background-light, 2%);
   }
+
+  &.is-adding-task {
+    .tasks-container {
+      max-height: calc(100vh - rem(276px));
+    }
+  }
+
 }
 
 .tasks-container {
@@ -53,28 +60,9 @@
   min-height: 0.125rem;
   grid-auto-rows: min-content;
   overflow-y: auto;
-  max-height: calc(100vh - 200px); 
   position: relative; 
 
-  > *:last-child {
-    
-    &::after {
-      content: '';
-      display: block;
-      height: rem(8px);
-    }
-  }
-}
-
-
-.task-preview {
-  cursor: grab;
-  transition: $hover-transition;
-  
-  &.dragging {
-    transform: rotate(2deg) scale(1.02);
-    cursor: grabbing;
-    box-shadow: $shadow-medium;
-    background-color: $background-white;
-  }
+  max-height: calc(100vh - rem(212px));
+  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: max-height;
 }

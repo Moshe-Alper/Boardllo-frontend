@@ -7,7 +7,7 @@
   overflow-x: hidden;
 
   &.sidebar-open {
-    grid-template-columns: 17.5rem 1fr; // 280px
+    grid-template-columns: 17.5rem 1fr;
   }
 
   .board-details {
@@ -17,15 +17,30 @@
     color: $text-primary;
     box-shadow: $shadow-small;
     overflow-y: hidden;
+    padding-bottom: rem(8px);
   }
 
   .group-container {
     display: grid;
     grid-template-columns: max-content max-content;
-    gap: rem(8px);
     padding: $spacing-sm;
     overflow-x: auto;
     overflow-y: hidden;
+
+    &::-webkit-scrollbar {
+      height: rem(8px);
+      margin-top: rem(8px);
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+      margin: 0 $spacing-sm;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 6px;
+    }
 
     @media (max-width: $breakpoint-tablet) {
       padding: $spacing-sm;

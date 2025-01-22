@@ -8,7 +8,13 @@
     transition: background-color 0.3s ease;
     width: 100%;
 
-    
+    &.dragging {
+        transform: rotate(2deg) scale(1.02);
+        cursor: grabbing;
+        box-shadow: $shadow-medium;
+        background-color: $background-white;
+      } 
+      
     &:hover {
         background-color: $background-light-hover;
     }

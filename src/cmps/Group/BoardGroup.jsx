@@ -32,34 +32,34 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
 
     async function onAddTask(ev) {
         ev.preventDefault()
-        
+
         if (!newTaskTitle.trim()) {
             showErrorMsg('Task title cannot be empty')
             return
         }
-        
+
         const task = boardService.getEmptyTask()
         task.title = newTaskTitle
-        
+
         const tempTask = { ...task, id: 'temp-id' }
-        
+
         const updatedGroup = {
             ...group,
             tasks: [...(group.tasks || []), tempTask]
         }
-        
+
         onUpdateGroup(updatedGroup)
-        
+
         try {
             const savedTask = await addTask(board._id, group.id, task)
-            
+
             const finalGroup = {
                 ...group,
-                tasks: updatedGroup.tasks.map(task => 
+                tasks: updatedGroup.tasks.map(task =>
                     task.id === 'temp-id' ? savedTask : task
                 )
             }
-            
+
             onUpdateGroup(finalGroup)
             setNewTaskTitle('')
             showSuccessMsg(`Task added (id: ${savedTask.id})`)
@@ -118,8 +118,10 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
 
     return (
         <section
-            className={`board-group ${isCollapsed ? 'collapsed' : ''} 
-                      ${isDragging ? 'dragging' : ''}`}
+            className={`board-group 
+        ${isCollapsed ? 'collapsed' : ''} 
+        ${isDragging ? 'dragging' : ''} 
+        ${isAddingTask ? 'is-adding-task' : ''}`}
             onClick={handleGroupClick}
         >
             <BoardGroupHeader
