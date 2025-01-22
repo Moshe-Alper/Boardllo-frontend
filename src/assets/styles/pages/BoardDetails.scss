@@ -1,6 +1,7 @@
 .board-layout {
   height: 100%;
   display: grid;
+  grid-template-columns: 0 auto;
   transition: grid-template-columns 0.3s ease-in-out;
   overflow-y: auto;
   overflow-x: hidden;
