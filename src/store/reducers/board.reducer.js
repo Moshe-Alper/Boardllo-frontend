@@ -1,8 +1,11 @@
+import { boardService } from "../../services/board"
+
 export const SET_BOARDS = 'SET_BOARDS'
 export const SET_BOARD = 'SET_BOARD'
 export const REMOVE_BOARD = 'REMOVE_BOARD'
 export const ADD_BOARD = 'ADD_BOARD'
 export const UPDATE_BOARD = 'UPDATE_BOARD'
+export const SET_FILTER_BY = 'SET_FILTER_BY'
 export const UNDO_REMOVE_BOARD = 'UNDO_REMOVE_BOARD'
 
 export const ADD_GROUP = 'ADD_GROUP'
@@ -20,6 +23,7 @@ export const ADD_BOARD_MSG = 'ADD_BOARD_MSG'
 const initialState = {
   boards: [],
   lastBoards: [],
+  filterBy: boardService.getDefaultFilter(),
   board: null,
   lastBoard: null,
 
@@ -53,6 +57,9 @@ export function boardReducer(state = initialState, action) {
         boards: state.boards.filter((board) => board._id !== action.boardId),
         lastBoard: removedBoard
       }
+      break
+    case SET_FILTER_BY:
+      newState = { ...state, filterBy: action.filterBy }
       break
     case UNDO_REMOVE_BOARD:
       if (state.lastBoard) {

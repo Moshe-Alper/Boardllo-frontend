@@ -9,7 +9,7 @@ export function BoardHeader({ board, isSidebarOpen }) {
   const [title, setTitle] = useState(board?.title || '')
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const textareaRef = useRef(null)
-console.log('🚀 isSideBarOpen', isSidebarOpen)
+  
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.width = '0px'

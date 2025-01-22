@@ -9,14 +9,40 @@ import { BoardCreateModal } from './Board/BoardCreateModal.jsx'
 
 export function AppHeader() {
   const user = useSelector((storeState) => storeState.userModule.user)
+  const [filterBy, setFilterBy] = useState(boardService.getDefaultFilter())
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [isSearch, setIsSearch] = useState(false) 
   const createButtonRef = useRef(null)
   const navigate = useNavigate()
 
-  const handleNavigate = (path) => {
+  function handleNavigate(path) {
     navigate(path)
   }
 
+  function handleChange({ target }) {
+    const field = target.name
+    let value = target.value
+
+    switch (target.type) {
+      case 'number':
+      case 'range':
+        value = +value || ''
+        break
+      case 'checkbox':
+        value = target.checked
+        break
+      default:
+        break
+    }
+
+    setFilterBy(prevFilter => ({ ...prevFilter, [field]: value }))
+  }
+
+   function handleSearchFocus() {
+    setIsSearch(true)
+  }
+
+  console.log('🚀 filterBy, isSearch', filterBy.txt, isSearch)
   if (user) {
     return (
       <header className='app-header logged-in'>
@@ -62,6 +88,10 @@ export function AppHeader() {
                   className='search-input'
                   placeholder='Search'
                   aria-label='Search'
+                  name="txt"
+                  value={filterBy.txt}
+                  onChange={handleChange}
+                  onFocus={handleSearchFocus}
                 />
               </div>
             </div>
