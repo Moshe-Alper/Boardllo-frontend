@@ -1,33 +1,33 @@
 .sidebar {
-    .MuiDrawer-paper {
-        background-color: $primary-blue; 
-        color: $background-white;
-    }
+  .MuiDrawer-paper {
+    background-color: $primary-blue;
+    color: $background-white;
+  }
 
-    .MuiList-root {
-        padding-block-start	: 0;
-    }
+  .MuiList-root {
+    padding-block-start: 0;
+  }
 
-    .MuiListItemButton-root {
-        border-radius: $border-radius-small;
-        margin: $spacing-xs $spacing-sm;
+  .MuiListItemButton-root {
+    border-radius: $border-radius-small;
+    margin: $spacing-xs $spacing-sm;
 
-        &:hover {
-            background-color: $primary-hover-blue;
-            transition: $hover-transition;
-        }
+    &:hover {
+      background-color: $primary-hover-blue;
+      transition: $hover-transition;
     }
+  }
 
-    .MuiListItemIcon-root {
-        color: $background-white; 
-    }
+  .MuiListItemIcon-root {
+    color: $background-white;
+  }
 
-    .MuiListItemText-primary {
-        font-weight: 500;
-        font-size: 0.875rem; 
-    }
+  .MuiListItemText-primary {
+    font-weight: 500;
+    font-size: 0.875rem;
+  }
 
-    .MuiListItemButton-root:active {
-        background-color: darken($primary-blue, 30%);
-    }
+  .MuiListItemButton-root:active {
+    background-color: darken($primary-blue, 30%);
+  }
 }

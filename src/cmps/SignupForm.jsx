@@ -13,6 +13,7 @@ export function SignupForm() {
   async function _signup(credentials) {
     try {
       await signup(credentials)
+      navigate('/board')
       showSuccessMsg('Signed in successfully')
     } catch (err) {
       console.log(`problem with signup`, err)

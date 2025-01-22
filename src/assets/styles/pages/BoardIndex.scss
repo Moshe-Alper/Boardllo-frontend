@@ -2,8 +2,6 @@
   display: grid;
   grid-template-columns: 260px 1fr;
   min-height: 100vh;
-  background-color: $background-white;
-  // background-color: $background-light;
   font-family: $workspace-font;
 
   .sidebar {
@@ -108,13 +106,15 @@
 
     .board-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: $spacing-md;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 16px;
+      padding: 0;
+      margin-top: 8px;
 
       .board-tile {
         aspect-ratio: 16/9;
-        background-color: $secondary-blue;
-        border-radius: $border-radius-medium;
+        background-color: $primary-blue;
+        border-radius: $border-radius-small;
         padding: $spacing-sm;
         text-decoration: none;
         position: relative;
@@ -145,7 +145,7 @@
 
       .workspace-crud button {
         display: flex;
-        padding: 1rem;
+        padding: 0.4rem;
         border-radius: $border-radius-medium;
       }
 

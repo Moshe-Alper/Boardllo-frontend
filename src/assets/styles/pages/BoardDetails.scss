@@ -3,13 +3,15 @@
   display: grid;
   grid-template-columns: 0 auto;
   transition: grid-template-columns 0.3s ease-in-out;
+  grid-template-columns: 0 auto;
+  transition: grid-template-columns 0.1s ease-in-out;
   overflow-y: auto;
   overflow-x: hidden;
-  
+
   &.sidebar-open {
     grid-template-columns: 17.5rem 1fr; // 280px
   }
-  
+
   .board-details {
     display: grid;
     grid-template-rows: $navbar-height 1fr;
@@ -18,7 +20,7 @@
     box-shadow: $shadow-small;
     overflow-y: hidden;
   }
-  
+
   .group-container {
     display: grid;
     grid-template-columns: max-content max-content;
@@ -26,12 +28,12 @@
     padding: $spacing-sm;
     overflow-x: auto;
     overflow-y: hidden;
-    
+
     @media (max-width: $breakpoint-tablet) {
       padding: $spacing-sm;
       gap: $spacing-sm;
     }
-    
+
     @media (max-width: $breakpoint-mobile) {
       padding: $spacing-xs $spacing-xs $spacing-lg $spacing-xs;
       gap: $spacing-xs;

@@ -24,19 +24,21 @@ export function RootCmp() {
       <UserMsg />
       <DynamicModal />
       <DynamicPicker />
-      
 
       <main>
         <Routes>
           <Route path='' element={<HomePage />} />
           <Route path='board' element={<BoardIndex />} />
           <Route path='board/:boardId' element={<BoardDetails />} />
-          <Route path='board/:boardId/:taskId' element={
-            <>
-              <BoardDetails />
-              <TaskDetails />
-            </>
-          } />
+          <Route
+            path='board/:boardId/:taskId'
+            element={
+              <>
+                <BoardDetails />
+                <TaskDetails />
+              </>
+            }
+          />
           <Route path='user/:id' element={<UserProfile />} />
           <Route path='admin' element={<AdminIndex />} />
           <Route path='login' element={<LoginForm />}></Route>

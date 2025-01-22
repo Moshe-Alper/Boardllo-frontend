@@ -17,155 +17,151 @@ export const UNDO_REMOVE_TASK = 'UNDO_REMOVE_TASK'
 
 export const ADD_BOARD_MSG = 'ADD_BOARD_MSG'
 
-
 const initialState = {
-    boards: [],
-    lastBoards: [],
-    board: null,
-    lastBoard: null,
+  boards: [],
+  lastBoards: [],
+  board: null,
+  lastBoard: null,
 
-    groups: [],
-    lastGroups: [],
-    group: null,
-    lastGroup: null,
+  groups: [],
+  lastGroups: [],
+  group: null,
+  lastGroup: null,
 
-    tasks: [],
-    lastTasks: [],
-    task: null,
-    lastTask: null,
+  tasks: [],
+  lastTasks: [],
+  task: null,
+  lastTask: null
 }
-
 
 export function boardReducer(state = initialState, action) {
-    let newState = state
-    let boards, groups, tasks
+  let newState = state
+  let boards, groups, tasks
 
-    switch (action.type) {
-        // Board reducers
-        case SET_BOARDS:
-            newState = { ...state, boards: action.boards }
-            break
-        case SET_BOARD:
-            newState = { ...state, board: action.board }
-            break
-        case REMOVE_BOARD:
-            const removedBoard = state.boards.find(board => board._id === action.boardId)
-            newState = {
-                ...state,
-                boards: state.boards.filter(board => board._id !== action.boardId),
-                lastBoard: removedBoard,
-            }
-            break
-        case UNDO_REMOVE_BOARD:
-            if (state.lastBoard) {
-                newState = { ...state, boards: [...state.boards, state.lastBoard], lastBoard: null }
-            }
-            break
-        case ADD_BOARD:
-            newState = { ...state, boards: [...state.boards, action.board] }
-            break
-        case UPDATE_BOARD:
-            boards = state.boards.map(board => (board._id === action.board._id ? action.board : board))
-            newState = { ...state, boards }
-            break
+  switch (action.type) {
+    // Board reducers
+    case SET_BOARDS:
+      newState = { ...state, boards: action.boards }
+      break
+    case SET_BOARD:
+      newState = { ...state, board: action.board }
+      break
+    case REMOVE_BOARD:
+      const removedBoard = state.boards.find((board) => board._id === action.boardId)
+      newState = {
+        ...state,
+        boards: state.boards.filter((board) => board._id !== action.boardId),
+        lastBoard: removedBoard
+      }
+      break
+    case UNDO_REMOVE_BOARD:
+      if (state.lastBoard) {
+        newState = { ...state, boards: [...state.boards, state.lastBoard], lastBoard: null }
+      }
+      break
+    case ADD_BOARD:
+      newState = { ...state, boards: [...state.boards, action.board] }
+      break
+    case UPDATE_BOARD:
+      boards = state.boards.map((board) => (board._id === action.board._id ? action.board : board))
+      newState = { ...state, boards }
+      break
 
-        // Group reducers
-        case ADD_GROUP:
-            newState = { ...state, groups: [...state.groups, action.group] }
-            break
-        case UPDATE_GROUP:
-            groups = state.groups.map(group => (group.id === action.group.id ? action.group : group))
-            newState = { ...state, groups }
-            break
-        case REMOVE_GROUP:
-            const removedGroup = state.groups.find(group => group.id === action.groupId)
-            newState = {
-                ...state,
-                groups: state.groups.filter(group => group.id !== action.groupId),
-                lastGroup: removedGroup,
-            }
-            break
-        case UNDO_REMOVE_GROUP:
-            if (state.lastGroup) {
-                newState = { ...state, groups: [...state.groups, state.lastGroup], lastGroup: null }
-            }
-            break
+    // Group reducers
+    case ADD_GROUP:
+      newState = { ...state, groups: [...state.groups, action.group] }
+      break
+    case UPDATE_GROUP:
+      groups = state.groups.map((group) => (group.id === action.group.id ? action.group : group))
+      newState = { ...state, groups }
+      break
+    case REMOVE_GROUP:
+      const removedGroup = state.groups.find((group) => group.id === action.groupId)
+      newState = {
+        ...state,
+        groups: state.groups.filter((group) => group.id !== action.groupId),
+        lastGroup: removedGroup
+      }
+      break
+    case UNDO_REMOVE_GROUP:
+      if (state.lastGroup) {
+        newState = { ...state, groups: [...state.groups, state.lastGroup], lastGroup: null }
+      }
+      break
 
-        // Task reducers
-        case ADD_TASK:
-            newState = { ...state, tasks: [...state.tasks, action.task] }
-            break
-        case UPDATE_TASK:
-            newState = {
-                ...state,
-                board: {
-                    ...state.board,
-                    groups: state.board.groups.map(group => {
-                        const taskExists = group.tasks.some(t => t.id === action.task.id)
-                        if (!taskExists) return group
+    // Task reducers
+    case ADD_TASK:
+      newState = { ...state, tasks: [...state.tasks, action.task] }
+      break
+    case UPDATE_TASK:
+      newState = {
+        ...state,
+        board: {
+          ...state.board,
+          groups: state.board.groups.map((group) => {
+            const taskExists = group.tasks.some((t) => t.id === action.task.id)
+            if (!taskExists) return group
 
-                        return {
-                            ...group,
-                            tasks: group.tasks.map(task =>
-                                task.id === action.task.id
-                                    ? { ...task, ...action.task }
-                                    : task
-                            )
-                        }
-                    })
-                }
+            return {
+              ...group,
+              tasks: group.tasks.map((task) =>
+                task.id === action.task.id ? { ...task, ...action.task } : task
+              )
             }
-            break
-        case REMOVE_TASK:
-            const removedTask = state.tasks.find(task => task.id === action.taskId)
-            newState = {
-                ...state,
-                tasks: state.tasks.filter(task => task.id !== action.taskId),
-                lastTask: removedTask,
-            }
-            break
-        case UNDO_REMOVE_TASK:
-            if (state.lastTask) {
-                newState = { ...state, tasks: [...state.tasks, state.lastTask], lastTask: null }
-            }
-            break
+          })
+        }
+      }
+      break
+    case REMOVE_TASK:
+      const removedTask = state.tasks.find((task) => task.id === action.taskId)
+      newState = {
+        ...state,
+        tasks: state.tasks.filter((task) => task.id !== action.taskId),
+        lastTask: removedTask
+      }
+      break
+    case UNDO_REMOVE_TASK:
+      if (state.lastTask) {
+        newState = { ...state, tasks: [...state.tasks, state.lastTask], lastTask: null }
+      }
+      break
 
-        // Board Messages reducers
-        case ADD_BOARD_MSG:
-            newState = { ...state, board: { ...state.board, msgs: [...state.board.msgs || [], action.msg] } }
-            break
+    // Board Messages reducers
+    case ADD_BOARD_MSG:
+      newState = {
+        ...state,
+        board: { ...state.board, msgs: [...(state.board.msgs || []), action.msg] }
+      }
+      break
 
-        default:
-    }
-    return newState
+    default:
+  }
+  return newState
 }
-
 
 // unitTestReducer()
 
 function unitTestReducer() {
-    var state = initialState
-    const board1 = { _id: 'b101', title: 'Board 1', msgs: [] }
-    const board2 = { _id: 'b102', title: 'Board 2', msgs: [] }
+  var state = initialState
+  const board1 = { _id: 'b101', title: 'Board 1', msgs: [] }
+  const board2 = { _id: 'b102', title: 'Board 2', msgs: [] }
 
-    state = boardReducer(state, { type: SET_BOARDS, boards: [board1, board2] })
-    console.log('After SET_BOARDS:', state)
+  state = boardReducer(state, { type: SET_BOARDS, boards: [board1, board2] })
+  console.log('After SET_BOARDS:', state)
 
-    state = boardReducer(state, { type: REMOVE_BOARD, boardId: board2._id })
-    console.log('After REMOVE_BOARD:', state)
+  state = boardReducer(state, { type: REMOVE_BOARD, boardId: board2._id })
+  console.log('After REMOVE_BOARD:', state)
 
-    state = boardReducer(state, { type: UNDO_REMOVE_BOARD })
-    console.log('After UNDO_REMOVE_BOARD:', state)
+  state = boardReducer(state, { type: UNDO_REMOVE_BOARD })
+  console.log('After UNDO_REMOVE_BOARD:', state)
 
-    const group1 = { _id: 'g101', title: 'Group 1' }
-    state = boardReducer(state, { type: ADD_GROUP, group: group1 })
-    console.log('After ADD_GROUP:', state)
+  const group1 = { _id: 'g101', title: 'Group 1' }
+  state = boardReducer(state, { type: ADD_GROUP, group: group1 })
+  console.log('After ADD_GROUP:', state)
 
-    state = boardReducer(state, { type: REMOVE_GROUP, groupId: group1._id })
-    console.log('After REMOVE_GROUP:', state)
+  state = boardReducer(state, { type: REMOVE_GROUP, groupId: group1._id })
+  console.log('After REMOVE_GROUP:', state)
 
-    state = boardReducer(state, { type: UNDO_REMOVE_GROUP })
-    console.log('After UNDO_REMOVE_GROUP:', state)
+  state = boardReducer(state, { type: UNDO_REMOVE_GROUP })
+  console.log('After UNDO_REMOVE_GROUP:', state)
 }
-
-

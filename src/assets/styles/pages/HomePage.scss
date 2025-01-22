@@ -122,16 +122,17 @@
       grid-template-rows: repeat(2, 1fr);
       align-items: center;
 
-      .carousel-img {
-        grid-column: 1 / 4;
-        grid-row: 2 / 3;
-        rotate: -10deg;
-      }
-
       .collage-img {
         grid-column: 3/ -1;
         margin-block-start: 3rem;
         rotate: 10deg;
+        cursor: pointer;
+        transition: $hover-transition;
+
+        &:hover {
+          scale: 1.1;
+          rotate: -10deg;
+        }
       }
     }
 
@@ -145,6 +146,13 @@
         padding: $spacing-lg;
         border-radius: $border-radius-medium;
         box-shadow: $card-shadow;
+        transition: $hover-transition;
+
+        cursor: pointer;
+
+        &:hover {
+          scale: 1.05;
+        }
 
         .feature-icon {
           color: $secondary-blue;
@@ -167,6 +175,11 @@
         }
       }
     }
+  }
+
+  a {
+    list-style: none;
+    text-decoration: none;
   }
 
   // Social Proof Section
