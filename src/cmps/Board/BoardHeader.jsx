@@ -1,116 +1,73 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { svgService } from '../../services/svg.service'
 import { showErrorMsg, showSuccessMsg } from '../../services/event-bus.service'
 import { loadBoard, updateBoard } from '../../store/actions/board.actions'
 import { BoardMenu } from './BoardMenu'
 
-export function BoardHeader({ board, onUpdateBoard }) {
+export function BoardHeader({ board, isSidebarOpen }) {
   const [isEditingTitle, setIsEditingTitle] = useState(false)
-  const [editedTitle, setEditedTitle] = useState(board?.title || '')
+  const [title, setTitle] = useState(board?.title || '')
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-
-  async function onUpdateBoardTitle() {
-    if (!editedTitle.trim()) {
-      showErrorMsg('Board title cannot be empty')
-      setEditedTitle(board?.title || '')
-      setIsEditingTitle(false)
-      return
+  const textareaRef = useRef(null)
+console.log('🚀 isSideBarOpen', isSidebarOpen)
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.width = '0px'
+      const scrollWidth = textareaRef.current.scrollWidth
+      textareaRef.current.style.width = scrollWidth + 'px'
     }
+  }, [title, isEditingTitle])
 
-    if (!board?._id) {
-      showErrorMsg('Cannot update board: Invalid board ID')
-      setEditedTitle(board?.title || '')
+  async function handleTitleUpdate() {
+    const trimmedTitle = title.trim()
+    if (!trimmedTitle) {
+      showErrorMsg('Board title cannot be empty')
+      setTitle(board?.title || '')
       setIsEditingTitle(false)
       return
     }
 
     try {
-      const updatedBoard = { ...board, title: editedTitle.trim() }
+      const updatedBoard = { ...board, title: trimmedTitle }
       await updateBoard(updatedBoard)
       await loadBoard(board._id)
-      showSuccessMsg('Board title updated successfully')
       setIsEditingTitle(false)
-    } catch (err) {
-      console.log('Cannot update board title', err)
-      showErrorMsg('Cannot update board title')
-      setEditedTitle(board?.title || '')
+    } catch (error) {
+      setTitle(board?.title || '')
       setIsEditingTitle(false)
     }
   }
 
-  const handleTitleClick = () => {
-    if (!board?._id) return
-    setIsEditingTitle(true)
-  }
-
-  const handleTitleBlur = () => {
-    onUpdateBoardTitle()
-  }
-
-  const handleTitleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      e.target.blur()
-    }
-    if (e.key === 'Escape') {
-      setEditedTitle(board?.title || '')
-      setIsEditingTitle(false)
-    }
-  }
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
-  }
-
-  if (!board) {
-    return <div className='board-header'>Loading board...</div>
-  }
+  if (!board) return <div className='board-header'>Loading board...</div>
 
   return (
-    <section className={`board-header ${isMenuOpen ? 'menu-open' : ''}`}>
-      <div className='board-header-left'>
-        {isEditingTitle ? (
-          <input
-            type='text'
-            value={editedTitle}
-            onChange={(e) => setEditedTitle(e.target.value)}
-            onBlur={handleTitleBlur}
-            onKeyDown={handleTitleKeyPress}
-            className='board-title-input'
-            autoFocus
-          />
-        ) : (
-          <h1 onClick={handleTitleClick}>{board.title}</h1>
-        )}
-        <button className='star-btn'>
-          <img src={svgService.starIcon} alt='Star' />
-        </button>
-      </div>
-
-      <div className='board-header-right'>
-        <div className='filters'>
-          <button className='header-btn'>
-            <img src={svgService.filterIcon} alt='Filter' />
-            <span>Filters</span>
-          </button>
-        </div>
-        <div className='share'>
-          <button className='header-btn share-btn'>
-            <img src={svgService.shareIcon} alt='Share' />
-            <span>Share</span>
-          </button>
-        </div>
-        <div className='members'>
-          <button className='header-btn members-btn'>
-            <img src={svgService.membersIcon} alt='Members' />
-          </button>
-        </div>
-        <div className='menu-btn'>
-          <button className='header-btn' onClick={toggleMenu}>
-            <img src={svgService.menuBarIcon} alt='Menu' />
-          </button>
-        </div>
-      </div>
-      <BoardMenu isOpen={isMenuOpen} toggleMenu={toggleMenu} board={board} />
+    <section className={`board-header ${isMenuOpen ? 'menu-open' : ''} ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+      {isEditingTitle ? (
+        <textarea
+          ref={textareaRef}
+          value={title}
+          onChange={(ev) => setTitle(ev.target.value)}
+          onBlur={handleTitleUpdate}
+          onKeyDown={(ev) => {
+            if (ev.key === 'Enter') {
+              ev.preventDefault()
+              ev.target.blur()
+            }
+            if (ev.key === 'Escape') {
+              setTitle(board?.title || '')
+              setIsEditingTitle(false)
+            }
+          }}
+          rows={1}
+          autoFocus
+        />
+      ) : (
+        <h1 onClick={() => board?._id && setIsEditingTitle(true)}>{board.title}</h1>
+      )}
+      <button className='header-btn' onClick={() => setIsMenuOpen(!isMenuOpen)}>
+        <img src={svgService.menuBarIcon} alt='Menu' />
+      </button>
+      <BoardMenu isOpen={isMenuOpen} toggleMenu={() => setIsMenuOpen(!isMenuOpen)} board={board} />
     </section>
   )
 }

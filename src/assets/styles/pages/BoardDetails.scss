@@ -5,6 +5,7 @@
   transition: grid-template-columns 0.1s ease-in-out;
   overflow-y: auto;
   overflow-x: hidden;
+  background-color: $blue-base;
 
   &.sidebar-open {
     grid-template-columns: 17.5rem 1fr;
@@ -12,7 +13,7 @@
 
   .board-details {
     display: grid;
-    grid-template-rows: $navbar-height 1fr;
+    grid-template-rows: $board-header-height 1fr;
     background-color: $blue-base;
     color: $text-primary;
     box-shadow: $shadow-small;

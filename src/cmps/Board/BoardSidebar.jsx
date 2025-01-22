@@ -18,11 +18,10 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 
 export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
     const navigate = useNavigate()
-
     const menuItems = [
-        { text: 'Boards', icon: <DashboardIcon />, path: '/board' },
-        { text: 'Members', icon: <GroupIcon />, extra: <AddIcon /> },
-        { text: 'Workspace settings', icon: <SettingsIcon /> },
+        { text: 'Boards', icon: <DashboardIcon sx={{ fontSize: '1rem', marginLeft: '0.25rem' }} />, path: '/board' },
+        { text: 'Members', icon: <GroupIcon sx={{ fontSize: '1rem', marginLeft: '0.25rem' }} />, extra: <AddIcon sx={{ fontSize: '1rem', marginLeft: '3px' }} /> },
+        { text: 'Workspace settings', icon: <SettingsIcon sx={{ fontSize: '1rem', marginLeft: '0.25rem' }} /> },
     ]
 
     const premiumItems = [
@@ -42,7 +41,10 @@ export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
                     sx={{
                         position: 'fixed',
                         top: '70px',
-                        left: '0',
+                        left: '5px',
+                        height: '1.5rem',
+                        width: '1.5rem',
+                        border: '#rgba(200, 186, 186, 0.22) solid 1px',
                         backgroundColor: '#0055CC',
                         color: '#FFFFFF',
                         zIndex: 1300,
@@ -53,7 +55,7 @@ export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
 
                     }}
                 >
-                    <ChevronRightIcon sx={{width: '15px', height:'15px' }} />
+                    <ChevronRightIcon sx={{ width: '1rem', height: '1rem', marginLeft: '3px' }} />
                 </IconButton>
             )}
 
@@ -66,7 +68,7 @@ export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
                         top: '48px',
                         height: '100vh',
                         width: 280,
-                        backgroundColor: '#0055CC',
+                        backgroundColor: '#0a3d8f',
                         color: '#FFFFFF',
                         display: 'flex',
                         flexDirection: 'column',
@@ -78,55 +80,64 @@ export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
-                        padding: '5px',
-                        backgroundColor: '#0050CC',
+                        height: '3.5rem',
+                        paddingLeft: '1rem',
+                        borderBottom: '0.5px solid rgba(208, 198, 198, 0.22)',
+                        backgroundColor: '#0a3d8f',
                     }}
                 >
                     <div>
-                        <h3 style={{ margin: 0 }}>Trello Workspace</h3>
-                        <p style={{ margin: 0, fontSize: '12px', color: '#B0C4DE' }}>Premium</p>
+                        <h3 style={{ margin: 0, fontSize: '0.875rem' }}>Trello Workspace</h3>
                     </div>
-                    <IconButton onClick={toggleDrawer} sx={{ color: '#FFFFFF', width: '20px', height:'20px' }}>
+                    <IconButton onClick={toggleDrawer} sx={{ color: '#FFFFFF', width: '1.25rem', height: '1.25rem', marginLeft: '3px' }}>
                         <ChevronLeftIcon />
                     </IconButton>
                 </div>
 
-                <List>
+                <List sx={{ 
+                    '& .MuiListItemText-primary': { 
+                        fontSize: '0.875rem'  // 14px for menu items
+                    } 
+                }}>
                     {menuItems.map((item, index) => (
                         <ListItem key={index} disablePadding>
                             <ListItemButton onClick={() => navigate(item.path)} >
-                                <ListItemIcon sx={{ color: '#FFFFFF', marginRight: '-20px' }}>{item.icon}</ListItemIcon>
+                                <ListItemIcon sx={{ color: '#FFFFFF', marginRight: '-1.25rem', marginLeft: '3px' }}>{item.icon}</ListItemIcon>
                                 <ListItemText primary={item.text} />
                                 {item.extra && (
-                                    <ListItemIcon sx={{ color: '#FFFFFF', justifyContent: 'flex-end' }}>{item.extra}</ListItemIcon>
+                                    <ListItemIcon sx={{ color: '#FFFFFF', justifyContent: 'flex-end', marginLeft: '3px' }}>{item.extra}</ListItemIcon>
                                 )}
                             </ListItemButton>
                         </ListItem>
                     ))}
                 </List>
 
-                <div style={{ padding: '8px 16px', fontSize: '12px', color: '#B0C4DE' }}>PREMIUM</div>
+                {/* <div style={{ padding: '8px 16px', fontSize: '0.75rem', color: '#B0C4DE' }}>PREMIUM</div>
                 <List>
                     {premiumItems.map((item, index) => (
                         <ListItem key={index} disablePadding>
                             <ListItemButton>
-                                <ListItemIcon sx={{ color: '#FFFFFF', marginRight: '-20px' }}>{item.icon}</ListItemIcon>
+                                <ListItemIcon sx={{ color: '#FFFFFF', marginRight: '-1.25rem', marginLeft: '3px' }}>{item.icon}</ListItemIcon>
                                 <ListItemText primary={item.text} />
                                 {item.extra && (
-                                    <ListItemIcon sx={{ color: '#FFFFFF', justifyContent: 'flex-end' }}>{item.extra}</ListItemIcon>
+                                    <ListItemIcon sx={{ color: '#FFFFFF', justifyContent: 'flex-end', marginLeft: '3px' }}>{item.extra}</ListItemIcon>
                                 )}
                             </ListItemButton>
                         </ListItem>
                     ))}
-                </List>
+                </List> */}
 
-                <div style={{ padding: '8px 16px', fontSize: '12px', color: '#B0C4DE' }}>Your Boards</div>
-                <List>
+                <div style={{ padding: '8px 16px', fontSize: '1rem', color: '#B0C4DE' }}>Your Boards</div>
+                <List sx={{
+                    '& .MuiListItemText-primary': {
+                        fontSize: '0.875rem' // This sets the font size to 14px for board items only
+                    }
+                }}>
                     {boards.map((board) => (
                         <ListItem key={board._id} disablePadding>
                             <ListItemButton onClick={() => navigate(`/board/${board._id}`)}>
-                                <ListItemIcon sx={{ color: '#FFFFFF', marginRight: '-20px' }}>
-                                    <DashboardIcon />
+                                <ListItemIcon sx={{ color: '#FFFFFF', marginRight: '-1.25rem', marginLeft: '3px' }}>
+                                <DashboardIcon sx={{ fontSize: '1rem', marginLeft: '0.25rem' }} />
                                 </ListItemIcon>
                                 <ListItemText primary={board.title} />
                             </ListItemButton>

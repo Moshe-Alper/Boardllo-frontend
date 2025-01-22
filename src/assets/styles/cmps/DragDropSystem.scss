@@ -47,10 +47,9 @@
 
   &.is-adding-task {
     .tasks-container {
-      max-height: calc(100vh - rem(276px));
+      max-height: calc(100vh - rem(292px));
     }
   }
-
 }
 
 .tasks-container {
@@ -61,8 +60,9 @@
   grid-auto-rows: min-content;
   overflow-y: auto;
   position: relative; 
+  overflow-x: hidden;
 
-  max-height: calc(100vh - rem(212px));
-  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  max-height: calc(100vh - rem(228px));
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: max-height;
 }

@@ -3,8 +3,8 @@
   top: 0;
   left: 0;
   right: 0;
-  height: $navbar-height;
-  background-color: white;
+  height: $app-header-height;
+  background-color: $blue-app-header;
   box-shadow: $shadow-small;
   z-index: 100;
 
@@ -79,11 +79,11 @@
     .icon-user {
       width: 21px;
       height: 21px;
-      color: $border-dark-gray;
+      color: $text-white;
     }
 
     .logo-text {
-      color: $border-dark-gray;
+      color: $text-white;
       font-weight: 700;
       font-size: 1.25rem;
 

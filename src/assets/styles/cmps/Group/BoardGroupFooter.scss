@@ -1,5 +1,6 @@
 .board-group-footer {
     width: 100%;
+    padding-block-start: rem(8px);
 
     .add-task-btn-preview {
         width: rem(220px);
@@ -61,8 +62,8 @@
         .buttons-container {
             display: grid;
             grid-template-columns: max-content auto;
-            align-content: start; // Changed from center to start
-            align-items: start; // Added this to align items to top
+            align-content: start; 
+            align-items: start;
             margin-block: rem(8px) 0;
 
             button {

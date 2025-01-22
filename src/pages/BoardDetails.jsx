@@ -127,7 +127,10 @@ export function BoardDetails() {
     <div className={`board-layout ${isSidebarOpen ? 'sidebar-open' : ''}`}>
       <BoardSidebar isOpen={isSidebarOpen} toggleDrawer={toggleSidebar} boards={boards} />
       <section className='board-details'>
-        <BoardHeader board={board} />
+        <BoardHeader 
+        board={board} 
+        isSidebarOpen={isSidebarOpen}
+        />
         <main className='group-container'>
           <GroupDragDropContainer items={board.groups} onDragEnd={handleDragEnd}>
             {(group, index, isDragging) => (
