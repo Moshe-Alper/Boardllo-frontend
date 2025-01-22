@@ -41,7 +41,7 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
         const task = boardService.getEmptyTask()
         task.title = newTaskTitle
 
-        const tempTask = { ...task, id: 'temp-id' }
+        const tempTask = { ...task, id: `temp-${Date.now()}` }
 
         const updatedGroup = {
             ...group,
@@ -148,7 +148,6 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
                 >
                     {(task, index, isDragging) => (
                         <TaskPreview
-                            key={task.id}
                             boardId={board._id}
                             group={group}
                             task={task}

@@ -19,8 +19,8 @@ import {
 } from '../reducers/board.reducer'
 
 // Board Actions
-export async function loadBoards() {
-  const filterBy = store.getState().boardModule.filterBy
+export async function loadBoards(filterBy) {
+  filterBy = store.getState().boardModule.filterBy
   try {
     console.log('🚀 filterBy from actions', filterBy)
     const boards = await boardService.query(filterBy)

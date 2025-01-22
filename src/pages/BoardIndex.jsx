@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-import { useState, useEffect, useRef } from 'react'
+import { Fragment, useState, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { Layout, Plus, Users } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -117,8 +117,8 @@ export function BoardIndex() {
 
           <div className='board-grid'>
             {workspaceBoards.slice(0, 4).map((board) => (
-              <>
-                <Link key={board._id} to={`/board/${board._id}`} className='board-tile'>
+              <Fragment key={board._id}>
+                <Link to={`/board/${board._id}`} className='board-tile'>
                   <div className='board-tile-details'>
                     <h3>{board.title}</h3>
                     <span className='workspace-label'>Boardllo Workspace</span>
@@ -140,7 +140,7 @@ export function BoardIndex() {
                     Edit
                   </button>
                 </section>
-              </>
+              </Fragment>
             ))}
             <button
               ref={createButtonRef}

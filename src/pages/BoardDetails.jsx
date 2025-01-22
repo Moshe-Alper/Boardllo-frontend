@@ -135,7 +135,6 @@ export function BoardDetails() {
           <GroupDragDropContainer items={board.groups} onDragEnd={handleDragEnd}>
             {(group, index, isDragging) => (
               <BoardGroup
-                key={group.id}
                 board={board}
                 group={group}
                 index={index}
