@@ -12,15 +12,12 @@
 
 .task-details {
     position: relative;
-    // margin: rem(32px) auto;
-    // width: rem(768px);
     background-color: $background-light;
     border-radius: $border-radius;
     box-shadow: $shadow-large;
-    // display: grid;
-    // grid-template-columns: minmax(rem(552px), 1fr) rem(216px); // Main content + sidebar
     min-height: rem(600px);
-
+    margin-block: rem(48px);
+    min-height: calc(100vh - rem(96px)); 
 
     &.has-cover {
         .cover {
@@ -119,11 +116,10 @@
             }
         }
 
-
         .close-btn {
             position: absolute;
-            top: $spacing-sm;
-            right: $spacing-sm;
+            top: rem(4px);
+            right: rem(4px);
             padding: $spacing-xs;
             border-radius: 50%;
             background: transparent;
@@ -375,25 +371,8 @@ main.task-main {
                 }
             }
 
-
-            textarea {
+            .desc-content {
                 grid-column: 2;
-                width: 100%;
-                min-height: rem(108px);
-                padding: $spacing-sm;
-                border: 1px solid $border-gray;
-                border-radius: $border-radius-medium;
-                font-family: $body-font;
-
-                &.empty {
-                    color: $text-secondary;
-                    background-color: $background-light-hover;
-                    cursor: pointer;
-                }
-            }
-
-            textarea {
-                resize: vertical;
             }
         }
 

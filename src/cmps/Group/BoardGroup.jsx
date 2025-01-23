@@ -6,6 +6,7 @@ import { BoardGroupHeader } from './BoardGroupHeader'
 import { BoardGroupFooter } from './BoardGroupFooter'
 import { TaskPreview } from '../Task/TaskPreview'
 import { TaskDragDropContainer } from '../DragDropSystem'
+import { makeId } from '../../services/util.service'
 import { store } from '../../store/store'
 
 export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
@@ -41,7 +42,7 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
         const task = boardService.getEmptyTask()
         task.title = newTaskTitle
 
-        const tempTask = { ...task, id: `temp-${Date.now()}` }
+        const tempTask = { ...task, id: 'temp-id' }
 
         const updatedGroup = {
             ...group,

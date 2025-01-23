@@ -10,6 +10,7 @@ import { LabelPicker } from '../DynamicPickers/Pickers/LabelPicker'
 import { DatePicker } from '../DynamicPickers/Pickers/DatePicker'
 import { ChecklistPicker } from '../DynamicPickers/Pickers/ChecklistPicker'
 import { CoverPicker } from '../DynamicPickers/Pickers/CoverPicker'
+import { TaskDescription } from './TaskDescription'
 
 const PICKERS = [
     { icon: 'joinIcon', label: 'Join', picker: null },
@@ -49,10 +50,8 @@ export function TaskDetails() {
         return [null, null]
     }, [board, taskId])
 
-
     const [isEditingTitle, setIsEditingTitle] = useState(false)
     const [editedTitle, setEditedTitle] = useState(task?.title || '')
-    const [isEditingDescription, setIsEditingDescription] = useState(false)
     const [editedDescription, setEditedDescription] = useState(task?.description || '')
 
     const hasCover = task?.style?.coverColor ? true : false
@@ -90,30 +89,38 @@ export function TaskDetails() {
         }
     }
 
-    async function handleTitleSubmit() {
-        if (!editedTitle.trim()) {
-            setEditedTitle(task.title)
-            setIsEditingTitle(false)
-            showErrorMsg('Title cannot be empty')
-            return
+    async function handleTaskUpdate(field, value) {
+        if (!value.trim()) {
+            showErrorMsg(`${field} cannot be empty`)
+            return false
         }
 
-        if (editedTitle === task.title) {
-            setIsEditingTitle(false)
-            return
+        if (value === task[field]) {
+            return true
         }
 
-        const updatedTask = { ...task, title: editedTitle.trim() }
+        const updatedTask = { ...task, [field]: value.trim() }
 
         try {
             await updateTask(board._id, currGroup.id, updatedTask)
-            showSuccessMsg('Title updated successfully')
-            setIsEditingTitle(false)
+            showSuccessMsg(`${field} updated successfully`)
+            return true
         } catch (err) {
-            showErrorMsg('Failed to update title')
-            setEditedTitle(task.title)
-            setIsEditingTitle(false)
+            showErrorMsg(`Failed to update ${field}`)
+            return false
         }
+    }
+
+    async function handleUpdateTitle() {
+        const success = await handleTaskUpdate('title', editedTitle)
+        if (success) setIsEditingTitle(false)
+        else setEditedTitle(task.title)
+    }
+
+    async function handleUpdateDescription(newDescription) {
+        const success = await handleTaskUpdate('description', newDescription)
+        if (success) setEditedDescription(newDescription)
+        else setEditedDescription(task.description)
     }
 
     function handlePickerToggle(Picker, title, ev) {
@@ -133,7 +140,6 @@ export function TaskDetails() {
     }
 
     if (!task) return <div>Loading...</div>
-
     return (
         <div className="task-details-overlay" onClick={handleOverlayClick}>
             <article className={`task-details ${hasCover ? 'has-cover' : ''}`}>
@@ -151,7 +157,7 @@ export function TaskDetails() {
                                         textarea.style.height = `${textarea.scrollHeight}px`
                                         setEditedTitle(ev.target.value)
                                     }}
-                                    onBlur={handleTitleSubmit}
+                                    onBlur={handleUpdateTitle}
                                     onKeyDown={handleTitleKeyPress}
                                     autoFocus
                                     rows={1}
@@ -236,21 +242,13 @@ export function TaskDetails() {
                                     <button>Edit</button>
                                 </div>
                             </hgroup>
-                            {isEditingDescription ? (
-                                <textarea
-                                    value={editedDescription}
-                                    onChange={(ev) => setEditedDescription(ev.target.value)}
-                                    placeholder="Add a more detailed description..."
-                                    autoFocus
+
+                            <div className="desc-content">
+                                <TaskDescription
+                                    initialDescription={task.description}
+                                    onSave={(newDescription) => handleUpdateDescription(newDescription)}
                                 />
-                            ) : (
-                                <div
-                                    onClick={() => setIsEditingDescription(true)}
-                                    className={!task.description ? 'empty' : ''}
-                                >
-                                    {task.description || 'Add a more detailed description...'}
-                                </div>
-                            )}
+                            </div>
                         </section>
 
                         <section className="activity">
@@ -272,29 +270,29 @@ export function TaskDetails() {
                     <aside className="task-sidebar">
                         <ul className="features">
                             <li>
-                            {PICKERS.map(({ icon, label, picker }) => (
-                                <button
-                                key={label}
-                                onClick={(ev) => handlePickerToggle(picker, label, ev)}
-                                >
-                                    <img src={svgService[icon]} alt={label} />
-                                    <span>{label}</span>
-                                </button>
-                            ))}
+                                {PICKERS.map(({ icon, label, picker }) => (
+                                    <button
+                                        key={label}
+                                        onClick={(ev) => handlePickerToggle(picker, label, ev)}
+                                    >
+                                        <img src={svgService[icon]} alt={label} />
+                                        <span>{label}</span>
+                                    </button>
+                                ))}
                             </li>
                         </ul>
 
                         <ul className="actions">
                             <hgroup>
-                            <h4>Actions</h4>
+                                <h4>Actions</h4>
                             </hgroup>
                             <li>
-                            {ACTION_BUTTONS.map(({ icon, label }) => (
-                                <button key={label}>
-                                    <img src={svgService[icon]} alt={label} />
-                                    <span>{label}</span>
-                                </button>
-                            ))}
+                                {ACTION_BUTTONS.map(({ icon, label }) => (
+                                    <button key={label}>
+                                        <img src={svgService[icon]} alt={label} />
+                                        <span>{label}</span>
+                                    </button>
+                                ))}
                             </li>
                         </ul>
                     </aside>
