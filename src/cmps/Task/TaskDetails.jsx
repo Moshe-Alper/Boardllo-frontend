@@ -228,12 +228,14 @@ export function TaskDetails() {
                             </div>
                         </section>
 
-                        <section className="description">
-                            <img src={svgService.descriptionIcon} alt="Description" />
-                            <header className="description-header">
-                                <h3>Description</h3>
-                                <button>Edit</button>
-                            </header>
+                        <section className="desc">
+                            <img src={svgService.descriptionIcon} alt="Description" className='desc-icon' />
+                            <hgroup className="desc-header">
+                                <div className="desc-controls">
+                                    <h3>Description</h3>
+                                    <button>Edit</button>
+                                </div>
+                            </hgroup>
                             {isEditingDescription ? (
                                 <textarea
                                     value={editedDescription}
@@ -252,12 +254,13 @@ export function TaskDetails() {
                         </section>
 
                         <section className="activity">
-                            <img src={svgService.activityIcon} alt="Activity" />
-                            <header className="activity-header">
-                                <h3>Activity</h3>
-                                <button>Show details</button>
-                            </header>
-
+                            <img src={svgService.activityIcon} alt="Activity" className='activity-icon' />
+                            <hgroup className="activity-header">
+                                <div className="activity-controls">
+                                    <h3>Activity</h3>
+                                    <button>Show details</button>
+                                </div>
+                            </hgroup>
                             <div className="activity-item">
                                 <div className="user-avatar"></div>
                                 <p><span>User</span> added this card to {currGroup.title}</p>

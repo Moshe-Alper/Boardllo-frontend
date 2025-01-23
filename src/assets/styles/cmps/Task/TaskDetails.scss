@@ -145,6 +145,8 @@ main.task-main {
     grid-template-rows: auto auto;
     padding-inline-start: rem(16px);
     padding-block-end: rem(8px);
+    column-gap: rem(16px);
+    row-gap: rem(8px);
 
     .task-content {
         grid-column: 1;
@@ -332,26 +334,49 @@ main.task-main {
             }
         }
 
-        .description {
+        .desc {
             display: grid;
+            row-gap: rem(12px);
             grid-template-columns: rem(40px) minmax(0, 1fr); //icon , body'
-            height: fit-content;
+            margin-block-end: rem(24px);
 
-            .description-header {
-                display: grid;
-                grid-auto-flow: column;
+            .desc-icon {
+                grid-column: 1;
+                padding: rem(6px) rem(4px);
+                opacity: 0.7;
+            }
+
+            .desc-header {
+                grid-column: 2;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
+                column-gap: rem(8px);
+                row-gap: rem(2px);
+
+                .desc-controls {
+                    display: flex;
+                    flex-grow: 1;
+                    align-items: center;
+                    column-gap: rem(8px);
+                    justify-content: space-between;
+
+                    h3 {
+                        margin-block-end: 0;
+                        font-size: rem(16px);
+                        line-height: rem(20px);
+                        color: $text-primary;
+                    }
+                }
 
                 button {
                     @include task-content-btn;
                 }
             }
 
-            img {
-                grid-column: 1;
-            }
 
-            textarea,
-            div {
+            textarea {
                 grid-column: 2;
                 width: 100%;
                 min-height: rem(108px);
@@ -374,20 +399,43 @@ main.task-main {
 
         .activity {
             display: grid;
-            grid-template-columns: rem(40px) minmax(0, 1fr); //icon , body'
+            row-gap: rem(12px);
+            grid-template-columns: rem(40px) minmax(0, 1fr);
             height: fit-content;
 
+            .activity-icon {
+                grid-column: 1;
+                padding: rem(6px) rem(4px);
+                opacity: 0.7;
+            }
+
             .activity-header {
-                display: grid;
-                grid-auto-flow: column;
+                grid-column: 2;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
+                column-gap: rem(8px);
+                row-gap: rem(2px);
+
+                .activity-controls {
+                    display: flex;
+                    flex-grow: 1;
+                    align-items: center;
+                    column-gap: rem(8px);
+                    justify-content: space-between;
+
+                    h3 {
+                        margin-block-end: 0;
+                        font-size: rem(16px);
+                        line-height: rem(20px);
+                        color: $text-primary;
+                    }
+                }
 
                 button {
                     @include task-content-btn;
                 }
-            }
-
-            img {
-                grid-column: 1;
             }
 
             .activity-item {
