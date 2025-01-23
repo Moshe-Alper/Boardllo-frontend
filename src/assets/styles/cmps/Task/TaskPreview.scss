@@ -17,6 +17,13 @@
       
     &:hover {
         background-color: $background-light-hover;
+
+        .edit-icon {
+            display: flex;
+            background-color: $background-light-hover;
+
+        }
+    
     }
 
     &.has-cover {
@@ -68,6 +75,10 @@
         justify-content: center;
         align-items: center;
         transition: display 0.3s ease;
+
+        &:hover {
+            background-color: $details-btn-main-clr;
+        }
 
         img {
             inline-size: 1rem; // 16px
