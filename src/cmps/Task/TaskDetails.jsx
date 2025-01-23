@@ -270,27 +270,33 @@ export function TaskDetails() {
                     </section>
 
                     <aside className="task-sidebar">
-                        <div className="add-to-card">
+                        <ul className="features">
+                            <li>
                             {PICKERS.map(({ icon, label, picker }) => (
                                 <button
-                                    key={label}
-                                    onClick={(ev) => handlePickerToggle(picker, label, ev)}
+                                key={label}
+                                onClick={(ev) => handlePickerToggle(picker, label, ev)}
                                 >
                                     <img src={svgService[icon]} alt={label} />
-                                    {label}
+                                    <span>{label}</span>
                                 </button>
                             ))}
-                        </div>
+                            </li>
+                        </ul>
 
-                        <div className="actions">
-                            <h3>Actions</h3>
+                        <ul className="actions">
+                            <hgroup>
+                            <h4>Actions</h4>
+                            </hgroup>
+                            <li>
                             {ACTION_BUTTONS.map(({ icon, label }) => (
                                 <button key={label}>
                                     <img src={svgService[icon]} alt={label} />
-                                    {label}
+                                    <span>{label}</span>
                                 </button>
                             ))}
-                        </div>
+                            </li>
+                        </ul>
                     </aside>
                 </main>
             </article>
