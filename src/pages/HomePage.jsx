@@ -1,9 +1,9 @@
-import { Layout, Users, CheckSquare } from 'lucide-react'
-import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Layout, Users, CheckSquare } from "lucide-react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 export function HomePage() {
-  const user = useSelector((storeState) => storeState.userModule.user)
+  const user = useSelector((storeState) => storeState.userModule.user);
 
   return (
     <div className='homepage'>
@@ -11,8 +11,13 @@ export function HomePage() {
         <section className='hero-section  main-layout full'>
           <div className='hero-content'>
             <div className='hero-text'>
-              <h1>Trello brings all your tasks, teammates, and tools together</h1>
-              <p>Keep everything organized and work more collaboratively in one place.</p>
+              <h1>
+                Boardllo brings all your tasks, teammates, and tools together
+              </h1>
+              <p>
+                Keep everything organized and work more collaboratively in one
+                place.
+              </p>
             </div>
 
             <div className='features-grid'>
@@ -34,7 +39,7 @@ export function HomePage() {
                 </Link>
               )}
               {!user ? (
-                <Link to='/signup'>
+                <Link to='/login'>
                   <div className='feature-card'>
                     <Users className='feature-icon' />
                     <h3>Team Collaboration</h3>
@@ -52,7 +57,7 @@ export function HomePage() {
               )}
 
               {!user ? (
-                <Link to='/signup'>
+                <Link to='/login'>
                   <div className='feature-card'>
                     <CheckSquare className='feature-icon' />
                     <h3>Task Management</h3>
@@ -79,7 +84,20 @@ export function HomePage() {
             />
           </section>
         </section>
+
+        <section className='social-proof'>
+          <h2>Trusted by millions of users worldwide</h2>
+          <div className='stats-grid'>
+            {["4.5+ Stars", "2M+ Users", "100+ Countries", "50K+ Teams"].map(
+              (stat) => (
+                <div key={stat} className='stat-item'>
+                  <p>{stat}</p>
+                </div>
+              )
+            )}
+          </div>
+        </section>
       </main>
     </div>
-  )
+  );
 }

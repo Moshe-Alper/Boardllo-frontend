@@ -1,34 +1,36 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react'
-import { userService } from '../services/user/user.service.local.js'
-import { useNavigate } from 'react-router'
-import { login } from '../store/actions/user.actions.js'
-import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
+import { useState } from "react";
+import { userService } from "../services/user/user.service.local.js";
+import { useNavigate } from "react-router";
+import { login } from "../store/actions/user.actions.js";
+import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js";
 
 export function LoginForm() {
-  const [credentials, setCredentials] = useState(userService.getEmptyCredentials())
-  const navigate = useNavigate()
+  const [credentials, setCredentials] = useState(
+    userService.getEmptyCredentials()
+  );
+  const navigate = useNavigate();
 
   async function _login(credentials) {
     try {
-      await login(credentials)
-      navigate('/board')
-      showSuccessMsg('Logged in successfully')
+      await login(credentials);
+      navigate("/board");
+      showSuccessMsg("Logged in successfully");
     } catch (err) {
-      console.log(`problem with login`, err)
-      showErrorMsg('Oops try again')
+      console.log(`problem with login`, err);
+      showErrorMsg("Oops try again");
     }
   }
 
   function handleChange({ target }) {
-    const { name: field, value } = target
-    setCredentials((prevCreds) => ({ ...prevCreds, [field]: value }))
+    const { name: field, value } = target;
+    setCredentials((prevCreds) => ({ ...prevCreds, [field]: value }));
   }
 
   function handleSubmit(ev) {
-    ev.preventDefault()
-    _login(credentials)
-    navigate('/')
+    ev.preventDefault();
+    _login(credentials);
+    navigate("/");
   }
 
   return (
@@ -68,5 +70,5 @@ export function LoginForm() {
         <div className='logo'>Boardllo</div>
       </form>
     </section>
-  )
+  );
 }
