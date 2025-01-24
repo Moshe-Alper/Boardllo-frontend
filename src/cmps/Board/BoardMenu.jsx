@@ -53,6 +53,7 @@ export function BoardMenu({ isOpen, toggleMenu }) {
       open={isOpen}
       classes={{ paper: "custom-drawer" }}
       sx={{
+        zIndex: 1000,
         flexShrink: 0,
         "& .MuiDrawer-paper": { boxShadow: "none" },
       }}
