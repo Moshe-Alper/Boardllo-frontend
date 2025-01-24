@@ -8,10 +8,11 @@
 }
 
 ul.groups-container {
+  min-width: 272px;
   display: flex; 
   align-items: flex-start;
-  gap: rem(12px);
-  padding: 0 rem(8px);
+  gap: rem(5px);
+  padding: 0 rem(8px) 0 rem(2px);
   padding-top: 0;
   margin: 0;
   list-style: none;
@@ -29,12 +30,6 @@ ul.groups-container {
     transform: rotate(2deg) scale(1.02);
     box-shadow: $shadow-large;
     background-color: darken($background-light, 2%);
-  }
-
-  &.is-adding-task {
-    .tasks-container {
-      // max-height: calc(100vh - rem(292px));
-    }
   }
 }
 
