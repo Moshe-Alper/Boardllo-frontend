@@ -87,7 +87,7 @@ export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
                     }}
                 >
                     <div>
-                        <h3 style={{ margin: 0, fontSize: '0.875rem' }}>Trello Workspace</h3>
+                        <h3 style={{ margin: 0, fontSize: '0.875rem' }}>Bordello Workspace</h3>
                     </div>
                     <IconButton onClick={toggleDrawer} sx={{ color: '#FFFFFF', width: '1.25rem', height: '1.25rem', marginLeft: '3px' }}>
                         <ChevronLeftIcon />

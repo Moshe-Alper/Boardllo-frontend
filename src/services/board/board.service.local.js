@@ -131,7 +131,7 @@ async function saveTask(boardId, groupId, task) {
   const group = board.groups.find((group) => group.id === groupId)
   if (!group) throw new Error('Group not found')
 
-  const taskIdx = group.tasks.findIndex((task) => task.id === task.id)
+  const taskIdx = group.tasks.findIndex((t) => t.id === task.id)
   if (taskIdx === -1) {
     group.tasks.push(task)
   } else {

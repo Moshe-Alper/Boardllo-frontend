@@ -33,16 +33,15 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
 
     async function onAddTask(ev) {
         ev.preventDefault()
-
         if (!newTaskTitle.trim()) {
             showErrorMsg('Task title cannot be empty')
             return
         }
-
         const task = boardService.getEmptyTask()
         task.title = newTaskTitle
 
-        const tempTask = { ...task, id: 'temp-id' }
+        const tempId = `temp-${Date.now()}`
+        const tempTask = { ...task, id: tempId }
 
         const updatedGroup = {
             ...group,
@@ -57,7 +56,7 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
             const finalGroup = {
                 ...group,
                 tasks: updatedGroup.tasks.map(task =>
-                    task.id === 'temp-id' ? savedTask : task
+                    task.id === tempId ? savedTask : task
                 )
             }
 
@@ -69,7 +68,7 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
             showErrorMsg('Cannot add task')
             const revertedGroup = {
                 ...group,
-                tasks: group.tasks.filter(task => task.id !== 'temp-id')
+                tasks: group.tasks.filter(task => task.id !== tempId)
             }
             onUpdateGroup(revertedGroup)
         }

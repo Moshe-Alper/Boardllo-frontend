@@ -141,7 +141,7 @@ export function AppHeader() {
                             onMouseDown={() => handleBoardClick(board._id)}
                           >
                             {board.title}
-                            <h2>Trello Workspace</h2>
+                            <h2>Bordello Workspace</h2>
                           </div>
                         ))}
                     </ul>

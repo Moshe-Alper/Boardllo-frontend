@@ -11,7 +11,7 @@ export function HomePage() {
         <section className='hero-section  main-layout full'>
           <div className='hero-content'>
             <div className='hero-text'>
-              <h1>Trello brings all your tasks, teammates, and tools together</h1>
+              <h1>Bordello brings all your tasks, teammates, and tools together</h1>
               <p>Keep everything organized and work more collaboratively in one place.</p>
             </div>
 

@@ -78,7 +78,7 @@ export function UserProfile() {
 
           <img
             className='dog-svg'
-            src='https://trello.com/assets/eff3d701a9c3a71105ea.svg'
+            src='https://bordello.com/assets/eff3d701a9c3a71105ea.svg'
             alt=''
           />
           <h1>Manage your personal information</h1>
