@@ -1,27 +1,31 @@
 .board-group-footer {
     width: 100%;
     padding-block-start: rem(8px);
+    grid-row: 3;
+    margin: 0;
 
     .add-task-btn-preview {
-        width: rem(220px);
-        height: rem(32px);
-        background-color: transparent;
-        color: $text-secondary;
-        border: none;
-        border-radius: $border-radius-large;
-        font-size: rem(14px);
-        font-weight: 600;
-        text-align: left;
-        cursor: pointer;
-        transition: background-color 0.2s ease, color 0.2s ease;
         display: flex;
         align-items: center;
-        margin-inline-start: 0;
-        margin-block-start: 0;
-        
-        &:hover {
-            background-color: $details-add-hover;
-        }
+        justify-content: space-between;
+        padding: rem(8px) rem(8px) 0;
+        column-gap: rem(8px);
+
+        button {
+            display: flex;
+            flex-grow: 1;
+            align-items: center;
+            margin: 0;
+            padding: rem(6px) rem(12px) rem(6px) rem(8px);
+            border-radius: rem(8px);
+            background-color: transparent;
+            user-select: none;
+            color: $text-secondary;
+            
+            &:hover {
+                background-color: $details-add-hover;
+            }
+       }
 
         img {
             width: rem(16px);
@@ -32,7 +36,6 @@
     }
     
     .add-task-container {
-        width: 100%;
         box-sizing: border-box;
 
         textarea {
@@ -59,12 +62,13 @@
             }
         }
 
-        .buttons-container {
-            display: grid;
-            grid-template-columns: max-content auto;
-            align-content: start; 
-            align-items: start;
-            margin-block: rem(8px) 0;
+        .add-task-btn-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: rem(4px);
+            margin: 0;
+            margin-block-start: rem(8px);
 
             button {
                 border-radius: $border-radius-large;

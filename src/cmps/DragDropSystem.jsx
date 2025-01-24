@@ -1,4 +1,6 @@
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
+import { svgService } from "../services/svg.service"
+import { forwardRef } from 'react'
 
 export function GroupDragDropContainer({ items = [], onDragEnd, children }) {
     return (
@@ -36,19 +38,29 @@ export function GroupDragDropContainer({ items = [], onDragEnd, children }) {
     )
 }
 
-export function TaskDragDropContainer({ groupId, tasks = [], children }) {
+export function TaskDragDropContainer({ groupId, tasks = [], children, isAddingTask, setIsAddingTask, newTaskTitle, handleTitleChange, onAddTask, tasksContainerRef }) {
+    
+    function handleKeyPress(ev) {
+        if (ev.key === 'Enter' && !ev.shiftKey) {
+            ev.preventDefault()
+            onAddTask(ev)
+        }
+    }
     return (
         <Droppable droppableId={groupId} type="task">
             {(provided) => (
-                <li 
+                <li
                     className="tasks-container"
-                    ref={provided.innerRef} 
+                    ref={(el) => {
+                        provided.innerRef(el)
+                        if (tasksContainerRef) tasksContainerRef.current = el
+                    }}
                     {...provided.droppableProps}
                 >
                     {tasks.map((task, index) => (
-                        <Draggable 
-                            key={task.id} 
-                            draggableId={task.id} 
+                        <Draggable
+                            key={task.id}
+                            draggableId={task.id}
                             index={index}
                         >
                             {(provided, snapshot) => (
@@ -62,6 +74,26 @@ export function TaskDragDropContainer({ groupId, tasks = [], children }) {
                             )}
                         </Draggable>
                     ))}
+                    {isAddingTask && (
+                        <form className="add-task-container" onSubmit={onAddTask}>
+                            <textarea
+                                placeholder="Enter task title or paste a link"
+                                value={newTaskTitle}
+                                onChange={handleTitleChange}
+                                onKeyDown={handleKeyPress}
+                            />
+                            <div className="add-task-btn-container">
+                                <button type="submit" className="add-task-btn-active">Add card</button>
+                                <button
+                                    type="button"
+                                    className="cancel-btn"
+                                    onClick={() => setIsAddingTask(false)}
+                                >
+                                    <img src={svgService.closeIcon} alt="Cancel" />
+                                </button>
+                            </div>
+                        </form>
+                    )}
                     {provided.placeholder}
                 </li>
             )}

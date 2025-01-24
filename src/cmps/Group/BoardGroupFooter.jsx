@@ -13,6 +13,7 @@ export function BoardGroupFooter({isAddingTask, setIsAddingTask, newTaskTitle, h
     return (
         <footer className="board-group-footer">
             {isAddingTask ? (
+                <li>
                 <form className="add-task-container" onSubmit={onAddTask}>
                     <textarea
                         placeholder="Enter task title or paste a link"
@@ -20,7 +21,7 @@ export function BoardGroupFooter({isAddingTask, setIsAddingTask, newTaskTitle, h
                         onChange={handleTitleChange}
                         onKeyDown={handleKeyPress}
                     />
-                    <div className="buttons-container">
+                    <div className="add-task-btn-container">
                         <button type="submit" className="add-task-btn-active">Add card</button>
                         <button
                             type="button"
@@ -31,11 +32,15 @@ export function BoardGroupFooter({isAddingTask, setIsAddingTask, newTaskTitle, h
                         </button>
                     </div>
                 </form>
+
+                </li>
             ) : (
-                <button className="add-task-btn-preview" onClick={() => setIsAddingTask(true)}>
+                <div className='add-task-btn-preview'>
+                <button onClick={() => setIsAddingTask(true)}>
                     <img src={svgService.addIcon} alt="Add" className="add-icon" />
                     Add a card
                 </button>
+                </div>
             )}
         </footer>
     )
