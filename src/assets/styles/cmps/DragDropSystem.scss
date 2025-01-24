@@ -7,28 +7,14 @@
   height: 100%;
 }
 
-.board-content {
+ul.groups-container {
   display: flex; 
   align-items: flex-start;
-  gap: rem(4px);
-  padding: 0 8px;
+  gap: rem(12px);
+  padding: 0 rem(8px);
   padding-top: 0;
   margin: 0;
   list-style: none;
-  width: fit-content; 
-  min-height: 100%;
-  
-  > * { 
-    flex: 0 0 auto; 
-  }
-}
-
-.board-groups-container {
-  display: flex;
-  align-items: flex-start;
-  gap: $spacing-sm;
-  flex-direction: row;
-  min-height: 100%;
 }
 
 .board-group {
@@ -47,22 +33,8 @@
 
   &.is-adding-task {
     .tasks-container {
-      max-height: calc(100vh - rem(292px));
+      // max-height: calc(100vh - rem(292px));
     }
   }
 }
 
-.tasks-container {
-  display: grid;
-  gap: 0.5rem;
-  padding-bottom: 8px;
-  min-height: 0.125rem;
-  grid-auto-rows: min-content;
-  overflow-y: auto;
-  position: relative; 
-  overflow-x: hidden;
-
-  max-height: calc(100vh - rem(228px));
-  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: max-height;
-}

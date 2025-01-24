@@ -6,10 +6,9 @@ export function GroupDragDropContainer({ items = [], onDragEnd, children }) {
             <Droppable droppableId="board" type="group" direction="horizontal">
                 {(provided) => (
                     <ul 
-                        className="board-content"
+                        className="groups-container"
                         ref={provided.innerRef} 
                         {...provided.droppableProps}
-                        
                     >
                         {items.map((item, index) => (
                             <Draggable 

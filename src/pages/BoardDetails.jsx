@@ -131,7 +131,7 @@ export function BoardDetails() {
         board={board} 
         isSidebarOpen={isSidebarOpen}
         />
-        <main className='group-container'>
+        <section className='board-canvas'>
           <GroupDragDropContainer items={board.groups} onDragEnd={handleDragEnd}>
             {(group, index, isDragging) => (
               <BoardGroup
@@ -152,7 +152,7 @@ export function BoardDetails() {
             isAddingGroup={isAddingGroup}
             setIsAddingGroup={setIsAddingGroup}
           />
-        </main>
+        </section>
       </section>
       <BoardMenu isOpen={isMenuOpen} toggleMenu={toggleBoardMenu} board={board} />
     </div>

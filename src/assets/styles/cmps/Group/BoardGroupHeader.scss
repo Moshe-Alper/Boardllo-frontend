@@ -1,10 +1,12 @@
 .board-group-header {
     display: flex;
+    position: relative;
+    flex-grow: 0;
+    flex-wrap: 0;
+    align-items: flex-start;
     justify-content: space-between;
-    align-items: center;
-    padding: 0;
-    min-height: 2rem; 
-    max-width: 100%;  
+    padding: rem(8px) rem(8px) 0;
+    row-gap: 0;
     
     .title-container, .title-editor {
         flex: 1 1 0; 
