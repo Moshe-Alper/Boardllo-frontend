@@ -1,8 +1,25 @@
-import React from 'react'
-import { Drawer, List, ListItem, ListItemIcon, ListItemText, Divider, IconButton } from '@mui/material'
-import { Info, ListAlt, Archive, Settings, Brush, Label, Visibility, CopyAll, Share, Close, ExitToApp } from '@mui/icons-material'
+import React, { useEffect } from 'react';
+import { Drawer, List, ListItem, ListItemIcon, ListItemText, Divider, IconButton } from '@mui/material';
+import { Info, ListAlt, Archive, Settings, Brush, Label, Visibility, CopyAll, Share, Close, ExitToApp } from '@mui/icons-material';
 
 export function BoardMenu({ isOpen, toggleMenu }) {
+    useEffect(() => {
+
+        function handleKeyBoardClickMenu(event) {
+            if (event.key === ']') {
+                console.log('isOpenBefore' , isOpen)
+                toggleMenu()
+                
+            }
+        }
+
+        window.addEventListener('keydown', handleKeyBoardClickMenu);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyBoardClickMenu);
+        };
+    }, [toggleMenu])
+
     const menuItems = [
         { icon: <Info />, text: "About this board", subText: "Add a description to your board" },
         { icon: <ListAlt />, text: "Activity" },
@@ -19,32 +36,30 @@ export function BoardMenu({ isOpen, toggleMenu }) {
     ];
 
     return (
-        <Drawer       
+        <Drawer
             anchor="right"
             open={isOpen}
-            onClose={toggleMenu}
-            classes={{ paper: 'custom-drawer' }} 
+            classes={{ paper: 'custom-drawer' }}
             sx={{
-                
                 flexShrink: 0,
-                '& .MuiDrawer-paper': { boxShadow: 'none', },
+                '& .MuiDrawer-paper': { boxShadow: 'none' },
             }}
-            BackdropProps={{ invisible: true }}
-            >
-            <div style={{ padding: '16px' }}>
+            BackdropProps={{ invisible: true }} 
+        >
+            <div style={{ padding: '16px', width: 326 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                     <h3 style={{ margin: 0, flex: 1, textAlign: 'center' }}>Menu</h3>
+                    <h3 style={{ margin: 0, flex: 1, textAlign: 'center' }}>Menu</h3>
                     <IconButton onClick={toggleMenu}>
-                     <Close sx={{  }} />
+                        <Close />
                     </IconButton>
                 </div>
                 <Divider />
                 <List>
                     {menuItems.map((item, index) =>
                         item.divider ? (
-                            <Divider key={index} />
+                            <Divider key={`divider-${index}`} />
                         ) : (
-                            <ListItem key={index} button>
+                            <ListItem key={item.text} button>
                                 <ListItemIcon>{item.icon}</ListItemIcon>
                                 <ListItemText
                                     primary={item.text}
