@@ -3,11 +3,8 @@ import { addTask, loadBoard, updateBoard, updateGroup } from '../../store/action
 import { boardService } from '../../services/board'
 import { showSuccessMsg, showErrorMsg } from '../../services/event-bus.service'
 import { BoardGroupHeader } from './BoardGroupHeader'
-import { BoardGroupFooter } from './BoardGroupFooter'
 import { TaskPreview } from '../Task/TaskPreview'
 import { TaskDragDropContainer } from '../DragDropSystem'
-import { makeId } from '../../services/util.service'
-import { store } from '../../store/store'
 import { svgService } from '../../services/svg.service'
 
 export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
@@ -161,6 +158,7 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
                     newTaskTitle={newTaskTitle}
                     handleTitleChange={handleTaskTitleChange}
                     tasksContainerRef={tasksContainerRef}
+                    onAddTask={onAddTask}
                 >
                     {(task, index, isDragging) => (
                         <TaskPreview

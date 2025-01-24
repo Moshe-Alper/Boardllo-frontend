@@ -56,7 +56,6 @@ $details-btn-txt-hover: #d0d4dc; // Close button for details
 $details-add-hover: #cbcfd8;
 $details-new-list-background-hover: #bbbec1;
 
-
 // Shadows
 $shadow-small: 0 1px 2px $shadow-color;
 $shadow-medium: 0 4px 8px $shadow-color;
@@ -89,7 +88,7 @@ $layoutPadding-large: 1.5rem; // 24px
 // Groups
 $group-padding: 0.75rem; // 12px
 
-// New Specific Variables for Bordello-Like Design
+// New Specific Variables for Design
 $card-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); // Subtle shadow for cards
 $input-shadow: 0 0.0625rem 0 rgba(9, 30, 66, 0.25); // Shadow for input fields
 $app-header-height: 3rem; // 48px
@@ -97,8 +96,8 @@ $board-header-height: 3.5rem; // 56px
 $avatar-size: 2rem; // Profile or member avatar sizes (32px)
 $modal-background: rgba(0, 0, 0, 0.4); // Overlay background for modals
 $hover-transition: all 0.2s ease-in-out; // Consistent hover transition effect
-// BORDERS
 
+// BORDERS
 $border-radius: 0.75rem;
 
 // Blue Theme Variables
@@ -110,3 +109,5 @@ $blue-app-header: #092e6b;
 // Helper variables for hover states
 $blue-hover: darken($blue-base, 5%);
 $blue-active: darken($blue-base, 10%);
+
+$add-preview-or-active-diff: 2.25rem; // 36px

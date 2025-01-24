@@ -11,7 +11,7 @@
         padding 0.3s ease-in-out,
         background-color 0.3s ease-in-out;
     display: grid;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: auto auto auto;
     height: 100%;
 
     > * {
@@ -22,6 +22,10 @@
         grid-row: 1;
     }
     
+    .board-group-footer {
+        grid-row: 3;
+    }
+
     .tasks-container {
         grid-row: 2;
         display: grid;
@@ -34,7 +38,7 @@
         overflow-y: auto;
         position: relative; 
         overflow-x: hidden;
-        max-height: calc(100vh - rem(228px));
+        max-height: calc(100vh - rem(230px));
     }
 
     &.is-adding-task {
@@ -45,9 +49,7 @@
 
         .tasks-container {
             scroll-behavior: smooth;
-            .add-task-container {
-                background-color: yellow;
-              }
+            max-height: calc(100vh - rem(230px) + $add-preview-or-active-diff);
         }
       }
 
