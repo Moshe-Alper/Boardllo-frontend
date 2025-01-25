@@ -37,6 +37,7 @@ $text-secondary: #5e6c84; // Subtle secondary text
 $text-light: #97a0af; // Muted text for inactive elements
 $text-dark: #020112;
 $text-white: #ffffff;
+$text-placeholder: #6b778c;
 $text-subtle: #44546f;
 
 // Hover and Active States
@@ -111,3 +112,18 @@ $blue-hover: darken($blue-base, 5%);
 $blue-active: darken($blue-base, 10%);
 
 $add-preview-or-active-diff: 2.25rem; // 36px
+
+// Labels colors
+$label-done: #4bce97;
+$label-todo: #f5cd48;
+$label-critical: #c9372c;
+$label-nice-to-do: #e0d8fe;
+$label-in-progress: #579eff;
+
+:root {
+  --label-done: #{$label-done};
+  --label-todo: #{$label-todo};
+  --label-critical: #{$label-critical};
+  --label-nice-to-do: #{$label-nice-to-do};
+  --label-in-progress: #{$label-in-progress};
+}

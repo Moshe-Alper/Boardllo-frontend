@@ -59,7 +59,7 @@
     }
 
     .picker-content {
-        padding: $spacing-md;
+        padding: rem(12px);
         padding-block-start: 0;
         overflow-y: auto;
         flex-grow: 1;
