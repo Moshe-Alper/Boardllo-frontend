@@ -1,6 +1,8 @@
 .homepage {
   background: linear-gradient($background-light, $background-white);
   font-family: $workspace-font;
+  margin: 2rem;
+  border-radius: 1rem;
 
   // Navigation
   .main-nav {
@@ -64,6 +66,7 @@
     margin: 0 auto;
     padding: $spacing-xl $layoutPadding-medium;
     min-height: 100dvh;
+    padding: 3rem;
 
     .hero-content {
       display: grid;
@@ -143,7 +146,7 @@
 
       .feature-card {
         background: $card-background;
-        padding: $spacing-lg;
+        padding: $spacing-md;
         border-radius: $border-radius-medium;
         box-shadow: $card-shadow;
         transition: $hover-transition;

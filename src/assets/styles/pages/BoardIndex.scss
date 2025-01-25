@@ -120,6 +120,40 @@
         position: relative;
         transition: $hover-transition;
 
+        .workspace-crud {
+          position: absolute;
+          top: 4px;
+          right: 4px;
+          display: flex;
+          gap: 4px;
+          opacity: 0;
+          transition: opacity 0.15s ease;
+
+          .crud-btn {
+            padding: 3px;
+            border: none;
+            border-radius: $border-radius-small;
+            cursor: pointer;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: $text-primary;
+            line-height: 0;
+
+            &:hover {
+              background-color: white;
+              color: $primary-blue;
+              scale: 1.1;
+
+              &:last-child {
+                color: #eb5a46;
+              }
+            }
+          }
+        }
+
+        &:hover .workspace-crud {
+          opacity: 1;
+        }
+
         &:hover {
           opacity: 0.9;
         }

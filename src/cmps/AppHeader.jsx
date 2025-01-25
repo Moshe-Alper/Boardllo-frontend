@@ -1,24 +1,32 @@
-import { Link, NavLink } from 'react-router-dom'
-import { useNavigate } from 'react-router'
-import { useSelector } from 'react-redux'
-import { svgService } from '../services/svg.service.js'
-import UserMenuDropdown from '../cmps/UserMenuDropdown.jsx'
-import { Layout } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
-import { BoardCreateModal } from './Board/BoardCreateModal.jsx'
+import { Link, NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router';
+import { useSelector } from 'react-redux';
+import { svgService } from '../services/svg.service.js';
+import UserMenuDropdown from '../cmps/UserMenuDropdown.jsx';
+import { Layout } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { BoardCreateModal } from './Board/BoardCreateModal.jsx';
+import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js';
+import { login, signup } from '../store/actions/user.actions.js';
 
 export function AppHeader() {
-  const boards = useSelector((storeState) => storeState.boardModule.boards)
-  const user = useSelector((storeState) => storeState.userModule.user)
-  const [filterBy, setFilterBy] = useState(boardService.getDefaultFilter())
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
-  const createButtonRef = useRef(null)
-  const navigate = useNavigate()
+  const boards = useSelector((storeState) => storeState.boardModule.boards);
+  const user = useSelector((storeState) => storeState.userModule.user);
+  const [filterBy, setFilterBy] = useState(boardService.getDefaultFilter());
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const createButtonRef = useRef(null);
+  const navigate = useNavigate();
 
-  const [isSearch, setIsSearch] = useState(false)
-  const [isFocused, setIsFocused] = useState(false)
-  const searchInputRef = useRef(null)
-  const dropdownRef = useRef(null)
+  const [isSearch, setIsSearch] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const searchInputRef = useRef(null);
+  const dropdownRef = useRef(null);
+
+  const defaultUser = {
+    username: 'default_user',
+    password: '123',
+    fullname: 'default',
+  };
 
   useEffect(() => {
     function handleClickOutside(ev) {
@@ -27,49 +35,60 @@ export function AppHeader() {
         !dropdownRef.current.contains(ev.target) &&
         !searchInputRef.current.contains(ev.target)
       ) {
-        setIsSearch(false)
-        setIsFocused(false)
+        setIsSearch(false);
+        setIsFocused(false);
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   function handleNavigate(path) {
-    navigate(path)
+    navigate(path);
   }
 
   function handleChange({ target }) {
-    const field = target.name
-    let value = target.value
+    const field = target.name;
+    let value = target.value;
 
     switch (target.type) {
       case 'number':
       case 'range':
-        value = +value || ''
-        break
+        value = +value || '';
+        break;
       case 'checkbox':
-        value = target.checked
-        break
+        value = target.checked;
+        break;
       default:
-        break
+        break;
     }
 
-    setFilterBy(prevFilter => ({ ...prevFilter, [field]: value }))
+    setFilterBy((prevFilter) => ({ ...prevFilter, [field]: value }));
   }
 
   function handleSearchFocus() {
-    setIsSearch(true)
-    setIsFocused(true)
+    setIsSearch(true);
+    setIsFocused(true);
   }
 
   function handleBoardClick(boardId) {
-    navigate(`/board/${boardId}`)
+    navigate(`/board/${boardId}`);
     setTimeout(() => {
-      setIsSearch(false)
-      setIsFocused(false)
-    }, 0)
+      setIsSearch(false);
+      setIsFocused(false);
+    }, 0);
+  }
+
+  async function handleDefaultLogin() {
+    try {
+      await signup(defaultUser);
+      showSuccessMsg('Welcome to Boardllo!');
+      navigate('/board');
+    } catch (err) {
+      console.error('Signup failed:', err);
+      showErrorMsg('Oops! Something went wrong');
+    }
   }
 
   // console.log('🚀 filterBy, isSearch', filterBy.txt, isSearch)
@@ -96,8 +115,9 @@ export function AppHeader() {
                 isOpen={isCreateModalOpen}
                 onClose={() => setIsCreateModalOpen(false)}
                 position={{
-                  top: createButtonRef.current?.getBoundingClientRect().bottom + 4,
-                  left: createButtonRef.current?.getBoundingClientRect().left
+                  top:
+                    createButtonRef.current?.getBoundingClientRect().bottom + 4,
+                  left: createButtonRef.current?.getBoundingClientRect().left,
                 }}
               />
             )}
@@ -111,30 +131,35 @@ export function AppHeader() {
 
           <div className='nav-right'>
             <div className='nav-center'>
-
               <div className='search-wrapper'>
-                <img className='search-icon' src={svgService.searchIcon} alt='Search' />
+                <img
+                  className='search-icon'
+                  src={svgService.searchIcon}
+                  alt='Search'
+                />
                 <input
                   ref={searchInputRef}
                   type='search'
                   className='search-input'
                   placeholder='Search'
                   aria-label='Search'
-                  name="txt"
+                  name='txt'
                   value={filterBy.txt}
                   onChange={handleChange}
                   onFocus={handleSearchFocus}
                 />
 
                 {isSearch && isFocused && (
-                  <section ref={dropdownRef} className="search-boards-dropdown">
+                  <section ref={dropdownRef} className='search-boards-dropdown'>
                     <h1>Recent Boards</h1>
                     <ul className='search-boards-list'>
                       {boards
-                        .filter(board =>
-                          board.title.toLowerCase().includes(filterBy.txt.toLowerCase())
+                        .filter((board) =>
+                          board.title
+                            .toLowerCase()
+                            .includes(filterBy.txt.toLowerCase())
                         )
-                        .map(board => (
+                        .map((board) => (
                           <div
                             className='search-boards-items'
                             key={board._id}
@@ -151,7 +176,11 @@ export function AppHeader() {
             </div>
 
             <Link className='search-icon-mobile' to='search'>
-              <img className='search-icon-mobile' src={svgService.searchIcon} alt='Search' />
+              <img
+                className='search-icon-mobile'
+                src={svgService.searchIcon}
+                alt='Search'
+              />
             </Link>
 
             <img
@@ -159,12 +188,16 @@ export function AppHeader() {
               src={`${svgService.notificationIcon}`}
               alt='notification-icon'
             />
-            <img style={{ cursor: 'pointer' }} src={`${svgService.infoIcon}`} alt='info-icon' />
+            <img
+              style={{ cursor: 'pointer' }}
+              src={`${svgService.infoIcon}`}
+              alt='info-icon'
+            />
             <UserMenuDropdown user={user} onNavigate={handleNavigate} />
           </div>
         </nav>
       </header>
-    )
+    );
   }
 
   return (
@@ -181,11 +214,11 @@ export function AppHeader() {
           <NavLink to='login' className='login-link'>
             Log in
           </NavLink>
-          <NavLink to='signup' className='signup-link'>
+          <button className='signup-link' onClick={handleDefaultLogin}>
             Get Boardllo for free
-          </NavLink>
+          </button>
         </div>
       </nav>
     </header>
-  )
+  );
 }
