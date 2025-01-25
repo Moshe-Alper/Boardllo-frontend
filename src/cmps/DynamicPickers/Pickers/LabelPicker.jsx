@@ -11,7 +11,7 @@ const defaultLabels = [
   { id: 'l5', title: 'In Progress', color: '#77A7FF' }
 ]
 
-export function LabelPicker({ task, boardId, groupId, onClose }) {
+export function LabelPicker({ task, boardId, groupId, onClose, onLabelUpdate }) {
   const [searchTerm, setSearchTerm] = useState('')
   const [labels] = useState(defaultLabels)
   const [isLoading, setIsLoading] = useState(false)
@@ -26,22 +26,13 @@ export function LabelPicker({ task, boardId, groupId, onClose }) {
   async function toggleLabel(labelId) {
     setIsLoading(true)
     try {
-      const updatedLabelIds = task.labelIds?.includes(labelId)
-        ? task.labelIds.filter(id => id !== labelId)
-        : [...(task.labelIds || []), labelId]
-
-      const updatedTask = {
-        ...task,
-        labelIds: updatedLabelIds
-      }
-
-      await updateTask(boardId, groupId, updatedTask)
+        await onLabelUpdate(task.id, labelId)
     } catch (err) {
-      console.error('Failed to update task labels:', err)
+        console.log('Failed to update task labels:', err)
     } finally {
-      setIsLoading(false)
+        setIsLoading(false)
     }
-  }
+}
 
   function isLabelAssigned(labelId) {
     return task.labelIds?.includes(labelId) || false

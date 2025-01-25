@@ -12,7 +12,7 @@ export function DynamicModal() {
 	const Cmp = modalData.cmp
 	return (
 		<div className="dynamic-modal-overlay" onClick={onCloseModal}>
-			<div className="dynamic-modal" onClick={(e) => e.stopPropagation()}>
+			<div className="dynamic-modal" onClick={(ev) => ev.stopPropagation()}>
 				<section className="content">
 					{Cmp && <Cmp {...modalData.props} />}
 				</section>

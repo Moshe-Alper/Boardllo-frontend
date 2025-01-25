@@ -123,6 +123,43 @@ export function TaskDetails() {
         else setEditedDescription(task.description)
     }
 
+    async function handleLabelUpdate(taskId, labelId) {
+        // Find the task and group
+        let foundTask, foundGroup
+        
+        for (const group of board.groups) {
+          const task = group.tasks.find(t => t.id === taskId)
+          if (task) {
+            foundTask = task
+            foundGroup = group
+            break
+          }
+        }
+      console.log('🚀 foundTask, foundGroup', foundTask, foundGroup)
+        if (!foundTask) {
+          console.error('Task not found')
+          return
+        }
+      
+        // Toggle label
+        const updatedLabelIds = foundTask.labelIds?.includes(labelId)
+          ? foundTask.labelIds.filter(id => id !== labelId) 
+          : [...(foundTask.labelIds || []), labelId]
+      console.log('🚀 updatedLabelIds', updatedLabelIds)
+        const updatedTask = {
+          ...foundTask,
+          labelIds: updatedLabelIds
+        }
+      
+        try {
+          await updateTask(board._id, foundGroup.id, updatedTask)
+          showSuccessMsg('Label updated successfully')
+        } catch (err) {
+          showErrorMsg('Failed to update label')
+          console.error(err)
+        }
+      }
+
     function handlePickerToggle(Picker, title, ev) {
         if (!Picker) return
 
@@ -133,7 +170,8 @@ export function TaskDetails() {
                 boardId: board._id,
                 groupId: currGroup.id,
                 task,
-                onClose: () => onTogglePicker()
+                onClose: () => onTogglePicker(),
+                onLabelUpdate: handleLabelUpdate
             },
             triggerEl: ev.currentTarget
         })

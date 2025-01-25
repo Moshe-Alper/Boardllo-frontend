@@ -37,7 +37,8 @@ export function BoardHeader({ board, isSidebarOpen }) {
       setIsEditingTitle(false)
     }
   }
-
+  // console.log('🚀 board.members', board.members)
+  // console.log('🚀 board.owner', board.owner)
   if (!board) return <div className='board-header'>Loading board...</div>
 
   return (
@@ -64,9 +65,20 @@ export function BoardHeader({ board, isSidebarOpen }) {
       ) : (
         <h1 onClick={() => board?._id && setIsEditingTitle(true)}>{board.title}</h1>
       )}
+
+      <div className='members'>
+        {board.members.map((member) => (
+          <div key={member._id} className='member'>
+            <img src={member.imgUrl} alt={member.fullname} />
+          </div>
+        ))}
+
+      </div>
       <button className='header-btn' onClick={() => setIsMenuOpen(!isMenuOpen)}>
         <img src={svgService.threeDotsIcon} alt='Menu' />
       </button>
+
+
       <BoardMenu isOpen={isMenuOpen} toggleMenu={() => setIsMenuOpen(!isMenuOpen)} board={board} />
     </section>
   )

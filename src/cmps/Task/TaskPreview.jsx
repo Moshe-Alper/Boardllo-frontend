@@ -2,8 +2,6 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Popover from '@mui/material/Popover'
 import { svgService } from "../../services/svg.service"
-import { onToggleModal } from "../../store/actions/app.actions"
-import { TaskDetails } from "./TaskDetails"
 import { TaskQuickActions } from "./TaskQuickActions"
 
 export function TaskPreview({ task, boardId, group, isDragging }) {

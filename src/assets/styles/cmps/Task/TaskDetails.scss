@@ -481,10 +481,11 @@ main.task-main {
                     border-radius: rem(3px);
                     
                     span {
-                        display: block;
+                        display: flex;
+                        align-items: center;
                         font-size: rem(14px);
                         color: $text-primary;
-                        margin-block-end: rem(4px);
+                        font-stretch: 100%;
                     }
                     
                     img {

@@ -120,7 +120,6 @@ export function BoardDetails() {
       }
     }
   }
-  
   if (!board) return <div>Loading...</div>
 
   return (

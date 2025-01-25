@@ -1,6 +1,6 @@
 .board-header {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr  auto auto;
   padding-inline-start: rem(24px);
   align-items: center;
   justify-content: center;
@@ -60,6 +60,19 @@
     &:hover {
       background-color: rgba(255, 255, 255, 0.2);
     }
+  }
+
+  .member {
+    display: flex;
+    background-color: white;
+    position: relative;
+    top: rem(2px);
+    align-items: baseline;
+    max-height: rem(32px);
+    margin-right: rem(32px);
+    padding: 0 0 0 rem(2px);
+    overflow: visible;
+    line-height: rem(32px);
   }
 
   .header-btn {

@@ -71,13 +71,16 @@ async function save(board) {
     }
     savedBoard = await storageService.put(STORAGE_KEY, boardToSave)
   } else {
+    const loggedInUser = userService.getLoggedinUser()
+    // Later, this is all done by the backend (remove owner and members and logged in user)
     const boardToSave = {
       title: board.title,
       isStarred: false,
       archivedAt: null,
       groups: [],
       // Later, owner is set by the backend
-      owner: userService.getLoggedinUser(),
+      owner: loggedInUser,
+      members: [loggedInUser],
       msgs: []
     }
     savedBoard = await storageService.post(STORAGE_KEY, boardToSave)
