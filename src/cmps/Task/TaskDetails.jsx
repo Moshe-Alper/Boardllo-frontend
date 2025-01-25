@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
+import { boardService } from '../../services/board'
 import { svgService } from "../../services/svg.service"
 import { showErrorMsg, showSuccessMsg } from '../../services/event-bus.service'
 import { updateTask } from '../../store/actions/board.actions'
@@ -32,57 +33,52 @@ const ACTION_BUTTONS = [
     { icon: 'shareIcon', label: 'Share' }
 ]
 
+function findTaskAndGroup(groups, taskId) {
+    for (const group of groups) {
+        const task = group.tasks?.find(t => t.id === taskId)
+        if (task) return [group, task]
+    }
+    return [null, null]
+}
+
 export function TaskDetails() {
     const navigate = useNavigate()
-    const { boardId, taskId } = useParams() // Get IDs from URL
+    const { boardId, taskId } = useParams()
     const board = useSelector(storeState => storeState.boardModule.board)
-
-    // Find the task and its group
-    const [currGroup, task] = React.useMemo(() => {
-        if (!board?.groups) return [null, null]
-
-        for (const group of board.groups) {
-            const foundTask = group.tasks?.find(t => t.id === taskId)
-            if (foundTask) {
-                return [group, foundTask]
-            }
-        }
-        return [null, null]
-    }, [board, taskId])
-
+    const [task, setTask] = useState(null)
+    const [currGroup, setCurrGroup] = useState(null)
     const [isEditingTitle, setIsEditingTitle] = useState(false)
-    const [editedTitle, setEditedTitle] = useState(task?.title || '')
-    const [editedDescription, setEditedDescription] = useState(task?.description || '')
-
-    const hasCover = task?.style?.coverColor ? true : false
+    const [editedTitle, setEditedTitle] = useState('')
+    const [editedDescription, setEditedDescription] = useState('')
+    const [labels] = useState(boardService.getDefaultLabels())
 
     useEffect(() => {
-        setEditedTitle(task?.title || '')
-    }, [task])
+        if (board?.groups) {
+            const [foundGroup, foundTask] = findTaskAndGroup(board.groups, taskId)
+            setTask(foundTask)
+            setCurrGroup(foundGroup)
+            setEditedTitle(foundTask?.title || '')
+            setEditedDescription(foundTask?.description || '')
+        }
+    }, [board, taskId])
 
     useEffect(() => {
         document.addEventListener('keydown', handleEscape)
-        return () => {
-            document.removeEventListener('keydown', handleEscape)
-        }
+        return () => document.removeEventListener('keydown', handleEscape)
     }, [])
 
+    const hasCover = task?.style?.coverColor ? true : false
+
     function handleEscape(ev) {
-        if (ev.key === 'Escape') {
-            navigate(`/board/${board._id}`)
-        }
+        if (ev.key === 'Escape') navigate(`/board/${board._id}`)
     }
 
     function handleOverlayClick(ev) {
-        if (ev.target === ev.currentTarget) {
-            navigate(`/board/${board._id}`)
-        }
+        if (ev.target === ev.currentTarget) navigate(`/board/${board._id}`)
     }
 
     function handleTitleKeyPress(ev) {
-        if (ev.key === 'Enter') {
-            ev.target.blur()
-        }
+        if (ev.key === 'Enter') ev.target.blur()
         if (ev.key === 'Escape') {
             setEditedTitle(task.title)
             setIsEditingTitle(false)
@@ -95,14 +91,13 @@ export function TaskDetails() {
             return false
         }
 
-        if (value === task[field]) {
-            return true
-        }
+        if (value === task[field]) return true
 
         const updatedTask = { ...task, [field]: value.trim() }
 
         try {
             await updateTask(board._id, currGroup.id, updatedTask)
+            setTask(updatedTask)
             showSuccessMsg(`${field} updated successfully`)
             return true
         } catch (err) {
@@ -111,54 +106,36 @@ export function TaskDetails() {
         }
     }
 
-    async function handleUpdateTitle() {
+    async function handleTitleUpdate() {
         const success = await handleTaskUpdate('title', editedTitle)
         if (success) setIsEditingTitle(false)
         else setEditedTitle(task.title)
     }
 
-    async function handleUpdateDescription(newDescription) {
+    async function handleDescriptionUpdate(newDescription) {
         const success = await handleTaskUpdate('description', newDescription)
         if (success) setEditedDescription(newDescription)
         else setEditedDescription(task.description)
     }
 
     async function handleLabelUpdate(taskId, labelId) {
-        // Find the task and group
-        let foundTask, foundGroup
+        const existingLabels = Array.isArray(task.labelIds) ? task.labelIds : []
+        const labelExists = existingLabels.some(id => id === labelId)
         
-        for (const group of board.groups) {
-          const task = group.tasks.find(t => t.id === taskId)
-          if (task) {
-            foundTask = task
-            foundGroup = group
-            break
-          }
-        }
-      console.log('🚀 foundTask, foundGroup', foundTask, foundGroup)
-        if (!foundTask) {
-          console.error('Task not found')
-          return
-        }
-      
-        // Toggle label
-        const updatedLabelIds = foundTask.labelIds?.includes(labelId)
-          ? foundTask.labelIds.filter(id => id !== labelId) 
-          : [...(foundTask.labelIds || []), labelId]
-      console.log('🚀 updatedLabelIds', updatedLabelIds)
-        const updatedTask = {
-          ...foundTask,
-          labelIds: updatedLabelIds
-        }
-      
+        const updatedLabelIds = labelExists 
+            ? existingLabels.filter(id => id !== labelId)
+            : [...existingLabels, labelId]
+            
+        const updatedTask = { ...task, labelIds: updatedLabelIds }
+
         try {
-          await updateTask(board._id, foundGroup.id, updatedTask)
-          showSuccessMsg('Label updated successfully')
+            await updateTask(board._id, currGroup.id, updatedTask)
+            setTask(updatedTask)
         } catch (err) {
-          showErrorMsg('Failed to update label')
-          console.error(err)
+            showErrorMsg('Failed to update label')
         }
-      }
+    }
+
 
     function handlePickerToggle(Picker, title, ev) {
         if (!Picker) return
@@ -169,7 +146,7 @@ export function TaskDetails() {
             props: {
                 boardId: board._id,
                 groupId: currGroup.id,
-                task,
+                initialTask: task,
                 onClose: () => onTogglePicker(),
                 onLabelUpdate: handleLabelUpdate
             },
@@ -178,6 +155,7 @@ export function TaskDetails() {
     }
 
     if (!task) return <div>Loading...</div>
+
     return (
         <div className="task-details-overlay" onClick={handleOverlayClick}>
             <article className={`task-details ${hasCover ? 'has-cover' : ''}`}>
@@ -195,7 +173,7 @@ export function TaskDetails() {
                                         textarea.style.height = `${textarea.scrollHeight}px`
                                         setEditedTitle(ev.target.value)
                                     }}
-                                    onBlur={handleUpdateTitle}
+                                    onBlur={handleTitleUpdate}
                                     onKeyDown={handleTitleKeyPress}
                                     autoFocus
                                     rows={1}
@@ -211,13 +189,10 @@ export function TaskDetails() {
                             <p className="list-title">
                                 <span>in list</span>
                                 <button>
-                                    <span>
-                                        {currGroup.title}
-                                    </span>
+                                    <span>{currGroup.title}</span>
                                 </button>
                             </p>
                         </div>
-
                     </div>
                     <button className="close-btn" onClick={() => navigate(`/board/${boardId}`)}>
                         <img src={svgService.closeIcon} alt="Close" />
@@ -226,7 +201,6 @@ export function TaskDetails() {
 
                 <main className="task-main">
                     <section className="task-content">
-
                         <section className="task-metadata">
                             <div className="metadata-container members">
                                 <h3>Members</h3>
@@ -242,9 +216,18 @@ export function TaskDetails() {
                             <div className="metadata-container labels">
                                 <h3>Labels</h3>
                                 <div className="labels-list">
-                                    <span className="label" style={{ backgroundColor: '#61bd4f' }}>Important</span>
-                                    <span className="label" style={{ backgroundColor: '#ff9f1a' }}>Urgent</span>
-                                    <button>
+                                    {labels
+                                        .filter(label => task.labelIds?.includes(label.id))
+                                        .map(label => (
+                                            <span
+                                                key={label.id}
+                                                className="label"
+                                                style={{ backgroundColor: label.color }}
+                                            >
+                                                {label.title}
+                                            </span>
+                                        ))}
+                                    <button onClick={(ev) => handlePickerToggle(LabelPicker, 'Labels', ev)}>
                                         <img src={svgService.addIcon} alt="Add Label" />
                                     </button>
                                 </div>
@@ -284,7 +267,7 @@ export function TaskDetails() {
                             <div className="desc-content">
                                 <TaskDescription
                                     initialDescription={task.description}
-                                    onSave={(newDescription) => handleUpdateDescription(newDescription)}
+                                    onSave={handleDescriptionUpdate}
                                 />
                             </div>
                         </section>

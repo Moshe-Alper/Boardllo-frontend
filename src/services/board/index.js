@@ -50,6 +50,16 @@ function getEmptyTask() {
   }
 }
 
+function getDefaultLabels() {
+  return [
+    { id: 'l1', title: 'Done', color: 'var(--label-done)' },
+    { id: 'l2', title: 'To Do', color: 'var(--label-todo)' },
+    { id: 'l3', title: 'Critical', color: 'var(--label-critical)' },
+    { id: 'l4', title: 'Nice to do', color: 'var(--label-nice-to-do)' },
+    { id: 'l5', title: 'In Progress', color: 'var(--label-in-progress)' }
+  ]
+}
+
 function getDefaultFilter() {
   return {
     txt: '',
@@ -67,6 +77,7 @@ export const boardService = {
   getEmptyBoard,
   getEmptyGroup,
   getEmptyTask,
+  getDefaultLabels,
   getDefaultFilter,
   ...service
 }
