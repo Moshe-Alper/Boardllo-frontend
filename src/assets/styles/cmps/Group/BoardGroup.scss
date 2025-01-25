@@ -3,18 +3,17 @@
     min-width: 17rem;
     max-width: 17rem;
     margin: $spacing-xs;
-    padding: rem(4px) rem(8px);
+    padding: rem(8px) rem(8px);
     border-radius: $border-radius;
     box-shadow: $card-shadow;
     transition: min-width 0.3s ease-in-out,
         max-width 0.3s ease-in-out,
         padding 0.3s ease-in-out,
         background-color 0.3s ease-in-out;
-
     display: grid;
     grid-template-rows: auto 1fr auto;
     height: 100%;
-    
+
     > * {
         min-width: 0;
     }
@@ -27,12 +26,30 @@
         grid-row: 2;
         display: grid;
         gap: $spacing-sm;
-        padding-block: rem(6px) 0.125rem;
+        padding-block: 0 0.125rem;
         overflow-y: auto;
         min-height: 0; 
+
+        grid-auto-rows: min-content;
+        overflow-y: auto;
+        position: relative; 
+        overflow-x: hidden;
+        max-height: calc(100vh - rem(228px));
     }
 
+    &.is-adding-task {
 
+        .add-task-btn-preview {
+          display: none;
+        }
+
+        .tasks-container {
+            scroll-behavior: smooth;
+            .add-task-container {
+                background-color: yellow;
+              }
+        }
+      }
 
     &.collapsed {
         min-width: 2.5rem;

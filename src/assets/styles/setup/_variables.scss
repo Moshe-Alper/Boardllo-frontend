@@ -15,6 +15,7 @@ $accent-light-purple: #8777d9;
 $background-light: #f4f5f7; // Typical light gray for backgrounds
 $background-white: #ffffff;
 $background-dark: #091e42; // Dark sidebar or text areas
+$background-grey-subtle: #dcdfe4;
 $card-background: #ffffff; // Card background
 $header-background: #172b4d; // Darker header/nav background
 $shadow-color: rgba(0, 0, 0, 0.1);
@@ -36,6 +37,7 @@ $text-secondary: #5e6c84; // Subtle secondary text
 $text-light: #97a0af; // Muted text for inactive elements
 $text-dark: #020112;
 $text-white: #ffffff;
+$text-subtle: #44546f;
 
 // Hover and Active States
 $background-light-hover: #f4f5f7; // Light hover background color
@@ -53,6 +55,7 @@ $details-btn-txt: #44556f; // Close button for details
 $details-btn-txt-hover: #d0d4dc; // Close button for details
 $details-add-hover: #cbcfd8;
 $details-new-list-background-hover: #bbbec1;
+
 
 // Shadows
 $shadow-small: 0 1px 2px $shadow-color;
@@ -86,7 +89,7 @@ $layoutPadding-large: 1.5rem; // 24px
 // Groups
 $group-padding: 0.75rem; // 12px
 
-// New Specific Variables for Trello-Like Design
+// New Specific Variables for Bordello-Like Design
 $card-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); // Subtle shadow for cards
 $input-shadow: 0 0.0625rem 0 rgba(9, 30, 66, 0.25); // Shadow for input fields
 $app-header-height: 3rem; // 48px

@@ -1,6 +1,6 @@
-import { Layout, Users, CheckSquare } from "lucide-react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Layout, Users, CheckSquare } from 'lucide-react';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 export function HomePage() {
   const user = useSelector((storeState) => storeState.userModule.user);
@@ -88,7 +88,7 @@ export function HomePage() {
         <section className='social-proof'>
           <h2>Trusted by millions of users worldwide</h2>
           <div className='stats-grid'>
-            {["4.5+ Stars", "2M+ Users", "100+ Countries", "50K+ Teams"].map(
+            {['4.5+ Stars', '2M+ Users', '100+ Countries', '50K+ Teams'].map(
               (stat) => (
                 <div key={stat} className='stat-item'>
                   <p>{stat}</p>

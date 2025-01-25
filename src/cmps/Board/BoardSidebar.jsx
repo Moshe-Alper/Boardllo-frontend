@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Drawer from '@mui/material/Drawer'
 import List from '@mui/material/List'
@@ -9,55 +9,50 @@ import ListItemText from '@mui/material/ListItemText'
 import IconButton from '@mui/material/IconButton'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import AddIcon from '@mui/icons-material/Add'
 import DashboardIcon from '@mui/icons-material/Dashboard'
-import GroupIcon from '@mui/icons-material/Group'
-import SettingsIcon from '@mui/icons-material/Settings'
-import TableChartIcon from '@mui/icons-material/TableChart'
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 
 export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
     const navigate = useNavigate()
-    const menuItems = [
-        { text: 'Boards', icon: <DashboardIcon sx={{ fontSize: '1rem', marginLeft: '0.25rem' }} />, path: '/board' },
-        { text: 'Members', icon: <GroupIcon sx={{ fontSize: '1rem', marginLeft: '0.25rem' }} />, extra: <AddIcon sx={{ fontSize: '1rem', marginLeft: '3px' }} /> },
-       
-    ]
+    useEffect(() => {
+        function handleKeyBoardClick(event) {
+            if (event.key === '[') {
+                toggleDrawer()
+            }
+        }
 
-    const premiumItems = [
-        { text: 'Table', icon: <TableChartIcon />, extra: <AddIcon /> },
-        { text: 'Calendar', icon: <CalendarTodayIcon /> },
-    ]
+    
+        window.addEventListener('keydown', handleKeyBoardClick)
 
-    const boardItems = [
-        { text: 'Team-Sprint 4', icon: <DashboardIcon /> },
-    ]
+  
+        return () => {
+            window.removeEventListener('keydown', handleKeyBoardClick)
+        };
+    }, [toggleDrawer])
+
 
     return (
         <div>
+ 
             {!isOpen && (
-                <IconButton
+                <div
                     onClick={toggleDrawer}
-                    sx={{
-                        position: 'fixed',
-                        top: '65px',
-                        left: '5px',
-                        height: '1.5rem',
-                        width: '1.5rem',
-                        border: '#rgba(200, 186, 186, 0.22) solid 1px',
-                        backgroundColor: '#0055CC',
-                        color: '#FFFFFF',
-                        zIndex: 1300,
-                        backgroundColor: '#00487A',
-                        '&:hover': {
-                            backgroundColor: '#003366',
-                        },
-
+                    style={{
+                        position: 'fixed', 
+                        top: '48px',        
+                        left: '0',        
+                        height: '100vh',  
+                        width: '20px',    
+                        backgroundColor: '#0a3d8f', 
+                        zIndex: 1200,     
+                        cursor: 'pointer', 
+                        display: 'flex',  
+                        justifyContent: 'center',
+                        alignItems: 'center',
                     }}
-                >
-                    <ChevronRightIcon sx={{ width: '1rem', height: '1rem', marginLeft: '3px' }} />
-                </IconButton>
+                >             
+                </div>
             )}
+
 
             <Drawer
                 variant="persistent"
@@ -75,6 +70,7 @@ export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
                     },
                 }}
             >
+
                 <div
                     style={{
                         display: 'flex',
@@ -87,57 +83,45 @@ export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
                     }}
                 >
                     <div>
-                        <h3 style={{ margin: 0, fontSize: '0.875rem' }}>Trello Workspace</h3>
+                        <h3 style={{ margin: 0, fontSize: '0.875rem' }}>Bordello Workspace</h3>
                     </div>
-                    <IconButton onClick={toggleDrawer} sx={{ color: '#FFFFFF', width: '1.25rem', height: '1.25rem', marginLeft: '3px' }}>
+
+                    <IconButton
+                        onClick={toggleDrawer}
+                        sx={{
+                            color: '#FFFFFF',
+                            width: '1.25rem',
+                            height: '1.25rem',
+                            marginLeft: '3px',
+                        }}
+                    >
                         <ChevronLeftIcon />
                     </IconButton>
                 </div>
 
-                <List sx={{ 
-                    '& .MuiListItemText-primary': { 
-                        fontSize: '0.875rem'  // 14px for menu items
-                    } 
-                }}>
-                    {menuItems.map((item, index) => (
-                        <ListItem key={index} disablePadding>
-                            <ListItemButton onClick={() => navigate(item.path)} >
-                                <ListItemIcon sx={{ color: '#FFFFFF', marginRight: '-1.25rem', marginLeft: '3px' }}>{item.icon}</ListItemIcon>
-                                <ListItemText primary={item.text} />
-                                {item.extra && (
-                                    <ListItemIcon sx={{ color: '#FFFFFF', justifyContent: 'flex-end', marginLeft: '3px' }}>{item.extra}</ListItemIcon>
-                                )}
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List>
-
-                {/* <div style={{ padding: '8px 16px', fontSize: '0.75rem', color: '#B0C4DE' }}>PREMIUM</div>
-                <List>
-                    {premiumItems.map((item, index) => (
-                        <ListItem key={index} disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon sx={{ color: '#FFFFFF', marginRight: '-1.25rem', marginLeft: '3px' }}>{item.icon}</ListItemIcon>
-                                <ListItemText primary={item.text} />
-                                {item.extra && (
-                                    <ListItemIcon sx={{ color: '#FFFFFF', justifyContent: 'flex-end', marginLeft: '3px' }}>{item.extra}</ListItemIcon>
-                                )}
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List> */}
-
-                <div style={{ padding: '8px 16px', fontSize: '1rem', color: '#B0C4DE' }}>Your Boards</div>
-                <List sx={{
-                    '& .MuiListItemText-primary': {
-                        fontSize: '0.875rem' // This sets the font size to 14px for board items only
-                    }
-                }}>
+                <List
+                    sx={{
+                        '& .MuiListItemText-primary': {
+                            fontSize: '0.875rem', 
+                        },
+                    }}
+                >
                     {boards.map((board) => (
                         <ListItem key={board._id} disablePadding>
                             <ListItemButton onClick={() => navigate(`/board/${board._id}`)}>
-                                <ListItemIcon sx={{ color: '#FFFFFF', marginRight: '-1.25rem', marginLeft: '3px' }}>
-                                <DashboardIcon sx={{ fontSize: '1rem', marginLeft: '0.25rem' }} />
+                                <ListItemIcon
+                                    sx={{
+                                        color: '#FFFFFF',
+                                        marginRight: '-1.25rem',
+                                        marginLeft: '3px',
+                                    }}
+                                >
+                                    <DashboardIcon
+                                        sx={{
+                                            fontSize: '1rem',
+                                            marginLeft: '0.25rem',
+                                        }}
+                                    />
                                 </ListItemIcon>
                                 <ListItemText primary={board.title} />
                             </ListItemButton>
@@ -145,6 +129,32 @@ export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
                     ))}
                 </List>
             </Drawer>
+
+
+            {!isOpen && (
+                <IconButton
+                    onClick={toggleDrawer}
+                    sx={{
+                        position: 'fixed',
+                        top: '65px',
+                        left: '5px',
+                        height: '1.5rem',
+                        width: '1.5rem',
+                        border: '#rgba(200, 186, 186, 0.22) solid 1px',
+                        backgroundColor: '#0055CC',
+                        color: '#FFFFFF',
+                        zIndex: 1300,
+                        backgroundColor: '#00487A',
+                        '&:hover': {
+                            backgroundColor: '#003366',
+                        },
+                    }}
+                >
+                    <ChevronRightIcon
+                        sx={{ width: '1rem', height: '1rem', marginLeft: '3px' }}
+                    />
+                </IconButton>
+            )}
         </div>
-    )
+    );
 }

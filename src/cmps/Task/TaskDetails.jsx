@@ -10,6 +10,7 @@ import { LabelPicker } from '../DynamicPickers/Pickers/LabelPicker'
 import { DatePicker } from '../DynamicPickers/Pickers/DatePicker'
 import { ChecklistPicker } from '../DynamicPickers/Pickers/ChecklistPicker'
 import { CoverPicker } from '../DynamicPickers/Pickers/CoverPicker'
+import { TaskDescription } from './TaskDescription'
 
 const PICKERS = [
     { icon: 'joinIcon', label: 'Join', picker: null },
@@ -49,10 +50,8 @@ export function TaskDetails() {
         return [null, null]
     }, [board, taskId])
 
-
     const [isEditingTitle, setIsEditingTitle] = useState(false)
     const [editedTitle, setEditedTitle] = useState(task?.title || '')
-    const [isEditingDescription, setIsEditingDescription] = useState(false)
     const [editedDescription, setEditedDescription] = useState(task?.description || '')
 
     const hasCover = task?.style?.coverColor ? true : false
@@ -90,30 +89,38 @@ export function TaskDetails() {
         }
     }
 
-    async function handleTitleSubmit() {
-        if (!editedTitle.trim()) {
-            setEditedTitle(task.title)
-            setIsEditingTitle(false)
-            showErrorMsg('Title cannot be empty')
-            return
+    async function handleTaskUpdate(field, value) {
+        if (!value.trim()) {
+            showErrorMsg(`${field} cannot be empty`)
+            return false
         }
 
-        if (editedTitle === task.title) {
-            setIsEditingTitle(false)
-            return
+        if (value === task[field]) {
+            return true
         }
 
-        const updatedTask = { ...task, title: editedTitle.trim() }
+        const updatedTask = { ...task, [field]: value.trim() }
 
         try {
             await updateTask(board._id, currGroup.id, updatedTask)
-            showSuccessMsg('Title updated successfully')
-            setIsEditingTitle(false)
+            showSuccessMsg(`${field} updated successfully`)
+            return true
         } catch (err) {
-            showErrorMsg('Failed to update title')
-            setEditedTitle(task.title)
-            setIsEditingTitle(false)
+            showErrorMsg(`Failed to update ${field}`)
+            return false
         }
+    }
+
+    async function handleUpdateTitle() {
+        const success = await handleTaskUpdate('title', editedTitle)
+        if (success) setIsEditingTitle(false)
+        else setEditedTitle(task.title)
+    }
+
+    async function handleUpdateDescription(newDescription) {
+        const success = await handleTaskUpdate('description', newDescription)
+        if (success) setEditedDescription(newDescription)
+        else setEditedDescription(task.description)
     }
 
     function handlePickerToggle(Picker, title, ev) {
@@ -133,140 +140,163 @@ export function TaskDetails() {
     }
 
     if (!task) return <div>Loading...</div>
-
     return (
         <div className="task-details-overlay" onClick={handleOverlayClick}>
             <article className={`task-details ${hasCover ? 'has-cover' : ''}`}>
                 {hasCover && <div className="cover" style={{ backgroundColor: task.style.coverColor }} />}
 
                 <header className="task-header">
-                    <img src={svgService.cardIcon} alt="Card Icon" className="card-icon" />
+                    <div className="task-header-container">
+                        <hgroup>
+                            {isEditingTitle ? (
+                                <textarea
+                                    value={editedTitle}
+                                    onChange={(ev) => {
+                                        const textarea = ev.target
+                                        textarea.style.height = 'auto'
+                                        textarea.style.height = `${textarea.scrollHeight}px`
+                                        setEditedTitle(ev.target.value)
+                                    }}
+                                    onBlur={handleUpdateTitle}
+                                    onKeyDown={handleTitleKeyPress}
+                                    autoFocus
+                                    rows={1}
+                                />
+                            ) : (
+                                <span onClick={() => setIsEditingTitle(true)}>{task.title}</span>
+                            )}
+                        </hgroup>
 
-                    <h2 className="task-title">
-                        {isEditingTitle ? (
-                            <textarea
-                                value={editedTitle}
-                                onChange={(ev) => {
-                                    const textarea = ev.target
-                                    textarea.style.height = 'auto'
-                                    textarea.style.height = `${textarea.scrollHeight}px`
-                                    setEditedTitle(ev.target.value)
-                                }}
-                                onBlur={handleTitleSubmit}
-                                onKeyDown={handleTitleKeyPress}
-                                autoFocus
-                                rows={1}
-                            />
-                        ) : (
-                            <span onClick={() => setIsEditingTitle(true)}>{task.title}</span>
-                        )}
-                    </h2>
-                    <div className="task-list">in list <span className="list-name">{currGroup.title}</span></div>
+                        <img src={svgService.cardIcon} alt="Card Icon" className="card-icon" />
+
+                        <div className="task-list-container">
+                            <p className="list-title">
+                                <span>in list</span>
+                                <button>
+                                    <span>
+                                        {currGroup.title}
+                                    </span>
+                                </button>
+                            </p>
+                        </div>
+
+                    </div>
                     <button className="close-btn" onClick={() => navigate(`/board/${boardId}`)}>
                         <img src={svgService.closeIcon} alt="Close" />
                     </button>
                 </header>
 
-                <main className="task-content">
+                <main className="task-main">
+                    <section className="task-content">
 
-                    <section className="task-metadata">
-
-                        <div className="metadata-container members">
-                            <h3>Members</h3>
-                            <div className="members-list">
-                                <div className="member" title="John Doe">JD</div>
-                                <div className="member" title="Sarah Smith">SS</div>
-                                <button className="add-member">+</button>
+                        <section className="task-metadata">
+                            <div className="metadata-container members">
+                                <h3>Members</h3>
+                                <div className="members-list">
+                                    <div className="member" title="John Doe">JD</div>
+                                    <div className="member" title="Sarah Smith">SS</div>
+                                    <button>
+                                        <img src={svgService.addIcon} alt="Add Member" />
+                                    </button>
+                                </div>
                             </div>
-                        </div>
 
-                        <div className="metadata-container labels">
-                            <h3>Labels</h3>
-                            <div className="labels-list">
-                                <span className="label" style={{ backgroundColor: '#61bd4f' }}>Important</span>
-                                <span className="label" style={{ backgroundColor: '#ff9f1a' }}>Urgent</span>
-                                <button className="add-label">+</button>
+                            <div className="metadata-container labels">
+                                <h3>Labels</h3>
+                                <div className="labels-list">
+                                    <span className="label" style={{ backgroundColor: '#61bd4f' }}>Important</span>
+                                    <span className="label" style={{ backgroundColor: '#ff9f1a' }}>Urgent</span>
+                                    <button>
+                                        <img src={svgService.addIcon} alt="Add Label" />
+                                    </button>
+                                </div>
                             </div>
-                        </div>
 
-                        <div className="metadata-container notification">
-                        <h3>Notification</h3>
-                            <button className="watch-btn">
-                            <img src={svgService.watchIcon} alt="Watch" />
-                                <span>Watch</span>
-                            </button>
-                        </div>
-
-                        <div className="metadata-container due-date">
-                            <h3>Due Date</h3>
-                            <div className="date-info">
-                                <input type="checkbox" className="due-date-checkbox" />
-                                <span>Jan 25 at 12:00 PM</span>
+                            <div className="metadata-container notification">
+                                <h3>Notification</h3>
+                                <div className="notification-toggle" role="presentation">
+                                    <button>
+                                        <img src={svgService.watchIcon} alt="Watch" />
+                                        <span>Watch</span>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
+
+                            <div className="metadata-container due-date">
+                                <h3>Due Date</h3>
+                                <div className="date-info">
+                                    <input type="checkbox" className="due-date-checkbox" />
+                                    <button>
+                                        <span>Jan 25 at 12:00 PM</span>
+                                        <img src={svgService.arrowDownIcon} alt="Toggle Calender" />
+                                    </button>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section className="desc">
+                            <img src={svgService.descriptionIcon} alt="Description" className='desc-icon' />
+                            <hgroup className="desc-header">
+                                <div className="desc-controls">
+                                    <h3>Description</h3>
+                                    <button>Edit</button>
+                                </div>
+                            </hgroup>
+
+                            <div className="desc-content">
+                                <TaskDescription
+                                    initialDescription={task.description}
+                                    onSave={(newDescription) => handleUpdateDescription(newDescription)}
+                                />
+                            </div>
+                        </section>
+
+                        <section className="activity">
+                            <img src={svgService.activityIcon} alt="Activity" className='activity-icon' />
+                            <hgroup className="activity-header">
+                                <div className="activity-controls">
+                                    <h3>Activity</h3>
+                                    <button>Show details</button>
+                                </div>
+                            </hgroup>
+                            <div className="activity-item">
+                                <div className="user-avatar"></div>
+                                <p><span>User</span> added this card to {currGroup.title}</p>
+                                <time>8 Jan 2025, 15:01</time>
+                            </div>
+                        </section>
                     </section>
 
-                    <section className="description">
-                        <img src={svgService.descriptionIcon} alt="Description" />
-                        <header className="description-header">
-                        <h3>Description</h3>
-                        <button>Edit</button>
-                        </header>
-                        {isEditingDescription ? (
-                            <textarea
-                                value={editedDescription}
-                                onChange={(ev) => setEditedDescription(ev.target.value)}
-                                placeholder="Add a more detailed description..."
-                                autoFocus
-                            />
-                        ) : (
-                            <div
-                                onClick={() => setIsEditingDescription(true)}
-                                className={!task.description ? 'empty' : ''}
-                            >
-                                {task.description || 'Add a more detailed description...'}
-                            </div>
-                        )}
-                    </section>
+                    <aside className="task-sidebar">
+                        <ul className="features">
+                            <li>
+                                {PICKERS.map(({ icon, label, picker }) => (
+                                    <button
+                                        key={label}
+                                        onClick={(ev) => handlePickerToggle(picker, label, ev)}
+                                    >
+                                        <img src={svgService[icon]} alt={label} />
+                                        <span>{label}</span>
+                                    </button>
+                                ))}
+                            </li>
+                        </ul>
 
-                    <section className="activity">
-                        <img src={svgService.activityIcon} alt="Activity" />
-                        <header className="activity-header">
-                        <h3>Activity</h3>
-                        <button>Show details</button>
-                        </header>
-                        
-                        <div className="activity-item">
-                            <div className="user-avatar"></div>
-                            <p><span>User</span> added this card to {currGroup.title}</p>
-                            <time>8 Jan 2025, 15:01</time>
-                        </div>
-                    </section>
+                        <ul className="actions">
+                            <hgroup>
+                                <h4>Actions</h4>
+                            </hgroup>
+                            <li>
+                                {ACTION_BUTTONS.map(({ icon, label }) => (
+                                    <button key={label}>
+                                        <img src={svgService[icon]} alt={label} />
+                                        <span>{label}</span>
+                                    </button>
+                                ))}
+                            </li>
+                        </ul>
+                    </aside>
                 </main>
-
-                <aside className="task-sidebar">
-                    <div className="add-to-card">
-                        {PICKERS.map(({ icon, label, picker }) => (
-                            <button
-                                key={label}
-                                onClick={(ev) => handlePickerToggle(picker, label, ev)}
-                            >
-                                <img src={svgService[icon]} alt={label} />
-                                {label}
-                            </button>
-                        ))}
-                    </div>
-
-                    <div className="actions">
-                        <h3>Actions</h3>
-                        {ACTION_BUTTONS.map(({ icon, label }) => (
-                            <button key={label}>
-                                <img src={svgService[icon]} alt={label} />
-                                {label}
-                            </button>
-                        ))}
-                    </div>
-                </aside>
             </article>
         </div>
     )

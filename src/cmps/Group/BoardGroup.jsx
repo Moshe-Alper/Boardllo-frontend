@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { addTask, loadBoard, updateBoard, updateGroup } from '../../store/actions/board.actions'
 import { boardService } from '../../services/board'
 import { showSuccessMsg, showErrorMsg } from '../../services/event-bus.service'
@@ -6,7 +6,9 @@ import { BoardGroupHeader } from './BoardGroupHeader'
 import { BoardGroupFooter } from './BoardGroupFooter'
 import { TaskPreview } from '../Task/TaskPreview'
 import { TaskDragDropContainer } from '../DragDropSystem'
+import { makeId } from '../../services/util.service'
 import { store } from '../../store/store'
+import { svgService } from '../../services/svg.service'
 
 export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
     const [isEditingGroupTitle, setIsEditingGroupTitle] = useState(false)
@@ -15,10 +17,20 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const [anchorEl, setAnchorEl] = useState(null)
     const [isCollapsed, setIsCollapsed] = useState(group.isCollapsed)
+    const tasksContainerRef = useRef(null)
 
     useEffect(() => {
         loadBoard(board._id)
     }, [board._id])
+
+    useEffect(() => {
+        if (isAddingTask) {
+            tasksContainerRef.current?.scrollTo({ 
+                top: tasksContainerRef.current.scrollHeight,
+                behavior: 'smooth'
+            })
+        }
+    }, [isAddingTask])
 
     function handleGroupTitleSave() {
         group.title = editedGroupTitle
@@ -32,16 +44,15 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
 
     async function onAddTask(ev) {
         ev.preventDefault()
-
         if (!newTaskTitle.trim()) {
             showErrorMsg('Task title cannot be empty')
             return
         }
-
         const task = boardService.getEmptyTask()
         task.title = newTaskTitle
 
-        const tempTask = { ...task, id: `temp-${Date.now()}` }
+        const tempId = `temp-${Date.now()}`
+        const tempTask = { ...task, id: tempId }
 
         const updatedGroup = {
             ...group,
@@ -56,7 +67,7 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
             const finalGroup = {
                 ...group,
                 tasks: updatedGroup.tasks.map(task =>
-                    task.id === 'temp-id' ? savedTask : task
+                    task.id === tempId ? savedTask : task
                 )
             }
 
@@ -68,7 +79,7 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
             showErrorMsg('Cannot add task')
             const revertedGroup = {
                 ...group,
-                tasks: group.tasks.filter(task => task.id !== 'temp-id')
+                tasks: group.tasks.filter(task => task.id !== tempId)
             }
             onUpdateGroup(revertedGroup)
         }
@@ -145,6 +156,11 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
                 <TaskDragDropContainer
                     groupId={group.id}
                     tasks={group.tasks || []}
+                    isAddingTask={isAddingTask}
+                    setIsAddingTask={setIsAddingTask}
+                    newTaskTitle={newTaskTitle}
+                    handleTitleChange={handleTaskTitleChange}
+                    tasksContainerRef={tasksContainerRef}
                 >
                     {(task, index, isDragging) => (
                         <TaskPreview
@@ -158,14 +174,14 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
                 </TaskDragDropContainer>
             )}
 
-            <BoardGroupFooter
-                group={group}
-                isAddingTask={isAddingTask}
-                setIsAddingTask={setIsAddingTask}
-                newTaskTitle={newTaskTitle}
-                handleTitleChange={handleTaskTitleChange}
-                onAddTask={onAddTask}
-            />
+            <footer className="board-group-footer">
+                <div className='add-task-btn-preview'>
+                    <button onClick={() => setIsAddingTask(true)}>
+                        <img src={svgService.addIcon} alt="Add" className="add-icon" />
+                        Add a card
+                    </button>
+                </div>
+            </footer>
         </section>
     )
 }

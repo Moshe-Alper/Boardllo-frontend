@@ -87,3 +87,18 @@
     background-color: $details-new-list-background-hover;
   }
 }
+
+@mixin details-metadata-btn { 
+  //same button but different border radius and padding
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: $details-btn-main-clr;
+  color: $text-primary;
+  cursor: pointer;
+  font-size: rem(16px);
+  font-weight: 500;
+  margin: 0;
+  margin-inline-end: rem(8px);
+}

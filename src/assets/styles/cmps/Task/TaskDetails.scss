@@ -1,5 +1,6 @@
 .task-details-overlay {
     position: fixed;
+    height: 100%;
     inset: 0;
     z-index: 9999;
     background-color: $modal-background;
@@ -7,20 +8,16 @@
     justify-content: center;
     align-items: flex-start;
     overflow-y: auto;
-    padding: $spacing-md;
 }
 
 .task-details {
     position: relative;
-    margin: rem(32px) auto;
-    width: rem(768px);
     background-color: $background-light;
     border-radius: $border-radius;
     box-shadow: $shadow-large;
-    display: grid;
-    grid-template-columns: minmax(rem(552px), 1fr) rem(216px); // Main content + sidebar
     min-height: rem(600px);
-
+    margin-block: rem(48px);
+    min-height: calc(100vh - rem(96px)); 
 
     &.has-cover {
         .cover {
@@ -32,77 +29,97 @@
     }
 
     header.task-header {
-        display: grid;
-        grid-template-columns: rem(48px) minmax(0, 1fr); //icon , body
-        margin-block-end: rem(16px);
-        margin-block-start: rem(2px);
-        grid-column: -1 / 1;
+        padding: rem(16px) rem(52px) 0 rem(16px);
 
-        .card-icon {
-            grid-column: 1;
-            justify-self: end;
-            align-self: center;
-            opacity: 0.7;
-            width: rem(24px);
-            height: rem(24px);
-        }
+        .task-header-container {
+            display: grid;
+            grid-template-columns: rem(40px) minmax(0, 1fr);
+            margin-block-end: rem(24px);
+            row-gap: revert;
 
-        .task-title {
-            max-width: rem(660px);
-            padding: $spacing-sm $spacing-lg;
-            padding-inline-start: rem(10px);
-            margin: 0;
-            color: $text-primary;
-            font-family: $heading-font;
-            font-size: rem(20px);
-            grid-column: 2;
+            .card-icon {
+                grid-row: 1;
+                grid-column: 1;
+                padding: rem(4px);
+                opacity: 0.7;
+            }
 
-            span {
+            hgroup {
+                grid-row: 1;
+                grid-column: 2;
+
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
+                column-gap: 8px;
+                row-gap: 2px;
+
+                span {
+                    font-size: rem(20px);
+                    font-weight: 600;
+                    color: $text-primary;
+                    margin: 0;
+                }
+
+                textarea {
+                    width: 100%;
+                    border: 2px solid $button-primary-bg;
+                    border-radius: $border-radius-medium;
+                    color: $text-primary;
+                    font-size: rem(20px);
+                    font-weight: 600;
+                    font-family: $heading-font;
+                    resize: none;
+                    overflow: hidden;
+                    min-height: rem(24px);
+                    display: block;
+                }
+            }
+
+            .task-list-container {
+                grid-row: 2;
+                grid-column: 2;
                 word-wrap: break-word;
-                overflow-wrap: break-word;
-                white-space: normal;
-                display: block;
-            }
 
-            textarea {
-                width: 100%;
-                border: 2px solid $button-primary-bg;
-                border-radius: $border-radius-medium;
-                color: $text-primary;
-                font-size: rem(20px);
-                font-weight: 600;
-                font-family: $heading-font;
-                resize: none;
-                overflow: hidden;
-                min-height: rem(24px);
-                display: block;
-            }
-        }
+                .list-title {
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: center;
+                    margin-block-start: rem(4px);
+                    margin-block-end: 0;
+                    column-gap: rem(4px);
+                    color: $text-secondary;
+                    font-size: rem(14px);
 
+                    button {
+                        display: inline-flex;
+                        position: relative;
+                        box-sizing: border-box;
+                        margin-block: 0;
+                        padding: 0;
+                        border: none;
+                        border-radius: rem(2px);
+                        background-color: transparent;
+                        line-height: rem(20px);
+                        font-size: rem(11px);
+                        font-weight: 600;
 
-        .task-list {
-            padding-inline-start: rem(10px);
-            color: $text-secondary;
-            font-size: rem(14px);
-            grid-column: 2;
-
-
-            .list-name {
-                cursor: pointer;
-                background-color: $details-btn-txt-hover;
-                padding-inline: rem(4px);
-                border-radius: $border-radius-small;
-
-                &:hover {
-                    background-color: $details-new-list-background-hover;
+                        span {
+                            padding-inline: rem(4px);
+                            border-radius: rem(3px);
+                            color: $text-secondary;
+                            background-color: $background-grey-subtle;
+                        }
+                    }
                 }
             }
         }
 
         .close-btn {
             position: absolute;
-            top: $spacing-sm;
-            right: $spacing-sm;
+            top: rem(4px);
+            right: rem(4px);
             padding: $spacing-xs;
             border-radius: 50%;
             background: transparent;
@@ -118,286 +135,364 @@
 
 }
 
-.task-content {
-    padding: 0 $spacing-lg;
+main.task-main {
     display: grid;
-    grid-auto-flow: row;
-    gap: $spacing-sm;
-    grid-column: 1;
-    grid-row: 2;
+    grid-template-columns: rem(568px) minmax(0, 1fr); //main content + sidebar
+    grid-template-rows: auto auto;
+    padding-inline-start: rem(16px);
+    padding-block-end: rem(8px);
+    column-gap: rem(16px);
+    row-gap: rem(8px);
 
-    section {
-        h3 {
-            font-size: rem(16px);
-            font-weight: 600;
-            color: $text-primary;
+    .task-content {
+        grid-column: 1;
+
+        .task-metadata {
+            display: flex;
+            flex-wrap: wrap;
+            padding-inline-start: rem(40px);
+            column-gap: rem(8px);
+            row-gap: rem(8px);
+            margin-block-end: rem(16px);
+
+            .metadata-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                max-width: 100%;
+
+                h3 {
+                    margin: 0 0 rem(4px);
+                    color: $text-subtle;
+                    font-size: rem(12px);
+                    line-height: rem(15px);
+                    font-weight: 600;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+
+
+                .members-list {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: rem(4px);
+
+                    .member {
+                        width: rem(32px);
+                        height: rem(32px);
+                        line-height: rem(32px);
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        border: 0;
+                        border-radius: 100%;
+                        background-color: $background-grey-subtle;
+                        background-repeat: no-repeat;
+                        background-position: center center;
+                        background-size: cover;
+                        font-size: rem(12px);
+                        font-weight: bold;
+                        white-space: nowrap;
+                        cursor: pointer;
+                    }
+
+                    button {
+                        @include details-metadata-btn;
+                        border-radius: 50%;
+                        padding-block: rem(6px);
+                        padding-inline: rem(8px);
+
+                        img {
+                            width: rem(16px);
+                            height: rem(16px);
+                        }
+
+                        &:hover {
+                            background-color: $details-new-list-background-hover;
+                            transition: background-color 0.2s;
+                        }
+                    }
+                }
+
+                .labels-list {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: rem(4px);
+
+                    .label {
+                        display: inline-block;
+                        position: relative;
+                        box-sizing: border-box;
+                        min-width: rem(40px);
+                        max-width: 100%;
+                        height: rem(32px);
+                        margin-bottom: 0;
+                        padding: 0 rem(12px);
+                        overflow: hidden;
+                        border-radius: rem(3px);
+                        background-color: var(--label-background-color, $background-grey-subtle);
+                        color: var(--label-text-color, $text-secondary);
+                        font-size: rem(14px);
+                        font-weight: 500;
+                        line-height: rem(32px);
+                        text-align: left;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+
+                    button {
+                        @include details-metadata-btn;
+                        border-radius: rem(3px);
+                        padding: rem(8px);
+
+                        img {
+                            width: rem(16px);
+                            height: rem(16px);
+                        }
+
+                        &:hover {
+                            background-color: $details-new-list-background-hover;
+                        }
+                    }
+                }
+
+                &.notification {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-end;
+                    max-width: 100%;
+
+                    .notification-toggle {
+                        font-size: rem(14px);
+                        line-height: rem(20px);
+
+                        button {
+                            @include details-metadata-btn;
+                            margin-inline-end: 0;
+                            padding: 6px 12px;
+                            border-radius: rem(3px);
+
+                            img {
+                                width: rem(16px);
+                                height: rem(16px);
+                                margin-inline-end: rem(8px);
+                            }
+
+                            span {
+                                color: $text-primary;
+                                font-weight: 400;
+                            }
+                        }
+
+
+
+                        &:hover {
+                            background-color: $details-btn-main-clr;
+                        }
+                    }
+                }
+
+                .date-info {
+                    display: flex;
+                    gap: rem(8px);
+
+                    .due-date-checkbox {
+                        margin: 0;
+                        padding: 0;
+                        display: inline-flex;
+                        position: relative;
+                        align-items: center;
+                        font-weight: 700;
+                        color: $text-subtle;
+                        font-size: 12px;
+                        line-height: 16px;
+                        max-width: none;
+                    }
+
+                    button {
+                        @include details-metadata-btn;
+                        border-radius: rem(3px);
+                        padding: rem(6px) rem(12px);
+                        font-size: rem(14px);
+
+                        img {
+                            margin-inline-start: rem(8px);
+                            width: rem(16px);
+                            height: rem(16px);
+                        }
+
+                        &:hover {
+                            background-color: $details-new-list-background-hover;
+                        }
+                    }
+                }
+            }
+        }
+
+        .desc {
+            display: grid;
+            row-gap: rem(12px);
+            grid-template-columns: rem(40px) minmax(0, 1fr); //icon , body'
+            margin-block-end: rem(24px);
+
+            .desc-icon {
+                grid-column: 1;
+                padding: rem(6px) rem(4px);
+                opacity: 0.7;
+            }
+
+            .desc-header {
+                grid-column: 2;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
+                column-gap: rem(8px);
+                row-gap: rem(2px);
+
+                .desc-controls {
+                    display: flex;
+                    flex-grow: 1;
+                    align-items: center;
+                    column-gap: rem(8px);
+                    justify-content: space-between;
+
+                    h3 {
+                        margin-block-end: 0;
+                        font-size: rem(16px);
+                        line-height: rem(20px);
+                        color: $text-primary;
+                    }
+                }
+
+                button {
+                    @include task-content-btn;
+                }
+            }
+
+            .desc-content {
+                grid-column: 2;
+            }
+        }
+
+        .activity {
+            display: grid;
+            row-gap: rem(12px);
+            grid-template-columns: rem(40px) minmax(0, 1fr);
+            height: fit-content;
+
+            .activity-icon {
+                grid-column: 1;
+                padding: rem(6px) rem(4px);
+                opacity: 0.7;
+            }
+
+            .activity-header {
+                grid-column: 2;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
+                column-gap: rem(8px);
+                row-gap: rem(2px);
+
+                .activity-controls {
+                    display: flex;
+                    flex-grow: 1;
+                    align-items: center;
+                    column-gap: rem(8px);
+                    justify-content: space-between;
+
+                    h3 {
+                        margin-block-end: 0;
+                        font-size: rem(16px);
+                        line-height: rem(20px);
+                        color: $text-primary;
+                    }
+                }
+
+                button {
+                    @include task-content-btn;
+                }
+            }
+
+            .activity-item {
+                grid-column: 2;
+                margin-top: $spacing-sm;
+
+                display: grid;
+                grid-template-columns: rem(40px) minmax(0, 1fr); //icon , body'
+
+                >* {
+                    grid-column: 2;
+                }
+
+                p {
+                    margin: 0;
+                }
+
+                .user-avatar {
+                    grid-column: 1;
+                    width: $avatar-size;
+                    height: $avatar-size;
+                    border-radius: 50%;
+                    background-color: $border-gray;
+                    margin-block-end: 0;
+                }
+
+                time {
+                    color: $text-secondary;
+                    font-size: rem(12px);
+                }
+            }
         }
     }
 
-    .task-metadata {
-        display: flex;
-        flex-wrap: wrap;
+    .task-sidebar {
+        grid-column: 2;
+        padding-inline-end: rem(16px);
+        padding-block-end: rem(24px);
 
-        gap: $spacing-sm;
-        margin-inline-start: rem(40px);
-
-        .metadata-container {
-            border-radius: $border-radius-medium;
-            padding-bottom: 0;
-
-            h3 {
+        hgroup {
+            h4 {
                 font-size: rem(12px);
-                font-weight: 600;
                 color: $text-secondary;
-                margin-bottom: $spacing-xs;
+                margin: $spacing-md 0 $spacing-xs;
             }
-
-
-            .members-list {
-                display: grid;
-                grid-auto-flow: column;
-                gap: rem(2px);
-                align-items: center;
-
-                .member {
-                    width: rem(32px);
-                    height: rem(32px);
-                    border-radius: 50%;
-                    background-color: $button-primary-bg;
-                    color: white;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: rem(14px);
-                    font-weight: 500;
-                }
-
-                .add-member {
-                    width: rem(32px);
-                    height: rem(32px);
-                    border-radius: 50%;
-                    border: none;
-                    background-color: $details-btn-main-clr;
-                    color: $text-primary;
-                    cursor: pointer;
-                    font-size: rem(16px);
-
-                    &:hover {
-                        background-color: $details-new-list-background-hover;
-                    }
-                }
-            }
-
-            .labels-list {
-                display: grid;
-                grid-auto-flow: column;
-                gap: $spacing-xs;
-                flex-direction: row;
-
-                .label {
-                    padding: $spacing-xs $spacing-sm;
-                    border-radius: $border-radius-small;
-                    color: white;
-                    font-size: rem(12px);
-                    font-weight: 500;
-                }
-
-                .add-label {
-                    padding: $spacing-xs $spacing-sm;
-                    border: none;
-                    border-radius: $border-radius-small;
-                    background-color: $details-btn-main-clr;
-                    color: $text-primary;
-                    cursor: pointer;
-                    font-size: rem(14px);
-
-                    &:hover {
-                        background-color: $details-new-list-background-hover;
-                    }
-                }
-            }
-
-            &.notification {
+        }
+        ul.features,
+        ul.actions {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            
+            li {
+                list-style: none;
                 display: flex;
                 flex-direction: column;
-                align-items: center;
-
-                .watch-btn {
-                    display: flex;
-                    align-items: center;
-                    gap: $spacing-xs;
-                    padding: $spacing-sm $spacing-sm;
-                    border: none;
-                    border-radius: $border-radius-small;
-                    background-color: $details-btn-main-clr;
-                    color: $text-primary;
-                    cursor: pointer;
-                    font-size: rem(14px);
-
+                row-gap: rem(8px);
+                
+                button {
+                    @include details-metadata-btn;
+                    justify-content: flex-start;
+                    margin-inline-end: 0;
+                    margin-block-end: 0;
+                    border-radius: rem(3px);
+                    
+                    span {
+                        display: block;
+                        font-size: rem(14px);
+                        color: $text-primary;
+                        margin-block-end: rem(4px);
+                    }
+                    
                     img {
                         width: rem(16px);
                         height: rem(16px);
-                    }
-
-                    &:hover {
-                        background-color: $details-btn-main-clr;
+                        margin-inline-end: rem(8px);
                     }
                 }
-            }
-
-            .date-info {
-                display: flex;
-                align-items: center;
-                gap: $spacing-sm;
-                padding: $spacing-xs;
-                background-color: $button-secondary-bg;
-                border-radius: $border-radius-medium;
-                font-size: rem(14px);
-                color: $text-primary;
-
-                img {
-                    width: rem(16px);
-                    height: rem(16px);
-                }
-            }
-        }
-    }
-
-    .description {
-        display: grid;
-        grid-template-columns: rem(40px) minmax(0, 1fr); //icon , body'
-        height: fit-content;
-
-        .description-header {
-            display: grid;
-            grid-auto-flow: column;
-
-            button {
-                @include task-content-btn;
-            }
-        }
-
-        img {
-            grid-column: 1;
-        }
-
-        textarea,
-        div {
-            grid-column: 2;
-            width: 100%;
-            min-height: rem(108px);
-            padding: $spacing-sm;
-            border: 1px solid $border-gray;
-            border-radius: $border-radius-medium;
-            font-family: $body-font;
-
-            &.empty {
-                color: $text-secondary;
-                background-color: $background-light-hover;
-                cursor: pointer;
-            }
-        }
-
-        textarea {
-            resize: vertical;
-        }
-    }
-
-    .activity {
-        display: grid;
-        grid-template-columns: rem(40px) minmax(0, 1fr); //icon , body'
-        height: fit-content;
-
-        .activity-header {
-            display: grid;
-            grid-auto-flow: column;
-
-            button {
-                @include task-content-btn;
-            }
-        }
-
-        img {
-            grid-column: 1;
-        }
-
-        .activity-item {
-            grid-column: 2;
-            margin-top: $spacing-sm;
-        
-            display: grid;
-            grid-template-columns: rem(40px) minmax(0, 1fr); //icon , body'
-            
-            >* {
-                grid-column: 2;
-            }
-
-            p {
-                margin: 0;
-            }
-            
-            .user-avatar {
-                grid-column: 1;
-                width: $avatar-size;
-                height: $avatar-size;
-                border-radius: 50%;
-                background-color: $border-gray;
-                margin-block-end: 0;
-            }
-
-            time {
-                color: $text-secondary;
-                font-size: rem(12px);
-            }
-        }
-    }
-}
-
-.task-sidebar {
-    padding: $spacing-lg;
-    background-color: $background-light;
-    border-top-right-radius: $border-radius;
-    border-bottom-right-radius: $border-radius;
-    grid-column: 2;
-    grid-row: 2;
-
-    h3 {
-        font-size: rem(12px);
-        color: $text-secondary;
-        margin: $spacing-md 0 $spacing-xs;
-    }
-
-    .add-to-card,
-    .actions {
-        display: grid;
-        flex-direction: column;
-        gap: $spacing-xs;
-
-        button {
-            display: grid;
-            grid-template-columns: rem(24px) 1fr;
-            justify-content: center;
-            align-items: center;
-            gap: $spacing-xs;
-            padding: $spacing-xs;
-            border: none;
-            border-radius: $border-radius-medium;
-            background-color: $details-btn-main-clr;
-            color: $text-primary;
-            cursor: pointer;
-            font-size: rem(14px);
-            width: 100%;
-            text-align: left;
-            padding: 6px 12px;
-
-
-            &:hover {
-                background-color: $details-new-list-background-hover;
-            }
-
-            img {
-                width: rem(16px);
-                height: rem(16px);
             }
         }
     }
