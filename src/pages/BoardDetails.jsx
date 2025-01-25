@@ -121,7 +121,6 @@ export function BoardDetails() {
     }
   }
   if (!board) return <div>Loading...</div>
-
   return (
     <div className={`board-layout ${isSidebarOpen ? 'sidebar-open' : ''}`}>
       <BoardSidebar isOpen={isSidebarOpen} toggleDrawer={toggleSidebar} boards={boards} />

@@ -31,7 +31,8 @@ export function LabelPicker({ initialTask, onLabelUpdate }) {
                 value={searchTerm}
                 onChange={(ev) => setSearchTerm(ev.target.value)}
             />
-            <h3 className="label-picker-title">Labels</h3>
+            <h3 className="picker-title">Labels</h3>
+            
             <ul>
                 {getFilteredLabels().map(label => (
                     <li key={label.id} className="label-item">

@@ -119,7 +119,8 @@ export function TaskDetails() {
     }
 
     async function handleLabelUpdate(taskId, labelId) {
-        const existingLabels = Array.isArray(task.labelIds) ? task.labelIds : []
+        if (task.id !== taskId) return
+        const existingLabels = Array.isArray(task.labelIds) ? task.labelIds : []       
         const labelExists = existingLabels.some(id => id === labelId)
         
         const updatedLabelIds = labelExists 
@@ -136,6 +137,24 @@ export function TaskDetails() {
         }
     }
 
+    async function handleMemberUpdate(taskId, memberId) {
+        if (task.id !== taskId) return
+        const existingMembers = Array.isArray(task.memberIds) ? task.memberIds : []
+        const memberExists = existingMembers.some(id => id === memberId)
+        
+        const updatedMemberIds = memberExists 
+            ? existingMembers.filter(id => id !== memberId)
+            : [...existingMembers, memberId]
+            
+        const updatedTask = { ...task, memberIds: updatedMemberIds }
+    
+        try {
+            await updateTask(board._id, currGroup.id, updatedTask)
+            setTask(updatedTask)
+        } catch (err) {
+            showErrorMsg('Failed to update members')
+        }
+    }
 
     function handlePickerToggle(Picker, title, ev) {
         if (!Picker) return
@@ -144,11 +163,12 @@ export function TaskDetails() {
             cmp: Picker,
             title,
             props: {
-                boardId: board._id,
+                board,
                 groupId: currGroup.id,
                 initialTask: task,
                 onClose: () => onTogglePicker(),
-                onLabelUpdate: handleLabelUpdate
+                onLabelUpdate: handleLabelUpdate,
+                onMemberUpdate: handleMemberUpdate
             },
             triggerEl: ev.currentTarget
         })

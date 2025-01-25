@@ -19,6 +19,7 @@ function getEmptyGroup() {
     id: makeId(),
     title: '',
     archivedAt: null,
+    members : [],
     tasks: [
       {
         id: makeId(),

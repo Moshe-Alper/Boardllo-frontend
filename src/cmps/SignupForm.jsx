@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react'
-import { userService } from '../services/user/user.service.local.js'
+import { userService } from '../services/user'
 import { useNavigate } from 'react-router'
 import { signup } from '../store/actions/user.actions.js'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 
 export function SignupForm() {
-  const [credentials, setCredentials] = useState(userService.getEmptyCredentials())
+  const [credentials, setCredentials] = useState(userService.getEmptyUser())
 
   const navigate = useNavigate()
 

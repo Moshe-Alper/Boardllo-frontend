@@ -7,7 +7,6 @@ export const SET_USER = "SET_USER";
 export const SET_WATCHED_USER = "SET_WATCHED_USER";
 export const REMOVE_USER = "REMOVE_USER";
 export const SET_USERS = "SET_USERS";
-export const SET_SCORE = "SET_SCORE";
 export const IS_SIGNUP = "IS_SIGNUP";
 
 const initialState = {
@@ -16,7 +15,7 @@ const initialState = {
   users: [],
   watchedUser: null,
   isSignup: false,
-};
+}
 
 export function userReducer(state = initialState, action) {
   var newState = state;
@@ -44,9 +43,6 @@ export function userReducer(state = initialState, action) {
       break;
     case SET_USERS:
       newState = { ...state, users: action.users };
-      break;
-    case SET_SCORE:
-      newState = { ...state, user: { ...state.user, score: action.score } };
       break;
     case IS_SIGNUP:
       return { ...state, isSignup: action.isSignup };

@@ -100,6 +100,7 @@ async function saveGroup(boardId, group) {
       id: makeId(),
       title: group.title,
       archivedAt: null,
+      members: [],
       tasks: [],
       style: {},
       isCollapsed: false

@@ -58,6 +58,13 @@
         }
     }
 
+    .picker-title {
+        font-size: rem(12px);
+        color: $text-subtle;
+        font-weight: 600;
+        margin-block: rem(12px) rem(8px);
+      }
+
     .picker-content {
         padding: rem(12px);
         padding-block-start: 0;

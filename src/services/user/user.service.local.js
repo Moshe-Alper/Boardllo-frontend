@@ -11,7 +11,6 @@ export const userService = {
   remove,
   update,
   getLoggedinUser,
-  getEmptyCredentials,
   updateUserImg,
   updateUserName
 }
@@ -28,9 +27,8 @@ function remove(userId) {
   return storageService.remove('user', userId)
 }
 
-async function update({ _id, score }) {
+async function update({ _id}) {
   const user = await storageService.get('user', _id)
-  user.score = score
   await storageService.put('user', user)
 
   // When admin updates other user's details, do not update loggedinUser
@@ -49,7 +47,6 @@ async function login(userCred) {
 
 async function signup(userCred) {
   if (!userCred.imgUrl) userCred.imgUrl = ''
-  userCred.score = 10000
 
   const user = await storageService.post('user', userCred)
   return _saveLocalUser(user)
@@ -68,7 +65,6 @@ function _saveLocalUser(user) {
     _id: user._id,
     fullname: user.fullname,
     imgUrl: user.imgUrl,
-    score: user.score,
     isAdmin: user.isAdmin
   }
   sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
@@ -85,15 +81,6 @@ async function updateUserName(userCred) {
   return _saveLocalUser(updatedUser)
 }
 
-function getEmptyCredentials() {
-  return {
-    username: '',
-    password: '',
-    fullname: '',
-    imgUrl: ''
-  }
-}
-
 // To quickly create an admin user, uncomment the next line
 // _createAdmin()
 async function _createAdmin(userCred) {
@@ -102,7 +89,7 @@ async function _createAdmin(userCred) {
     password: 'admin',
     fullname: 'Mustafa Adminsky',
     imgUrl: '',
-    score: 10000
+    isAdmin: true
   }
 
   const newUser = await storageService.post('user', userCred)

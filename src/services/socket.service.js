@@ -100,7 +100,7 @@ function createDummySocketService() {
       this.emit(SOCKET_EVENT_ADD_MSG, { from: 'Someone', txt: 'Aha it worked!' })
     },
     testUserUpdate() {
-      this.emit(SOCKET_EVENT_USER_UPDATED, { ...userService.getLoggedinUser(), score: 555 })
+      this.emit(SOCKET_EVENT_USER_UPDATED, { ...userService.getLoggedinUser() })
     }
   }
   window.listenersMap = listenersMap

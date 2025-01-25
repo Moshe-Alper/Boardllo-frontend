@@ -18,6 +18,7 @@
     min-height: rem(600px);
     margin-block: rem(48px);
     min-height: calc(100vh - rem(96px)); 
+    width: 769px;
 
     &.has-cover {
         .cover {
@@ -479,6 +480,7 @@ main.task-main {
                     margin-inline-end: 0;
                     margin-block-end: 0;
                     border-radius: rem(3px);
+                    padding: rem(10px) rem(12px);
                     
                     span {
                         display: flex;

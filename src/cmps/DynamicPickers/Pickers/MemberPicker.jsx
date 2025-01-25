@@ -1,106 +1,87 @@
 import React, { useState } from 'react'
+import { svgService } from '../../../services/svg.service'
 
-import { TextField, Avatar, Checkbox, CircularProgress } from '@mui/material'
-import { updateTask } from '../../../store/actions/board.actions'
-
-// replace with API call later
-const demoMembers = [
-  { _id: 'u1', fullname: 'Rivers Cuomo', username: 'riversc', imgUrl: '/api/placeholder/32/32' },
-  { _id: 'u2', fullname: 'Patrick Wilson', username: 'patrickw', imgUrl: '/api/placeholder/32/32' },
-  { _id: 'u3', fullname: 'Brian Bell', username: 'brianb', imgUrl: '/api/placeholder/32/32' },
-  { _id: 'u4', fullname: 'Scott Shriner', username: 'scotts', imgUrl: '/api/placeholder/32/32' }
-]
-
-export function MemberPicker({ task, boardId, groupId, onClose }) {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [members] = useState(demoMembers)
-  const [isLoading, setIsLoading] = useState(false)
-
-  function getFilteredMembers() {
-    return members.filter(member => 
-      member.fullname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      member.username.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  }
-
-  async function toggleMember(memberId) {
-    setIsLoading(true)
-    try {
-      const updatedMemberIds = task.memberIds?.includes(memberId)
-        ? task.memberIds.filter(id => id !== memberId)
-        : [...(task.memberIds || []), memberId]
-
-      const updatedTask = {
-        ...task,
-        memberIds: updatedMemberIds
-      }
-
-      await updateTask(boardId, groupId, updatedTask)
-    } catch (err) {
-      console.error('Failed to update task members:', err)
-    } finally {
-      setIsLoading(false)
+export function MemberPicker({ initialTask, board, onMemberUpdate }) {
+    const [searchTerm, setSearchTerm] = useState('')
+    const [cardMembers, setCardMembers] = useState(initialTask.memberIds || [])
+    
+    function handleMemberToggle(memberId) {
+        const isCurrentlyCardMember = cardMembers.includes(memberId)
+        const newCardMembers = isCurrentlyCardMember
+            ? cardMembers.filter(id => id !== memberId)
+            : [...cardMembers, memberId]
+            
+        setCardMembers(newCardMembers)
+        onMemberUpdate(initialTask.id, memberId)
     }
-  }
 
-  function isMemberAssigned(memberId) {
-    return task.memberIds?.includes(memberId) || false
-  }
+    function getFilteredMembers(members) {
+        return members.filter(member =>
+            member.fullname.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+    }
 
-  function getInitials(fullname) {
-    return fullname
-      .split(' ')
-      .map(name => name[0])
-      .join('')
-      .toUpperCase()
-  }
-  const filteredMembers = getFilteredMembers()
+    const boardMembers = board.members || []
+    const cardMembersList = boardMembers.filter(member => cardMembers.includes(member._id))
+    const availableBoardMembers = boardMembers.filter(member => !cardMembers.includes(member._id))
 
-  return (
-    <>
-      <div className="members-search">
-        <TextField
-          fullWidth
-          size="small"
-          placeholder="Search members..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
+    return (
+        <div className="member-picker">
+            <input
+                type="text"
+                placeholder="Search members..."
+                className="search-input"
+                value={searchTerm}
+                onChange={(ev) => setSearchTerm(ev.target.value)}
+            />
 
-      <div className="members-list">
-        <div className="members-list__header">
-          Board members
-        </div>
-
-        {filteredMembers.map(member => (
-          <div
-            key={member._id}
-            className="member-item"
-            onClick={() => !isLoading && toggleMember(member._id)}
-          >
-            <div className="member-info">
-              <Avatar src={member.imgUrl} alt={member.fullname}>
-                {!member.imgUrl && getInitials(member.fullname)}
-              </Avatar>
-              <div className="member-details">
-                <div className="member-name">{member.fullname}</div>
-                <div className="member-username">@{member.username}</div>
-              </div>
-            </div>
-
-            {isLoading ? (
-              <CircularProgress size={20} className="member-loading" />
-            ) : (
-              <Checkbox
-                checked={isMemberAssigned(member._id)}
-                tabIndex={-1}
-                disableRipple
-              />
+            {cardMembersList.length > 0 && (
+                <>
+                    <h3 className="picker-title">Card Members</h3>
+                    <ul className="members-list">
+                        {getFilteredMembers(cardMembersList).map(member => (
+                            <li key={member._id} className="member-item">
+                                <div className="member-details"
+                                 onClick={() => handleMemberToggle(member._id)}
+                                >
+                                    <div className="member-avatar">
+                                      
+                                        <img src={member.imgUrl} alt={member.fullname} />
+                                    </div>
+                                    <span className="member-name">{member.fullname}</span>
+                                    <button 
+                                        className="remove-member"
+                                    >
+                                        <img src={svgService.closeIcon} alt="Remove member" />
+                                    </button>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                </>
             )}
-          </div>
-        ))}
-      </div>
-    </>
-  )
+
+            {availableBoardMembers.length > 0 && (
+                <>
+                    <h3 className="picker-title">Board Members</h3>
+                    <ul className="members-list">
+                        {getFilteredMembers(availableBoardMembers).map(member => (
+                            <li 
+                                key={member._id} 
+                                className="member-item"
+                                onClick={() => handleMemberToggle(member._id)}
+                            >
+                                <div className="member-details">
+                                    <div className="member-avatar">
+                                        <img src={member.imgUrl} alt={member.fullname} />
+                                    </div>
+                                    <span className="member-name">{member.fullname}</span>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                </>
+            )}
+        </div>
+    )
 }
