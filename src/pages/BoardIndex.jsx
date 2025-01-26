@@ -1,64 +1,62 @@
 /* eslint-disable react/prop-types */
 
-import { Fragment, useState, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
-import { Layout, Pencil, Plus, Trash2, Users, Star } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Fragment, useState, useEffect, useRef } from 'react'
+import { useSelector } from 'react-redux'
+import { Layout, Pencil, Plus, Trash2, Users, Star } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 import {
   loadBoards,
   removeBoard,
   loadBoardsToSidebar,
-} from '../store/actions/board.actions.js';
+} from '../store/actions/board.actions.js'
 
-import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js';
-import { boardService } from '../services/board';
-import { Loader } from '../cmps/Loader.jsx';
-import { BoardCreateModal } from '../cmps/Board/BoardCreateModal.jsx';
+import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
+import { boardService } from '../services/board'
+import { Loader } from '../cmps/Loader.jsx'
+import { BoardCreateModal } from '../cmps/Board/BoardCreateModal.jsx'
 
-// import { BoardFilter } from '../cmps/Board/BoardFilter.jsx'
-// import { BoardList } from '../cmps/Board/BoardList.jsx'
 
 export function BoardIndex() {
-  const [filterBy, setFilterBy] = useState(boardService.getDefaultFilter());
-  const boards = useSelector((storeState) => storeState.boardModule.boards);
-  const workspaceBoards = boards?.filter((board) => !board.isGuest) || [];
+  const [filterBy, setFilterBy] = useState(boardService.getDefaultFilter())
+  const boards = useSelector((storeState) => storeState.boardModule.boards)
+  const workspaceBoards = boards?.filter((board) => !board.isGuest) || []
 
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [editingBoard, setEditingBoard] = useState(null);
-  const [starredBoards, setStarredBoards] = useState([]);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [editingBoard, setEditingBoard] = useState(null)
+  const [starredBoards, setStarredBoards] = useState([])
 
-  const createButtonRef = useRef(null);
+  const createButtonRef = useRef(null)
 
   useEffect(() => {
-    loadBoards(filterBy);
-    loadBoardsToSidebar();
-  }, [filterBy]);
+    loadBoards(filterBy)
+    loadBoardsToSidebar()
+  }, [filterBy])
 
   function onSetFilterBy(filterBy) {
-    setFilterBy((prevFilterBy) => ({ ...prevFilterBy, ...filterBy }));
+    setFilterBy((prevFilterBy) => ({ ...prevFilterBy, ...filterBy }))
   }
-  console.log(workspaceBoards);
+  console.log(workspaceBoards)
 
   async function onRemoveBoard(boardId) {
     try {
-      await removeBoard(boardId);
-      showSuccessMsg('Board removed');
+      await removeBoard(boardId)
+      showSuccessMsg('Board removed')
     } catch (err) {
-      showErrorMsg('Cannot remove board');
+      showErrorMsg('Cannot remove board')
     }
   }
 
   const toggleStar = (e, boardId) => {
-    e.preventDefault();
+    e.preventDefault()
     setStarredBoards((prev) =>
       prev.includes(boardId)
         ? prev.filter((id) => id !== boardId)
         : [...prev, boardId]
-    );
-  };
+    )
+  }
 
-  if (!boards) return <Loader />;
+  if (!boards) return <Loader />
 
   return (
     <div className='board-index-container'>
@@ -113,10 +111,10 @@ export function BoardIndex() {
                         <button
                           className='crud-btn'
                           onClick={(e) => {
-                            e.preventDefault();
+                            e.preventDefault()
                             const rect =
-                              e.currentTarget.getBoundingClientRect();
-                            setEditingBoard({ ...board, buttonPos: rect });
+                              e.currentTarget.getBoundingClientRect()
+                            setEditingBoard({ ...board, buttonPos: rect })
                           }}
                         >
                           <Pencil size={14} />
@@ -158,9 +156,9 @@ export function BoardIndex() {
                     <button
                       className='crud-btn'
                       onClick={(e) => {
-                        e.preventDefault();
-                        const rect = e.currentTarget.getBoundingClientRect();
-                        setEditingBoard({ ...board, buttonPos: rect });
+                        e.preventDefault()
+                        const rect = e.currentTarget.getBoundingClientRect()
+                        setEditingBoard({ ...board, buttonPos: rect })
                       }}
                     >
                       <Pencil size={14} />
@@ -178,8 +176,8 @@ export function BoardIndex() {
                     <button
                       className='crud-btn'
                       onClick={(e) => {
-                        e.preventDefault();
-                        onRemoveBoard(board._id);
+                        e.preventDefault()
+                        onRemoveBoard(board._id)
                       }}
                     >
                       <Trash2 size={14} />
@@ -246,5 +244,5 @@ export function BoardIndex() {
         </section>
       </main>
     </div>
-  );
+  )
 }

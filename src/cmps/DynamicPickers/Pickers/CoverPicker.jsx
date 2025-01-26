@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import { updateTask } from '../../../store/actions/board.actions'
+import React, { useState, useEffect } from 'react'
 
-export function CoverPicker({ task, boardId, groupId, onClose }) {
-  const [selectedColor, setSelectedColor] = useState(task.coverColor || '')
+export function CoverPicker({ initialTask, onCoverUpdate }) {
+  const [selectedColor, setSelectedColor] = useState(initialTask.coverColor || '')
   const [isLoading, setIsLoading] = useState(false)
+
 
   const colors = [
     { id: 'blue', value: '#0052cc' },
@@ -18,7 +18,18 @@ export function CoverPicker({ task, boardId, groupId, onClose }) {
     { id: 'dark', value: '#172b4d' }
   ]
 
-   return (
+  useEffect(() => {
+    setSelectedColor(initialTask.coverColor || '')
+  }, [initialTask.coverColor])
+
+  function handleCoverSelect(color) {
+    setIsLoading(true)
+    setSelectedColor(color)
+    onCoverUpdate(color)
+    setTimeout(() => setIsLoading(false), 300)
+  }
+
+  return (
     <div className="picker-content">
       <div className="colors-container">
         {colors.map(({ id, value }) => (
@@ -26,7 +37,7 @@ export function CoverPicker({ task, boardId, groupId, onClose }) {
             key={id}
             className={`color-option ${selectedColor === value ? 'selected' : ''}`}
             style={{ backgroundColor: value }}
-            onClick={() => !isLoading && handleColorSelect(value)}
+            onClick={() => !isLoading && handleCoverSelect(value)}
             disabled={isLoading}
             aria-label={`Select ${id} color`}
           />
@@ -36,7 +47,7 @@ export function CoverPicker({ task, boardId, groupId, onClose }) {
       {selectedColor && (
         <button
           className="secondary-button"
-          onClick={() => handleColorSelect('')}
+          onClick={() => handleCoverSelect('')}
           disabled={isLoading}
         >
           Remove Cover

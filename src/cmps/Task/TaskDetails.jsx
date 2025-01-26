@@ -140,6 +140,16 @@ export function TaskDetails() {
         }
     }
 
+    async function handleCoverUpdate(newCoverColor) { 
+        const updatedTask = { ...task, style: { ...task.style, coverColor: newCoverColor } }
+        try {
+            await updateTask(board._id, currGroup.id, updatedTask)
+            setTask(updatedTask)
+        } catch (err) {
+            showErrorMsg('Failed to update cover')
+        }   
+    }
+
     function handlePickerToggle(Picker, title, ev) {
         if (!Picker) return
 
@@ -152,11 +162,15 @@ export function TaskDetails() {
                 initialTask: task,
                 onClose: () => onTogglePicker(),
 
+                // labels
                 onLabelUpdate: handleLabelUpdate,
-
+                // members
                 onMemberUpdate: handleMemberUpdate,
                 boardMembers: board.members || [],
-                taskMembers: task.memberIds || []
+                taskMembers: task.memberIds || [],
+                // cover
+                onCoverUpdate: handleCoverUpdate,
+
             },
             triggerEl: ev.currentTarget
         })

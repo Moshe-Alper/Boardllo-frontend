@@ -23,7 +23,13 @@ export function SignupForm() {
 
   function handleChange({ target }) {
     const { name: field, value } = target
-    setCredentials((prevCreds) => ({ ...prevCreds, [field]: value }))
+    setCredentials((prevCreds) => ({
+      ...prevCreds,
+      [field]: value,
+      imgUrl: (field === 'fullname' || field === 'username') 
+        ? userService.getDefaultAvatar(value) 
+        : prevCreds.imgUrl
+    }))
   }
 
   function handleSubmit(ev) {

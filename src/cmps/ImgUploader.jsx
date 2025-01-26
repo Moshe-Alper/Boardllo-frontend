@@ -1,24 +1,42 @@
-import { useState } from 'react'
+import { useState, } from 'react'
 import { uploadService } from '../services/upload.service.js'
 import { Loader } from './Loader.jsx'
 import { updateUserImg } from '../store/actions/user.actions.js'
 import { useSelector } from 'react-redux'
+import { updateBoard, loadBoard } from '../store/actions/board.actions.js'
 
 export function ImgUploader() {
   const user = useSelector((storeState) => storeState.userModule.user)
+  const board = useSelector((storeState) => storeState.boardModule.board)
   const [imgData, setImgData] = useState(user.imgUrl)
   const [isUploading, setIsUploading] = useState(false)
 
+
   async function uploadImg(ev) {
     ev.preventDefault()
-    console.log('🚀 ~ uploadImg ~ ev:', ev)
     setIsUploading(true)
 
-    const { secure_url } = await uploadService.uploadImg(ev)
-    await updateUserImg({ ...user, imgUrl: secure_url })
+    try {
+      const { secure_url } = await uploadService.uploadImg(ev)
+      await updateUserImg({ ...user, imgUrl: secure_url })
 
-    setImgData(secure_url)
-    setIsUploading(false)
+      if (board?.owner?._id === user._id) {
+        await updateBoard({
+          ...board,
+          owner: {
+            ...board.owner,
+            imgUrl: secure_url
+          }
+        })
+        await loadBoard(board._id)
+      }
+
+      setImgData(secure_url)
+    } catch (err) {
+      console.error('Failed to upload image:', err)
+    } finally {
+      setIsUploading(false)
+    }
   }
 
   function getUploadLabel() {

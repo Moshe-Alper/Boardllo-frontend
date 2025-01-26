@@ -196,6 +196,14 @@ main.task-main {
                         font-weight: bold;
                         white-space: nowrap;
                         cursor: pointer;
+                        border-radius: 50%;
+
+                        img {
+                            width: rem(32px);
+                            height: rem(32px);
+                            border-radius: 50%;
+                            object-fit: cover;
+                        }
                     }
 
                     button {
