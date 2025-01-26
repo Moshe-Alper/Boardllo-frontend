@@ -2,59 +2,38 @@ import React, { useState } from 'react'
 import { TextField, Select, MenuItem } from '@mui/material'
 import { LocalizationProvider, DateCalendar } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { updateTask } from '../../../store/actions/board.actions'
 import dayjs from 'dayjs'
 
-export function DatePicker({ task, boardId, groupId, onClose }) {
-  const [selectedDate, setSelectedDate] = useState(
-    task.dueDate ? dayjs(task.dueDate) : null
-  )
-  const [dueTime, setDueTime] = useState(
-    task.dueDate ? dayjs(task.dueDate).format('HH:mm') : ''
-  )
+export function DatePicker({ initialTask, onDateUpdate }) {
+  const [selectedDate, setSelectedDate] = useState(null)
+  const [dueTime, setDueTime] = useState('')
   const [reminder, setReminder] = useState('none')
   const [isLoading, setIsLoading] = useState(false)
 
-  async function handleSave() {
-    if (!selectedDate) return
+function handleDateSave(date) {
+  setIsLoading(true)
+  const updatedDate = selectedDate ? dayjs(selectedDate).format('YYYY-MM-DD') : null
 
-    setIsLoading(true)
-    try {
-      const date = dueTime 
-        ? selectedDate.hour(dueTime.split(':')[0]).minute(dueTime.split(':')[1])
-        : selectedDate
-
-      const updatedTask = {
-        ...task,
-        dueDate: date.toISOString(),
-        reminder
-      }
-
-      await updateTask(boardId, groupId, updatedTask)
-      onClose()
-    } catch (err) {
-      console.error('Failed to update task date:', err)
-    } finally {
-      setIsLoading(false)
-    }
+  const updatedTask = {
+    ...initialTask,
+    dueDate: updatedDate,
+    reminder: reminder === 'none' ? null : reminder,
   }
 
-  async function handleRemove() {
-    setIsLoading(true)
-    try {
-      const updatedTask = {
-        ...task,
-        dueDate: null,
-        reminder: 'none'
-      }
-      await updateTask(boardId, groupId, updatedTask)
-      onClose()
-    } catch (err) {
-      console.error('Failed to remove dates:', err)
-    } finally {
-      setIsLoading(false)
-    }
-  }
+  onDateUpdate(updatedTask)
+  setIsLoading(false)
+}
+
+
+function handleDateRemove() {  
+  setIsLoading(true)
+  const updatedTask = {
+    ...initialTask,
+    dueDate: null,
+    reminder: null,
+  } 
+  onDateUpdate(updatedTask)
+}
 
   return (
     <div className="picker-content">
@@ -75,7 +54,7 @@ export function DatePicker({ task, boardId, groupId, onClose }) {
               size="small"
               fullWidth
               value={dueTime}
-              onChange={(e) => setDueTime(e.target.value)}
+              onChange={(ev) => setDueTime(ev.target.value)}
               disabled={isLoading}
             />
           </div>
@@ -86,7 +65,7 @@ export function DatePicker({ task, boardId, groupId, onClose }) {
               fullWidth
               size="small"
               value={reminder}
-              onChange={(e) => setReminder(e.target.value)}
+              onChange={(ev) => setReminder(ev.target.value)}
               disabled={isLoading}
             >
               <MenuItem value="none">None</MenuItem>
@@ -106,14 +85,14 @@ export function DatePicker({ task, boardId, groupId, onClose }) {
       <div className="button-group">
         <button 
           className="primary-button" 
-          onClick={handleSave}
+          onClick={handleDateSave}
           disabled={isLoading}
         >
           Save
         </button>
         <button 
           className="secondary-button"
-          onClick={handleRemove}
+          onClick={handleDateRemove}
           disabled={isLoading}
         >
           Remove
@@ -122,3 +101,4 @@ export function DatePicker({ task, boardId, groupId, onClose }) {
     </div>
   )
 }
+

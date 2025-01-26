@@ -150,6 +150,26 @@ export function TaskDetails() {
         }   
     }
 
+    async function handleDateUpdate(newDueDate) {
+        const updatedTask = { ...task, dueDate: newDueDate }
+        try {   
+            await updateTask(board._id, currGroup.id, updatedTask)
+            setTask(updatedTask)
+        } catch (err) {
+            showErrorMsg('Failed to update due date')
+        }
+    }
+
+    async function handleChecklistUpdate(newChecklist) {
+        const updatedTask = { ...task, checklist: newChecklist }
+        try {   
+            await updateTask(board._id, currGroup.id, updatedTask)
+            setTask(updatedTask)
+        } catch (err) {
+            showErrorMsg('Failed to update checklist')
+        }
+    }   
+
     function handlePickerToggle(Picker, title, ev) {
         if (!Picker) return
 
@@ -170,6 +190,10 @@ export function TaskDetails() {
                 taskMembers: task.memberIds || [],
                 // cover
                 onCoverUpdate: handleCoverUpdate,
+                // due date
+                onDateUpdate: handleDateUpdate,
+                // checklist
+                onChecklistUpdate: handleChecklistUpdate
 
             },
             triggerEl: ev.currentTarget
@@ -180,7 +204,6 @@ export function TaskDetails() {
     if (!task) return <div>Loading...</div>
     const boardMembers = board?.members || []
     const taskMembers = task?.memberIds || []
-
     return (
         <div className="task-details-overlay" onClick={handleOverlayClick}>
             <article className={`task-details ${hasCover ? 'has-cover' : ''}`}>
@@ -297,7 +320,6 @@ export function TaskDetails() {
                             <hgroup className="desc-header">
                                 <div className="desc-controls">
                                     <h3>Description</h3>
-                                    <button>Edit</button>
                                 </div>
                             </hgroup>
 
