@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom'
 import Popover from '@mui/material/Popover'
 import { svgService } from "../../services/svg.service"
 import { TaskQuickActions } from "./TaskQuickActions"
+import { boardService } from '../../services/board'
 
 export function TaskPreview({ task, boardId, group, isDragging }) {
     const [anchorEl, setAnchorEl] = useState(null)
     const isPopoverOpen = Boolean(anchorEl)
     const navigate = useNavigate()
+    const labels = boardService.getDefaultLabels()
 
     function onOpenTaskDetails(ev) {
         if (ev.target.closest('.edit-icon-container')) return
@@ -36,6 +38,26 @@ export function TaskPreview({ task, boardId, group, isDragging }) {
             }}
             onClick={onOpenTaskDetails}
         >
+
+            {task.labelIds?.length > 0 && (
+                <div className='task-labels'>
+                    {task.labelIds?.map(labelId => {
+                        const label = labels.find(l => l.id === labelId);
+                        if (!label) return null;
+                        return (
+                            <div
+                                key={labelId}
+                                className="task-label"
+                                style={{ backgroundColor: label.color }}
+                                title={label.title}
+                            >
+                                <span>{label.title}</span>
+                            </div>
+                        )
+                    })}
+                </div>
+            )}
+
             <p>{task.title}</p>
             <div className="edit-icon-container">
                 <div className="edit-icon" onClick={onOpenPopover}>

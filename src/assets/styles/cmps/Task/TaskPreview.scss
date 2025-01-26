@@ -13,8 +13,8 @@
         cursor: grabbing;
         box-shadow: $shadow-medium;
         background-color: $background-white;
-      } 
-      
+    }
+
     &:hover {
         background-color: $background-light-hover;
 
@@ -23,7 +23,7 @@
             background-color: $background-light-hover;
 
         }
-    
+
     }
 
     &.has-cover {
@@ -43,6 +43,36 @@
 
         .edit-icon-container {
             inset-block-start: 1.125rem; // 18px to rem
+        }
+    }
+
+    .task-labels {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem; // 4px
+        margin-block-end: 0.25rem; // 4px
+
+        div {
+            display: inline-flex;
+            border-radius: 4px;
+
+            span {
+                display: inline-block;
+                position: relative;
+                min-width: rem(56px);
+                max-width: 100%;
+                height: rem(16px);
+                margin-block-end: 0;
+                padding: 0 rem(8px);
+                overflow: hidden;
+                color: $text-primary;
+                font-size: rem(12px);
+                line-height: rem(16px);
+                text-align: left;
+                text-overflow: ellipsis;
+                vertical-align: middle;
+                white-space: nowrap;
+            }
         }
     }
 

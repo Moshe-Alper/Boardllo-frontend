@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { svgService } from '../../../services/svg.service'
 import { boardService } from '../../../services/board'
 
@@ -8,12 +8,16 @@ export function LabelPicker({ initialTask, onLabelUpdate }) {
     const [labels] = useState([...boardService.getDefaultLabels()])
     const [selectedLabels, setSelectedLabels] = useState(initialTask.labelIds || [])
 
+    useEffect(() => {
+        setSelectedLabels(initialTask.labelIds || [])
+    }, [initialTask.labelIds])
+
     function handleLabelToggle(labelId) {
         const newSelectedLabels = selectedLabels.includes(labelId)
             ? selectedLabels.filter(id => id !== labelId)
             : [...selectedLabels, labelId]
         setSelectedLabels(newSelectedLabels)
-        onLabelUpdate(initialTask.id, labelId)
+        onLabelUpdate(initialTask.id, newSelectedLabels)
     }
 
     function getFilteredLabels() {

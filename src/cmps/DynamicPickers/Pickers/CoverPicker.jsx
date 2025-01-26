@@ -18,28 +18,7 @@ export function CoverPicker({ task, boardId, groupId, onClose }) {
     { id: 'dark', value: '#172b4d' }
   ]
 
-  async function handleColorSelect(color) {
-    setIsLoading(true)
-    try {
-      const updatedTask = {
-        ...task,
-        coverColor: color
-      }
-
-      await updateTask(boardId, groupId, updatedTask)
-      setSelectedColor(color)
-      
-      if (!color) {
-        onClose()
-      }
-    } catch (err) {
-      console.error('Failed to update cover color:', err)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  return (
+   return (
     <div className="picker-content">
       <div className="colors-container">
         {colors.map(({ id, value }) => (

@@ -1,19 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { svgService } from '../../../services/svg.service'
 
-export function MemberPicker({ initialTask, board, onMemberUpdate }) {
+export function MemberPicker({ initialTask, onMemberUpdate, boardMembers }) {
     const [searchTerm, setSearchTerm] = useState('')
-    const [cardMembers, setCardMembers] = useState(initialTask.memberIds || [])
-    
-    function handleMemberToggle(memberId) {
-        const isCurrentlyCardMember = cardMembers.includes(memberId)
-        const newCardMembers = isCurrentlyCardMember
-            ? cardMembers.filter(id => id !== memberId)
-            : [...cardMembers, memberId]
-            
-        setCardMembers(newCardMembers)
-        onMemberUpdate(initialTask.id, memberId)
-    }
+    const [currentMemberIds, setCurrentMemberIds] = useState(initialTask?.memberIds || [])
+
+    useEffect(() => {
+        setCurrentMemberIds(initialTask?.memberIds || [])
+    }, [initialTask?.memberIds])
 
     function getFilteredMembers(members) {
         return members.filter(member =>
@@ -21,9 +15,16 @@ export function MemberPicker({ initialTask, board, onMemberUpdate }) {
         )
     }
 
-    const boardMembers = board.members || []
-    const cardMembersList = boardMembers.filter(member => cardMembers.includes(member._id))
-    const availableBoardMembers = boardMembers.filter(member => !cardMembers.includes(member._id))
+    function handleMemberUpdate(memberId) {
+        const updatedMembers = currentMemberIds.includes(memberId)
+            ? currentMemberIds.filter(id => id !== memberId)
+            : [...currentMemberIds, memberId]
+        setCurrentMemberIds(updatedMembers)
+        onMemberUpdate(updatedMembers)
+    }
+
+    const taskMembersList = boardMembers.filter(member => currentMemberIds.includes(member._id))
+    const availableBoardMembers = boardMembers.filter(member => !currentMemberIds.includes(member._id))
 
     return (
         <div className="member-picker">
@@ -35,22 +36,23 @@ export function MemberPicker({ initialTask, board, onMemberUpdate }) {
                 onChange={(ev) => setSearchTerm(ev.target.value)}
             />
 
-            {cardMembersList.length > 0 && (
+            {taskMembersList.length > 0 && (
                 <>
-                    <h3 className="picker-title">Card Members</h3>
+                    <h3 className="picker-title">Task Members</h3>
                     <ul className="members-list">
-                        {getFilteredMembers(cardMembersList).map(member => (
+                        {getFilteredMembers(taskMembersList).map(member => (
                             <li key={member._id} className="member-item">
-                                <div className="member-details"
-                                 onClick={() => handleMemberToggle(member._id)}
-                                >
+                                <div className="member-details">
                                     <div className="member-avatar">
-                                      
                                         <img src={member.imgUrl} alt={member.fullname} />
                                     </div>
                                     <span className="member-name">{member.fullname}</span>
-                                    <button 
+                                    <button
                                         className="remove-member"
+                                        onClick={(ev) => {
+                                            ev.stopPropagation()
+                                            handleMemberUpdate(member._id)
+                                        }}
                                     >
                                         <img src={svgService.closeIcon} alt="Remove member" />
                                     </button>
@@ -66,10 +68,10 @@ export function MemberPicker({ initialTask, board, onMemberUpdate }) {
                     <h3 className="picker-title">Board Members</h3>
                     <ul className="members-list">
                         {getFilteredMembers(availableBoardMembers).map(member => (
-                            <li 
-                                key={member._id} 
+                            <li
+                                key={member._id}
                                 className="member-item"
-                                onClick={() => handleMemberToggle(member._id)}
+                                onClick={() => handleMemberUpdate(member._id)}
                             >
                                 <div className="member-details">
                                     <div className="member-avatar">

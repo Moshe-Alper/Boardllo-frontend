@@ -118,16 +118,9 @@ export function TaskDetails() {
         else setEditedDescription(task.description)
     }
 
-    async function handleLabelUpdate(taskId, labelId) {
+    async function handleLabelUpdate(taskId, updatedLabels) {
         if (task.id !== taskId) return
-        const existingLabels = Array.isArray(task.labelIds) ? task.labelIds : []       
-        const labelExists = existingLabels.some(id => id === labelId)
-        
-        const updatedLabelIds = labelExists 
-            ? existingLabels.filter(id => id !== labelId)
-            : [...existingLabels, labelId]
-            
-        const updatedTask = { ...task, labelIds: updatedLabelIds }
+        const updatedTask = { ...task, labelIds: updatedLabels }
 
         try {
             await updateTask(board._id, currGroup.id, updatedTask)
@@ -137,17 +130,8 @@ export function TaskDetails() {
         }
     }
 
-    async function handleMemberUpdate(taskId, memberId) {
-        if (task.id !== taskId) return
-        const existingMembers = Array.isArray(task.memberIds) ? task.memberIds : []
-        const memberExists = existingMembers.some(id => id === memberId)
-        
-        const updatedMemberIds = memberExists 
-            ? existingMembers.filter(id => id !== memberId)
-            : [...existingMembers, memberId]
-            
-        const updatedTask = { ...task, memberIds: updatedMemberIds }
-    
+    async function handleMemberUpdate(updatedMembers) {
+        const updatedTask = { ...task, memberIds: updatedMembers }
         try {
             await updateTask(board._id, currGroup.id, updatedTask)
             setTask(updatedTask)
@@ -167,14 +151,21 @@ export function TaskDetails() {
                 groupId: currGroup.id,
                 initialTask: task,
                 onClose: () => onTogglePicker(),
+
                 onLabelUpdate: handleLabelUpdate,
-                onMemberUpdate: handleMemberUpdate
+
+                onMemberUpdate: handleMemberUpdate,
+                boardMembers: board.members || [],
+                taskMembers: task.memberIds || []
             },
             triggerEl: ev.currentTarget
         })
     }
 
+
     if (!task) return <div>Loading...</div>
+    const boardMembers = board?.members || []
+    const taskMembers = task?.memberIds || []
 
     return (
         <div className="task-details-overlay" onClick={handleOverlayClick}>
@@ -222,36 +213,48 @@ export function TaskDetails() {
                 <main className="task-main">
                     <section className="task-content">
                         <section className="task-metadata">
-                            <div className="metadata-container members">
-                                <h3>Members</h3>
-                                <div className="members-list">
-                                    <div className="member" title="John Doe">JD</div>
-                                    <div className="member" title="Sarah Smith">SS</div>
-                                    <button>
-                                        <img src={svgService.addIcon} alt="Add Member" />
-                                    </button>
-                                </div>
-                            </div>
 
-                            <div className="metadata-container labels">
-                                <h3>Labels</h3>
-                                <div className="labels-list">
-                                    {labels
-                                        .filter(label => task.labelIds?.includes(label.id))
-                                        .map(label => (
-                                            <span
-                                                key={label.id}
-                                                className="label"
-                                                style={{ backgroundColor: label.color }}
-                                            >
-                                                {label.title}
-                                            </span>
-                                        ))}
-                                    <button onClick={(ev) => handlePickerToggle(LabelPicker, 'Labels', ev)}>
-                                        <img src={svgService.addIcon} alt="Add Label" />
-                                    </button>
+                            {taskMembers.length > 0 && (
+                                <div className="metadata-container members">
+                                    <h3>Members</h3>
+                                    <div className="members-list">
+                                        {taskMembers.map((memberId) => {
+                                            const member = boardMembers.find(m => m._id === memberId);
+                                            if (!member) return null;
+                                            return (
+                                                <div key={member._id} className="member" title={member.fullname}>
+                                                    {member.imgUrl && <img src={member.imgUrl} alt={member.fullname} />}
+                                                </div>
+                                            );
+                                        })}
+                                        <button onClick={(ev) => handlePickerToggle(MemberPicker, 'Members', ev)}>
+                                            <img src={svgService.addIcon} alt="Add Member" />
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
+                            )}
+
+                            {task.labelIds.length > 0 && (
+                                <div className="metadata-container labels">
+                                    <h3>Labels</h3>
+                                    <div className="labels-list">
+                                        {labels
+                                            .filter(label => task.labelIds?.includes(label.id))
+                                            .map(label => (
+                                                <span
+                                                    key={label.id}
+                                                    className="label"
+                                                    style={{ backgroundColor: label.color }}
+                                                >
+                                                    {label.title}
+                                                </span>
+                                            ))}
+                                        <button onClick={(ev) => handlePickerToggle(LabelPicker, 'Labels', ev)}>
+                                            <img src={svgService.addIcon} alt="Add Label" />
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
 
                             <div className="metadata-container notification">
                                 <h3>Notification</h3>
