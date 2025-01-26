@@ -1,15 +1,17 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import Popover from '@mui/material/Popover'
 import { svgService } from "../../services/svg.service"
 import { TaskQuickActions } from "./TaskQuickActions"
 import { boardService } from '../../services/board'
 
-export function TaskPreview({ task, boardId, group, isDragging }) {
+export function TaskPreview({ task, boardId, isDragging }) {
     const [anchorEl, setAnchorEl] = useState(null)
     const isPopoverOpen = Boolean(anchorEl)
     const navigate = useNavigate()
     const labels = boardService.getDefaultLabels()
+    const boardMembers = useSelector(storeState => storeState.boardModule.board.members) || []
 
     function onOpenTaskDetails(ev) {
         if (ev.target.closest('.edit-icon-container')) return
@@ -42,8 +44,8 @@ export function TaskPreview({ task, boardId, group, isDragging }) {
             {task.labelIds?.length > 0 && (
                 <div className='task-labels'>
                     {task.labelIds?.map(labelId => {
-                        const label = labels.find(l => l.id === labelId);
-                        if (!label) return null;
+                        const label = labels.find(l => l.id === labelId)
+                        if (!label) return null
                         return (
                             <div
                                 key={labelId}
@@ -57,8 +59,29 @@ export function TaskPreview({ task, boardId, group, isDragging }) {
                     })}
                 </div>
             )}
-
             <p>{task.title}</p>
+
+                {task.memberIds?.length > 0 && (
+                    <div className="task-members">
+                        {task.memberIds.map(memberId => {
+                            const member = boardMembers.find(m => m._id === memberId)
+                            if (!member) return null
+                            return (
+                                <button
+                                    key={memberId}
+                                    className="task-member"
+                                    title={member.fullname}
+                                >
+                                    <span>
+                                        <img src={member.imgUrl} alt={member.fullname} />
+                                    </span>
+                                </button>
+                            )
+                        })}
+                    </div>
+                )}
+
+            
             <div className="edit-icon-container">
                 <div className="edit-icon" onClick={onOpenPopover}>
                     <img src={svgService.pencilIcon} alt="Edit Icon" />
