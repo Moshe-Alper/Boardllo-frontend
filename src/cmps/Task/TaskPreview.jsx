@@ -29,14 +29,23 @@ export function TaskPreview({ task, boardId, isDragging }) {
     }
 
     if (!task) return <div>Loading...</div>
-
+//     <article
+//     className={`task-preview flex column ${isDragging ? 'dragging' : ''} ${hasCover ? 'has-cover' : ''}`}
+//     style={{
+//         '--cover-color': hasCover ? task.style.coverColor : 'transparent',
+//         opacity: isDragging ? 0.5 : 1,
+//         transform: isDragging ? 'scale(1.02)' : 'scale(1)',
+//         transition: 'all 0.2s ease'
+//     }}
+// >
     return (
         <article
-            className={`task-preview flex column ${isDragging ? 'dragging' : ''}`}
+            className={`task-preview flex column ${isDragging ? 'dragging' : ''} ${task.style.coverColor ? 'has-cover' : ''}`}
             style={{
                 opacity: isDragging ? 0.5 : 1,
                 transform: isDragging ? 'scale(1.02)' : 'scale(1)',
-                transition: 'all 0.2s ease'
+                transition: 'all 0.2s ease',
+                '--cover-color': task.style.coverColor || 'transparent',
             }}
             onClick={onOpenTaskDetails}
         >

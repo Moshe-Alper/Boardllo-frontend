@@ -42,7 +42,8 @@
         }
 
         .edit-icon-container {
-            inset-block-start: 1.125rem; // 18px to rem
+            inset-block-start: rem(5px);
+            inset-inline-end: rem(5px);
         }
     }
 
