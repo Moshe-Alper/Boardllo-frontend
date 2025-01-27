@@ -1,4 +1,4 @@
-import { userService } from "../../services/user/user.service.local.js";
+import { userService } from "../../services/user/";
 import { socketService } from "../../services/socket.service";
 import { store } from "../store";
 

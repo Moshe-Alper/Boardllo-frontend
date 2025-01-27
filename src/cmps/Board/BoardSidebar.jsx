@@ -141,7 +141,6 @@ export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
                         height: '1.5rem',
                         width: '1.5rem',
                         border: '#rgba(200, 186, 186, 0.22) solid 1px',
-                        backgroundColor: '#0055CC',
                         color: '#FFFFFF',
                         zIndex: 1300,
                         backgroundColor: '#00487A',
