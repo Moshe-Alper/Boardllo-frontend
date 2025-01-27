@@ -5,6 +5,10 @@ export const boardService = {
   getById,
   save,
   remove,
+  saveGroup,
+  removeGroup,
+  saveTask,
+  removeTask,
   addBoardMsg
 }
 
@@ -28,6 +32,32 @@ async function save(board) {
     savedBoard = await httpService.post('board', board)
   }
   return savedBoard
+}
+
+// Group functions
+async function saveGroup(boardId, group) {
+  if (group.id) {
+    return httpService.put(`board/${boardId}/group/${group.id}`, group)
+  } else {
+    return httpService.post(`board/${boardId}/group`, group)
+  }
+}
+
+async function removeGroup(boardId, groupId) {
+  return httpService.delete(`board/${boardId}/group/${groupId}`)
+}
+
+// Task functions
+async function saveTask(boardId, groupId, task) {
+  if (task.id) {
+    return httpService.put(`board/${boardId}/group/${groupId}/task/${task.id}`, task)
+  } else {
+    return httpService.post(`board/${boardId}/group/${groupId}/task`, task)
+  }
+}
+
+async function removeTask(boardId, groupId, taskId) {
+  return httpService.delete(`board/${boardId}/group/${groupId}/task/${taskId}`)
 }
 
 async function addBoardMsg(boardId, txt) {
