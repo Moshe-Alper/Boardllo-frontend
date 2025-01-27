@@ -55,6 +55,12 @@
     align-items: center;
     gap: $spacing-md;
     margin-inline-start: auto;
+
+    .info-icon,
+    .noti-icon {
+      cursor: pointer;
+      filter: brightness(0) invert(1); // Makes black SVGs white
+    }
   }
 
   .logo-link {
@@ -123,8 +129,8 @@
       left: $spacing-sm;
       top: 50%;
       transform: translateY(-50%);
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
       pointer-events: none;
     }
 
@@ -132,6 +138,7 @@
       padding: $spacing-sm $spacing-md $spacing-sm $spacing-xl;
       border: 1px solid $border-gray;
       border-radius: $border-radius-small;
+      margin: 0.1rem;
 
       &:focus {
         background-color: $background-white;

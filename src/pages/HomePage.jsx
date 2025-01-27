@@ -1,9 +1,29 @@
 import { Layout, Users, CheckSquare } from 'lucide-react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { signup } from '../store/actions/user.actions';
+import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service';
 
 export function HomePage() {
   const user = useSelector((storeState) => storeState.userModule.user);
+  const navigate = useNavigate();
+
+  const defaultUser = {
+    username: 'default_user',
+    password: '123',
+    fullname: 'default',
+  };
+
+  async function handleDefaultLogin() {
+    try {
+      await signup(defaultUser);
+      showSuccessMsg('Welcome to Boardllo!');
+      navigate('/board');
+    } catch (err) {
+      console.error('Signup failed:', err);
+      showErrorMsg('Oops! Something went wrong');
+    }
+  }
 
   return (
     <div className='homepage'>
@@ -22,7 +42,7 @@ export function HomePage() {
 
             <div className='features-grid'>
               {!user ? (
-                <Link to='/login'>
+                <Link onClick={handleDefaultLogin}>
                   <div className='feature-card'>
                     <Layout className='feature-icon' />
                     <h3>Boards View</h3>

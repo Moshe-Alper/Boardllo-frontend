@@ -184,12 +184,12 @@ export function AppHeader() {
             </Link>
 
             <img
-              style={{ cursor: 'pointer' }}
+              className='noti-icon'
               src={`${svgService.notificationIcon}`}
               alt='notification-icon'
             />
             <img
-              style={{ cursor: 'pointer' }}
+              className='info-icon'
               src={`${svgService.infoIcon}`}
               alt='info-icon'
             />
