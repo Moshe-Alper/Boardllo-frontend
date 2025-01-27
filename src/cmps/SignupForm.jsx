@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react'
-import { userService } from '../services/user'
 import { useNavigate } from 'react-router'
 import { signup } from '../store/actions/user.actions.js'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
+import { userService } from '../services/user/index.js'
 
 export function SignupForm() {
   const [credentials, setCredentials] = useState(userService.getEmptyUser())
@@ -23,13 +23,7 @@ export function SignupForm() {
 
   function handleChange({ target }) {
     const { name: field, value } = target
-    setCredentials((prevCreds) => ({
-      ...prevCreds,
-      [field]: value,
-      imgUrl: (field === 'fullname' || field === 'username') 
-        ? userService.getDefaultAvatar(value) 
-        : prevCreds.imgUrl
-    }))
+    setCredentials((prevCreds) => ({ ...prevCreds, [field]: value }))
   }
 
   function handleSubmit(ev) {

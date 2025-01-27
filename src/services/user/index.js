@@ -3,15 +3,13 @@ const { DEV, VITE_LOCAL } = import.meta.env
 import { userService as local } from './user.service.local'
 import { userService as remote } from './user.service.remote'
 
-
 function getEmptyUser() {
-  return user = {
+  return {
     username: '',
     password: '',
     fullname: '',
-    imgUrl
+    imgUrl: '',
   }
-  return user
 }
   
 const service = VITE_LOCAL === 'true' ? local : remote
