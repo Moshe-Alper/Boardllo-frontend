@@ -8,14 +8,13 @@ export function AddGroupForm({
     setIsAddingGroup,
     isAddingGroup,
     board,
-    boardId
 }) {
     const textareaRef = useRef(null)
 
     function handleSubmit(ev) {
         ev.preventDefault()
         if (!newGroupTitle.trim()) return
-        onAddGroup(boardId)
+        onAddGroup(board._id)
     }
 
     function handleKeyDown(ev) {

@@ -4,12 +4,12 @@ import { showErrorMsg, showSuccessMsg } from '../../services/event-bus.service'
 import { loadBoard, updateBoard } from '../../store/actions/board.actions'
 import { BoardMenu } from './BoardMenu'
 
-export function BoardHeader({ board, isSidebarOpen }) {
+export function BoardHeader({ board, boardId, isSidebarOpen }) {
   const [isEditingTitle, setIsEditingTitle] = useState(false)
   const [title, setTitle] = useState(board?.title || '')
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const textareaRef = useRef(null)
-  
+
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.width = '0px'
@@ -67,13 +67,13 @@ export function BoardHeader({ board, isSidebarOpen }) {
       )}
 
       <div className='members'>
-        {board.members.map((member) => (
-          <div key={member._id} className='member'>
-            <img src={member.imgUrl} alt={member.fullname} />
-          </div>
-        ))}
-
+        {board.members?.map((member) => (
+            <div key={member._id} className='member'>
+              <img src={member.imgUrl} alt={member.fullname} />
+            </div>
+          ))}
       </div>
+
       <button className='header-btn' onClick={() => setIsMenuOpen(!isMenuOpen)}>
         <img src={svgService.threeDotsIcon} alt='Menu' />
       </button>

@@ -11,8 +11,9 @@ export function LoginForm() {
   )
   const navigate = useNavigate()
 
-  async function _login(credentials) {
+  async function handleLogin(credentials) {
     try {
+      console.log('🚀 credentials', credentials)
       await login(credentials)
       navigate("/board")
       showSuccessMsg("Logged in successfully")
@@ -29,7 +30,7 @@ export function LoginForm() {
 
   function handleSubmit(ev) {
     ev.preventDefault()
-    _login(credentials)
+    handleLogin(credentials)
     navigate("/")
   }
 
