@@ -144,7 +144,6 @@ export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
                         backgroundColor: '#0055CC',
                         color: '#FFFFFF',
                         zIndex: 1300,
-                        backgroundColor: '#00487A',
                         '&:hover': {
                             backgroundColor: '#003366',
                         },

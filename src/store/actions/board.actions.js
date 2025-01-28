@@ -129,14 +129,12 @@ export async function addGroup(boardId, group) {
 export async function updateGroup(boardId, group) {
   const originalGroup = { ...group }
   try {
-      // Dispatch optimistic update
       store.dispatch(getCmdUpdateGroup(group))
       
-      // Ensure all required fields are present
       const groupToUpdate = {
           ...group,
           archivedAt: group.archivedAt || null,
-          tasks: group.tasks || [],
+          tasks: null, // tasks are updated separately
           style: group.style || {},
           isCollapsed: group.isCollapsed || false
       }

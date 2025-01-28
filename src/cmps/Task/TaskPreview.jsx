@@ -7,7 +7,11 @@ import { TaskQuickActions } from "./TaskQuickActions"
 import { boardService } from '../../services/board'
 
 export function TaskPreview({ task, boardId, isDragging }) {
-    if (!task) return null
+
+    if (!task?.id || !task?.title) {
+        // console.log('TaskPreview: Invalid task data - missing required fields', task)
+        return null
+    }
 
     const [anchorEl, setAnchorEl] = useState(null)
     const isPopoverOpen = Boolean(anchorEl)

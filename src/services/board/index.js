@@ -70,7 +70,8 @@ function getDefaultFilter() {
   }
 }
 
-const service = VITE_LOCAL === 'true' ? local : remote
+// const service = VITE_LOCAL === 'true' ? local : remote
+const service = remote
 // console.log(VITE_LOCAL == 'true', VITE_LOCAL)
 
 export const boardService = {

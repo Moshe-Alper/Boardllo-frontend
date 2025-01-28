@@ -20,35 +20,49 @@ function getUsers() {
 }
 
 async function getById(userId) {
-    const user = await httpService.get(`user/${userId}`)
-    return user
+    return await httpService.get(`user/${userId}`)
 }
 
 function remove(userId) {
     return httpService.delete(`user/${userId}`)
 }
 
-async function update({ _id }) {
-    const user = await httpService.put(`user/${_id}`, { _id })
+async function update({ _id, ...userFields }) {
+    const user = await httpService.put(`user/${_id}`, userFields)
     const loggedinUser = getLoggedinUser()
     if (loggedinUser._id === user._id) _saveLocalUser(user)
     return user
 }
 
 async function login(userCred) {
-    const user = await httpService.post('auth/login', userCred)
-    if (user) return _saveLocalUser(user)
+    try {
+        const user = await httpService.post('auth/login', userCred)
+        if (user) return _saveLocalUser(user)
+    } catch (err) {
+        throw new Error('Invalid username or password')
+    }
 }
 
 async function signup(userCred) {
-    if (!userCred.imgUrl) userCred.imgUrl = 'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png'
-    const user = await httpService.post('auth/signup', userCred)
-    return _saveLocalUser(user)
+    if (!userCred.imgUrl) userCred.imgUrl = 'https://res.cloudinary.com/your-default-image'
+    try {
+        const user = await httpService.post('auth/signup', userCred)
+        return _saveLocalUser(user)
+    } catch (err) {
+        if (err.response?.status === 400) {
+            throw new Error('Username already exists or invalid input')
+        }
+        throw err
+    }
 }
 
 async function logout() {
-    sessionStorage.removeItem(STORAGE_KEY_LOGGEDIN_USER)
-    return await httpService.post('auth/logout')
+    try {
+        await httpService.post('auth/logout')
+        sessionStorage.removeItem(STORAGE_KEY_LOGGEDIN_USER)
+    } catch (err) {
+        console.error('Failed to logout:', err)
+    }
 }
 
 function getLoggedinUser() {
@@ -56,14 +70,14 @@ function getLoggedinUser() {
 }
 
 function _saveLocalUser(user) {
-    user = {
+    const miniUser = {
         _id: user._id,
         fullname: user.fullname,
         imgUrl: user.imgUrl,
         isAdmin: user.isAdmin
     }
-    sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
-    return user
+    sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(miniUser))
+    return miniUser
 }
 
 async function updateUserImg(userCred) {
