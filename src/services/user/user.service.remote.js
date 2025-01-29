@@ -44,8 +44,8 @@ async function login(userCred) {
 }
 
 async function signup(userCred) {
-    if (!userCred.imgUrl) userCred.imgUrl = 'https://res.cloudinary.com/your-default-image'
     try {
+        // Remove the image URL logic - let backend handle it
         const user = await httpService.post('auth/signup', userCred)
         return _saveLocalUser(user)
     } catch (err) {

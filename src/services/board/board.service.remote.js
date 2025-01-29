@@ -41,17 +41,9 @@ async function save(board) {
 
 async function saveGroup(boardId, group) {
     try {
-        // Debug logging
-        const res = await getById(boardId)
-        console.log('Current board data:', res)
-        console.log('Session storage:', sessionStorage.getItem('user'))
-        // Debug logging
-        console.log('Auth headers:', httpService.getHeaders?.()) // If you have a method to get headers
-        console.log('Saving group:', { boardId, group })
         const board = await getById(boardId)
         if (!board) throw new Error('Board not found')
 
-        // Ensure group has all required properties
         const groupToSave = {
             id: group.id || makeId(),
             title: group.title,
