@@ -53,17 +53,6 @@ export async function addBoard(board) {
   }
 }
 
-// export async function updateBoard(board) {
-//   try {
-//     const savedBoard = await boardService.save(board)
-//     store.dispatch(getCmdUpdateBoard(savedBoard))
-//     return savedBoard
-//   } catch (err) {
-//     console.log('Cannot save board', err)
-//     throw err
-//   }
-// }
-
 export async function updateBoard(board) {
   try {
     const savedBoard = await boardService.save(board)
@@ -134,7 +123,7 @@ export async function updateGroup(boardId, group) {
       const groupToUpdate = {
           ...group,
           archivedAt: group.archivedAt || null,
-          tasks: null, // tasks are updated separately
+          tasks: [...group.tasks] || [],
           style: group.style || {},
           isCollapsed: group.isCollapsed || false
       }

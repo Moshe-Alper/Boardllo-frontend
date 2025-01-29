@@ -1,5 +1,9 @@
 import { httpService } from '../http.service'
-import { makeId } from '../../services/util.service'   
+import { makeId } from '../../services/util.service'
+import { userService } from '../user/index'
+
+const BASE_URL = 'board/'
+const STORAGE_KEY_LOGGEDIN_USER = 'loggedinUser'
 
 export const boardService = {
     query,
@@ -14,29 +18,36 @@ export const boardService = {
 }
 
 async function query(filterBy = { txt: '', archivedAt: '', sortField: '', sortDir: '' }) {
-    return httpService.get('board', filterBy)
+    return httpService.get(BASE_URL, filterBy)
 }
 
 function getById(boardId) {
-    return httpService.get(`board/${boardId}`)
+    return httpService.get(`${BASE_URL}${boardId}`)
 }
 
 async function remove(boardId) {
-    return httpService.delete(`board/${boardId}`)
+    return httpService.delete(`${BASE_URL}${boardId}`)
 }
 
 async function save(board) {
     let savedBoard
     if (board._id) {
-        savedBoard = await httpService.put(`board/${board._id}`, board)
+        savedBoard = await httpService.put(`${BASE_URL}${board._id}`, board)
     } else {
-        savedBoard = await httpService.post('board', board)
+        savedBoard = await httpService.post(BASE_URL, board)
     }
     return savedBoard
 }
 
 async function saveGroup(boardId, group) {
     try {
+        // Debug logging
+        const res = await getById(boardId)
+        console.log('Current board data:', res)
+        console.log('Session storage:', sessionStorage.getItem('user'))
+        // Debug logging
+        console.log('Auth headers:', httpService.getHeaders?.()) // If you have a method to get headers
+        console.log('Saving group:', { boardId, group })
         const board = await getById(boardId)
         if (!board) throw new Error('Board not found')
 
@@ -57,7 +68,7 @@ async function saveGroup(boardId, group) {
             board.groups[groupIdx] = groupToSave
         }
 
-        const savedBoard = await httpService.put(`board/${boardId}`, board)
+        const savedBoard = await httpService.put(`${BASE_URL}${boardId}`, board)
         return groupIdx === -1 ? groupToSave : savedBoard.groups[groupIdx]
     } catch (error) {
         console.error('Error in saveGroup:', error)
@@ -73,7 +84,7 @@ async function removeGroup(boardId, groupId) {
     if (groupIdx === -1) throw new Error('Group not found')
 
     const group = board.groups.splice(groupIdx, 1)[0]
-    await httpService.put(`board/${boardId}`, board)
+    await httpService.put(`${BASE_URL}${boardId}`, board)
     return group
 }
 
@@ -106,20 +117,24 @@ async function removeTask(boardId, groupId, taskId) {
     if (taskIdx === -1) throw new Error('Task not found')
 
     const task = group.tasks.splice(taskIdx, 1)[0]
-    await httpService.put(`board/${boardId}`, board)
+    await httpService.put(`${BASE_URL}${boardId}`, board)
     return task
 }
 
 async function addBoardMsg(boardId, txt) {
     const board = await getById(boardId)
-    
+    const loggedInUser = userService.getLoggedinUser()
+    if (!loggedInUser) {
+        throw new Error('User must be logged in to perform this action')
+    }
+
     const msg = {
         id: makeId(),
-        by: userService.getLoggedinUser(),
+        by: loggedInUser,
         txt
     }
     board.msgs.push(msg)
-    await httpService.put(`board/${boardId}`, board)
+    await httpService.put(`${BASE_URL}${boardId}`, board)
 
     return msg
 }
