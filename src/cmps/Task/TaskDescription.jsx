@@ -35,12 +35,14 @@ const StyledTextField = styled(TextField)({
   }
 })
 
-export function TaskDescription({ initialDescription = '' }) {
+export function TaskDescription({ initialDescription = '', onDescriptionUpdate }) {
   const [isEditing, setIsEditing] = useState(false)
   const [description, setDescription] = useState(initialDescription)
   const [tempDescription, setTempDescription] = useState(initialDescription)
 
   function handleSave() {
+    console.log('Saving description:', tempDescription)
+    onDescriptionUpdate(tempDescription)
     setDescription(tempDescription)
     setIsEditing(false)
   }

@@ -94,7 +94,7 @@ export function TaskDetails() {
         if (value === task[field]) return true
 
         const updatedTask = { ...task, [field]: value.trim() }
-
+console.log('🚀 updatedTask', updatedTask)
         try {
             await updateTask(board._id, currGroup.id, updatedTask)
             setTask(updatedTask)
@@ -114,8 +114,12 @@ export function TaskDetails() {
 
     async function handleDescriptionUpdate(newDescription) {
         const success = await handleTaskUpdate('description', newDescription)
-        if (success) setEditedDescription(newDescription)
-        else setEditedDescription(task.description)
+        if (success) {
+            setEditedDescription(newDescription)
+            setTask(prev => ({...prev, description: newDescription}))
+        } else {
+            setEditedDescription(task.description)
+        }
     }
 
     async function handleLabelUpdate(taskId, updatedLabels) {
@@ -326,7 +330,7 @@ export function TaskDetails() {
                             <div className="desc-content">
                                 <TaskDescription
                                     initialDescription={task.description}
-                                    onSave={handleDescriptionUpdate}
+                                    onDescriptionUpdate={handleDescriptionUpdate}
                                 />
                             </div>
                         </section>

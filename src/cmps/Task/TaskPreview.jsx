@@ -66,9 +66,16 @@ export function TaskPreview({ task, boardId, isDragging }) {
             )}
             <p>{task.title}</p>
 
-                {task.memberIds?.length > 0 && (
-                    <div className="task-members">
-                        {task.memberIds.map(memberId => {
+            <div className="task-preview-bottom">
+            {task.description && (
+            <span className="desc-icon-container" title="This card has a description">
+                <img src={svgService.descriptionIcon} alt="Description" className='desc-icon' />
+            </span>
+            )}
+
+            {task.memberIds?.length > 0 && (
+                <div className="task-members">
+                    {task.memberIds.map(memberId => {
                             const member = boardMembers.find(m => m._id === memberId)
                             if (!member) return null
                             return (
@@ -85,6 +92,8 @@ export function TaskPreview({ task, boardId, isDragging }) {
                         })}
                     </div>
                 )}
+            </div>
+
 
             
             <div className="edit-icon-container">

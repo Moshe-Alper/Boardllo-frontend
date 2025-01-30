@@ -76,41 +76,58 @@
             }
         }
     }
-
-    .task-members {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        gap: 0.25rem;
-
-        justify-content: flex-end;
-
-        .task-member {
-            padding: unset;
-            border: 0;
-            border-radius: 100%;
-            position: relative;
-            overflow: visible;
-            line-height: rem(4px);
-            vertical-align: top;
-            white-space: nowrap;
-
-            span {
-                display: inline-block;
-                border-radius: 50%;
-                height: rem(24px);
-                width: rem(24px);
-                overflow: hidden;
-
-                img {
-                    width: 100%;
-                    height: 100%;
+    .task-preview-bottom {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 0.5rem;
+        align-items: center;
+        margin-block-start: 0.25rem;
+        
+        .desc-icon-container {
+            height: rem(16px);
+            width: rem(16px);
+            img {
+                display: flex;
+        
+            }
+        }
+    
+        .task-members {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 0.25rem;
+    
+            justify-content: flex-end;
+    
+            .task-member {
+                padding: unset;
+                border: 0;
+                border-radius: 100%;
+                position: relative;
+                overflow: visible;
+                line-height: rem(4px);
+                vertical-align: top;
+                white-space: nowrap;
+    
+                span {
+                    display: inline-block;
                     border-radius: 50%;
-                    object-fit: cover;
+                    height: rem(24px);
+                    width: rem(24px);
+                    overflow: hidden;
+    
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 50%;
+                        object-fit: cover;
+                    }
                 }
             }
         }
     }
+    
 
     p {
         margin: 0;

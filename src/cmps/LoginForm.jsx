@@ -13,7 +13,6 @@ export function LoginForm() {
 
   async function handleLogin(credentials) {
     try {
-      console.log('🚀 credentials', credentials)
       await login(credentials)
       navigate("/board")
       showSuccessMsg("Logged in successfully")
