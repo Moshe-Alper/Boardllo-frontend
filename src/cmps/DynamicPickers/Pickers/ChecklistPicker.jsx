@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
 import { TextField, Select, MenuItem } from '@mui/material'
-import { updateTask } from '../../../store/actions/board.actions'
+import { makeId } from '../../../services/util.service'
 
 export function ChecklistPicker({ initialTask, onChecklistUpdate, board }) {
   const [title, setTitle] = useState('Checklist')
   const [copyFrom, setCopyFrom] = useState('none')
   const [isLoading, setIsLoading] = useState(false)
   const groups = board.groups
-  const task = groups.find(group => group.tasks.find(task => task.id === initialTask.id))
+
+  const tasksWithChecklists = groups.flatMap(group =>
+    group.tasks.filter(task => task.checklists?.length > 0)
+  )
 
   function handleSubmit(ev) {
     ev.preventDefault()
@@ -15,47 +18,37 @@ export function ChecklistPicker({ initialTask, onChecklistUpdate, board }) {
     const newChecklist = {
       id: Date.now(),
       title,
-      items: [],
+      todos: [],
     }
-  
+
     if (copyFrom !== 'none') {
-      const checklistToCopy = initialTask.checklists.find(
-        (checklist) => checklist.id === copyFrom
+      const sourceTask = tasksWithChecklists.find(task => 
+        task.checklists?.some(checklist => checklist.id === copyFrom)
       )
-      newChecklist.items = checklistToCopy.items.map((item) => ({
-        ...item,
-        id: Date.now(),
-      }))
+      
+      if (sourceTask) {
+        const checklistToCopy = sourceTask.checklists.find(
+          checklist => checklist.id === copyFrom
+        )
+        
+        if (checklistToCopy) {
+          newChecklist.todos = checklistToCopy.todos.map(todo => ({
+            id: makeId(),
+            title: todo.title,
+            isDone: false
+          }))
+        }
+      }
     } else {
-      newChecklist.items = [
-        { id: Date.now(), title: 'First item', isDone: false },
+      newChecklist.todos = [
+        { id: makeId(), title: 'First item', isDone: false }
       ]
     }
 
-    const updatedTask = {
-      ...initialTask,
-      checklists: [...initialTask.checklists, newChecklist],
-    }
-    onChecklistUpdate(updatedTask)
+    const updatedChecklists = [...(initialTask.checklists || []), newChecklist]
+    onChecklistUpdate(updatedChecklists)
     setIsLoading(false)
-    
-      // Log group titles and task titles
-      groups.forEach(group => {
-        console.log(`Group: ${group.title}`)
-        group.tasks.forEach(task => {
-          console.log(`  Task: ${task.title}`)
-        })
-      })
   }
-
-  // Populate the Select options with group titles and task titles
-  const selectOptions = groups.flatMap(group => 
-    group.tasks.map(task => ({
-      groupTitle: group.title,
-      taskTitle: task.title,
-      taskId: task.id
-    }))
-  )
 
   return (
     <form onSubmit={handleSubmit} className="checklist-picker">
@@ -76,15 +69,25 @@ export function ChecklistPicker({ initialTask, onChecklistUpdate, board }) {
           fullWidth
           size="small"
           value={copyFrom}
-          onChange={(e) => setCopyFrom(e.target.value)}
+          onChange={(ev) => setCopyFrom(ev.target.value)}
           disabled={isLoading}
         >
           <MenuItem value="none">(none)</MenuItem>
+          {tasksWithChecklists.map(task => 
+            task.checklists?.map(checklist => (
+              <MenuItem 
+                key={checklist.id} 
+                value={checklist.id}
+              >
+                {`${task.title} - ${checklist.title}`}
+              </MenuItem>
+            ))
+          )}
         </Select>
       </div>
 
-      <button 
-        type="submit" 
+      <button
+        type="submit"
         className="add-button"
         disabled={isLoading || !title.trim()}
       >

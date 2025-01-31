@@ -17,7 +17,7 @@
     box-shadow: $shadow-large;
     min-height: rem(600px);
     margin-block: rem(48px);
-    min-height: calc(100vh - rem(96px)); 
+    min-height: calc(100vh - rem(96px));
     width: 769px;
 
     &.has-cover {
@@ -385,6 +385,162 @@ main.task-main {
             }
         }
 
+        .checklist {
+            display: grid;
+            row-gap: rem(12px);
+            grid-template-columns: rem(40px) minmax(0, 1fr); //icon , body
+            margin-block-end: rem(24px);
+
+            .checklist-icon {
+                grid-column: 1;
+                padding: rem(6px) rem(4px);
+                opacity: 0.7;
+            }
+
+            .checklist-group {
+                grid-column: 1 / -1;
+                display: grid;
+                grid-template-columns: subgrid;
+                row-gap: rem(12px);
+
+                .checklist-header {
+                    grid-column: 2;
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: center;
+                    justify-content: space-between;
+                    column-gap: rem(8px);
+                    row-gap: rem(2px);
+
+                    .checklist-controls {
+                        display: flex;
+                        flex-grow: 1;
+                        align-items: center;
+                        column-gap: rem(8px);
+                        justify-content: space-between;
+
+                        h3 {
+                            margin-block-end: 0;
+                            font-size: rem(16px);
+                            line-height: rem(20px);
+                            color: $text-primary;
+                        }
+
+                        button {
+                            @include task-content-btn;
+                        }
+                    }
+                }
+
+                .checklist-content {
+                    grid-column: 2;
+                    display: flex;
+                    flex-direction: column;
+                    gap: rem(8px);
+
+                    ul {
+                        list-style: none;
+                        margin: 0;
+                        padding: 0;
+                        display: flex;
+                        flex-direction: column;
+                        gap: rem(4px);
+
+                        li {
+                            display: flex;
+                            align-items: center;
+                            gap: rem(8px);
+                            padding: rem(8px) rem(4px);
+                            border-radius: rem(3px);
+
+                            &:hover {
+                                background-color: $details-new-list-background-hover;
+                            }
+
+                            input[type="checkbox"] {
+                                width: rem(16px);
+                                height: rem(16px);
+                                margin: 0;
+                                cursor: pointer;
+                            }
+
+                            span {
+                                font-size: rem(14px);
+                                color: $text-primary;
+                                line-height: rem(20px);
+
+                                &.line-through {
+                                    text-decoration: line-through;
+                                    color: $text-secondary;
+                                }
+                            }
+                        }
+                    }
+
+                    button {
+                        @include task-content-btn;
+                        align-self: flex-start;
+                        margin-top: rem(4px);
+                    }
+
+                    .add-todo-form {
+                        display: grid;
+                        grid-template-rows: auto auto;
+
+                        textarea {
+                            grid-row: 1;
+                            width: 100%;
+                            padding: rem(4px);
+                            line-height: rem(16px);
+                            resize: none;
+                            vertical-align: middle;
+                        }
+
+                        .add-todo-actions {
+                            grid-row: 2;
+                            justify-self: start;
+
+                            button {
+                                border: none;
+                                border-radius: $border-radius-small;
+                                height: rem(32px); 
+                                padding: rem(6px) rem(12px); 
+                                font-weight: 500;
+                                font-size: 0.875rem;
+                                cursor: pointer;
+                                transition: $hover-transition;
+
+                                &:first-of-type {
+                                    background-color: $primary-blue;
+                                    color: $button-text-light;
+
+                                    &:hover {
+                                        background-color: $primary-hover-blue;
+                                    }
+                        
+                                    &:active {
+                                        background-color: darken($primary-hover-blue, 5%);
+                                    }
+
+                                }
+
+                                &:last-of-type {
+                                    background-color: transparent;
+
+                                    &:hover {
+                                        background-color: rgba($text-secondary, 0.08); 
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+
         .activity {
             display: grid;
             row-gap: rem(12px);
@@ -470,18 +626,19 @@ main.task-main {
                 margin: $spacing-md 0 $spacing-xs;
             }
         }
+
         ul.features,
         ul.actions {
             margin: 0;
             padding: 0;
             list-style: none;
-            
+
             li {
                 list-style: none;
                 display: flex;
                 flex-direction: column;
                 row-gap: rem(8px);
-                
+
                 button {
                     @include details-metadata-btn;
                     justify-content: flex-start;
@@ -489,7 +646,7 @@ main.task-main {
                     margin-block-end: 0;
                     border-radius: rem(3px);
                     padding: rem(10px) rem(12px);
-                    
+
                     span {
                         display: flex;
                         align-items: center;
@@ -497,7 +654,7 @@ main.task-main {
                         color: $text-primary;
                         font-stretch: 100%;
                     }
-                    
+
                     img {
                         width: rem(16px);
                         height: rem(16px);

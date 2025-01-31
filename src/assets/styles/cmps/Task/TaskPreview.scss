@@ -16,8 +16,10 @@
     }
 
     &:hover {
-        background-color: $background-light-hover;
-
+        outline: $secondary-hover-blue auto rem(2px);
+        opacity: 1;
+        transition: outline 0.3s ease;
+        
         .edit-icon {
             display: flex;
             background-color: $background-light-hover;

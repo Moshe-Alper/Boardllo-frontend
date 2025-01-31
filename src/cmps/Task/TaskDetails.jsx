@@ -47,10 +47,18 @@ export function TaskDetails() {
     const board = useSelector(storeState => storeState.boardModule.board)
     const [task, setTask] = useState(null)
     const [currGroup, setCurrGroup] = useState(null)
+
+    // title
     const [isEditingTitle, setIsEditingTitle] = useState(false)
     const [editedTitle, setEditedTitle] = useState('')
+    // description
     const [editedDescription, setEditedDescription] = useState('')
+    // labels
     const [labels] = useState(boardService.getDefaultLabels())
+    // checklist
+    const [newTodoTitle, setNewTodoTitle] = useState('')
+    const [editingChecklistId, setEditingChecklistId] = useState(null)
+    const [hiddenChecklists, setHiddenChecklists] = useState({})
 
     useEffect(() => {
         if (board?.groups) {
@@ -94,7 +102,7 @@ export function TaskDetails() {
         if (value === task[field]) return true
 
         const updatedTask = { ...task, [field]: value.trim() }
-console.log('🚀 updatedTask', updatedTask)
+        console.log('🚀 updatedTask', updatedTask)
         try {
             await updateTask(board._id, currGroup.id, updatedTask)
             setTask(updatedTask)
@@ -116,7 +124,7 @@ console.log('🚀 updatedTask', updatedTask)
         const success = await handleTaskUpdate('description', newDescription)
         if (success) {
             setEditedDescription(newDescription)
-            setTask(prev => ({...prev, description: newDescription}))
+            setTask(prev => ({ ...prev, description: newDescription }))
         } else {
             setEditedDescription(task.description)
         }
@@ -144,19 +152,19 @@ console.log('🚀 updatedTask', updatedTask)
         }
     }
 
-    async function handleCoverUpdate(newCoverColor) { 
+    async function handleCoverUpdate(newCoverColor) {
         const updatedTask = { ...task, style: { ...task.style, coverColor: newCoverColor } }
         try {
             await updateTask(board._id, currGroup.id, updatedTask)
             setTask(updatedTask)
         } catch (err) {
             showErrorMsg('Failed to update cover')
-        }   
+        }
     }
 
     async function handleDateUpdate(newDueDate) {
         const updatedTask = { ...task, dueDate: newDueDate }
-        try {   
+        try {
             await updateTask(board._id, currGroup.id, updatedTask)
             setTask(updatedTask)
         } catch (err) {
@@ -165,14 +173,56 @@ console.log('🚀 updatedTask', updatedTask)
     }
 
     async function handleChecklistUpdate(newChecklist) {
-        const updatedTask = { ...task, checklist: newChecklist }
-        try {   
+        const updatedTask = { ...task, checklists: newChecklist }
+        try {
             await updateTask(board._id, currGroup.id, updatedTask)
             setTask(updatedTask)
         } catch (err) {
             showErrorMsg('Failed to update checklist')
         }
-    }   
+    }
+
+    async function handleDeleteChecklist(checklistId) {
+        const updatedChecklists = task.checklists.filter(cl => cl.id !== checklistId)
+        try {
+            await handleChecklistUpdate(updatedChecklists)
+            showSuccessMsg('Checklist deleted successfully')
+        } catch (err) {
+            showErrorMsg('Failed to delete checklist')
+        }
+    }
+
+    async function handleAddTodoItem(checklistId) {
+        if (!newTodoTitle.trim()) {
+            showErrorMsg('Todo item cannot be empty')
+            return
+        }
+
+        const newTodo = {
+            id: Date.now(),
+            title: newTodoTitle.trim(),
+            isDone: false
+        }
+
+        const updatedChecklists = task.checklists.map(cl => {
+            if (cl.id === checklistId) {
+                return {
+                    ...cl,
+                    todos: [...cl.todos, newTodo]
+                }
+            }
+            return cl
+        })
+
+        try {
+            await handleChecklistUpdate(updatedChecklists)
+            setNewTodoTitle('')
+            setEditingChecklistId(null)
+            showSuccessMsg('Todo item added successfully')
+        } catch (err) {
+            showErrorMsg('Failed to add todo item')
+        }
+    }
 
     function handlePickerToggle(Picker, title, ev) {
         if (!Picker) return
@@ -208,6 +258,7 @@ console.log('🚀 updatedTask', updatedTask)
     if (!task) return <div>Loading...</div>
     const boardMembers = board?.members || []
     const taskMembers = task?.memberIds || []
+
     return (
         <div className="task-details-overlay" onClick={handleOverlayClick}>
             <article className={`task-details ${hasCover ? 'has-cover' : ''}`}>
@@ -260,13 +311,13 @@ console.log('🚀 updatedTask', updatedTask)
                                     <h3>Members</h3>
                                     <div className="members-list">
                                         {taskMembers.map((memberId) => {
-                                            const member = boardMembers.find(m => m._id === memberId);
-                                            if (!member) return null;
+                                            const member = boardMembers.find(m => m._id === memberId)
+                                            if (!member) return null
                                             return (
                                                 <div key={member._id} className="member" title={member.fullname}>
                                                     {member.imgUrl && <img src={member.imgUrl} alt={member.fullname} />}
                                                 </div>
-                                            );
+                                            )
                                         })}
                                         <button onClick={(ev) => handlePickerToggle(MemberPicker, 'Members', ev)}>
                                             <img src={svgService.addIcon} alt="Add Member" />
@@ -335,6 +386,114 @@ console.log('🚀 updatedTask', updatedTask)
                             </div>
                         </section>
 
+                        {task.checklists && task.checklists.length > 0 && (
+                            <section className="checklist">
+                                {task.checklists.map(checklist => {
+                                    const hasCheckedItems = checklist.todos?.some(todo => todo.isDone)
+                                    const isHidden = hiddenChecklists[checklist.id]
+                                    const visibleTodos = isHidden
+                                        ? checklist.todos.filter(todo => !todo.isDone)
+                                        : checklist.todos
+
+                                    return (
+                                        <div key={checklist.id} className="checklist-group">
+                                            <img src={svgService.checklistIcon} alt="Checklist" className="checklist-icon" />
+                                            <hgroup className="checklist-header">
+                                                <div className="checklist-controls">
+                                                    <h3>{checklist.title}</h3>
+                                                    <div className="checklist-actions">
+                                                        {hasCheckedItems && (
+                                                            <button
+                                                                onClick={() => {
+                                                                    setHiddenChecklists(prev => ({
+                                                                        ...prev,
+                                                                        [checklist.id]: !prev[checklist.id]
+                                                                    }))
+                                                                }}
+                                                            >
+                                                                {isHidden ? 'Show checked items' : 'Hide checked items'}
+                                                            </button>
+                                                        )}
+                                                        <button
+                                                            onClick={() => handleDeleteChecklist(checklist.id)}
+                                                        >
+                                                            Delete
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </hgroup>
+                                            <div className="checklist-content">
+                                                {visibleTodos && visibleTodos.length > 0 ? (
+                                                    <ul>
+                                                        {visibleTodos.map(todo => (
+                                                            <li key={todo.id}>
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={todo.isDone}
+                                                                    onChange={() => {
+                                                                        const updatedChecklists = task.checklists.map(cl => {
+                                                                            if (cl.id === checklist.id) {
+                                                                                return {
+                                                                                    ...cl,
+                                                                                    todos: cl.todos.map(t =>
+                                                                                        t.id === todo.id ? { ...t, isDone: !t.isDone } : t
+                                                                                    )
+                                                                                }
+                                                                            }
+                                                                            return cl
+                                                                        })
+                                                                        handleChecklistUpdate(updatedChecklists)
+                                                                    }}
+                                                                />
+                                                                <span className={todo.isDone ? 'line-through' : ''}>
+                                                                    {todo.title}
+                                                                </span>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                ) : null}
+
+                                                {editingChecklistId === checklist.id ? (
+                                                    <form className="add-todo-form">
+                                                        <textarea
+                                                            type="text"
+                                                            value={newTodoTitle}
+                                                            onChange={(ev) => setNewTodoTitle(ev.target.value)}
+                                                            placeholder="Add an item..."
+                                                            onKeyPress={(ev) => {
+                                                                if (ev.key === "Enter") {
+                                                                    handleAddTodoItem(checklist.id)
+                                                                }
+                                                            }}
+                                                        />
+                                                        <div className="add-todo-actions">
+                                                        <button 
+                                                            onClick={() => handleAddTodoItem(checklist.id)}
+                                                        >
+                                                            Add
+                                                        </button>
+                                                        <button
+                                                            onClick={() => {
+                                                                setEditingChecklistId(null)
+                                                                setNewTodoTitle("")
+                                                            }}
+                                                        >
+                                                            Cancel
+                                                        </button>
+                                                        
+                                                        </div>
+                                                    </form>
+                                                ) : (
+                                                    <button onClick={() => setEditingChecklistId(checklist.id)}>
+                                                        Add an item
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </section>
+                        )}
                         <section className="activity">
                             <img src={svgService.activityIcon} alt="Activity" className='activity-icon' />
                             <hgroup className="activity-header">
