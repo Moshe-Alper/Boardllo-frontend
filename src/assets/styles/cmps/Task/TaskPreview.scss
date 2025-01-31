@@ -19,7 +19,7 @@
         outline: $secondary-hover-blue auto rem(2px);
         opacity: 1;
         transition: outline 0.3s ease;
-        
+
         .edit-icon {
             display: flex;
             background-color: $background-light-hover;
@@ -78,30 +78,57 @@
             }
         }
     }
+
     .task-preview-bottom {
         display: grid;
         grid-template-columns: auto 1fr;
         gap: 0.5rem;
         align-items: center;
         margin-block-start: 0.25rem;
-        
+
+
         .desc-icon-container {
             height: rem(16px);
             width: rem(16px);
+
             img {
                 display: flex;
-        
+
             }
         }
-    
+
+        .checklist-status {
+            display: flex;
+            position: relative;
+            align-items: center;
+            justify-content: center;
+            width: fit-content;
+            max-width: 100%;
+            height: rem(24px);
+            padding: rem(2px);
+            border-radius: 3px;
+            color: $text-subtle;
+            font-size: rem(12px);
+            gap: 0.25rem;
+
+            .checklist-icon-container {
+                height: rem(16px);
+                width: rem(16px);
+                img {
+                margin-block-end: rem(4px);
+                    display: flex;
+                }
+            }
+        }
+
         .task-members {
             display: flex;
             flex-wrap: wrap;
             justify-content: flex-start;
             gap: 0.25rem;
-    
+
             justify-content: flex-end;
-    
+
             .task-member {
                 padding: unset;
                 border: 0;
@@ -111,14 +138,14 @@
                 line-height: rem(4px);
                 vertical-align: top;
                 white-space: nowrap;
-    
+
                 span {
                     display: inline-block;
                     border-radius: 50%;
                     height: rem(24px);
                     width: rem(24px);
                     overflow: hidden;
-    
+
                     img {
                         width: 100%;
                         height: 100%;
@@ -129,14 +156,13 @@
             }
         }
     }
-    
+
 
     p {
         margin: 0;
         font-size: 0.875rem;
         color: $text-primary;
         max-width: 13.8125rem; // 221px 
-        // margin-block-end: 0.25rem; // 4px 
         word-wrap: break-word;
         overflow-wrap: break-word;
         white-space: normal;

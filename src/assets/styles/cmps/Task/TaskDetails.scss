@@ -462,6 +462,7 @@ main.task-main {
                                 justify-self: center;
                                 width: rem(16px);
                                 height: rem(16px);
+                                margin-inline-end: rem(12px);
                             }
 
                             span {
@@ -488,6 +489,7 @@ main.task-main {
                         grid-column-start: 2;
 
                         button {
+                            margin: 0;
                             justify-self: start
                         }
                     }

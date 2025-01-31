@@ -73,6 +73,16 @@ export function TaskPreview({ task, boardId, isDragging }) {
             </span>
             )}
 
+            {task.checklists?.length > 0 && (
+                <span className="checklist-status" title="Checklist items complete">
+                    <span className="checklist-icon-container">
+                    <img src={svgService.checklistIcon} alt="Checklist" className='checklist-icon' />
+                    </span>
+                    <span>{task.checklists.reduce((acc, list) => acc + list.todos.filter(todo => todo.isDone).length, 0)}
+                    /{task.checklists.reduce((acc, list) => acc + list.todos.length, 0)}</span>
+                </span>
+            )}
+
             {task.memberIds?.length > 0 && (
                 <div className="task-members">
                     {task.memberIds.map(memberId => {
