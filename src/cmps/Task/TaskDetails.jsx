@@ -197,7 +197,7 @@ export function TaskDetails() {
             showErrorMsg('Todo item cannot be empty')
             return
         }
-
+        
         const newTodo = {
             id: Date.now(),
             title: newTodoTitle.trim(),
@@ -455,43 +455,54 @@ export function TaskDetails() {
 
                                                 {editingChecklistId === checklist.id ? (
                                                     <form className="add-todo-form">
-                                                        <textarea
-                                                            type="text"
-                                                            value={newTodoTitle}
-                                                            onChange={(ev) => setNewTodoTitle(ev.target.value)}
-                                                            placeholder="Add an item..."
-                                                            onKeyPress={(ev) => {
-                                                                if (ev.key === "Enter") {
-                                                                    handleAddTodoItem(checklist.id)
-                                                                }
+                                                    <textarea
+                                                        value={newTodoTitle}
+                                                        onChange={(ev) => setNewTodoTitle(ev.target.value)}
+                                                        placeholder="Add an item..."
+                                                        onKeyPress={(ev) => {
+                                                            if (ev.key === "Enter" && !ev.shiftKey) {
+                                                                ev.preventDefault();
+                                                                handleAddTodoItem(checklist.id);
+                                                            }
+                                                        }}
+                                                    />
+                                                    <div className="add-todo-actions">
+                                                        <button
+                                                            type="button"
+                                                            onClick={(ev) => {
+                                                                ev.preventDefault();
+                                                                handleAddTodoItem(checklist.id);
                                                             }}
-                                                        />
-                                                        <div className="add-todo-actions">
-                                                        <button 
-                                                            onClick={() => handleAddTodoItem(checklist.id)}
                                                         >
                                                             Add
                                                         </button>
                                                         <button
-                                                            onClick={() => {
-                                                                setEditingChecklistId(null)
-                                                                setNewTodoTitle("")
+                                                            type="button" 
+                                                            onClick={(ev) => {
+                                                                ev.preventDefault();
+                                                                setEditingChecklistId(null);
+                                                                setNewTodoTitle("");
                                                             }}
                                                         >
                                                             Cancel
                                                         </button>
-                                                        
-                                                        </div>
-                                                    </form>
+                                                    </div>
+                                                </form>
                                                 ) : (
-                                                    <button onClick={() => setEditingChecklistId(checklist.id)}>
-                                                        Add an item
-                                                    </button>
+                                                    <div
+                                                        onClick={() => setEditingChecklistId(checklist.id)}
+                                                        className="add-todo-btn"
+                                                    >
+                                                        <button>
+                                                            Add an item
+                                                        </button>
+                                                    </div>
                                                 )}
                                             </div>
                                         </div>
                                     )
                                 })}
+
                             </section>
                         )}
                         <section className="activity">

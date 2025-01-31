@@ -41,7 +41,7 @@ export function ChecklistPicker({ initialTask, onChecklistUpdate, board }) {
       }
     } else {
       newChecklist.todos = [
-        { id: makeId(), title: 'First item', isDone: false }
+        { id: makeId(), title: 'Edit todo', isDone: false }
       ]
     }
 
