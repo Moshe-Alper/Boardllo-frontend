@@ -22,7 +22,6 @@ export function MemberDraggable({ member, index }) {
 
 export function GroupDragDropContainer({ items = [], onDragEnd, children }) {
     return (
-        <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="board" type="group" direction="horizontal">
                 {(provided) => (
                     <ul 
@@ -52,7 +51,6 @@ export function GroupDragDropContainer({ items = [], onDragEnd, children }) {
                     </ul>
                 )}
             </Droppable>
-        </DragDropContext>
     )
 }
 

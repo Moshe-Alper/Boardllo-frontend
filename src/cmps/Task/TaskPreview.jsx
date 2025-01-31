@@ -5,11 +5,12 @@ import Popover from '@mui/material/Popover'
 import { svgService } from "../../services/svg.service"
 import { TaskQuickActions } from "./TaskQuickActions"
 import { boardService } from '../../services/board'
+import { Droppable } from 'react-beautiful-dnd'
 
 export function TaskPreview({ task, boardId, isDragging }) {
 
     if (!task?.id || !task?.title) {
-        // console.log('TaskPreview: Invalid task data - missing required fields', task)
+        console.log('TaskPreview: Invalid task data - missing required fields', task)
         return null
     }
 
@@ -35,16 +36,22 @@ export function TaskPreview({ task, boardId, isDragging }) {
     }
 
     return (
-        <article
-            className={`task-preview flex column ${isDragging ? 'dragging' : ''} ${task.style?.coverColor ? 'has-cover' : ''}`}
-            style={{
-                opacity: isDragging ? 0.5 : 1,
-                transform: isDragging ? 'scale(1.02)' : 'scale(1)',
-                transition: 'all 0.2s ease',
-                '--cover-color': task.style?.coverColor || 'transparent',
-            }}
-            onClick={onOpenTaskDetails}
-        >
+        <Droppable droppableId={`task-${task.id}`} type="MEMBER">
+            {(provided, snapshot) => (
+                <article
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    className={`task-preview flex column ${isDragging ? 'dragging' : ''} ${
+                        task.style?.coverColor ? 'has-cover' : ''
+                    } ${snapshot.isDraggingOver ? 'drag-over' : ''}`}
+                    style={{
+                        opacity: isDragging ? 0.5 : 1,
+                        transform: isDragging ? 'scale(1.02)' : 'scale(1)',
+                        transition: 'all 0.2s ease',
+                        '--cover-color': task.style?.coverColor || 'transparent',
+                    }}
+                    onClick={onOpenTaskDetails}
+                >
 
             {task.labelIds?.length > 0 && (
                 <div className='task-labels'>
@@ -131,6 +138,9 @@ export function TaskPreview({ task, boardId, isDragging }) {
                     onClose={onClosePopover}
                 />
             </Popover>
+            {provided.placeholder}
         </article>
-    )
+    )}
+</Droppable>
+)
 }

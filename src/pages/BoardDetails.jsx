@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { boardService } from '../services/board'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import {
-  loadBoard,
-  updateBoard,
-  addGroup,
-  loadBoardsToSidebar,
-  updateGroup,
+  loadBoard, addGroup, loadBoardsToSidebar, updateGroup,
+  assignMemberToTask
 } from '../store/actions/board.actions'
 import { BoardGroup } from '../cmps/Group/BoardGroup'
 import { AddGroupForm } from '../cmps/Group/AddGroupForm'
@@ -16,6 +13,7 @@ import { BoardHeader } from '../cmps/Board/BoardHeader'
 import { BoardSidebar } from '../cmps/Board/BoardSidebar'
 import { GroupDragDropContainer } from '../cmps/DragDropSystem'
 import { BoardMenu } from '../cmps/Board/BoardMenu'
+import { DragDropContext } from 'react-beautiful-dnd'
 
 export function BoardDetails() {
   const { boardId } = useParams()
@@ -28,6 +26,7 @@ export function BoardDetails() {
     return sidebarState ? JSON.parse(sidebarState) : false
   })
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const dispatch = useDispatch()
 
   const toggleSidebar = () => {
     const newSidebarState = !isSidebarOpen
@@ -76,95 +75,82 @@ export function BoardDetails() {
 
   async function handleDragEnd(result) {
     const { source, destination, type } = result
+    console.log('Drag result:', {source, destination, type, result})
 
-    if (
-      !destination ||
-      (source.droppableId === destination.droppableId &&
-        source.index === destination.index)
-    ) {
-      return
-    }
+    if (!destination) return
 
     const updatedBoard = { ...board }
+    switch (type) {
+      case 'group':
+        const [removed] = updatedBoard.groups.splice(source.index, 1)
+        updatedBoard.groups.splice(destination.index, 0, removed)
+        break
 
-    if (type === 'group') {
-      const [removed] = updatedBoard.groups.splice(source.index, 1)
-      updatedBoard.groups.splice(destination.index, 0, removed)
+      case 'task':
+        const sourceGroup = updatedBoard.groups.find(g => g.id === source.droppableId)
+        const destGroup = updatedBoard.groups.find(g => g.id === destination.droppableId)
+        if (!sourceGroup || !destGroup) return
+        const [movedTask] = sourceGroup.tasks.splice(source.index, 1)
+        destGroup.tasks.splice(destination.index, 0, movedTask)
+        break
 
-      try {
-        await updateBoard(updatedBoard)
-        showSuccessMsg('Group reordered successfully')
-      } catch (err) {
-        console.error('Failed to reorder group:', err)
-        showErrorMsg('Failed to reorder group')
-      }
-    } else if (type === 'task') {
-      const sourceGroup = updatedBoard.groups.find(
-        (group) => group.id === source.droppableId
-      )
-      const destinationGroup = updatedBoard.groups.find(
-        (group) => group.id === destination.droppableId
-      )
-
-      if (!sourceGroup || !destinationGroup) return
-
-      const [movedTask] = sourceGroup.tasks.splice(source.index, 1)
-      destinationGroup.tasks.splice(destination.index, 0, movedTask)
-
-      try {
-        await updateBoard(updatedBoard)
-        showSuccessMsg('Task moved successfully')
-      } catch (err) {
-        console.error('Failed to move task:', err)
-        showErrorMsg('Failed to move task')
-      }
+      case 'MEMBER':
+        if (destination.droppableId.startsWith('task-')) {
+          const taskId = destination.droppableId.replace('task-', '')
+          const memberId = result.draggableId
+          await assignMemberToTask(board._id, taskId, memberId)
+        }
+        break
     }
   }
+
   if (!board) return <div>Loading...</div>
   return (
-    <div className={`board-layout ${isSidebarOpen ? 'sidebar-open' : ''}`}>
-      <BoardSidebar
-        isOpen={isSidebarOpen}
-        toggleDrawer={toggleSidebar}
-        boards={boards}
-      />
-      <section className='board-details'>
-        <BoardHeader 
-          board={board}
-          boardId={boardId}
-          isSidebarOpen={isSidebarOpen} 
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <div className={`board-layout ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+        <BoardSidebar
+          isOpen={isSidebarOpen}
+          toggleDrawer={toggleSidebar}
+          boards={boards}
         />
-        <main className='group-container'>
-          <GroupDragDropContainer
-            items={board.groups}
-            onDragEnd={handleDragEnd}
-          >
-            {(group, index, isDragging) => (
-              <BoardGroup
-                board={board}
-                group={group}
-                index={index}
-                onUpdateGroup={onUpdateGroup}
-                isDragging={isDragging}
-              />
-            )}
-          </GroupDragDropContainer>
-
-          <AddGroupForm
+        <section className='board-details'>
+          <BoardHeader
             board={board}
-            newGroupTitle={newGroupTitle}
-            setNewGroupTitle={setNewGroupTitle}
-            onAddGroup={() => onAddGroup(board._id)}
-            isAddingGroup={isAddingGroup}
-            setIsAddingGroup={setIsAddingGroup}
+            isSidebarOpen={isSidebarOpen}
+            onUpdateGroup={onUpdateGroup}
           />
-        </main>
-      </section>
-      <BoardMenu
-        isOpen={isMenuOpen}
-        toggleMenu={toggleBoardMenu}
-        board={board}
-      />
-    </div>
+          <main className='group-container'>
+            <GroupDragDropContainer
+              items={board.groups}
+              onDragEnd={handleDragEnd}
+            >
+              {(group, index, isDragging) => (
+                <BoardGroup
+                  board={board}
+                  group={group}
+                  index={index}
+                  onUpdateGroup={onUpdateGroup}
+                  isDragging={isDragging}
+                />
+              )}
+            </GroupDragDropContainer>
+
+            <AddGroupForm
+              board={board}
+              newGroupTitle={newGroupTitle}
+              setNewGroupTitle={setNewGroupTitle}
+              onAddGroup={() => onAddGroup(board._id)}
+              isAddingGroup={isAddingGroup}
+              setIsAddingGroup={setIsAddingGroup}
+            />
+          </main>
+        </section>
+        <BoardMenu
+          isOpen={isMenuOpen}
+          toggleMenu={toggleBoardMenu}
+          board={board}
+        />
+      </div>
+    </DragDropContext>
   )
 }

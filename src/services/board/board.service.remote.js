@@ -14,6 +14,7 @@ export const boardService = {
     removeGroup,
     saveTask,
     removeTask,
+    assignMemberToTask,
     addBoardMsg
 }
 
@@ -112,6 +113,37 @@ async function removeTask(boardId, groupId, taskId) {
     await httpService.put(`${BASE_URL}${boardId}`, board)
     return task
 }
+
+async function assignMemberToTask(boardId, taskId, memberId) {
+    try {
+        const board = await getById(boardId)
+        if (!board) throw new Error('Board not found')
+
+        // Find the group containing the task
+        const group = board.groups.find(group => 
+            group.tasks.some(task => task.id === taskId)
+        )
+        if (!group) throw new Error('Task not found in any group')
+
+        // Find and update the task
+        const task = group.tasks.find(task => task.id === taskId)
+        if (!task) throw new Error('Task not found')
+
+        // Update member assignment
+        if (!task.memberIds) task.memberIds = []
+        if (!task.memberIds.includes(memberId)) {
+            task.memberIds.push(memberId)
+        }
+
+        // Save the updated board
+        const updatedBoard = await httpService.put(`${BASE_URL}${boardId}`, board)
+        return updatedBoard
+    } catch (error) {
+        console.error('Error in assignMemberToTask:', error)
+        throw error
+    }
+}
+
 
 async function addBoardMsg(boardId, txt) {
     const board = await getById(boardId)

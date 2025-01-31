@@ -3,8 +3,10 @@ import { svgService } from '../../services/svg.service'
 import { showErrorMsg, showSuccessMsg } from '../../services/event-bus.service'
 import { loadBoard, updateBoard } from '../../store/actions/board.actions'
 import { BoardMenu } from './BoardMenu'
+import { DragDropContext, Droppable } from "react-beautiful-dnd"
+import { MemberDraggable } from '../DragDropSystem'
 
-export function BoardHeader({ board, boardId, isSidebarOpen }) {
+export function BoardHeader({ board, isSidebarOpen, onUpdateGroup }) {
   const [isEditingTitle, setIsEditingTitle] = useState(false)
   const [title, setTitle] = useState(board?.title || '')
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -37,8 +39,36 @@ export function BoardHeader({ board, boardId, isSidebarOpen }) {
       setIsEditingTitle(false)
     }
   }
-  // console.log('🚀 board.members', board.members)
-  // console.log('🚀 board.owner', board.owner)
+
+  function onDragEnd(result) {
+    if (!result.destination) return
+
+    if (result.destination.droppableId.startsWith('task-')) {
+      let taskId = result.destination.droppableId.replace('task-', '')
+      let memberId = result.draggableId
+
+      let updatedGroup = board.groups.find(group =>
+        group.tasks.some(task => task.id === taskId)
+      )
+
+      if (updatedGroup) {
+        let tasks = updatedGroup.tasks.map(task => {
+          if (task.id === taskId) {
+            let memberIds = new Set(task.memberIds || [])
+            memberIds.add(memberId)
+            return { ...task, memberIds: Array.from(memberIds) }
+          }
+          return task
+        })
+
+        onUpdateGroup({
+          ...updatedGroup,
+          tasks
+        })
+      }
+    }
+  }
+
   if (!board) return <div className='board-header'>Loading board...</div>
 
   return (
@@ -66,20 +96,26 @@ export function BoardHeader({ board, boardId, isSidebarOpen }) {
         <h1 onClick={() => board?._id && setIsEditingTitle(true)}>{board.title}</h1>
       )}
 
-      <div className='members'>
-        {board.members?.map((member) => (
-            <div key={member._id} className='member'>
-              <img src={member.imgUrl} alt={member.fullname} />
-            </div>
-          ))}
-      </div>
+      <Droppable droppableId="board-members" direction="horizontal" type="MEMBER">
+        {(provided) => (
+          <div ref={provided.innerRef} {...provided.droppableProps} className="members">
+            {board.members?.map((member, index) => (
+              <MemberDraggable key={member._id} member={member} index={index} />
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
 
       <button className='header-btn' onClick={() => setIsMenuOpen(!isMenuOpen)}>
         <img src={svgService.threeDotsIcon} alt='Menu' />
       </button>
 
-
-      <BoardMenu isOpen={isMenuOpen} toggleMenu={() => setIsMenuOpen(!isMenuOpen)} board={board} />
+      <BoardMenu
+        isOpen={isMenuOpen}
+        toggleMenu={() => setIsMenuOpen(!isMenuOpen)}
+        board={board}
+      />
     </section>
   )
 }

@@ -18,6 +18,7 @@ import {
   UNDO_REMOVE_GROUP,
   REMOVE_TASK,
   UNDO_REMOVE_TASK,
+  ASSIGN_MEMBER_TO_TASK,
 } from '../reducers/board.reducer'
 
 // Board Actions
@@ -188,6 +189,17 @@ export async function removeTask(boardId, groupId, taskId) {
   }
 }
 
+export async function assignMemberToTask(boardId, taskId, memberId) {
+  try {
+    const board = await boardService.assignMemberToTask(boardId, taskId, memberId);
+    store.dispatch(getCmdAssignMemberToTask(taskId, memberId));
+    return board;
+  } catch (err) {
+    console.error('Cannot assign member to task', err);
+    throw err;
+  }
+}
+
 // BoardMsg Actions
 export async function addBoardMsg(boardId, txt) {
   try {
@@ -302,6 +314,14 @@ function getCmdRemoveTask(taskId) {
 function getCmdUndoRemoveTask() {
   return {
     type: UNDO_REMOVE_TASK,
+  }
+}
+
+function getCmdAssignMemberToTask(taskId, memberId) {
+  return {
+    type: ASSIGN_MEMBER_TO_TASK,
+    taskId,
+    memberId,
   }
 }
 
