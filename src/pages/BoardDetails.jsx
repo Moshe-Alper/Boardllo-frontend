@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { boardService } from '../services/board'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import {
@@ -28,9 +28,6 @@ export function BoardDetails() {
     return sidebarState ? JSON.parse(sidebarState) : false
   })
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [activeItem, setActiveItem] = useState(null)
-  const [activeType, setActiveType] = useState(null)
-  const dispatch = useDispatch()
 
   const toggleSidebar = () => {
     const newSidebarState = !isSidebarOpen

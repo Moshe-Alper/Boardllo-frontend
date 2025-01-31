@@ -2,6 +2,24 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 import { svgService } from "../services/svg.service"
 import { forwardRef } from 'react'
 
+
+export function MemberDraggable({ member, index }) {
+    return (
+        <Draggable draggableId={member._id} index={index}>
+            {(provided, snapshot) => (
+                <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    className="member"
+                >
+                    <img src={member.imgUrl} alt={member.fullname} />
+                </div>
+            )}
+        </Draggable>
+    )
+}
+
 export function GroupDragDropContainer({ items = [], onDragEnd, children }) {
     return (
         <DragDropContext onDragEnd={onDragEnd}>
