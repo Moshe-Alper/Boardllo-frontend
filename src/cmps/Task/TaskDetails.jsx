@@ -163,6 +163,7 @@ export function TaskDetails() {
     }
 
     async function handleDateUpdate(newDueDate) {
+        console.log('newDueDate', newDueDate)
         const updatedTask = { ...task, dueDate: newDueDate }
         try {
             await updateTask(board._id, currGroup.id, updatedTask)

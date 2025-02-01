@@ -70,8 +70,7 @@ export function DynamicPicker() {
                 top: `${position.top}px`,
                 left: `${position.left}px`,
                 position: 'absolute',
-                maxHeight: '80vh',
-                overflowY: 'auto'
+                maxHeight: '52.7vh',
             }}
         >
             <header className="picker-header">

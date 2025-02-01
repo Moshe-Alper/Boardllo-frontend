@@ -1,23 +1,141 @@
-.date-time-inputs {
-  display: flex;
-  gap: $spacing-sm;
-}
+.date-picker-content {
+  .calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-sm $spacing-md;
+    margin-bottom: $spacing-sm;
 
-.date-label {
-  display: flex;
-  align-items: center;
-  gap: $spacing-xs;
-}
+    .current-month {
+      font-size: 1rem;
+      font-weight: 500;
+      color: $text-primary;
+    }
 
-.reminder-text {
-  color: $text-secondary;
-  font-size: rem(14px);
-}
+    .month-nav-btn {
+      cursor: pointer;
+      padding: $spacing-sm;
+      border-radius: $border-radius-small;
+      color: $text-subtle;
 
-.calendar {
-}
+      &:hover {
+        background-color: $background-light-hover;
+      }
+    }
+  }
 
-.reminder-text {
-  color: $text-secondary;
-  font-size: rem(14px);
+  .calendar-grid {
+    display: grid;
+    justify-content: center;
+    padding: 0 $spacing-sm;
+    margin-bottom: $spacing-md;
+
+    .weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      margin-bottom: $spacing-xs;
+
+      .weekday {
+        text-align: center;
+        font-size: 0.75rem;
+        color: $text-secondary;
+        padding: $spacing-xs 0;
+        width: 2.25rem; // Converted 36px to rem
+      }
+    }
+
+    .days {
+      display: grid;
+      grid-template-columns: repeat(7, 2.25rem); // 36px to rem
+      gap: $spacing-xs;
+
+      .day-btn {
+        width: 2.25rem;
+        height: 2.25rem;
+        border: none;
+        background: none;
+        font-size: 0.875rem;
+        color: $text-primary;
+        border-radius: $border-radius-small;
+        cursor: pointer;
+        padding: 0;
+
+        &.other-month {
+          color: $text-light;
+        }
+
+        &.selected {
+          background-color: $primary-blue;
+          color: $text-white;
+        }
+
+        &:hover:not(.selected) {
+          background-color: $background-light-hover;
+        }
+      }
+    }
+  }
+
+  .date-fields {
+    padding: 0 $spacing-md;
+
+    .field-group {
+      margin-bottom: $spacing-md;
+
+      label {
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: $text-secondary;
+        margin-bottom: $spacing-xs;
+      }
+    }
+
+    .due-date-group {
+      display: flex;
+      gap: $spacing-sm;
+
+      .date-input {
+        flex: 1;
+      }
+
+      .time-input {
+        width: 6.25rem; // 100px to rem
+      }
+    }
+
+    .reminder-text {
+      font-size: 0.75rem;
+      color: $text-secondary;
+      margin-bottom: $spacing-md;
+    }
+
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-sm;
+
+      .save-btn {
+        background-color: $primary-blue;
+        text-transform: none;
+        font-weight: normal;
+
+        &:hover {
+          background-color: $primary-hover-blue;
+        }
+      }
+
+      .remove-btn {
+        color: $text-primary;
+        background-color: $background-light;
+        border: none;
+        text-transform: none;
+        font-weight: normal;
+
+        &:hover {
+          background-color: $background-grey-subtle;
+        }
+      }
+    }
+  }
 }
