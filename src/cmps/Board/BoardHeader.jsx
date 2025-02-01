@@ -70,7 +70,7 @@ export function BoardHeader({ board, isSidebarOpen, onUpdateGroup }) {
   }
 
   if (!board) return <div className='board-header'>Loading board...</div>
-
+  
   return (
     <section className={`board-header ${isMenuOpen ? 'menu-open' : ''} ${isSidebarOpen ? 'sidebar-open' : ''}`}>
       {isEditingTitle ? (

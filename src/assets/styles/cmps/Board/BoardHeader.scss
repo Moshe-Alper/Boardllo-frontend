@@ -63,34 +63,51 @@
   }
 
   .members {
-    display: flex;
     position: relative;
+    display: flex;
+    align-items: flex-start;
     top: rem(2px);
-    align-items: baseline;
     max-height: rem(32px);
-    margin-right: rem(32px);
+    margin-inline-end: rem(32px);
     padding: 0 0 0 rem(2px);
     overflow: visible;
     line-height: rem(32px);
 
-    img {
-      width: rem(32px);
-      height: rem(32px);
-      border-radius: 50%;
-      margin-right: rem(4px);
+    .member {
+      margin-inline-end: rem(-6px); 
+      &:first-child {
+        margin-inline-end: 0; 
+      }
     }
+  }
+
+  .member {
+    position: relative;
+    display: inline-block;
+    margin-block-start: rem(-2px);
     
-          .admin-badge {
-            position: absolute;
-            bottom: 0;
-            right: rem(4px); 
-            width: rem(9px);
-            height: rem(9px);
-            background-image: url('../../../../../src/assets/img/admin-badge.png');
-            background-size: cover;
-            background-position: center;
-            border-radius: 50%;      
-          }
+    .member-img {
+      position: relative;
+      
+      img {
+        width: rem(32px);
+        height: rem(32px);
+        border-radius: 50%;
+      }
+
+      .admin-badge {
+        position: absolute;
+        bottom: 0;
+        right: rem(4px);
+        width: rem(9px);
+        height: rem(9px);
+        background-image: url('../../../../../src/assets/img/admin-badge.png');
+        background-size: cover;
+        background-position: center;
+        border-radius: 50%;
+        z-index: 1;
+      }
+    }
   }
 
   .header-btn {
