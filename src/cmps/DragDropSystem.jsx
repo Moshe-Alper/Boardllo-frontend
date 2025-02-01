@@ -12,8 +12,15 @@ export function MemberDraggable({ member, index }) {
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     className="member"
+                    style={{ position: 'relative' }}
                 >
-                    <img src={member.imgUrl} alt={member.fullname} />
+                    <img src={member.imgUrl} alt={member.fullname} title={member.fullname} />
+                    {member.isAdmin && (
+                        <span 
+                            className="admin-badge"
+                            title="This member is an admin of the board"
+                        />
+                    )}
                 </div>
             )}
         </Draggable>
