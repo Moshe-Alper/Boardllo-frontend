@@ -301,43 +301,100 @@ main.task-main {
                         }
                     }
                 }
-
                 .date-info {
-                    display: flex;
-                    gap: rem(8px);
-
+                    display: inline-flex;
+                    align-items: center;
+                    gap: rem(6px);
+        
                     .due-date-checkbox {
+                        appearance: none;
+                        -webkit-appearance: none;
+                        width: rem(16px);
+                        height: rem(16px);
+                        border: 2px solid $text-secondary;
+                        border-radius: rem(2px);
                         margin: 0;
-                        padding: 0;
-                        display: inline-flex;
+                        cursor: pointer;
                         position: relative;
-                        align-items: center;
-                        font-weight: 700;
-                        color: $text-subtle;
-                        font-size: 12px;
-                        line-height: 16px;
-                        max-width: none;
+                        transition: all 0.2s ease;
+        
+                        &:checked {
+                            background-color: $primary-green;
+                            border-color: $primary-green;
+        
+                            &::after {
+                                content: '';
+                                position: absolute;
+                                left: 50%;
+                                top: 40%;
+                                width: rem(5px);
+                                height: rem(10px);
+                                border: solid white;
+                                border-width: 0 2px 2px 0;
+                                transform: translate(-50%, -50%) rotate(45deg);
+                            }
+                        }
+        
+                        &:hover {
+                            border-color: darken($text-secondary, 10%);
+                        }
                     }
-
-                    button {
-                        @include details-metadata-btn;
-                        border-radius: rem(3px);
+        
+                    .due-date-button {
+                        display: inline-flex;
+                        align-items: center;
+                        gap: rem(8px);
                         padding: rem(6px) rem(12px);
+                        border: none;
+                        margin: 0;
+                        border-radius: rem(3px);
+                        background-color: $background-grey-subtle;
+                        cursor: pointer;
+                        transition: all 0.2s ease;
+                        min-height: rem(32px);
                         font-size: rem(14px);
-
+                        color: $text-primary;
+        
+                        time {
+                            font-weight: 400;
+                        }
+        
                         img {
-                            margin-inline-start: rem(8px);
                             width: rem(16px);
                             height: rem(16px);
+                            opacity: 0.6;
+                            transition: opacity 0.2s ease;
                         }
-
+        
                         &:hover {
-                            background-color: $details-new-list-background-hover;
+                            background-color: darken($background-grey-subtle, 5%);
+                            img {
+                                opacity: 0.8;
+                            }
+                        }
+        
+                        &.completed {
+                            background-color: $primary-green-light;
+                            color: $primary-green-dark;
+        
+                            &:hover {
+                                background-color: darken($primary-green-light, 5%);
+                            }
+                        }
+        
+                        &.overdue {
+                            background-color: $danger-light;
+                            color: $danger;
+        
+                            &:hover {
+                                background-color: darken($danger-light, 5%);
+                            }
                         }
                     }
                 }
             }
         }
+
 
         .desc {
             display: grid;

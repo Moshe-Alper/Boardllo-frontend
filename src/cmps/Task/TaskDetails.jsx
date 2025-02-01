@@ -12,6 +12,7 @@ import { DatePicker } from '../DynamicPickers/Pickers/DatePicker'
 import { ChecklistPicker } from '../DynamicPickers/Pickers/ChecklistPicker'
 import { CoverPicker } from '../DynamicPickers/Pickers/CoverPicker'
 import { TaskDescription } from './TaskDescription'
+import { formatDueDate, getDueStatus } from '../../services/util.service'
 
 const PICKERS = [
     { icon: 'joinIcon', label: 'Join', picker: null },
@@ -114,6 +115,23 @@ export function TaskDetails() {
         }
     }
 
+    async function handleTaskCompletion(isDone) {
+        const updatedTask = {
+            ...task,
+            status: isDone ? 'done' : 'pending',
+            completedAt: isDone ? new Date().toISOString() : null
+        }
+
+        try {
+            await updateTask(board._id, currGroup.id, updatedTask)
+            setTask(updatedTask)
+            showSuccessMsg(`Task marked as ${isDone ? 'complete' : 'pending'}`)
+        } catch (err) {
+            console.error('Failed to update task status:', err)
+            showErrorMsg('Failed to update task status')
+        }
+    }
+
     async function handleTitleUpdate() {
         const success = await handleTaskUpdate('title', editedTitle)
         if (success) setIsEditingTitle(false)
@@ -163,7 +181,6 @@ export function TaskDetails() {
     }
 
     async function handleDateUpdate(newDueDate) {
-        console.log('newDueDate', newDueDate)
         const updatedTask = { ...task, dueDate: newDueDate }
         try {
             await updateTask(board._id, currGroup.id, updatedTask)
@@ -198,7 +215,7 @@ export function TaskDetails() {
             showErrorMsg('Todo item cannot be empty')
             return
         }
-        
+
         const newTodo = {
             id: Date.now(),
             title: newTodoTitle.trim(),
@@ -359,16 +376,31 @@ export function TaskDetails() {
                                 </div>
                             </div>
 
-                            <div className="metadata-container due-date">
+                            {task.dueDate && (
+                                <div className="metadata-container due-date">
                                 <h3>Due Date</h3>
                                 <div className="date-info">
-                                    <input type="checkbox" className="due-date-checkbox" />
-                                    <button>
-                                        <span>Jan 25 at 12:00 PM</span>
-                                        <img src={svgService.arrowDownIcon} alt="Toggle Calender" />
+                                    <input 
+                                        type="checkbox" 
+                                        checked={task.status === 'done'}
+                                        onChange={(ev) => handleTaskCompletion(ev.target.checked)}
+                                        className="due-date-checkbox" 
+                                        aria-label="Mark task as complete"
+                                    />
+                                    <button 
+                                        className={`due-date-button ${task.status === 'done' ? 'completed' : ''} ${
+                                            task.status !== 'done' && getDueStatus(task.dueDate).status === 'past-due' ? 'overdue' : ''
+                                        }`}
+                                        onClick={(ev) => handlePickerToggle(DatePicker, 'Due Date', ev)}
+                                    >
+                                        <time>{formatDueDate(task.dueDate)}</time>
+                                        <img src={svgService.arrowDownIcon} alt="Toggle Calendar" />
                                     </button>
                                 </div>
-                            </div>
+                                </div>
+                            )}
+
+
                         </section>
 
                         <section className="desc">
@@ -456,39 +488,39 @@ export function TaskDetails() {
 
                                                 {editingChecklistId === checklist.id ? (
                                                     <form className="add-todo-form">
-                                                    <textarea
-                                                        value={newTodoTitle}
-                                                        onChange={(ev) => setNewTodoTitle(ev.target.value)}
-                                                        placeholder="Add an item..."
-                                                        onKeyPress={(ev) => {
-                                                            if (ev.key === "Enter" && !ev.shiftKey) {
-                                                                ev.preventDefault();
-                                                                handleAddTodoItem(checklist.id);
-                                                            }
-                                                        }}
-                                                    />
-                                                    <div className="add-todo-actions">
-                                                        <button
-                                                            type="button"
-                                                            onClick={(ev) => {
-                                                                ev.preventDefault();
-                                                                handleAddTodoItem(checklist.id);
+                                                        <textarea
+                                                            value={newTodoTitle}
+                                                            onChange={(ev) => setNewTodoTitle(ev.target.value)}
+                                                            placeholder="Add an item..."
+                                                            onKeyPress={(ev) => {
+                                                                if (ev.key === "Enter" && !ev.shiftKey) {
+                                                                    ev.preventDefault();
+                                                                    handleAddTodoItem(checklist.id);
+                                                                }
                                                             }}
-                                                        >
-                                                            Add
-                                                        </button>
-                                                        <button
-                                                            type="button" 
-                                                            onClick={(ev) => {
-                                                                ev.preventDefault();
-                                                                setEditingChecklistId(null);
-                                                                setNewTodoTitle("");
-                                                            }}
-                                                        >
-                                                            Cancel
-                                                        </button>
-                                                    </div>
-                                                </form>
+                                                        />
+                                                        <div className="add-todo-actions">
+                                                            <button
+                                                                type="button"
+                                                                onClick={(ev) => {
+                                                                    ev.preventDefault();
+                                                                    handleAddTodoItem(checklist.id);
+                                                                }}
+                                                            >
+                                                                Add
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                onClick={(ev) => {
+                                                                    ev.preventDefault();
+                                                                    setEditingChecklistId(null);
+                                                                    setNewTodoTitle("");
+                                                                }}
+                                                            >
+                                                                Cancel
+                                                            </button>
+                                                        </div>
+                                                    </form>
                                                 ) : (
                                                     <div
                                                         onClick={() => setEditingChecklistId(checklist.id)}

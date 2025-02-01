@@ -6,6 +6,7 @@ import { svgService } from "../../services/svg.service"
 import { TaskQuickActions } from "./TaskQuickActions"
 import { boardService } from '../../services/board'
 import { Droppable } from 'react-beautiful-dnd'
+import { getDueStatus } from '../../services/util.service'
 
 export function TaskPreview({ task, boardId, isDragging }) {
 
@@ -34,45 +35,6 @@ export function TaskPreview({ task, boardId, isDragging }) {
     function onClosePopover() {
         setAnchorEl(null)
     }
-
-    function getDueStatus(dueDate) {
-        if (!dueDate) return { status: 'none', text: '' }
-
-        const date = new Date(dueDate)
-        const now = new Date()
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-        const tomorrow = new Date(today)
-        tomorrow.setDate(tomorrow.getDate() + 1)
-
-        // Calculate time differences
-        const timeDiff = date.getTime() - now.getTime()
-        const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24))
-
-        // Format display text
-        let text
-        if (date.toDateString() === today.toDateString()) {
-            text = 'Today'
-        } else if (date.toDateString() === tomorrow.toDateString()) {
-            text = 'Tomorrow'
-        } else {
-            const month = date.toLocaleString('default', { month: 'short' })
-            const day = date.getDate()
-            text = `${month} ${day}`
-        }
-
-        // Determine status
-        let status
-        if (daysDiff < 0) {
-            status = 'past-due'
-        } else if (daysDiff <= 1) {
-            status = 'due-soon'
-        } else {
-            status = 'on-track'
-        }
-
-        return { status, text }
-    }
-
 
     return (
         <Droppable droppableId={`task-${task.id}`} type="MEMBER">
