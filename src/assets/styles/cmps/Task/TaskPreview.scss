@@ -81,6 +81,7 @@
 
     .task-preview-bottom {
         display: flex;
+        flex-wrap: wrap;
         gap: 0.5rem;
         align-items: center;
         margin-block-start: 0.25rem;
@@ -93,6 +94,26 @@
             img {
                 display: flex;
 
+            }
+        }
+
+        .watch-icon-container {
+            height: rem(16px);
+            width: rem(16px);
+            display: flex;
+            align-items: center;
+
+            img {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                filter: brightness(0) saturate(100%) opacity(60%);
+            }
+
+            &:hover {
+                img {
+                    filter: brightness(0) saturate(100%) opacity(80%);
+                }
             }
         }
 
@@ -198,7 +219,6 @@
 
         .task-members {
             display: flex;
-            flex-wrap: wrap;
             justify-content: flex-start;
             margin-inline-start: auto;
             gap: 0;

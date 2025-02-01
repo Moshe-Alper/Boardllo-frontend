@@ -14,12 +14,13 @@ export function TaskPreview({ task, boardId, isDragging }) {
         console.log('TaskPreview: Invalid task data - missing required fields', task)
         return null
     }
-
+    const loggedInUserId = userService.getLoggedinUser()._id
     const [anchorEl, setAnchorEl] = useState(null)
     const isPopoverOpen = Boolean(anchorEl)
     const navigate = useNavigate()
     const labels = boardService.getDefaultLabels()
     const boardMembers = useSelector(storeState => storeState.boardModule.board.members) || []
+
 
     function onOpenTaskDetails(ev) {
         if (ev.target.closest('.edit-icon-container')) return
@@ -74,6 +75,13 @@ export function TaskPreview({ task, boardId, isDragging }) {
                     <p>{task.title}</p>
 
                     <div className="task-preview-bottom">
+
+                        {task.watchers?.includes(loggedInUserId) && (
+                            <span className="watch-icon-container" title="You are watching this card">
+                                <img src={svgService.watchIcon} alt="Watching" className='watch-icon' />
+                            </span>
+                        )}
+
                         {task.description && (
                             <span className="desc-icon-container" title="This card has a description">
                                 <img src={svgService.descriptionIcon} alt="Description" className='desc-icon' />

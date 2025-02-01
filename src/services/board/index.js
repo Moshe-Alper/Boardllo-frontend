@@ -37,6 +37,7 @@ function getEmptyTask() {
     memberIds: [],
     labelIds: [],
     byMember: null,
+    watchers: [],
     style: {
       backgroundColor: '',
       coverColor: ''

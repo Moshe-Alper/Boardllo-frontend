@@ -1,4 +1,5 @@
 import { boardService } from '../../services/board'
+import { assignMemberToTask } from '../actions/board.actions'
 
 export const SET_BOARDS = 'SET_BOARDS'
 export const SET_BOARD = 'SET_BOARD'
@@ -18,6 +19,7 @@ export const UPDATE_TASK = 'UPDATE_TASK'
 export const REMOVE_TASK = 'REMOVE_TASK'
 export const UNDO_REMOVE_TASK = 'UNDO_REMOVE_TASK'
 export const ASSIGN_MEMBER_TO_TASK = 'ASSIGN_MEMBER_TO_TASK'
+export const UPDATE_TASK_WATCHERS = 'UPDATE_TASK_WATCHERS'
 
 
 export const ADD_BOARD_MSG = 'ADD_BOARD_MSG'
@@ -154,25 +156,46 @@ export function boardReducer(state = initialState, action) {
         }
       }
       break
-      case ASSIGN_MEMBER_TO_TASK:
-        newState = {
-          ...state,
-          board: {
-            ...state.board,
-            groups: state.board.groups.map(group => ({
-              ...group,
-              tasks: group.tasks.map(task => {
-                if (task.id === action.taskId) {
-                  const memberIds = new Set(task.memberIds || [])
-                  memberIds.add(action.memberId)
-                  return { ...task, memberIds: Array.from(memberIds) }
-                }
-                return task
-              })
-            }))
-          }
+    case ASSIGN_MEMBER_TO_TASK:
+      newState = {
+        ...state,
+        board: {
+          ...state.board,
+          groups: state.board.groups.map(group => ({
+            ...group,
+            tasks: group.tasks.map(task => {
+              if (task.id === action.taskId) {
+                const memberIds = new Set(task.memberIds || [])
+                memberIds.add(action.memberId)
+                return { ...task, memberIds: Array.from(memberIds) }
+              }
+              return task
+            })
+          }))
         }
-        break
+      }
+      break
+    case UPDATE_TASK_WATCHERS:
+      newState = {
+        ...state,
+        board: {
+          ...state.board,
+          groups: state.board.groups.map(group => ({
+            ...group,
+            tasks: group.tasks.map(task => {
+              if (task.id === action.task.id) {
+                return {
+                  ...task,
+                  watchers: action.task.watchers
+                }
+              }
+              return task
+            })
+          }))
+        }
+      }
+      break
+
 
     // Board Messages reducers
     case ADD_BOARD_MSG:

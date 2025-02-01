@@ -13,6 +13,7 @@ import { ChecklistPicker } from '../DynamicPickers/Pickers/ChecklistPicker'
 import { CoverPicker } from '../DynamicPickers/Pickers/CoverPicker'
 import { TaskDescription } from './TaskDescription'
 import { formatDueDate, getDueStatus } from '../../services/util.service'
+import { userService } from '../../services/user'
 
 const PICKERS = [
     { icon: 'joinIcon', label: 'Join', picker: null },
@@ -48,6 +49,7 @@ export function TaskDetails() {
     const board = useSelector(storeState => storeState.boardModule.board)
     const [task, setTask] = useState(null)
     const [currGroup, setCurrGroup] = useState(null)
+    const loggedInUserId = userService.getLoggedinUser()._id;
 
     // title
     const [isEditingTitle, setIsEditingTitle] = useState(false)
@@ -242,6 +244,24 @@ export function TaskDetails() {
         }
     }
 
+
+    async function handleWatchToggle() {
+        const isWatching = task.watchers?.includes(loggedInUserId)
+        const updatedWatchers = isWatching
+            ? task.watchers.filter(id => id !== loggedInUserId)
+            : [...(task.watchers || []), loggedInUserId]
+
+        const updatedTask = { ...task, watchers: updatedWatchers }
+
+        try {
+            await updateTask(board._id, currGroup.id, updatedTask)
+            setTask(updatedTask)
+            showSuccessMsg(`Successfully ${isWatching ? 'unwatched' : 'watched'} task`)
+        } catch (err) {
+            showErrorMsg('Failed to update watch status')
+        }
+    }
+
     function handlePickerToggle(Picker, title, ev) {
         if (!Picker) return
 
@@ -312,6 +332,11 @@ export function TaskDetails() {
                                 <button>
                                     <span>{currGroup.title}</span>
                                 </button>
+                                {task.watchers?.includes(loggedInUserId) && (
+                                        <span className="watchers-icon" title={`You are watching this list`}>
+                                            <img src={svgService.watchIcon} alt="Watching" />
+                                        </span>
+                                )}
                             </p>
                         </div>
                     </div>
@@ -365,38 +390,46 @@ export function TaskDetails() {
                                     </div>
                                 </div>
                             )}
-
                             <div className="metadata-container notification">
                                 <h3>Notification</h3>
                                 <div className="notification-toggle" role="presentation">
-                                    <button>
+                                    <button
+                                        onClick={handleWatchToggle}
+                                        className={task.watchers?.includes(loggedInUserId) ? 'watching' : ''}
+                                    >
                                         <img src={svgService.watchIcon} alt="Watch" />
-                                        <span>Watch</span>
+                                        <span>
+                                            {task.watchers?.includes(loggedInUserId) ? 'Watching' : 'Watch'}
+                                        </span>
+                                        {task.watchers?.includes(loggedInUserId) && (
+                                            <span className="watchers-icon" title={`${task.watchers.length} watching`}>
+                                                <img src={svgService.checkIcon} alt="Check icon" />
+                                            </span>
+                                        )}
                                     </button>
                                 </div>
                             </div>
 
                             {task.dueDate && (
                                 <div className="metadata-container due-date">
-                                <h3>Due Date</h3>
-                                <div className="date-info">
-                                    <input 
-                                        type="checkbox" 
-                                        checked={task.status === 'done'}
-                                        onChange={(ev) => handleTaskCompletion(ev.target.checked)}
-                                        className="due-date-checkbox" 
-                                        aria-label="Mark task as complete"
-                                    />
-                                    <button 
-                                        className={`due-date-button ${task.status === 'done' ? 'completed' : ''} ${
-                                            task.status !== 'done' && getDueStatus(task.dueDate).status === 'past-due' ? 'overdue' : ''
-                                        }`}
-                                        onClick={(ev) => handlePickerToggle(DatePicker, 'Due Date', ev)}
-                                    >
-                                        <time>{formatDueDate(task.dueDate)}</time>
-                                        <img src={svgService.arrowDownIcon} alt="Toggle Calendar" />
-                                    </button>
-                                </div>
+                                    <h3>Due Date</h3>
+                                    <div className="date-info">
+                                        <input
+                                            type="checkbox"
+                                            checked={task.status === 'done'}
+                                            onChange={(ev) => handleTaskCompletion(ev.target.checked)}
+                                            className="due-date-checkbox"
+                                            aria-label="Mark task as complete"
+                                        />
+                                        <button
+                                            className={`due-date-button ${task.status === 'done' ? 'completed' : ''} ${task.status !== 'done' && getDueStatus(task.dueDate).status === 'past-due' ? 'overdue' : ''
+                                                }`}
+                                            onClick={(ev) => handlePickerToggle(DatePicker, 'Due Date', ev)}
+                                        >
+                                            <time>{formatDueDate(task.dueDate)}</time>
+                                            <img src={svgService.arrowDownIcon} alt="Toggle Calendar" />
+                                        </button>
+                                    </div>
                                 </div>
                             )}
 
@@ -494,8 +527,8 @@ export function TaskDetails() {
                                                             placeholder="Add an item..."
                                                             onKeyPress={(ev) => {
                                                                 if (ev.key === "Enter" && !ev.shiftKey) {
-                                                                    ev.preventDefault();
-                                                                    handleAddTodoItem(checklist.id);
+                                                                    ev.preventDefault()
+                                                                    handleAddTodoItem(checklist.id)
                                                                 }
                                                             }}
                                                         />
@@ -503,8 +536,8 @@ export function TaskDetails() {
                                                             <button
                                                                 type="button"
                                                                 onClick={(ev) => {
-                                                                    ev.preventDefault();
-                                                                    handleAddTodoItem(checklist.id);
+                                                                    ev.preventDefault()
+                                                                    handleAddTodoItem(checklist.id)
                                                                 }}
                                                             >
                                                                 Add
@@ -512,9 +545,9 @@ export function TaskDetails() {
                                                             <button
                                                                 type="button"
                                                                 onClick={(ev) => {
-                                                                    ev.preventDefault();
-                                                                    setEditingChecklistId(null);
-                                                                    setNewTodoTitle("");
+                                                                    ev.preventDefault()
+                                                                    setEditingChecklistId(null)
+                                                                    setNewTodoTitle("")
                                                                 }}
                                                             >
                                                                 Cancel

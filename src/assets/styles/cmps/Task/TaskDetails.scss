@@ -113,6 +113,18 @@
                             background-color: $background-grey-subtle;
                         }
                     }
+
+                .watchers-icon {
+                    display: flex;
+                    align-items: center;
+                    gap: rem(4px);
+
+                    img {
+                        width: rem(16px);
+                        height: rem(16px);
+                        opacity: 0.6;
+                    }
+                }
                 }
             }
         }
@@ -272,6 +284,7 @@ main.task-main {
                     justify-content: flex-end;
                     max-width: 100%;
 
+                    
                     .notification-toggle {
                         font-size: rem(14px);
                         line-height: rem(20px);
@@ -281,11 +294,18 @@ main.task-main {
                             margin-inline-end: 0;
                             padding: 6px 12px;
                             border-radius: rem(3px);
+                            display: flex;   
+                            align-items: center;  
 
                             img {
                                 width: rem(16px);
                                 height: rem(16px);
                                 margin-inline-end: rem(8px);
+                            }
+
+                            .watchers-icon img {
+                                margin-inline-end: 0;
+                                margin-inline-start: rem(8px);  
                             }
 
                             span {
@@ -301,11 +321,12 @@ main.task-main {
                         }
                     }
                 }
+
                 .date-info {
                     display: inline-flex;
                     align-items: center;
                     gap: rem(6px);
-        
+
                     .due-date-checkbox {
                         appearance: none;
                         -webkit-appearance: none;
@@ -317,11 +338,11 @@ main.task-main {
                         cursor: pointer;
                         position: relative;
                         transition: all 0.2s ease;
-        
+
                         &:checked {
                             background-color: $primary-green;
                             border-color: $primary-green;
-        
+
                             &::after {
                                 content: '';
                                 position: absolute;
@@ -334,12 +355,12 @@ main.task-main {
                                 transform: translate(-50%, -50%) rotate(45deg);
                             }
                         }
-        
+
                         &:hover {
                             border-color: darken($text-secondary, 10%);
                         }
                     }
-        
+
                     .due-date-button {
                         display: inline-flex;
                         align-items: center;
@@ -354,38 +375,39 @@ main.task-main {
                         min-height: rem(32px);
                         font-size: rem(14px);
                         color: $text-primary;
-        
+
                         time {
                             font-weight: 400;
                         }
-        
+
                         img {
                             width: rem(16px);
                             height: rem(16px);
                             opacity: 0.6;
                             transition: opacity 0.2s ease;
                         }
-        
+
                         &:hover {
                             background-color: darken($background-grey-subtle, 5%);
+
                             img {
                                 opacity: 0.8;
                             }
                         }
-        
+
                         &.completed {
                             background-color: $primary-green-light;
                             color: $primary-green-dark;
-        
+
                             &:hover {
                                 background-color: darken($primary-green-light, 5%);
                             }
                         }
-        
+
                         &.overdue {
                             background-color: $danger-light;
                             color: $danger;
-        
+
                             &:hover {
                                 background-color: darken($danger-light, 5%);
                             }
@@ -494,13 +516,13 @@ main.task-main {
                     grid-column: 1 / -1;
                     grid-template-columns: subgrid;
 
-  
-                    ul { 
+
+                    ul {
                         display: grid;
                         grid-column: 1 / -1;
                         grid-template-columns: subgrid;
                         list-style: none;
-                        
+
                         li {
                             display: grid;
                             grid-column: 1 / -1;
@@ -555,7 +577,7 @@ main.task-main {
                         display: grid;
                         grid-column-start: 2;
 
-                        > * {
+                        >* {
                             margin: 0;
                         }
 
@@ -577,8 +599,8 @@ main.task-main {
                                 grid-column: 2;
                                 border: none;
                                 border-radius: $border-radius-small;
-                                height: rem(32px); 
-                                padding: rem(6px) rem(12px); 
+                                height: rem(32px);
+                                padding: rem(6px) rem(12px);
                                 font-weight: 500;
                                 font-size: 0.875rem;
                                 cursor: pointer;
@@ -591,7 +613,7 @@ main.task-main {
                                     &:hover {
                                         background-color: $primary-hover-blue;
                                     }
-                        
+
                                     &:active {
                                         background-color: darken($primary-hover-blue, 5%);
                                     }
@@ -602,7 +624,7 @@ main.task-main {
                                     background-color: transparent;
 
                                     &:hover {
-                                        background-color: rgba($text-secondary, 0.08); 
+                                        background-color: rgba($text-secondary, 0.08);
                                     }
                                 }
 

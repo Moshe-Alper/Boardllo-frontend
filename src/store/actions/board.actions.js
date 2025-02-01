@@ -170,6 +170,13 @@ export async function updateTask(boardId, groupId, task) {
   store.dispatch(getCmdUpdateTask(task))
   try {
     const savedTask = await boardService.saveTask(boardId, groupId, task)
+    if (JSON.stringify(originalTask.watchers) !== JSON.stringify(task.watchers)) {
+      store.dispatch({ 
+        type: 'UPDATE_TASK_WATCHERS', 
+        task: savedTask 
+      })
+    }
+
     return savedTask
   } catch (err) {
     store.dispatch(getCmdUpdateTask(originalTask))

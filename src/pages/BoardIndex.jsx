@@ -32,10 +32,6 @@ export function BoardIndex() {
     loadBoardsToSidebar()
   }, [filterBy])
 
-  function onSetFilterBy(filterBy) {
-    setFilterBy((prevFilterBy) => ({ ...prevFilterBy, ...filterBy }))
-  }
-
   async function onRemoveBoard(boardId) {
     try {
       await removeBoard(boardId)
