@@ -3,6 +3,7 @@ import { getRandomIntInclusive, makeId } from '../util.service'
 
 import { boardService as local } from './board.service.local'
 import { boardService as remote } from './board.service.remote'
+import { userService } from '../user'
 
 function getEmptyBoard() {
   return {
@@ -25,6 +26,7 @@ function getEmptyGroup() {
 }
 
 function getEmptyTask() {
+  const loggedInUser = userService.getLoggedinUser()
   return {
     id: makeId(),
     title: '',
@@ -36,13 +38,18 @@ function getEmptyTask() {
     checklists: [],
     memberIds: [],
     labelIds: [],
-    byMember: null,
+    byMember: loggedInUser ? {
+      _id: loggedInUser._id,
+      fullname: loggedInUser.fullname,
+      imgUrl: loggedInUser.imgUrl
+    } : null,
     watchers: [],
     style: {
       backgroundColor: '',
       coverColor: ''
     },
-    archivedAt: null
+    archivedAt: null,
+    createdAt: Date.now()
   }
 }
 

@@ -49,7 +49,7 @@ export function TaskDetails() {
     const board = useSelector(storeState => storeState.boardModule.board)
     const [task, setTask] = useState(null)
     const [currGroup, setCurrGroup] = useState(null)
-    const loggedInUserId = userService.getLoggedinUser()._id;
+    const loggedInUserId = userService.getLoggedinUser
 
     // title
     const [isEditingTitle, setIsEditingTitle] = useState(false)
@@ -333,9 +333,9 @@ export function TaskDetails() {
                                     <span>{currGroup.title}</span>
                                 </button>
                                 {task.watchers?.includes(loggedInUserId) && (
-                                        <span className="watchers-icon" title={`You are watching this list`}>
-                                            <img src={svgService.watchIcon} alt="Watching" />
-                                        </span>
+                                    <span className="watchers-icon" title={`You are watching this list`}>
+                                        <img src={svgService.watchIcon} alt="Watching" />
+                                    </span>
                                 )}
                             </p>
                         </div>
@@ -580,10 +580,17 @@ export function TaskDetails() {
                                 </div>
                             </hgroup>
                             <div className="activity-item">
-                                <div className="user-avatar"></div>
-                                <p><span>User</span> added this card to {currGroup.title}</p>
-                                <time>8 Jan 2025, 15:01</time>
+                                <div className="user-avatar">
+                                    {task.byMember?.imgUrl ? (
+                                        <img src={task.byMember.imgUrl} alt={task.byMember.fullname} />
+                                    ) : null}
+                                </div>
+                                <p>
+                                    <span>{task.byMember?.fullname || 'User'}</span> added this card to {currGroup.title}
+                                </p>
+                                <time>{new Date(task.createdAt).toLocaleString()}</time>
                             </div>
+
                         </section>
                     </section>
 
