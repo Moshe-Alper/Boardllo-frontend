@@ -1,0 +1,146 @@
+.task-comments {
+    display: flex;
+    flex-direction: column;
+    gap: rem(16px);
+
+    .comment-form {
+        position: relative;
+
+        .comment-input-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: rem(8px);
+
+            .comment-input {
+                width: 100%;
+                min-height: rem(36px);
+                padding: rem(8px) rem(12px);
+                border: 2px solid $border-gray;
+                border-radius: $border-radius;
+                resize: vertical;
+                font-family: inherit;
+                font-size: rem(14px);
+                line-height: 1.5;
+                color: $text-primary;
+                background-color: $background-light;
+                transition: border-color 0.2s ease;
+
+                &:focus {
+                    border-color: $primary-blue;
+                    outline: none;
+                }
+
+                &::placeholder {
+                    color: $text-secondary;
+                }
+            }
+
+            .submit-comment {
+                align-self: flex-start;
+                padding: rem(6px) rem(12px);
+                border: none;
+                border-radius: $border-radius-small;
+                background-color: $primary-blue;
+                color: $button-text-light;
+                font-size: rem(14px);
+                font-weight: 500;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+
+                &:hover {
+                    background-color: $primary-hover-blue;
+                }
+
+                &:disabled {
+                    background-color: $background-grey-subtle;
+                    color: $text-secondary;
+                    cursor: not-allowed;
+                }
+            }
+        }
+
+        .typing-indicator {
+            position: absolute;
+            bottom: rem(-20px);
+            left: 0;
+            font-size: rem(12px);
+            color: $text-secondary;
+            font-style: italic;
+        }
+    }
+
+    .comments-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: rem(16px);
+
+        .comment-item {
+            display: grid;
+            grid-template-columns: rem(32px) 1fr;
+            gap: rem(8px);
+            padding: rem(8px);
+            border-radius: $border-radius;
+            transition: background-color 0.2s ease;
+
+            &:hover {
+                background-color: $background-grey-subtle;
+            }
+
+            .comment-avatar {
+                width: rem(32px);
+                height: rem(32px);
+                border-radius: 50%;
+                overflow: hidden;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+
+                .avatar-placeholder {
+                    width: 100%;
+                    height: 100%;
+                    background-color: $background-grey-subtle;
+                    color: $text-primary;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: 600;
+                    font-size: rem(14px);
+                }
+            }
+
+            .comment-content {
+                .comment-header {
+                    display: flex;
+                    align-items: center;
+                    gap: rem(8px);
+                    margin-bottom: rem(4px);
+
+                    .comment-author {
+                        font-weight: 600;
+                        color: $text-primary;
+                        font-size: rem(14px);
+                    }
+
+                    .comment-time {
+                        color: $text-secondary;
+                        font-size: rem(12px);
+                    }
+                }
+
+                .comment-text {
+                    margin: 0;
+                    color: $text-primary;
+                    font-size: rem(14px);
+                    line-height: 1.5;
+                    white-space: pre-wrap;
+                }
+            }
+        }
+    }
+}

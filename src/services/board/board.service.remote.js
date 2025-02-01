@@ -15,7 +15,9 @@ export const boardService = {
     saveTask,
     removeTask,
     assignMemberToTask,
-    addBoardMsg
+    addTaskComment,
+    updateTaskComment,
+    removeTaskComment
 }
 
 async function query(filterBy = { txt: '', archivedAt: '', sortField: '', sortDir: '' }) {
@@ -140,21 +142,99 @@ async function assignMemberToTask(boardId, taskId, memberId) {
     }
 }
 
+async function addTaskComment(boardId, groupId, taskId, txt) {
+    try {
+        const board = await getById(boardId)
+        if (!board) throw new Error('Board not found')
 
-async function addBoardMsg(boardId, txt) {
-    const board = await getById(boardId)
-    const loggedInUser = userService.getLoggedinUser()
-    if (!loggedInUser) {
-        throw new Error('User must be logged in to perform this action')
+        const group = board.groups.find(g => g.id === groupId)
+        if (!group) throw new Error('Group not found')
+
+        const task = group.tasks.find(t => t.id === taskId)
+        if (!task) throw new Error('Task not found')
+
+        const loggedInUser = userService.getLoggedinUser()
+        if (!loggedInUser) {
+            throw new Error('User must be logged in to comment')
+        }
+
+        const comment = {
+            id: makeId(),
+            txt,
+            createdAt: Date.now(),
+            byMember: {
+                _id: loggedInUser._id,
+                fullname: loggedInUser.fullname,
+                imgUrl: loggedInUser.imgUrl
+            }
+        }
+
+        if (!task.comments) task.comments = []
+        task.comments.push(comment)
+
+        await save(board)
+        return comment
+    } catch (error) {
+        console.error('Error in addTaskComment:', error)
+        throw error
     }
+}
 
-    const msg = {
-        id: makeId(),
-        by: loggedInUser,
-        txt
+async function updateTaskComment(boardId, groupId, taskId, commentId, txt) {
+    try {
+        const board = await getById(boardId)
+        if (!board) throw new Error('Board not found')
+
+        const group = board.groups.find(g => g.id === groupId)
+        if (!group) throw new Error('Group not found')
+
+        const task = group.tasks.find(t => t.id === taskId)
+        if (!task) throw new Error('Task not found')
+
+        const comment = task.comments?.find(c => c.id === commentId)
+        if (!comment) throw new Error('Comment not found')
+
+        const loggedInUser = userService.getLoggedinUser()
+        if (!loggedInUser || loggedInUser._id !== comment.byMember._id) {
+            throw new Error('Unauthorized to edit this comment')
+        }
+
+        comment.txt = txt
+        comment.updatedAt = Date.now()
+
+        await save(board)
+        return comment
+    } catch (error) {
+        console.error('Error in updateTaskComment:', error)
+        throw error
     }
-    board.msgs.push(msg)
-    await httpService.put(`${BASE_URL}${boardId}`, board)
+}
 
-    return msg
+async function removeTaskComment(boardId, groupId, taskId, commentId) {
+    try {
+        const board = await getById(boardId)
+        if (!board) throw new Error('Board not found')
+
+        const group = board.groups.find(g => g.id === groupId)
+        if (!group) throw new Error('Group not found')
+
+        const task = group.tasks.find(t => t.id === taskId)
+        if (!task) throw new Error('Task not found')
+
+        const commentIdx = task.comments?.findIndex(c => c.id === commentId)
+        if (commentIdx === -1) throw new Error('Comment not found')
+
+        const comment = task.comments[commentIdx]
+        const loggedInUser = userService.getLoggedinUser()
+        if (!loggedInUser || loggedInUser._id !== comment.byMember._id) {
+            throw new Error('Unauthorized to delete this comment')
+        }
+
+        task.comments.splice(commentIdx, 1)
+        await save(board)
+        return commentId
+    } catch (error) {
+        console.error('Error in removeTaskComment:', error)
+        throw error
+    }
 }

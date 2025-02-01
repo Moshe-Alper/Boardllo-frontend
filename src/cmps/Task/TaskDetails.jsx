@@ -14,6 +14,7 @@ import { CoverPicker } from '../DynamicPickers/Pickers/CoverPicker'
 import { TaskDescription } from './TaskDescription'
 import { formatDueDate, getDueStatus } from '../../services/util.service'
 import { userService } from '../../services/user'
+import { TaskComments } from './TaskComments'
 
 const PICKERS = [
     { icon: 'joinIcon', label: 'Join', picker: null },
@@ -296,7 +297,6 @@ export function TaskDetails() {
     if (!task) return <div>Loading...</div>
     const boardMembers = board?.members || []
     const taskMembers = task?.memberIds || []
-
     return (
         <div className="task-details-overlay" onClick={handleOverlayClick}>
             <article className={`task-details ${hasCover ? 'has-cover' : ''}`}>
@@ -579,6 +579,18 @@ export function TaskDetails() {
                                     <button>Show details</button>
                                 </div>
                             </hgroup>
+                            <div className="activity-item">
+                                <div className="user-avatar">
+                                    {task.byMember?.imgUrl ? (
+                                        <img src={task.byMember.imgUrl} alt={task.byMember.fullname} />
+                                    ) : null}
+                                </div>
+                                <TaskComments
+                                    boardId={boardId}
+                                    groupId={currGroup.id}
+                                    taskId={task.id}
+                                />
+                            </div>
                             <div className="activity-item">
                                 <div className="user-avatar">
                                     {task.byMember?.imgUrl ? (
