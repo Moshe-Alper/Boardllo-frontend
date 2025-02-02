@@ -19,8 +19,9 @@ import { BoardCreateModal } from '../cmps/Board/BoardCreateModal.jsx'
 export function BoardIndex() {
   const [filterBy, setFilterBy] = useState(boardService.getDefaultFilter())
   const boards = useSelector((storeState) => storeState.boardModule.boards)
-  const workspaceBoards = boards?.filter((board) => !board.isGuest) || []
-
+  const workspaceBoards = Array.isArray(boards) ? 
+  boards.filter((board) => !board.isGuest) : 
+  []
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [editingBoard, setEditingBoard] = useState(null)
   const [starredBoards, setStarredBoards] = useState([])

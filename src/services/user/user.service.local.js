@@ -1,6 +1,7 @@
 import { storageService } from '../async-storage.service'
 
 const STORAGE_KEY_LOGGEDIN_USER = 'loggedinUser'
+const LOCAL_STORAGE_KEY = 'guestUser'
 
 export const userService = {
   login,
@@ -12,7 +13,8 @@ export const userService = {
   update,
   getLoggedinUser,
   updateUserImg,
-  updateUserName
+  updateUserName,
+  handleGuestAccess,
 }
 
 function getUsers() {
@@ -23,15 +25,20 @@ async function getById(userId) {
   return await storageService.get('user', userId)
 }
 
-function remove(userId) {
-  return storageService.remove('user', userId)
+async function remove(userId) {
+  return storageService.get('user', userId)
+    .then(user => {
+      if (user.username === 'default_user') {
+        return storageService.remove('user', userId)
+      }
+      return Promise.reject('Not default user')
+    })
 }
 
 async function update({ _id}) {
   const user = await storageService.get('user', _id)
   await storageService.put('user', user)
 
-  // When admin updates other user's details, do not update loggedinUser
   const loggedinUser = getLoggedinUser()
   if (loggedinUser._id === user._id) _saveLocalUser(user)
 
@@ -94,4 +101,34 @@ async function _createAdmin(userCred) {
 
   const newUser = await storageService.post('user', userCred)
   console.log('newUser: ', newUser)
+}
+
+
+export async function handleGuestAccess(user) {
+  try {
+      const guestUser = {
+          username: 'default_user',
+          password: '123',
+          fullname: 'guest',
+      }
+
+      if (!user) {
+          const newUser = await signup(guestUser)
+          localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newUser))
+          return newUser
+      } 
+      else if (user.username === 'default_user') {
+          await remove(user._id)
+          localStorage.removeItem(LOCAL_STORAGE_KEY)
+          sessionStorage.removeItem(STORAGE_KEY_LOGGEDIN_USER)
+      }
+  } catch (err) {
+      console.error('Cannot handle guest user:', err)
+      throw err
+  }
+}
+
+export function isGuestUser() {
+  const user = JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN_USER))
+  return user?.username === 'default_user'
 }
