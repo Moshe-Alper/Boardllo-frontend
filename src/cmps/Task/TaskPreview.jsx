@@ -7,6 +7,7 @@ import { TaskQuickActions } from "./TaskQuickActions"
 import { boardService } from '../../services/board'
 import { Droppable } from 'react-beautiful-dnd'
 import { getDueStatus } from '../../services/util.service'
+import { userService } from '../../services/user'
 
 export function TaskPreview({ task, boardId, isDragging }) {
 
@@ -16,6 +17,7 @@ export function TaskPreview({ task, boardId, isDragging }) {
     }
     const loggedInUser = userService.getLoggedinUser()
     const loggedInUserId = loggedInUser?._id
+
 
     const [anchorEl, setAnchorEl] = useState(null)
     const isPopoverOpen = Boolean(anchorEl)
