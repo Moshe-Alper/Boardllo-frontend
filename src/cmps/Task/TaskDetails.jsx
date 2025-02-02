@@ -579,18 +579,12 @@ export function TaskDetails() {
                                     <button>Show details</button>
                                 </div>
                             </hgroup>
-                            <div className="activity-item">
-                                <div className="user-avatar">
-                                    {task.byMember?.imgUrl ? (
-                                        <img src={task.byMember.imgUrl} alt={task.byMember.fullname} />
-                                    ) : null}
-                                </div>
                                 <TaskComments
                                     boardId={boardId}
                                     groupId={currGroup.id}
                                     taskId={task.id}
                                 />
-                            </div>
+
                             <div className="activity-item">
                                 <div className="user-avatar">
                                     {task.byMember?.imgUrl ? (
