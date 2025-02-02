@@ -12,6 +12,7 @@ export const boardService = {
 
   saveGroup,
   removeGroup,
+  assignMemberToTask,
 
   saveTask,
   removeTask,
@@ -160,6 +161,32 @@ async function removeTask(boardId, groupId, taskId) {
   const task = group.tasks.splice(taskIdx, 1)[0]
   await storageService.put(STORAGE_KEY, board)
   return task
+}
+
+async function assignMemberToTask(boardId, taskId, memberId) {
+  try {
+      const board = await getById(boardId)
+      if (!board) throw new Error('Board not found')
+
+      const group = board.groups.find(group => 
+          group.tasks.some(task => task.id === taskId)
+      )
+      if (!group) throw new Error('Task not found in any group')
+
+      const task = group.tasks.find(task => task.id === taskId)
+      if (!task) throw new Error('Task not found')
+
+      if (!task.memberIds) task.memberIds = []
+      if (!task.memberIds.includes(memberId)) {
+          task.memberIds.push(memberId)
+      }
+
+      await storageService.put(STORAGE_KEY, board)
+      return board
+  } catch (error) {
+      console.error('Error in assignMemberToTask:', error)
+      throw error
+  }
 }
 
 // Task comment functions

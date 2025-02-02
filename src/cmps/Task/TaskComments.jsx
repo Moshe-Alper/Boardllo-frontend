@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { socketService } from '../../services/socket.service'
-import { boardService } from '../../services/board'
+import { updateTask } from '../../store/actions/board.actions'
 import { showSuccessMsg, showErrorMsg } from '../../services/event-bus.service'
 import { userService } from '../../services/user'
 
@@ -35,9 +35,9 @@ export function TaskComments({ boardId, groupId, taskId }) {
             setIsTyping(false)
         })
 
-        socketService.on('comment-added', refreshBoard)
-        socketService.on('comment-updated', refreshBoard)
-        socketService.on('comment-removed', refreshBoard)
+        socketService.on('comment-added', handleSocketCommentUpdate)
+        socketService.on('comment-updated', handleSocketCommentUpdate)
+        socketService.on('comment-removed', handleSocketCommentUpdate)
 
         return () => {
             socketService.emit('leave-task', taskId)
@@ -49,16 +49,15 @@ export function TaskComments({ boardId, groupId, taskId }) {
         }
     }, [taskId, loggedInUser])
 
-    const refreshBoard = async () => {
+    function handleSocketCommentUpdate(updatedTask) {
         try {
-            const updatedBoard = await boardService.getById(boardId)
-            // Dispatch to your store to update the board
+            updateTask(boardId, groupId, updatedTask)
         } catch (err) {
-            console.error('Failed to refresh board:', err)
+            console.error('Failed to sync comment update:', err)
         }
     }
 
-    const handleTyping = () => {
+    function handleTyping() {
         socketService.emit('user-typing', {
             taskId,
             username: loggedInUser?.fullname
@@ -72,92 +71,88 @@ export function TaskComments({ boardId, groupId, taskId }) {
         }, 1000)
     }
 
-    const handleSubmitComment = async (ev) => {
+    async function handleSubmitComment(ev) {
         ev.preventDefault()
         if (!comment.trim()) return
 
+        const newComment = {
+            id: Date.now(),
+            txt: comment.trim(),
+            createdAt: new Date().toISOString(),
+            byMember: {
+                _id: loggedInUser._id,
+                fullname: loggedInUser.fullname,
+                imgUrl: loggedInUser.imgUrl
+            }
+        }
+
+        const updatedTask = {
+            ...task,
+            comments: [...(task.comments || []), newComment]
+        }
+
         try {
-            const newComment = await boardService.addTaskComment(
-                boardId,
-                groupId,
-                taskId,
-                comment.trim()
-            )
-
-            socketService.emit('comment-added', {
-                taskId,
-                comment: newComment
-            })
-
+            await updateTask(boardId, groupId, updatedTask)
+            socketService.emit('comment-added', updatedTask)
             setComment('')
             showSuccessMsg('Comment added successfully')
-
         } catch (err) {
             console.error('Failed to add comment:', err)
             showErrorMsg('Failed to add comment')
         }
     }
 
-    const startEditing = (comment) => {
+    function startEditing(comment) {
         setEditingCommentId(comment.id)
         setEditText(comment.txt)
     }
 
-    const cancelEditing = () => {
+    function cancelEditing() {
         setEditingCommentId(null)
         setEditText('')
     }
 
-    const handleUpdateComment = async (commentId) => {
+    async function handleUpdateComment(commentId) {
         if (!editText.trim()) return
 
-        try {
-            const updatedComment = await boardService.updateTaskComment(
-                boardId,
-                groupId,
-                taskId,
-                commentId,
-                editText.trim()
+        const updatedTask = {
+            ...task,
+            comments: task.comments.map(c => 
+                c.id === commentId 
+                    ? { ...c, txt: editText.trim() }
+                    : c
             )
+        }
 
-            socketService.emit('comment-updated', {
-                taskId,
-                comment: updatedComment
-            })
-
+        try {
+            await updateTask(boardId, groupId, updatedTask)
+            socketService.emit('comment-updated', updatedTask)
             setEditingCommentId(null)
             setEditText('')
             showSuccessMsg('Comment updated successfully')
-
         } catch (err) {
             console.error('Failed to update comment:', err)
             showErrorMsg('Failed to update comment')
         }
     }
 
-    const handleDeleteComment = async (commentId) => {
+    async function handleDeleteComment(commentId) {
+        const updatedTask = {
+            ...task,
+            comments: task.comments.filter(c => c.id !== commentId)
+        }
+
         try {
-            await boardService.removeTaskComment(
-                boardId,
-                groupId,
-                taskId,
-                commentId
-            )
-
-            socketService.emit('comment-removed', {
-                taskId,
-                commentId
-            })
-
+            await updateTask(boardId, groupId, updatedTask)
+            socketService.emit('comment-removed', updatedTask)
             showSuccessMsg('Comment removed successfully')
-
         } catch (err) {
             console.error('Failed to remove comment:', err)
             showErrorMsg('Failed to remove comment')
         }
     }
 
-    const formatCommentDate = (date) => {
+    function formatCommentDate(date) {
         const now = new Date()
         const commentDate = new Date(date)
         const diffInMinutes = Math.floor((now - commentDate) / (1000 * 60))
@@ -174,8 +169,8 @@ export function TaskComments({ boardId, groupId, taskId }) {
         <div className="task-comments">
             <form onSubmit={handleSubmitComment} className="comment-form">
                 <div className="user-avatar">
-                    {task.byMember?.imgUrl ? (
-                        <img src={task.byMember.imgUrl} alt={task.byMember.fullname} />
+                    {loggedInUser?.imgUrl ? (
+                        <img src={loggedInUser.imgUrl} alt={loggedInUser.fullname} />
                     ) : null}
                 </div>
                 <textarea
