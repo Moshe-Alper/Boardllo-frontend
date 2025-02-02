@@ -38,7 +38,7 @@ export function TaskPreview({ task, boardId, isDragging }) {
     }
 
     return (
-        <Droppable droppableId={`task-${task.id}`} type="MEMBER">
+        <Droppable droppableId={`task-${task.id}`} type="member">
             {(provided, snapshot) => (
                 <article
                     ref={provided.innerRef}
@@ -94,6 +94,15 @@ export function TaskPreview({ task, boardId, isDragging }) {
                                     <img src={svgService.clockIcon} alt="Due date" className='due-date-icon' />
                                 </span>
                                 <span className="due-date-text">{getDueStatus(task.dueDate).text}</span>
+                            </span>
+                        )}
+
+                        {task.comments?.length > 0 && (
+                            <span className="comment-icon-container" title="Comments on this card">
+                                <span className="comment-icon-wrapper">
+                                    <img src={svgService.commentIcon} alt="Comments" className='comment-icon' />
+                                </span>
+                                <span className="comment-count">{task.comments.length}</span>
                             </span>
                         )}
 

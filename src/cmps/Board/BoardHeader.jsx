@@ -96,7 +96,7 @@ export function BoardHeader({ board, isSidebarOpen, onUpdateGroup }) {
         <h1 onClick={() => board?._id && setIsEditingTitle(true)}>{board.title}</h1>
       )}
 
-      <Droppable droppableId="board-members" direction="horizontal" type="MEMBER">
+      <Droppable droppableId="board-members" direction="horizontal" type="member">
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps} className="members">
             {board.members?.map((member, index) => (

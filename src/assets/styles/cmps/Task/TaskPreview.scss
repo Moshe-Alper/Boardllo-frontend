@@ -192,6 +192,29 @@
             }
         }
     
+        .comment-icon-container {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            height: rem(24px);
+            padding: rem(2px);
+            color: $text-subtle;
+            font-size: rem(12px);
+
+            .comment-icon-wrapper {
+                height: rem(16px);
+                width: rem(16px);
+                display: flex;
+                align-items: center;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    filter: brightness(0) saturate(100%) opacity(60%);
+                }
+            }
+        }
 
         .checklist-status {
             display: flex;
