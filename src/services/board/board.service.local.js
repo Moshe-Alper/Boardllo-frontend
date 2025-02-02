@@ -12,11 +12,14 @@ export const boardService = {
 
   saveGroup,
   removeGroup,
+  assignMemberToTask,
 
   saveTask,
   removeTask,
+  addTaskComment,
+  updateTaskComment,
+  removeTaskComment
 
-  addBoardMsg
 }
 
 window.cs = boardService
@@ -160,18 +163,110 @@ async function removeTask(boardId, groupId, taskId) {
   return task
 }
 
-// BoardMsg functions
-async function addBoardMsg(boardId, txt) {
-  // Later, this is all done by the backend
-  const board = await getById(boardId)
+async function assignMemberToTask(boardId, taskId, memberId) {
+  try {
+      const board = await getById(boardId)
+      if (!board) throw new Error('Board not found')
 
-  const msg = {
-    id: makeId(),
-    by: userService.getLoggedinUser(),
-    txt
+      const group = board.groups.find(group => 
+          group.tasks.some(task => task.id === taskId)
+      )
+      if (!group) throw new Error('Task not found in any group')
+
+      const task = group.tasks.find(task => task.id === taskId)
+      if (!task) throw new Error('Task not found')
+
+      if (!task.memberIds) task.memberIds = []
+      if (!task.memberIds.includes(memberId)) {
+          task.memberIds.push(memberId)
+      }
+
+      await storageService.put(STORAGE_KEY, board)
+      return board
+  } catch (error) {
+      console.error('Error in assignMemberToTask:', error)
+      throw error
   }
-  board.msgs.push(msg)
-  await storageService.put(STORAGE_KEY, board)
-
-  return msg
 }
+
+// Task comment functions
+async function addTaskComment(boardId, groupId, taskId, txt) {
+  const board = await getById(boardId)
+  if (!board) throw new Error('Board not found')
+
+  const group = board.groups.find(g => g.id === groupId)
+  if (!group) throw new Error('Group not found')
+
+  const task = group.tasks.find(t => t.id === taskId)
+  if (!task) throw new Error('Task not found')
+
+  const loggedInUser = userService.getLoggedinUser()
+  if (!loggedInUser) throw new Error('Must be logged in to comment')
+
+  const comment = {
+      id: makeId(),
+      txt,
+      createdAt: Date.now(),
+      byMember: {
+          _id: loggedInUser._id,
+          fullname: loggedInUser.fullname,
+          imgUrl: loggedInUser.imgUrl
+      }
+  }
+
+  if (!task.comments) task.comments = []
+  task.comments.push(comment)
+
+  await storageService.put(STORAGE_KEY, board)
+  return comment
+}
+
+async function updateTaskComment(boardId, groupId, taskId, commentId, txt) {
+  const board = await getById(boardId)
+  if (!board) throw new Error('Board not found')
+
+  const group = board.groups.find(g => g.id === groupId)
+  if (!group) throw new Error('Group not found')
+
+  const task = group.tasks.find(t => t.id === taskId)
+  if (!task) throw new Error('Task not found')
+
+  const comment = task.comments?.find(c => c.id === commentId)
+  if (!comment) throw new Error('Comment not found')
+
+  const loggedInUser = userService.getLoggedinUser()
+  if (!loggedInUser || loggedInUser._id !== comment.byMember._id) {
+      throw new Error('Unauthorized to edit this comment')
+  }
+
+  comment.txt = txt
+  comment.updatedAt = Date.now()
+
+  await storageService.put(STORAGE_KEY, board)
+  return comment
+}
+
+async function removeTaskComment(boardId, groupId, taskId, commentId) {
+  const board = await getById(boardId)
+  if (!board) throw new Error('Board not found')
+
+  const group = board.groups.find(g => g.id === groupId)
+  if (!group) throw new Error('Group not found')
+
+  const task = group.tasks.find(t => t.id === taskId)
+  if (!task) throw new Error('Task not found')
+
+  const commentIdx = task.comments?.findIndex(c => c.id === commentId)
+  if (commentIdx === -1) throw new Error('Comment not found')
+
+  const comment = task.comments[commentIdx]
+  const loggedInUser = userService.getLoggedinUser()
+  if (!loggedInUser || loggedInUser._id !== comment.byMember._id) {
+      throw new Error('Unauthorized to delete this comment')
+  }
+
+  task.comments.splice(commentIdx, 1)
+  await storageService.put(STORAGE_KEY, board)
+  return commentId
+}
+

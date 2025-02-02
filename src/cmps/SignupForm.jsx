@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { signup } from '../store/actions/user.actions.js'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
-import { userService } from '../services/user/index.js'
+import { userService } from '../services/user/'
 
 export function SignupForm() {
   const [credentials, setCredentials] = useState(userService.getEmptyUser())
