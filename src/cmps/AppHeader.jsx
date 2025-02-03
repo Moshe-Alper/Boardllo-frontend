@@ -123,11 +123,11 @@ export function AppHeader() {
               />
             )}
 
-            {user?.isAdmin && (
+            {/* {user?.isAdmin && (
               <NavLink className='admin-link' to='/admin'>
                 Admin
               </NavLink>
-            )}
+            )} */}
           </div>
 
           <div className='nav-right'>
