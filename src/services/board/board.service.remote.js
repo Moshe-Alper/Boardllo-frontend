@@ -44,6 +44,8 @@ async function save(board) {
 
 async function saveGroup(boardId, group) {
     try {
+        if (!group) throw new Error('Group not found')
+            
         const board = await getById(boardId)
         if (!board) throw new Error('Board not found')
 

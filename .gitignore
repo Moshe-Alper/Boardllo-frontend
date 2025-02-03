@@ -23,3 +23,6 @@ data
 *.njsproj
 *.sln
 *.sw?
+
+# For presentation
+group.js
