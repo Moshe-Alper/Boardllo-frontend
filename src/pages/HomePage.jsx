@@ -1,27 +1,27 @@
-import { Layout, Users, CheckSquare } from 'lucide-react';
-import { useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { signup } from '../store/actions/user.actions';
-import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service';
+import { Layout, Users, CheckSquare } from 'lucide-react'
+import { useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { signup } from '../store/actions/user.actions'
+import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 
 export function HomePage() {
-  const user = useSelector((storeState) => storeState.userModule.user);
-  const navigate = useNavigate();
+  const user = useSelector((storeState) => storeState.userModule.user)
+  const navigate = useNavigate()
 
   const defaultUser = {
     username: 'default_user',
     password: '123',
     fullname: 'default',
-  };
+  }
 
   async function handleDefaultLogin() {
     try {
-      await signup(defaultUser);
-      showSuccessMsg('Welcome to Boardllo!');
-      navigate('/board');
+      await signup(defaultUser)
+      showSuccessMsg('Welcome to Boardllo!')
+      navigate('/board')
     } catch (err) {
-      console.error('Signup failed:', err);
-      showErrorMsg('Oops! Something went wrong');
+      console.error('Signup failed:', err)
+      showErrorMsg('Oops! Something went wrong')
     }
   }
 
@@ -119,5 +119,5 @@ export function HomePage() {
         </section>
       </main>
     </div>
-  );
+  )
 }

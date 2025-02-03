@@ -9,8 +9,7 @@ const rootReducer = combineReducers({
   boardModule: boardReducer,
   userModule: userReducer,
   systemModule: systemReducer,
-  appModule: appReducer
-})
+  appModule: appReducer,})
 
 const middleware = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
   ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__()

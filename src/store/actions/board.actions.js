@@ -18,6 +18,7 @@ import {
   UNDO_REMOVE_GROUP,
   REMOVE_TASK,
   UNDO_REMOVE_TASK,
+  ASSIGN_MEMBER_TO_TASK,
 } from '../reducers/board.reducer'
 
 // Board Actions
@@ -169,6 +170,13 @@ export async function updateTask(boardId, groupId, task) {
   store.dispatch(getCmdUpdateTask(task))
   try {
     const savedTask = await boardService.saveTask(boardId, groupId, task)
+    if (JSON.stringify(originalTask.watchers) !== JSON.stringify(task.watchers)) {
+      store.dispatch({ 
+        type: 'UPDATE_TASK_WATCHERS', 
+        task: savedTask 
+      })
+    }
+
     return savedTask
   } catch (err) {
     store.dispatch(getCmdUpdateTask(originalTask))
@@ -185,6 +193,17 @@ export async function removeTask(boardId, groupId, taskId) {
     store.dispatch(getCmdUndoRemoveTask())
     console.log('Cannot remove task', err)
     throw err
+  }
+}
+
+export async function assignMemberToTask(boardId, taskId, memberId) {
+  try {
+    const board = await boardService.assignMemberToTask(boardId, taskId, memberId);
+    store.dispatch(getCmdAssignMemberToTask(taskId, memberId));
+    return board;
+  } catch (err) {
+    console.error('Cannot assign member to task', err);
+    throw err;
   }
 }
 
@@ -302,6 +321,14 @@ function getCmdRemoveTask(taskId) {
 function getCmdUndoRemoveTask() {
   return {
     type: UNDO_REMOVE_TASK,
+  }
+}
+
+function getCmdAssignMemberToTask(taskId, memberId) {
+  return {
+    type: ASSIGN_MEMBER_TO_TASK,
+    taskId,
+    memberId,
   }
 }
 

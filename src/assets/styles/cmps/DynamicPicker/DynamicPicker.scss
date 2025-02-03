@@ -5,8 +5,8 @@
     background-color: $background-white;
     border-radius: $border-radius-large;
     box-shadow: $shadow-large;
-    overflow: hidden;
     z-index: 10000;
+    overflow-y: auto;
 
     .picker-header {
         display: grid;

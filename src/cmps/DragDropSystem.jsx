@@ -3,6 +3,7 @@ import { svgService } from "../services/svg.service"
 import { forwardRef } from 'react'
 
 
+
 export function MemberDraggable({ member, index }) {
     return (
         <Draggable draggableId={member._id} index={index}>
@@ -13,7 +14,16 @@ export function MemberDraggable({ member, index }) {
                     {...provided.dragHandleProps}
                     className="member"
                 >
-                    <img src={member.imgUrl} alt={member.fullname} />
+                      <div className="member-img">
+                        <img src={member.imgUrl} alt={member.fullname} />
+                        {/* Make sure isAdmin is being properly checked */}
+                        {Boolean(member.isAdmin) && (
+                            <span 
+                                className="admin-badge"
+                                title="This member is an admin of the board"
+                            />
+                        )}
+                    </div>
                 </div>
             )}
         </Draggable>
@@ -22,7 +32,6 @@ export function MemberDraggable({ member, index }) {
 
 export function GroupDragDropContainer({ items = [], onDragEnd, children }) {
     return (
-        <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="board" type="group" direction="horizontal">
                 {(provided) => (
                     <ul 
@@ -52,7 +61,6 @@ export function GroupDragDropContainer({ items = [], onDragEnd, children }) {
                     </ul>
                 )}
             </Droppable>
-        </DragDropContext>
     )
 }
 

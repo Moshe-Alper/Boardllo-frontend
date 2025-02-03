@@ -12,6 +12,9 @@ import { DatePicker } from '../DynamicPickers/Pickers/DatePicker'
 import { ChecklistPicker } from '../DynamicPickers/Pickers/ChecklistPicker'
 import { CoverPicker } from '../DynamicPickers/Pickers/CoverPicker'
 import { TaskDescription } from './TaskDescription'
+import { formatDueDate, getDueStatus } from '../../services/util.service'
+import { userService } from '../../services/user'
+import { TaskComments } from './TaskComments'
 
 const PICKERS = [
     { icon: 'joinIcon', label: 'Join', picker: null },
@@ -47,6 +50,7 @@ export function TaskDetails() {
     const board = useSelector(storeState => storeState.boardModule.board)
     const [task, setTask] = useState(null)
     const [currGroup, setCurrGroup] = useState(null)
+    const loggedInUserId = userService.getLoggedinUser
 
     // title
     const [isEditingTitle, setIsEditingTitle] = useState(false)
@@ -111,6 +115,23 @@ export function TaskDetails() {
         } catch (err) {
             showErrorMsg(`Failed to update ${field}`)
             return false
+        }
+    }
+
+    async function handleTaskCompletion(isDone) {
+        const updatedTask = {
+            ...task,
+            status: isDone ? 'done' : 'pending',
+            completedAt: isDone ? new Date().toISOString() : null
+        }
+
+        try {
+            await updateTask(board._id, currGroup.id, updatedTask)
+            setTask(updatedTask)
+            showSuccessMsg(`Task marked as ${isDone ? 'complete' : 'pending'}`)
+        } catch (err) {
+            console.error('Failed to update task status:', err)
+            showErrorMsg('Failed to update task status')
         }
     }
 
@@ -197,7 +218,7 @@ export function TaskDetails() {
             showErrorMsg('Todo item cannot be empty')
             return
         }
-        
+
         const newTodo = {
             id: Date.now(),
             title: newTodoTitle.trim(),
@@ -221,6 +242,24 @@ export function TaskDetails() {
             showSuccessMsg('Todo item added successfully')
         } catch (err) {
             showErrorMsg('Failed to add todo item')
+        }
+    }
+
+
+    async function handleWatchToggle() {
+        const isWatching = task.watchers?.includes(loggedInUserId)
+        const updatedWatchers = isWatching
+            ? task.watchers.filter(id => id !== loggedInUserId)
+            : [...(task.watchers || []), loggedInUserId]
+
+        const updatedTask = { ...task, watchers: updatedWatchers }
+
+        try {
+            await updateTask(board._id, currGroup.id, updatedTask)
+            setTask(updatedTask)
+            showSuccessMsg(`Successfully ${isWatching ? 'unwatched' : 'watched'} task`)
+        } catch (err) {
+            showErrorMsg('Failed to update watch status')
         }
     }
 
@@ -258,7 +297,6 @@ export function TaskDetails() {
     if (!task) return <div>Loading...</div>
     const boardMembers = board?.members || []
     const taskMembers = task?.memberIds || []
-
     return (
         <div className="task-details-overlay" onClick={handleOverlayClick}>
             <article className={`task-details ${hasCover ? 'has-cover' : ''}`}>
@@ -294,6 +332,11 @@ export function TaskDetails() {
                                 <button>
                                     <span>{currGroup.title}</span>
                                 </button>
+                                {task.watchers?.includes(loggedInUserId) && (
+                                    <span className="watchers-icon" title={`You are watching this list`}>
+                                        <img src={svgService.watchIcon} alt="Watching" />
+                                    </span>
+                                )}
                             </p>
                         </div>
                     </div>
@@ -347,27 +390,50 @@ export function TaskDetails() {
                                     </div>
                                 </div>
                             )}
-
                             <div className="metadata-container notification">
                                 <h3>Notification</h3>
                                 <div className="notification-toggle" role="presentation">
-                                    <button>
+                                    <button
+                                        onClick={handleWatchToggle}
+                                        className={task.watchers?.includes(loggedInUserId) ? 'watching' : ''}
+                                    >
                                         <img src={svgService.watchIcon} alt="Watch" />
-                                        <span>Watch</span>
+                                        <span>
+                                            {task.watchers?.includes(loggedInUserId) ? 'Watching' : 'Watch'}
+                                        </span>
+                                        {task.watchers?.includes(loggedInUserId) && (
+                                            <span className="watchers-icon" title={`${task.watchers.length} watching`}>
+                                                <img src={svgService.checkIcon} alt="Check icon" />
+                                            </span>
+                                        )}
                                     </button>
                                 </div>
                             </div>
 
-                            <div className="metadata-container due-date">
-                                <h3>Due Date</h3>
-                                <div className="date-info">
-                                    <input type="checkbox" className="due-date-checkbox" />
-                                    <button>
-                                        <span>Jan 25 at 12:00 PM</span>
-                                        <img src={svgService.arrowDownIcon} alt="Toggle Calender" />
-                                    </button>
+                            {task.dueDate && (
+                                <div className="metadata-container due-date">
+                                    <h3>Due Date</h3>
+                                    <div className="date-info">
+                                        <input
+                                            type="checkbox"
+                                            checked={task.status === 'done'}
+                                            onChange={(ev) => handleTaskCompletion(ev.target.checked)}
+                                            className="due-date-checkbox"
+                                            aria-label="Mark task as complete"
+                                        />
+                                        <button
+                                            className={`due-date-button ${task.status === 'done' ? 'completed' : ''} ${task.status !== 'done' && getDueStatus(task.dueDate).status === 'past-due' ? 'overdue' : ''
+                                                }`}
+                                            onClick={(ev) => handlePickerToggle(DatePicker, 'Due Date', ev)}
+                                        >
+                                            <time>{formatDueDate(task.dueDate)}</time>
+                                            <img src={svgService.arrowDownIcon} alt="Toggle Calendar" />
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
+                            )}
+
+
                         </section>
 
                         <section className="desc">
@@ -455,39 +521,39 @@ export function TaskDetails() {
 
                                                 {editingChecklistId === checklist.id ? (
                                                     <form className="add-todo-form">
-                                                    <textarea
-                                                        value={newTodoTitle}
-                                                        onChange={(ev) => setNewTodoTitle(ev.target.value)}
-                                                        placeholder="Add an item..."
-                                                        onKeyPress={(ev) => {
-                                                            if (ev.key === "Enter" && !ev.shiftKey) {
-                                                                ev.preventDefault();
-                                                                handleAddTodoItem(checklist.id);
-                                                            }
-                                                        }}
-                                                    />
-                                                    <div className="add-todo-actions">
-                                                        <button
-                                                            type="button"
-                                                            onClick={(ev) => {
-                                                                ev.preventDefault();
-                                                                handleAddTodoItem(checklist.id);
+                                                        <textarea
+                                                            value={newTodoTitle}
+                                                            onChange={(ev) => setNewTodoTitle(ev.target.value)}
+                                                            placeholder="Add an item..."
+                                                            onKeyPress={(ev) => {
+                                                                if (ev.key === "Enter" && !ev.shiftKey) {
+                                                                    ev.preventDefault()
+                                                                    handleAddTodoItem(checklist.id)
+                                                                }
                                                             }}
-                                                        >
-                                                            Add
-                                                        </button>
-                                                        <button
-                                                            type="button" 
-                                                            onClick={(ev) => {
-                                                                ev.preventDefault();
-                                                                setEditingChecklistId(null);
-                                                                setNewTodoTitle("");
-                                                            }}
-                                                        >
-                                                            Cancel
-                                                        </button>
-                                                    </div>
-                                                </form>
+                                                        />
+                                                        <div className="add-todo-actions">
+                                                            <button
+                                                                type="button"
+                                                                onClick={(ev) => {
+                                                                    ev.preventDefault()
+                                                                    handleAddTodoItem(checklist.id)
+                                                                }}
+                                                            >
+                                                                Add
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                onClick={(ev) => {
+                                                                    ev.preventDefault()
+                                                                    setEditingChecklistId(null)
+                                                                    setNewTodoTitle("")
+                                                                }}
+                                                            >
+                                                                Cancel
+                                                            </button>
+                                                        </div>
+                                                    </form>
                                                 ) : (
                                                     <div
                                                         onClick={() => setEditingChecklistId(checklist.id)}
@@ -513,11 +579,24 @@ export function TaskDetails() {
                                     <button>Show details</button>
                                 </div>
                             </hgroup>
+                                <TaskComments
+                                    boardId={boardId}
+                                    groupId={currGroup.id}
+                                    taskId={task.id}
+                                />
+
                             <div className="activity-item">
-                                <div className="user-avatar"></div>
-                                <p><span>User</span> added this card to {currGroup.title}</p>
-                                <time>8 Jan 2025, 15:01</time>
+                                <div className="user-avatar">
+                                    {task.byMember?.imgUrl ? (
+                                        <img src={task.byMember.imgUrl} alt={task.byMember.fullname} />
+                                    ) : null}
+                                </div>
+                                <p>
+                                    <span>{task.byMember?.fullname || 'User'}</span> added this card to {currGroup.title}
+                                </p>
+                                <time>{new Date(task.createdAt).toLocaleString()}</time>
                             </div>
+
                         </section>
                     </section>
 

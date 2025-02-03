@@ -53,3 +53,52 @@ export function loadFromStorage(key) {
     const data = localStorage.getItem(key)
     return (data) ? JSON.parse(data) : undefined
 }
+
+export function getDueStatus(dueDate) {
+    if (!dueDate) return { status: 'none', text: '' }
+
+    const date = new Date(dueDate)
+    const now = new Date()
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    const tomorrow = new Date(today)
+    tomorrow.setDate(tomorrow.getDate() + 1)
+
+    const timeDiff = date.getTime() - now.getTime()
+    const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24))
+
+    let text
+    if (date.toDateString() === today.toDateString()) {
+        text = 'Today'
+    } else if (date.toDateString() === tomorrow.toDateString()) {
+        text = 'Tomorrow'
+    } else {
+        const month = date.toLocaleString('default', { month: 'short' })
+        const day = date.getDate()
+        text = `${month} ${day}`
+    }
+
+    let status
+    if (daysDiff < 0) {
+        status = 'past-due'
+    } else if (daysDiff <= 1) {
+        status = 'due-soon'
+    } else {
+        status = 'on-track'
+    }
+
+    return { status, text }
+}
+
+export function formatDueDate(date) {
+    if (!date) return ''
+    
+    const dueDate = new Date(date)
+    const { text } = getDueStatus(date)
+    
+    const timeString = dueDate.toLocaleTimeString('en-US', { 
+        hour: 'numeric', 
+        minute: '2-digit'
+    })
+    
+    return `${text} at ${timeString}`
+}
