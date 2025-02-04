@@ -7,6 +7,7 @@ import { TaskQuickActions } from "./TaskQuickActions"
 import { boardService } from '../../services/board'
 import { Droppable } from 'react-beautiful-dnd'
 import { getDueStatus } from '../../services/util.service'
+import { userService } from '../../services/user'
 
 export function TaskPreview({ task, boardId, isDragging }) {
 
@@ -14,7 +15,10 @@ export function TaskPreview({ task, boardId, isDragging }) {
         console.log('TaskPreview: Invalid task data - missing required fields', task)
         return null
     }
-    const loggedInUserId = userService.getLoggedinUser()._id
+    const loggedInUser = userService.getLoggedinUser()
+    const loggedInUserId = loggedInUser?._id
+
+
     const [anchorEl, setAnchorEl] = useState(null)
     const isPopoverOpen = Boolean(anchorEl)
     const navigate = useNavigate()
@@ -38,7 +42,7 @@ export function TaskPreview({ task, boardId, isDragging }) {
     }
 
     return (
-        <Droppable droppableId={`task-${task.id}`} type="MEMBER">
+        <Droppable droppableId={`task-${task.id}`} type="member">
             {(provided, snapshot) => (
                 <article
                     ref={provided.innerRef}
@@ -75,8 +79,7 @@ export function TaskPreview({ task, boardId, isDragging }) {
                     <p>{task.title}</p>
 
                     <div className="task-preview-bottom">
-
-                        {task.watchers?.includes(loggedInUserId) && (
+                        {loggedInUserId && task.watchers?.includes(loggedInUserId) && (
                             <span className="watch-icon-container" title="You are watching this card">
                                 <img src={svgService.watchIcon} alt="Watching" className='watch-icon' />
                             </span>
@@ -94,6 +97,15 @@ export function TaskPreview({ task, boardId, isDragging }) {
                                     <img src={svgService.clockIcon} alt="Due date" className='due-date-icon' />
                                 </span>
                                 <span className="due-date-text">{getDueStatus(task.dueDate).text}</span>
+                            </span>
+                        )}
+
+                        {task.comments?.length > 0 && (
+                            <span className="comment-icon-container" title="Comments on this card">
+                                <span className="comment-icon-wrapper">
+                                    <img src={svgService.commentIcon} alt="Comments" className='comment-icon' />
+                                </span>
+                                <span className="comment-count">{task.comments.length}</span>
                             </span>
                         )}
 

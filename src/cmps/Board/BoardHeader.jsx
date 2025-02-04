@@ -5,7 +5,10 @@ import { loadBoard, updateBoard } from '../../store/actions/board.actions'
 import { BoardMenu } from './BoardMenu'
 import { DragDropContext, Droppable } from "react-beautiful-dnd"
 import { MemberDraggable } from '../DragDropSystem'
+import { DragDropContext, Droppable } from "react-beautiful-dnd"
+import { MemberDraggable } from '../DragDropSystem'
 
+export function BoardHeader({ board, isSidebarOpen, onUpdateGroup }) {
 export function BoardHeader({ board, isSidebarOpen, onUpdateGroup }) {
   const [isEditingTitle, setIsEditingTitle] = useState(false)
   const [title, setTitle] = useState(board?.title || '')
@@ -69,7 +72,38 @@ export function BoardHeader({ board, isSidebarOpen, onUpdateGroup }) {
     }
   }
 
+
+  function onDragEnd(result) {
+    if (!result.destination) return
+
+    if (result.destination.droppableId.startsWith('task-')) {
+      let taskId = result.destination.droppableId.replace('task-', '')
+      let memberId = result.draggableId
+
+      let updatedGroup = board.groups.find(group =>
+        group.tasks.some(task => task.id === taskId)
+      )
+
+      if (updatedGroup) {
+        let tasks = updatedGroup.tasks.map(task => {
+          if (task.id === taskId) {
+            let memberIds = new Set(task.memberIds || [])
+            memberIds.add(memberId)
+            return { ...task, memberIds: Array.from(memberIds) }
+          }
+          return task
+        })
+
+        onUpdateGroup({
+          ...updatedGroup,
+          tasks
+        })
+      }
+    }
+  }
+
   if (!board) return <div className='board-header'>Loading board...</div>
+  
   
   return (
     <section className={`board-header ${isMenuOpen ? 'menu-open' : ''} ${isSidebarOpen ? 'sidebar-open' : ''}`}>
@@ -96,6 +130,16 @@ export function BoardHeader({ board, isSidebarOpen, onUpdateGroup }) {
         <h1 onClick={() => board?._id && setIsEditingTitle(true)}>{board.title}</h1>
       )}
 
+      <Droppable droppableId="board-members" direction="horizontal" type="member">
+        {(provided) => (
+          <div ref={provided.innerRef} {...provided.droppableProps} className="members">
+            {board.members?.map((member, index) => (
+              <MemberDraggable key={member._id} member={member} index={index} />
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
       <Droppable droppableId="board-members" direction="horizontal" type="MEMBER">
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps} className="members">
@@ -111,6 +155,11 @@ export function BoardHeader({ board, isSidebarOpen, onUpdateGroup }) {
         <img src={svgService.threeDotsIcon} alt='Menu' />
       </button>
 
+      <BoardMenu
+        isOpen={isMenuOpen}
+        toggleMenu={() => setIsMenuOpen(!isMenuOpen)}
+        board={board}
+      />
       <BoardMenu
         isOpen={isMenuOpen}
         toggleMenu={() => setIsMenuOpen(!isMenuOpen)}

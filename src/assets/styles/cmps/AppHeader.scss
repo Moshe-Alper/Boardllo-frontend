@@ -12,13 +12,19 @@
     max-width: 100%;
     height: 100%;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     padding: 0 $layoutPadding-medium;
     margin: 0 auto;
     gap: $spacing-md;
 
-    @media (max-width: $breakpoint-mobile) {
-      padding: 0 $layoutPadding-small;
+    @media (max-width: $breakpoint-tablet) {
+      gap: $spacing-sm;
+    }
+
+    @media (max-width: 500px) {
+      padding: 0 $spacing-sm;
+      gap: $spacing-xs;
     }
   }
 
@@ -28,13 +34,21 @@
     gap: $spacing-md;
     min-width: 240px;
 
-    @media (max-width: $breakpoint-mobile) {
-      min-width: auto;
+    @media (max-width: $breakpoint-tablet) {
+      gap: $spacing-sm;
+      flex: 0 1 auto;
+    }
+
+    @media (max-width: 500px) {
+      gap: $spacing-xs;
+      min-width: unset;
     }
   }
 
   .search-icon-mobile {
     display: none;
+    filter: brightness(0) invert(1); // Makes black SVGs white
+
     @media (max-width: $breakpoint-tablet) {
       display: block;
     }
@@ -60,6 +74,21 @@
     .noti-icon {
       cursor: pointer;
       filter: brightness(0) invert(1); // Makes black SVGs white
+    }
+
+    @media (max-width: $breakpoint-tablet) {
+      gap: $spacing-sm;
+    }
+
+    @media (max-width: 500px) {
+      gap: $spacing-xs;
+    }
+
+    img {
+      @media (max-width: 500px) {
+        width: 18px;
+        height: 18px;
+      }
     }
   }
 
@@ -97,6 +126,16 @@
         display: none;
       }
     }
+
+    @media (max-width: 500px) {
+      padding: $spacing-xs;
+
+      .icon-header,
+      .icon-user {
+        width: 18px;
+        height: 18px;
+      }
+    }
   }
 
   .create-btn {
@@ -115,8 +154,15 @@
       background-color: $button-primary-hover-bg;
     }
 
-    @media (max-width: $breakpoint-mobile) {
-      padding: $spacing-xs;
+    @media (max-width: 500px) {
+      padding-inline: 1rem;
+      min-width: unset;
+      font-size: 0;
+
+      &::before {
+        content: '+';
+        font-size: 1rem;
+      }
     }
   }
 
@@ -187,6 +233,17 @@
         display: none;
       }
     }
+
+    @media (max-width: 500px) {
+      padding: $spacing-xs;
+
+      .user-initial,
+      .user-avatar {
+        width: 28px;
+        height: 28px;
+        font-size: 0.9rem;
+      }
+    }
   }
 
   .logout-btn {
@@ -222,6 +279,14 @@
 
     &:hover {
       background-color: $button-primary-hover-bg;
+    }
+  }
+
+  .login-link,
+  .signup-link {
+    @media (max-width: 600px) {
+      padding: $spacing-xs $spacing-sm;
+      font-size: 0.9rem;
     }
   }
 }

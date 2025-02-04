@@ -50,7 +50,8 @@ export function TaskDetails() {
     const board = useSelector(storeState => storeState.boardModule.board)
     const [task, setTask] = useState(null)
     const [currGroup, setCurrGroup] = useState(null)
-    const loggedInUserId = userService.getLoggedinUser
+    const loggedInUser = userService.getLoggedinUser()
+    const loggedInUserId = loggedInUser?._id
 
     // title
     const [isEditingTitle, setIsEditingTitle] = useState(false)

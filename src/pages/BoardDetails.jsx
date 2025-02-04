@@ -75,7 +75,6 @@ export function BoardDetails() {
 
   async function handleDragEnd(result) {
     const { source, destination, type } = result
-    console.log('Drag result:', {source, destination, type, result})
 
     if (!destination) return
 
@@ -94,7 +93,7 @@ export function BoardDetails() {
         destGroup.tasks.splice(destination.index, 0, movedTask)
         break
 
-      case 'MEMBER':
+      case 'member':
         if (destination.droppableId.startsWith('task-')) {
           const taskId = destination.droppableId.replace('task-', '')
           const memberId = result.draggableId
