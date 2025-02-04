@@ -88,7 +88,7 @@ export function TaskComments({ boardId, groupId, taskId }) {
 
         const updatedTask = {
             ...task,
-            comments: [...(task.comments || []), newComment]
+            comments: [newComment, ...(task.comments || [])]
         }
 
         try {
