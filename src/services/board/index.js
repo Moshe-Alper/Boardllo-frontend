@@ -1,9 +1,9 @@
-const { DEV, VITE_LOCAL } = import.meta.env
-import { getRandomIntInclusive, makeId } from '../util.service'
+const { DEV, VITE_LOCAL } = import.meta.env;
+import { getRandomIntInclusive, makeId } from '../util.service';
 
-import { boardService as local } from './board.service.local'
-import { boardService as remote } from './board.service.remote'
-import { userService } from '../user'
+import { boardService as local } from './board.service.local';
+import { boardService as remote } from './board.service.remote';
+import { userService } from '../user';
 
 function getEmptyBoard() {
   return {
@@ -11,8 +11,8 @@ function getEmptyBoard() {
     isStarred: false,
     archivedAt: null,
     groups: [],
-    msgs: []
-  }
+    msgs: [],
+  };
 }
 
 function getEmptyGroup() {
@@ -21,12 +21,12 @@ function getEmptyGroup() {
     title: '',
     archivedAt: null,
     tasks: [],
-    style: {}
-  }
+    style: {},
+  };
 }
 
 function getEmptyTask() {
-  const loggedInUser = userService.getLoggedinUser()
+  const loggedInUser = userService.getLoggedinUser();
   return {
     id: makeId(),
     title: '',
@@ -38,19 +38,21 @@ function getEmptyTask() {
     checklists: [],
     memberIds: [],
     labelIds: [],
-    byMember: loggedInUser ? {
-      _id: loggedInUser._id,
-      fullname: loggedInUser.fullname,
-      imgUrl: loggedInUser.imgUrl
-    } : null,
+    byMember: loggedInUser
+      ? {
+          _id: loggedInUser._id,
+          fullname: loggedInUser.fullname,
+          imgUrl: loggedInUser.imgUrl,
+        }
+      : null,
     watchers: [],
     style: {
       backgroundColor: '',
-      coverColor: ''
+      coverColor: '',
     },
     archivedAt: null,
-    createdAt: Date.now()
-  }
+    createdAt: Date.now(),
+  };
 }
 
 function getDefaultLabels() {
@@ -59,8 +61,8 @@ function getDefaultLabels() {
     { id: 'l2', title: 'To Do', color: 'var(--label-todo)' },
     { id: 'l3', title: 'Critical', color: 'var(--label-critical)' },
     { id: 'l4', title: 'Nice to do', color: 'var(--label-nice-to-do)' },
-    { id: 'l5', title: 'In Progress', color: 'var(--label-in-progress)' }
-  ]
+    { id: 'l5', title: 'In Progress', color: 'var(--label-in-progress)' },
+  ];
 }
 
 function getDefaultFilter() {
@@ -68,14 +70,14 @@ function getDefaultFilter() {
     txt: '',
     archivedAt: '',
     sortField: '',
-    sortDir: ''
+    sortDir: '',
     // pageIdx: 0
-  }
+  };
 }
 
-// const service = VITE_LOCAL === 'true' ? local : remote
-const service = remote
-// console.log(VITE_LOCAL == 'true', VITE_LOCAL)
+const service = VITE_LOCAL === 'true' ? local : remote;
+console.log(VITE_LOCAL == 'true', VITE_LOCAL);
+// const service = remote
 
 export const boardService = {
   getEmptyBoard,
@@ -83,10 +85,10 @@ export const boardService = {
   getEmptyTask,
   getDefaultLabels,
   getDefaultFilter,
-  ...service
-}
+  ...service,
+};
 
 //* Easy access to this service from the dev tools console
 //* when using script - dev / dev:local
 
-if (DEV) window.boardService = boardService
+if (DEV) window.boardService = boardService;

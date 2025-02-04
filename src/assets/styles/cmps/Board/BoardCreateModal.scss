@@ -1,9 +1,19 @@
 .board-create-menu {
   background: white;
   border-radius: 3px;
-  box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25), 0 0 0 1px rgba(9, 30, 66, 0.08);
+  box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25),
+    0 0 0 1px rgba(9, 30, 66, 0.08);
   width: 304px;
   z-index: 1000;
+
+  @media (max-width: $breakpoint-mobile) {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 304px;
+  }
 
   .menu-header {
     display: flex;
@@ -12,6 +22,11 @@
     padding: 0 12px;
     height: 48px;
     border-bottom: 1px solid #dfe1e6;
+
+    @media (max-width: $breakpoint-mobile) {
+      height: 40px;
+      padding: 0 8px;
+    }
 
     h3 {
       font-size: 14px;
@@ -31,6 +46,10 @@
       &:hover {
         background-color: #091e420a;
       }
+
+      @media (max-width: $breakpoint-mobile) {
+        padding: 8px;
+      }
     }
   }
 
@@ -40,6 +59,12 @@
     border-radius: 3px;
     padding: 12px;
     transition: background 0.15s ease;
+
+    @media (max-width: $breakpoint-mobile) {
+      height: 100px;
+      margin: 8px;
+      padding: 8px;
+    }
 
     .preview-columns {
       height: 100%;
@@ -57,6 +82,10 @@
   .menu-content {
     padding: 12px 12px 12px;
 
+    @media (max-width: $breakpoint-mobile) {
+      padding: 8px;
+    }
+
     .background-picker {
       margin-bottom: 16px;
 
@@ -71,6 +100,16 @@
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         gap: 8px;
+
+        @media (max-width: $breakpoint-mobile) {
+          gap: 6px;
+
+          .bg-option {
+            &:hover {
+              transform: none;
+            }
+          }
+        }
 
         .bg-option {
           aspect-ratio: 1;
@@ -93,6 +132,14 @@
     .board-form {
       .input-wrapper {
         margin-bottom: 12px;
+
+        @media (max-width: $breakpoint-mobile) {
+          margin-bottom: 8px;
+
+          input {
+            padding: 10px 8px;
+          }
+        }
 
         input {
           width: 100%;
@@ -142,6 +189,14 @@
           background: #091e420a;
           color: #a5adba;
           cursor: not-allowed;
+        }
+
+        @media (max-width: $breakpoint-mobile) {
+          padding: 10px 12px;
+
+          &:hover {
+            background: #0052cc;
+          }
         }
       }
     }
