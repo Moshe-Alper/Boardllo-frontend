@@ -45,19 +45,12 @@ async function save(board) {
 async function saveGroup(boardId, group) {
     try {
         if (!group) throw new Error('Group not found')
-            
+        
         const board = await getById(boardId)
         if (!board) throw new Error('Board not found')
 
-        const groupToSave = {
-            id: group.id || makeId(),
-            title: group.title,
-            archivedAt: group.archivedAt || null,
-            tasks: group.tasks || [],
-            style: group.style || {},
-            isCollapsed: group.isCollapsed || false
-        }
-
+        const groupToSave = _createGroupForSave(group)
+        
         const groupIdx = board.groups.findIndex((g) => g.id === groupToSave.id)
         if (groupIdx === -1) {
             board.groups.push(groupToSave)
@@ -238,5 +231,16 @@ async function removeTaskComment(boardId, groupId, taskId, commentId) {
     } catch (error) {
         console.error('Error in removeTaskComment:', error)
         throw error
+    }
+}
+
+function _createGroupForSave(group) {
+    return {
+        id: group.id || makeId(),
+        title: group.title,
+        archivedAt: group.archivedAt || null,
+        tasks: group.tasks || [],
+        style: group.style || {},
+        isCollapsed: group.isCollapsed || false
     }
 }

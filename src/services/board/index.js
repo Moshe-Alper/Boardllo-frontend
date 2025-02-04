@@ -1,9 +1,9 @@
-const { DEV, VITE_LOCAL } = import.meta.env
-import { getRandomIntInclusive, makeId } from '../util.service'
+const { DEV, VITE_LOCAL } = import.meta.env;
+import { getRandomIntInclusive, makeId } from '../util.service';
 
-import { boardService as local } from './board.service.local'
-import { boardService as remote } from './board.service.remote'
-import { userService } from '../user'
+import { boardService as local } from './board.service.local';
+import { boardService as remote } from './board.service.remote';
+import { userService } from '../user';
 
 function getEmptyBoard() {
   return {
@@ -12,7 +12,7 @@ function getEmptyBoard() {
     archivedAt: null,
     groups: [],
     msgs: [],
-  }
+  };
 }
 
 function getEmptyGroup() {
@@ -22,11 +22,11 @@ function getEmptyGroup() {
     archivedAt: null,
     tasks: [],
     style: {},
-  }
+  };
 }
 
 function getEmptyTask() {
-  const loggedInUser = userService.getLoggedinUser()
+  const loggedInUser = userService.getLoggedinUser();
   return {
     id: makeId(),
     title: '',
@@ -52,7 +52,7 @@ function getEmptyTask() {
     },
     archivedAt: null,
     createdAt: Date.now(),
-  }
+  };
 }
 
 function getDefaultLabels() {
@@ -62,7 +62,7 @@ function getDefaultLabels() {
     { id: 'l3', title: 'Critical', color: 'var(--label-critical)' },
     { id: 'l4', title: 'Nice to do', color: 'var(--label-nice-to-do)' },
     { id: 'l5', title: 'In Progress', color: 'var(--label-in-progress)' },
-  ]
+  ];
 }
 
 function getDefaultFilter() {
@@ -72,11 +72,11 @@ function getDefaultFilter() {
     sortField: '',
     sortDir: '',
     // pageIdx: 0
-  }
+  };
 }
 
 const service = VITE_LOCAL === 'true' ? local : remote
-// console.log(VITE_LOCAL == 'true', VITE_LOCAL)
+console.log(VITE_LOCAL == 'true', VITE_LOCAL)
 // const service = remote
 
 export const boardService = {
@@ -86,9 +86,9 @@ export const boardService = {
   getDefaultLabels,
   getDefaultFilter,
   ...service,
-}
+};
 
 //* Easy access to this service from the dev tools console
 //* when using script - dev / dev:local
 
-if (DEV) window.boardService = boardService
+if (DEV) window.boardService = boardService;
