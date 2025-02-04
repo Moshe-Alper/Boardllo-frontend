@@ -5,7 +5,6 @@ import { forwardRef } from 'react'
 
 
 export function MemberDraggable({ member, index }) {
-    console.log('🚀 member', member)
     return (
         <Draggable draggableId={member._id} index={index}>
             {(provided, snapshot) => (
