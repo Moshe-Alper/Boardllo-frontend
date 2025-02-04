@@ -6,8 +6,8 @@ export function ChecklistPicker({ initialTask, onChecklistUpdate, board }) {
   const [title, setTitle] = useState('Checklist')
   const [copyFrom, setCopyFrom] = useState('none')
   const [isLoading, setIsLoading] = useState(false)
+
   const groups = board.groups
-  
   const tasksWithChecklists = groups.flatMap(group =>
     group.tasks.filter(task => task.checklists?.length > 0)
   )
@@ -19,37 +19,33 @@ export function ChecklistPicker({ initialTask, onChecklistUpdate, board }) {
     const newChecklist = {
       id: makeId(),
       title,
-      todos: [],
+      todos: []
     }
 
     let sourceTask
-
     if (copyFrom !== 'none') {
       sourceTask = initialTask.checklists?.some(cl => cl.id === copyFrom)
         ? initialTask
         : tasksWithChecklists.find(task =>
           task.checklists?.some(checklist => checklist.id === copyFrom)
         )
-    }
-
-    if (sourceTask) {
-      const checklistToCopy = sourceTask.checklists.find(cl => cl.id === copyFrom)
-      if (checklistToCopy) {
-        newChecklist.todos = checklistToCopy.todos.map(todo => ({
-          id: makeId(),
-          title: todo.title,
-          isDone: false,
-        }))
+      
+      if (sourceTask) {
+        const checklistToCopy = sourceTask.checklists.find(cl => cl.id === copyFrom)
+        if (checklistToCopy) {
+          newChecklist.todos = checklistToCopy.todos.map(todo => ({
+            id: makeId(),
+            title: todo.title,
+            isDone: false
+          }))
+        }
       }
-    } else {
-      newChecklist.todos = [{ id: makeId(), title: 'Edit todo', isDone: false }]
     }
 
     const updatedChecklists = [...(initialTask.checklists || []), newChecklist]
     onChecklistUpdate(updatedChecklists)
     setIsLoading(false)
   }
-
 
   return (
     <form onSubmit={handleSubmit} className="checklist-picker">
@@ -73,19 +69,10 @@ export function ChecklistPicker({ initialTask, onChecklistUpdate, board }) {
           onChange={ev => setCopyFrom(ev.target.value)}
           disabled={isLoading}
           MenuProps={{
-            style: { zIndex: 11000 },
+            style: { zIndex: 11000 }
           }}
         >
           <MenuItem value="none">(none)</MenuItem>
-
-          {/* Include checklists from the initial task */}
-          {/* {initialTask.checklists?.map(checklist => (
-            <MenuItem key={checklist.id} value={checklist.id}>
-              {`(Current Task) - ${checklist.title}`}
-            </MenuItem>
-          ))} */}
-
-          {/* Include checklists from other tasks */}
           {tasksWithChecklists.map(task =>
             task.checklists?.map(checklist => (
               <MenuItem key={checklist.id} value={checklist.id}>

@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import { socketService } from '../../services/socket.service'
 import { updateTask } from '../../store/actions/board.actions'
 import { showSuccessMsg, showErrorMsg } from '../../services/event-bus.service'
-import { userService } from '../../services/user'
 
 export function TaskComments({ boardId, groupId, taskId }) {
     const [comment, setComment] = useState('')
@@ -14,15 +13,26 @@ export function TaskComments({ boardId, groupId, taskId }) {
 
     const loggedInUser = useSelector((storeState) => storeState.userModule.user)
     const board = useSelector(storeState => storeState.boardModule.board)
+    
     const task = board?.groups
         ?.find(g => g.id === groupId)
         ?.tasks?.find(t => t.id === taskId)
 
-    useEffect(() => {
-        if (!task) return
+    const handleSocketCommentUpdate = useCallback((updatedTask) => {
+        try {
+            updateTask(boardId, groupId, updatedTask)
+        } catch (err) {
+            console.error('Failed to sync comment update:', err)
+        }
+    }, [boardId, groupId])
 
+    useEffect(() => {
+        if (!task || !loggedInUser) return
+
+        // Join the task room when component mounts
         socketService.emit('join-task', taskId)
 
+        // Listen for typing events
         socketService.on('user-typing', ({ username }) => {
             if (username !== loggedInUser?.fullname) {
                 setTypingUser(username)
@@ -35,11 +45,16 @@ export function TaskComments({ boardId, groupId, taskId }) {
             setIsTyping(false)
         })
 
+        // Listen for comment updates
         socketService.on('comment-added', handleSocketCommentUpdate)
         socketService.on('comment-updated', handleSocketCommentUpdate)
         socketService.on('comment-removed', handleSocketCommentUpdate)
 
+        // Cleanup when component unmounts
         return () => {
+            if (window.typingTimeout) {
+                clearTimeout(window.typingTimeout)
+            }
             socketService.emit('leave-task', taskId)
             socketService.off('user-typing')
             socketService.off('user-stopped-typing')
@@ -47,15 +62,7 @@ export function TaskComments({ boardId, groupId, taskId }) {
             socketService.off('comment-updated')
             socketService.off('comment-removed')
         }
-    }, [taskId, loggedInUser])
-
-    function handleSocketCommentUpdate(updatedTask) {
-        try {
-            updateTask(boardId, groupId, updatedTask)
-        } catch (err) {
-            console.error('Failed to sync comment update:', err)
-        }
-    }
+    }, [taskId, loggedInUser, handleSocketCommentUpdate, task])
 
     function handleTyping() {
         socketService.emit('user-typing', {
@@ -88,7 +95,7 @@ export function TaskComments({ boardId, groupId, taskId }) {
 
         const updatedTask = {
             ...task,
-            comments: [...(task.comments || []), newComment]
+            comments: [newComment, ...(task.comments || [])]
         }
 
         try {
@@ -100,16 +107,6 @@ export function TaskComments({ boardId, groupId, taskId }) {
             console.error('Failed to add comment:', err)
             showErrorMsg('Failed to add comment')
         }
-    }
-
-    function startEditing(comment) {
-        setEditingCommentId(comment.id)
-        setEditText(comment.txt)
-    }
-
-    function cancelEditing() {
-        setEditingCommentId(null)
-        setEditText('')
     }
 
     async function handleUpdateComment(commentId) {
@@ -152,15 +149,25 @@ export function TaskComments({ boardId, groupId, taskId }) {
         }
     }
 
+    function startEditing(comment) {
+        setEditingCommentId(comment.id)
+        setEditText(comment.txt)
+    }
+
+    function cancelEditing() {
+        setEditingCommentId(null)
+        setEditText('')
+    }
+
     function formatCommentDate(date) {
         const now = new Date()
         const commentDate = new Date(date)
         const diffInMinutes = Math.floor((now - commentDate) / (1000 * 60))
         
-        if (diffInMinutes < 2) {
-            return 'Just now'
-        }
-        return commentDate.toLocaleString()
+        if (diffInMinutes < 2) return 'Just now'
+        if (diffInMinutes < 60) return `${diffInMinutes} minutes ago`
+        if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)} hours ago`
+        return commentDate.toLocaleDateString()
     }
 
     if (!task) return null
