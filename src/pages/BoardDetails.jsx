@@ -5,7 +5,8 @@ import { boardService } from '../services/board'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import {
   loadBoard, addGroup, loadBoardsToSidebar, updateGroup,
-  assignMemberToTask
+  assignMemberToTask,
+  updateBoard
 } from '../store/actions/board.actions'
 import { BoardGroup } from '../cmps/Group/BoardGroup'
 import { AddGroupForm } from '../cmps/Group/AddGroupForm'
@@ -75,31 +76,47 @@ export function BoardDetails() {
 
   async function handleDragEnd(result) {
     const { source, destination, type } = result
-
+  
     if (!destination) return
-
+  
     const updatedBoard = { ...board }
-    switch (type) {
-      case 'group':
-        const [removed] = updatedBoard.groups.splice(source.index, 1)
-        updatedBoard.groups.splice(destination.index, 0, removed)
-        break
-
-      case 'task':
-        const sourceGroup = updatedBoard.groups.find(g => g.id === source.droppableId)
-        const destGroup = updatedBoard.groups.find(g => g.id === destination.droppableId)
-        if (!sourceGroup || !destGroup) return
-        const [movedTask] = sourceGroup.tasks.splice(source.index, 1)
-        destGroup.tasks.splice(destination.index, 0, movedTask)
-        break
-
-      case 'member':
-        if (destination.droppableId.startsWith('task-')) {
-          const taskId = destination.droppableId.replace('task-', '')
-          const memberId = result.draggableId
-          await assignMemberToTask(board._id, taskId, memberId)
-        }
-        break
+    try {
+      switch (type) {
+        case 'group':
+          const [removed] = updatedBoard.groups.splice(source.index, 1)
+          updatedBoard.groups.splice(destination.index, 0, removed)
+          await updateBoard(updatedBoard)
+          showSuccessMsg('Group order updated')
+          break
+  
+        case 'task':
+          const sourceGroup = updatedBoard.groups.find(g => g.id === source.droppableId)
+          const destGroup = updatedBoard.groups.find(g => g.id === destination.droppableId)
+          if (!sourceGroup || !destGroup) return
+          
+          const [movedTask] = sourceGroup.tasks.splice(source.index, 1)
+          destGroup.tasks.splice(destination.index, 0, movedTask)
+          
+          if (sourceGroup.id !== destGroup.id) {
+            await updateGroup(board._id, sourceGroup)
+            await updateGroup(board._id, destGroup)
+          } else {
+            await updateGroup(board._id, sourceGroup)
+          }
+          showSuccessMsg('Task moved successfully')
+          break
+  
+        case 'member':
+          if (destination.droppableId.startsWith('task-')) {
+            const taskId = destination.droppableId.replace('task-', '')
+            const memberId = result.draggableId
+            await assignMemberToTask(board._id, taskId, memberId)
+          }
+          break
+      }
+    } catch (err) {
+      console.error('Failed to update after drag and drop:', err)
+      showErrorMsg('Failed to update changes')
     }
   }
 

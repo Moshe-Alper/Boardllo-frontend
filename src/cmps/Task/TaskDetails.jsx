@@ -17,7 +17,6 @@ import { userService } from '../../services/user'
 import { TaskComments } from './TaskComments'
 
 const PICKERS = [
-    { icon: 'joinIcon', label: 'Join', picker: null },
     { icon: 'memberIcon', label: 'Members', picker: MemberPicker },
     { icon: 'labelsIcon', label: 'Labels', picker: LabelPicker },
     { icon: 'datesIcon', label: 'Dates', picker: DatePicker },
@@ -164,6 +163,19 @@ export function TaskDetails() {
         }
     }
 
+    async function handleJoinLeaveTask() {
+        const updatedMembers = isTaskMember
+            ? taskMembers.filter(id => id !== loggedInUserId)
+            : [...taskMembers, loggedInUserId]
+
+        try {
+            await handleMemberUpdate(updatedMembers)
+            showSuccessMsg(`Successfully ${isTaskMember ? 'left' : 'joined'} task`)
+        } catch (err) {
+            showErrorMsg(`Failed to ${isTaskMember ? 'leave' : 'join'} task`)
+        }
+    }
+
     async function handleMemberUpdate(updatedMembers) {
         const updatedTask = { ...task, memberIds: updatedMembers }
         try {
@@ -171,6 +183,7 @@ export function TaskDetails() {
             setTask(updatedTask)
         } catch (err) {
             showErrorMsg('Failed to update members')
+            throw err // Propagate error to caller
         }
     }
 
@@ -298,6 +311,7 @@ export function TaskDetails() {
     if (!task) return <div>Loading...</div>
     const boardMembers = board?.members || []
     const taskMembers = task?.memberIds || []
+    const isTaskMember = taskMembers.includes(loggedInUserId)
     return (
         <div className="task-details-overlay" onClick={handleOverlayClick}>
             <article className={`task-details ${hasCover ? 'has-cover' : ''}`}>
@@ -468,7 +482,6 @@ export function TaskDetails() {
                                             <hgroup className="checklist-header">
                                                 <div className="checklist-controls">
                                                     <h3>{checklist.title}</h3>
-
                                                     <div className="checklist-actions">
                                                         {hasCheckedItems && (
                                                             <button
@@ -490,24 +503,6 @@ export function TaskDetails() {
                                                     </div>
                                                 </div>
                                             </hgroup>
-
-
-                                            {checklist.todos && checklist.todos.length > 0 && (
-                                                <div className="checklist-progress">
-                                                    <span className="progress-text">
-                                                        {Math.round((checklist.todos.filter(todo => todo.isDone).length / checklist.todos.length) * 100)}%
-                                                    </span>
-                                                    <div className="progress-bar-container" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-                                                        <span
-                                                            className="progress-bar-fill"
-                                                            style={{
-                                                                width: `${(checklist.todos.filter(todo => todo.isDone).length / checklist.todos.length) * 100}%`
-                                                            }}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            )}
-
                                             <div className="checklist-content">
                                                 {visibleTodos && visibleTodos.length > 0 ? (
                                                     <ul>
@@ -623,6 +618,13 @@ export function TaskDetails() {
                     <aside className="task-sidebar">
                         <ul className="features">
                             <li>
+                                <button>
+                                    <img
+                                        src={svgService[isTaskMember ? 'joinIcon' : 'leaveIcon']}
+                                        alt={isTaskMember ? 'Join' : 'Leave'}
+                                    />
+                                    <span>{isTaskMember ? 'Join' : 'Leave'}</span>
+                                </button>
                                 {PICKERS.map(({ icon, label, picker }) => (
                                     <button
                                         key={label}

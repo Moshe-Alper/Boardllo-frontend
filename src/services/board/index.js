@@ -76,7 +76,7 @@ function getDefaultFilter() {
 }
 
 const service = VITE_LOCAL === 'true' ? local : remote
-console.log(VITE_LOCAL == 'true', VITE_LOCAL)
+// console.log(VITE_LOCAL == 'true', VITE_LOCAL)
 // const service = remote
 
 export const boardService = {
