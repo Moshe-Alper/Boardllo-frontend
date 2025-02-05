@@ -1,21 +1,68 @@
 .board-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: .5em;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  padding: $spacing-md;
 
-    li {
-        display: grid;
-        grid-template-columns: max-content auto;
-        padding: .5em;
+  @media (max-width: $breakpoint-tablet) {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    padding: $spacing-sm;
+  }
 
-        color: black;
+  @media (max-width: $breakpoint-mobile) {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
 
-        .actions {
-            justify-self: end;
+  li {
+    position: relative;
+    background: $background-white;
+    border-radius: $border-radius-small;
+    box-shadow: $shadow-small;
+    transition: $hover-transition;
 
-            button {
-                padding: .3em .5em;
-            }
-        }
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: $shadow-medium;
+
+      .actions {
+        opacity: 1;
+      }
     }
+
+    .actions {
+      position: absolute;
+      top: $spacing-xs;
+      right: $spacing-xs;
+      display: flex;
+      gap: 4px;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+
+      @media (max-width: $breakpoint-mobile) {
+        opacity: 1;
+      }
+
+      button {
+        padding: 6px;
+        border: none;
+        border-radius: $border-radius-small;
+        background: rgba(255, 255, 255, 0.8);
+        color: $text-primary;
+        cursor: pointer;
+        line-height: 0;
+
+        &:first-child:hover {
+          background: white;
+          color: $primary-blue;
+        }
+
+        &:last-child:hover {
+          background: white;
+          color: #eb5a46;
+        }
+      }
+    }
+  }
 }
