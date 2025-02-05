@@ -90,6 +90,7 @@
     @media (max-width: $breakpoint-mobile) {
       font-size: rem(13px);
       padding: $spacing-xs $spacing-sm;
+      margin-inline-start: 1rem;
       height: 2rem;
       text-align: center;
       width: 100%;
