@@ -1,9 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { svgService } from '../../services/svg.service'
-import { showErrorMsg, showSuccessMsg } from '../../services/event-bus.service'
 import { loadBoard, updateBoard } from '../../store/actions/board.actions'
 import { BoardMenu } from './BoardMenu'
-import { DragDropContext, Droppable } from "react-beautiful-dnd"
+import { Droppable } from "react-beautiful-dnd"
 import { MemberDraggable } from '../DragDropSystem'
 
 export function BoardHeader({ board, isSidebarOpen, onUpdateGroup }) {
