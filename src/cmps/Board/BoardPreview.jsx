@@ -1,14 +1,22 @@
-import { Link } from 'react-router-dom'
+/* eslint-disable react/prop-types */
+
+import { Link } from 'react-router-dom';
 
 export function BoardPreview({ board }) {
-    return (
-        <article className="preview">
-            <header>
-                <Link to={`/board/${board._id}`}>{board.title}</Link>
-            </header>
+  return (
+    <div className='board-preview'>
+      <header>
+        <Link to={`/board/${board._id}`}>
+          <h3>{board.title}</h3>
+        </Link>
+      </header>
 
-            {board.owner && <p>Owner: <Link to={`/user/${board.owner._id}`}>{board.owner.fullname}</Link></p>}
-
-        </article>
-    )
+      {board.owner && (
+        <p>
+          Owner:{' '}
+          <Link to={`/user/${board.owner._id}`}>{board.owner.fullname}</Link>
+        </p>
+      )}
+    </div>
+  );
 }
