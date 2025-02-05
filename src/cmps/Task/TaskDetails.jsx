@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { boardService } from '../../services/board'
 import { svgService } from "../../services/svg.service"
 import { showErrorMsg, showSuccessMsg } from '../../services/event-bus.service'
-import { updateTask } from '../../store/actions/board.actions'
+import { updateTask, removeTask, updateBoard, loadBoard } from '../../store/actions/board.actions'
 import { onTogglePicker } from '../../store/actions/app.actions'
 import { MemberPicker } from '../DynamicPickers/Pickers/MemberPicker'
 import { LabelPicker } from '../DynamicPickers/Pickers/LabelPicker'
@@ -27,12 +27,8 @@ const PICKERS = [
 ]
 
 const ACTION_BUTTONS = [
-    { icon: 'rightArrowIcon', label: 'Move' },
-    { icon: 'copyIcon', label: 'Copy' },
-    { icon: 'cardIcon', label: 'Mirror' },
-    { icon: 'templateIcon', label: 'Make template' },
-    { icon: 'archiveIcon', label: 'Archive' },
-    { icon: 'shareIcon', label: 'Share' }
+    { icon: 'archiveIcon', label: 'Delete',  action: 'delete' },
+    { icon: 'shareIcon',   label: 'Share',   action: 'share' }
 ]
 
 function findTaskAndGroup(groups, taskId) {
@@ -97,6 +93,32 @@ export function TaskDetails() {
         }
     }
 
+
+    async function handleAction(action) {
+        switch (action) {
+            case 'delete':
+                handleDeleteTask()
+                break
+            case 'share':
+                handleShareTask()
+                break
+            default:
+                break
+        }
+    }
+
+    async function handleDeleteTask() {
+        try {
+            await removeTask(board._id, currGroup.id, task.id)
+            await loadBoard(board._id)
+            showSuccessMsg('Task deleted successfully')
+            navigate(`/board/${board._id}`)
+        } catch (err) {
+            showErrorMsg('Failed to delete task')
+        }
+    }
+        
+
     async function handleTaskUpdate(field, value) {
         if (!value.trim()) {
             showErrorMsg(`${field} cannot be empty`)
@@ -160,19 +182,6 @@ export function TaskDetails() {
             setTask(updatedTask)
         } catch (err) {
             showErrorMsg('Failed to update label')
-        }
-    }
-
-    async function handleJoinLeaveTask() {
-        const updatedMembers = isTaskMember
-            ? taskMembers.filter(id => id !== loggedInUserId)
-            : [...taskMembers, loggedInUserId]
-
-        try {
-            await handleMemberUpdate(updatedMembers)
-            showSuccessMsg(`Successfully ${isTaskMember ? 'left' : 'joined'} task`)
-        } catch (err) {
-            showErrorMsg(`Failed to ${isTaskMember ? 'leave' : 'join'} task`)
         }
     }
 
@@ -618,13 +627,6 @@ export function TaskDetails() {
                     <aside className="task-sidebar">
                         <ul className="features">
                             <li>
-                                <button>
-                                    <img
-                                        src={svgService[isTaskMember ? 'joinIcon' : 'leaveIcon']}
-                                        alt={isTaskMember ? 'Join' : 'Leave'}
-                                    />
-                                    <span>{isTaskMember ? 'Join' : 'Leave'}</span>
-                                </button>
                                 {PICKERS.map(({ icon, label, picker }) => (
                                     <button
                                         key={label}
@@ -642,8 +644,13 @@ export function TaskDetails() {
                                 <h4>Actions</h4>
                             </hgroup>
                             <li>
-                                {ACTION_BUTTONS.map(({ icon, label }) => (
-                                    <button key={label}>
+                            {ACTION_BUTTONS.map(({ icon, label, action }) => (
+                                    <button 
+                                        key={label}
+                                        onClick={() => handleAction(action)}
+                                        className="action-button"
+                                        title={label}
+                                    >
                                         <img src={svgService[icon]} alt={label} />
                                         <span>{label}</span>
                                     </button>

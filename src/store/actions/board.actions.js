@@ -198,12 +198,12 @@ export async function removeTask(boardId, groupId, taskId) {
 
 export async function assignMemberToTask(boardId, taskId, memberId) {
   try {
-    const board = await boardService.assignMemberToTask(boardId, taskId, memberId);
-    store.dispatch(getCmdAssignMemberToTask(taskId, memberId));
-    return board;
+    const board = await boardService.assignMemberToTask(boardId, taskId, memberId)
+    store.dispatch(getCmdAssignMemberToTask(taskId, memberId))
+    return board
   } catch (err) {
-    console.error('Cannot assign member to task', err);
-    throw err;
+    console.error('Cannot assign member to task', err)
+    throw err
   }
 }
 
