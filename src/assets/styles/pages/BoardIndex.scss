@@ -157,6 +157,34 @@
         position: relative;
         transition: $hover-transition;
 
+        @each $name, $color in $board-backgrounds {
+          &:nth-child(
+              #{length($board-backgrounds)}n
+                + #{index($board-backgrounds, ($name $color))}
+            ) {
+            background: $color;
+          }
+        }
+
+        &:nth-child(6n + 1) {
+          background: linear-gradient(135deg, #0079bf 0%, #5067c5 100%);
+        }
+        &:nth-child(6n + 2) {
+          background: #0079bf;
+        }
+        &:nth-child(6n + 3) {
+          background: #519839;
+        }
+        &:nth-child(6n + 4) {
+          background: #b04632;
+        }
+        &:nth-child(6n + 5) {
+          background: #89609e;
+        }
+        &:nth-child(6n + 6) {
+          background: linear-gradient(135deg, #ff8a65 0%, #ff5722 100%);
+        }
+
         @media (max-width: $breakpoint-mobile) {
           .workspace-crud {
             opacity: 1;

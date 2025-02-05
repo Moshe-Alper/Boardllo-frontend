@@ -1,6 +1,6 @@
 .board-header {
   display: grid;
-  grid-template-columns: 1fr  auto auto;
+  grid-template-columns: 1fr auto auto;
   padding-inline-start: rem(24px);
   align-items: center;
   justify-content: center;
@@ -10,12 +10,31 @@
   position: relative;
   transition: margin 0.3s ease;
 
+  @media (max-width: $breakpoint-tablet) {
+    padding-inline-start: rem(12px);
+    gap: $spacing-sm;
+  }
+
+  @media (max-width: $breakpoint-mobile) {
+    grid-template-columns: auto 1fr auto; // Move title to middle
+    padding: 0 rem(8px);
+    gap: $spacing-xs;
+  }
+
   &.sidebar-open {
     padding-inline-start: rem(12px);
+
+    @media (max-width: $breakpoint-tablet) {
+      padding-inline-start: rem(8px);
+    }
   }
 
   &.menu-open {
     margin-inline-end: 18.75rem;
+
+    @media (max-width: $breakpoint-tablet) {
+      margin-inline-end: 0; // Menu should overlay on mobile instead
+    }
   }
 
   textarea {
@@ -35,6 +54,13 @@
     line-height: 1.25rem;
     height: 2.25rem;
     white-space: nowrap;
+
+    @media (max-width: $breakpoint-mobile) {
+      min-width: 5rem;
+      font-size: rem(13px);
+      padding: $spacing-xs $spacing-sm;
+      height: 2rem;
+    }
 
     &:focus {
       outline: none;
@@ -60,6 +86,15 @@
     &:hover {
       background-color: rgba(255, 255, 255, 0.2);
     }
+
+    @media (max-width: $breakpoint-mobile) {
+      font-size: rem(13px);
+      padding: $spacing-xs $spacing-sm;
+      margin-inline-start: 1rem;
+      height: 2rem;
+      text-align: center;
+      width: 100%;
+    }
   }
 
   .members {
@@ -73,10 +108,45 @@
     overflow: visible;
     line-height: rem(32px);
 
+    @media (max-width: $breakpoint-tablet) {
+      margin-inline-end: rem(16px);
+    }
+
+    @media (max-width: $breakpoint-mobile) {
+      max-width: rem(96px); // Show fewer members
+      overflow: hidden;
+
+      &::after {
+        content: '...';
+        position: absolute;
+        right: 0;
+        color: white;
+        background: rgba(0, 0, 0, 0.4);
+        padding: 0 4px;
+        border-radius: 3px;
+        font-size: 12px;
+        line-height: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+
     .member {
-      margin-inline-end: rem(-6px); 
+      margin-inline-end: rem(-6px);
       &:first-child {
-        margin-inline-end: 0; 
+        margin-inline-end: 0;
+      }
+
+      @media (max-width: $breakpoint-mobile) {
+        .member-img img {
+          width: rem(28px);
+          height: rem(28px);
+        }
+
+        .admin-badge {
+          width: rem(8px);
+          height: rem(8px);
+        }
       }
     }
   }
@@ -85,10 +155,10 @@
     position: relative;
     display: inline-block;
     margin-block-start: rem(-2px);
-    
+
     .member-img {
       position: relative;
-      
+
       img {
         width: rem(32px);
         height: rem(32px);
@@ -124,12 +194,22 @@
     color: $text-white;
     cursor: pointer;
     transition: $hover-transition;
-    
 
     img {
       width: 1rem;
       height: 1rem;
       filter: brightness(0) invert(1);
+    }
+
+    @media (max-width: $breakpoint-mobile) {
+      height: 2rem;
+      padding: $spacing-xs;
+
+      img {
+        width: 0.875rem;
+        height: 0.875rem;
+        filter: brightness(0) invert(1);
+      }
     }
 
     &:hover {
