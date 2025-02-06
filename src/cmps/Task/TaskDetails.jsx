@@ -512,6 +512,23 @@ export function TaskDetails() {
                                                     </div>
                                                 </div>
                                             </hgroup>
+
+                                            {checklist.todos && checklist.todos.length > 0 && (
+                                                <div className="checklist-progress">
+                                                    <span className="progress-text">
+                                                        {Math.round((checklist.todos.filter(todo => todo.isDone).length / checklist.todos.length) * 100)}%
+                                                    </span>
+                                                    <div className="progress-bar-container" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                                        <span
+                                                            className="progress-bar-fill"
+                                                            style={{
+                                                                width: `${(checklist.todos.filter(todo => todo.isDone).length / checklist.todos.length) * 100}%`
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            )}
+
                                             <div className="checklist-content">
                                                 {visibleTodos && visibleTodos.length > 0 ? (
                                                     <ul>
