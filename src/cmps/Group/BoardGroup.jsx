@@ -41,44 +41,43 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
 
     async function onAddTask(ev) {
         ev.preventDefault()
-        if (!newTaskTitle.trim()) {
+        const title = newTaskTitle.trim()
+        if (!title) {
             showErrorMsg('Task title cannot be empty')
             return
         }
-        const task = boardService.getEmptyTask()
-        task.title = newTaskTitle
-
+    
         const tempId = `temp-${Date.now()}`
-        const tempTask = { ...task, id: tempId }
-
-        const updatedGroup = {
-            ...group,
-            tasks: [...(group.tasks || []), tempTask]
+        const task = {
+            ...boardService.getEmptyTask(),
+            id: tempId,
+            title
         }
-
-        onUpdateGroup(updatedGroup)
-
+    
+        const updatedTasks = group.tasks ? [...group.tasks, task] : [task]
+        onUpdateGroup({
+            ...group,
+            tasks: updatedTasks
+        })
+    
         try {
             const savedTask = await addTask(board._id, group.id, task)
-
-            const finalGroup = {
-                ...group,
-                tasks: updatedGroup.tasks.map(task =>
-                    task.id === tempId ? savedTask : task
-                )
+            
+            const taskIndex = updatedTasks.findIndex(t => t.id === tempId)
+            if (taskIndex !== -1) {
+                updatedTasks[taskIndex] = savedTask
             }
-
-            onUpdateGroup(finalGroup)
+    
             setNewTaskTitle('')
             showSuccessMsg(`Task added (id: ${savedTask.id})`)
         } catch (err) {
             console.log('Cannot add task', err)
             showErrorMsg('Cannot add task')
-            const revertedGroup = {
+            
+            onUpdateGroup({
                 ...group,
-                tasks: group.tasks.filter(task => task.id !== tempId)
-            }
-            onUpdateGroup(revertedGroup)
+                tasks: group.tasks.filter(t => t.id !== tempId)
+            })
         }
     }
 

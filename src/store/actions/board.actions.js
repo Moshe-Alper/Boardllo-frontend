@@ -117,23 +117,19 @@ export async function addGroup(boardId, group) {
 }
 
 export async function updateGroup(boardId, group) {
-  const originalGroup = { ...group }
-  try {
-      store.dispatch(getCmdUpdateGroup(group))
-      
-      const groupToUpdate = {
-          ...group,
-          archivedAt: group.archivedAt || null,
-          tasks: [...group.tasks] || [],
-          style: group.style || {},
-          isCollapsed: group.isCollapsed || false
-      }
+  const groupToUpdate = {
+      id: group.id,
+      archivedAt: group.archivedAt ?? null,
+      tasks: group.tasks || [],
+      style: group.style || {},
+      isCollapsed: group.isCollapsed ?? false
+  }
 
-      const savedGroup = await boardService.saveGroup(boardId, groupToUpdate)
-      return savedGroup
+  try {
+      store.dispatch(getCmdUpdateGroup(groupToUpdate))
+      return await boardService.saveGroup(boardId, groupToUpdate)
   } catch (err) {
-      // Revert to original state if error occurs
-      store.dispatch(getCmdUpdateGroup(originalGroup))
+      store.dispatch(getCmdUpdateGroup(group))
       console.error('Cannot update group', err)
       throw err
   }
@@ -197,13 +193,15 @@ export async function removeTask(boardId, groupId, taskId) {
 }
 
 export async function assignMemberToTask(boardId, taskId, memberId) {
+  store.dispatch(getCmdAssignMemberToTask(taskId, memberId))
+
   try {
-    const board = await boardService.assignMemberToTask(boardId, taskId, memberId)
-    store.dispatch(getCmdAssignMemberToTask(taskId, memberId))
-    return board
+      const board = await boardService.assignMemberToTask(boardId, taskId, memberId)
+      return board
   } catch (err) {
-    console.error('Cannot assign member to task', err)
-    throw err
+      store.dispatch(getCmdAssignMemberToTask(taskId, null)) 
+      console.error('Cannot assign member to task', err)
+      throw err
   }
 }
 
