@@ -118,6 +118,7 @@ export async function addGroup(boardId, group) {
 
 export async function updateGroup(boardId, group) {
   const groupToUpdate = {
+      title: group.title,
       id: group.id,
       archivedAt: group.archivedAt ?? null,
       tasks: group.tasks || [],
