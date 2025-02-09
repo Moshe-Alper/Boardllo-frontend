@@ -6,6 +6,7 @@ import { BoardGroupHeader } from './BoardGroupHeader'
 import { TaskPreview } from '../Task/TaskPreview'
 import { TaskDragDropContainer } from '../DragDropSystem'
 import { svgService } from '../../services/svg.service'
+import { Loader } from '../Loader'
 
 export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
     const [isEditingGroupTitle, setIsEditingGroupTitle] = useState(false)
@@ -121,7 +122,7 @@ export function BoardGroup({ board, group, onUpdateGroup, isDragging }) {
         return task.style.coverColor ? 'task-preview has-cover' : 'task-preview'
     }
 
-    if (!group) return <div>Loading...</div>
+    if (!group) return <Loader />
 
     return (
         <section

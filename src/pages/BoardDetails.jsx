@@ -15,6 +15,7 @@ import { BoardSidebar } from '../cmps/Board/BoardSidebar'
 import { GroupDragDropContainer } from '../cmps/DragDropSystem'
 import { BoardMenu } from '../cmps/Board/BoardMenu'
 import { DragDropContext } from 'react-beautiful-dnd'
+import { Loader } from '../cmps/Loader'
 
 export function BoardDetails() {
   const { boardId } = useParams()
@@ -120,7 +121,7 @@ export function BoardDetails() {
     }
   }
 
-  if (!board) return <div>Loading...</div>
+  if (!board) return <Loader />
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <div className={`board-layout ${isSidebarOpen ? 'sidebar-open' : ''}`}>

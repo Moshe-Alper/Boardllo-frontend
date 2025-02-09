@@ -15,6 +15,7 @@ import { TaskDescription } from './TaskDescription'
 import { formatDueDate, getDueStatus } from '../../services/util.service'
 import { userService } from '../../services/user'
 import { TaskComments } from './TaskComments'
+import { Loader } from '../Loader'
 
 const PICKERS = [
     { icon: 'memberIcon', label: 'Members', picker: MemberPicker },
@@ -317,7 +318,7 @@ export function TaskDetails() {
     }
 
 
-    if (!task) return <div>Loading...</div>
+    if (!task) return <Loader />
     const boardMembers = board?.members || []
     const taskMembers = task?.memberIds || []
     const isTaskMember = taskMembers.includes(loggedInUserId)

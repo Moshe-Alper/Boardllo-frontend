@@ -1,5 +1,6 @@
 import { svgService } from "../../services/svg.service"
 import { useEffect, useRef } from "react"
+import { Loader } from "../Loader"
 
 export function AddGroupForm({
     newGroupTitle,
@@ -51,7 +52,8 @@ export function AddGroupForm({
         )
     }
 
-    if (!board) return <div>Loading...</div>
+    if (!board) return <Loader />
+    
     return (
         <form
             className="add-group-form"
