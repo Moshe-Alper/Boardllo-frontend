@@ -4,6 +4,7 @@ import { loadBoard, updateBoard } from '../../store/actions/board.actions'
 import { BoardMenu } from './BoardMenu'
 import { Droppable } from "react-beautiful-dnd"
 import { MemberDraggable } from '../DragDropSystem'
+import { Loader } from '../Loader'
 
 export function BoardHeader({ board, isSidebarOpen, onUpdateGroup }) {
   const [isEditingTitle, setIsEditingTitle] = useState(false)
@@ -68,7 +69,7 @@ export function BoardHeader({ board, isSidebarOpen, onUpdateGroup }) {
     }
   }
 
-  if (!board) return <div className='board-header'>Loading board...</div>
+  if (!board) return <Loader />
   
   return (
     <section className={`board-header ${isMenuOpen ? 'menu-open' : ''} ${isSidebarOpen ? 'sidebar-open' : ''}`}>
