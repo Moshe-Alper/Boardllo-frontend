@@ -10,49 +10,46 @@ import IconButton from '@mui/material/IconButton'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import DashboardIcon from '@mui/icons-material/Dashboard'
+import StarIcon from '@mui/icons-material/Star'
+import StarBorderIcon from '@mui/icons-material/StarBorder'
 
 export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
     const navigate = useNavigate()
-    useEffect(() => {
+    useEffect(function() {
         function handleKeyBoardClick(event) {
             if (event.key === '[') {
                 toggleDrawer()
             }
         }
 
-    
         window.addEventListener('keydown', handleKeyBoardClick)
 
-  
-        return () => {
+        return function() {
             window.removeEventListener('keydown', handleKeyBoardClick)
-        };
+        }
     }, [toggleDrawer])
-
 
     return (
         <div>
- 
             {!isOpen && (
                 <div
                     onClick={toggleDrawer}
                     style={{
-                        position: 'fixed', 
-                        top: '48px',        
-                        left: '0',        
-                        height: '100vh',  
-                        width: '20px',    
-                        backgroundColor: '#0a3d8f', 
-                        zIndex: 1200,     
-                        cursor: 'pointer', 
-                        display: 'flex',  
+                        position: 'fixed',
+                        top: '48px',
+                        left: '0',
+                        height: '100vh',
+                        width: '20px',
+                        backgroundColor: '#0a3d8f',
+                        zIndex: 1200,
+                        cursor: 'pointer',
+                        display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}
-                >             
+                >
                 </div>
             )}
-
 
             <Drawer
                 variant="persistent"
@@ -70,7 +67,6 @@ export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
                     },
                 }}
             >
-
                 <div
                     style={{
                         display: 'flex',
@@ -102,34 +98,66 @@ export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
                 <List
                     sx={{
                         '& .MuiListItemText-primary': {
-                            fontSize: '0.875rem', 
+                            fontSize: '0.875rem',
                         },
                     }}
                 >
-                    {boards.map((board) => (
-                        <ListItem key={board._id} disablePadding>
-                            <ListItemButton onClick={() => navigate(`/board/${board._id}`)}>
-                                <ListItemIcon
-                                    sx={{
-                                        color: '#FFFFFF',
-                                        marginRight: '-1.25rem',
-                                        marginLeft: '3px',
-                                    }}
-                                >
-                                    <DashboardIcon
+                    {boards.map(function(board) {
+                        return (
+                            <ListItem 
+                                key={board._id} 
+                                disablePadding
+                                sx={{
+                                    '& .star-border': {
+                                        display: 'none'
+                                    },
+                                    '&:hover .star-border': {
+                                        display: 'block'
+                                    }
+                                }}
+                                secondaryAction={
+                                    board.isStarred ? (
+                                        <StarIcon 
+                                            sx={{ 
+                                                color: '#FFFFFF',
+                                                fontSize: '1.2rem',
+                                                marginRight: '12px'
+                                            }} 
+                                        />
+                                    ) : (
+                                        <StarBorderIcon 
+                                            className="star-border"
+                                            sx={{ 
+                                                color: '#FFFFFF',
+                                                fontSize: '1.2rem',
+                                                marginRight: '12px'
+                                            }} 
+                                        />
+                                    )
+                                }
+                            >
+                                <ListItemButton onClick={function() { navigate(`/board/${board._id}`) }}>
+                                    <ListItemIcon
                                         sx={{
-                                            fontSize: '1rem',
-                                            marginLeft: '0.25rem',
+                                            color: '#FFFFFF',
+                                            marginRight: '-1.25rem',
+                                            marginLeft: '3px',
                                         }}
-                                    />
-                                </ListItemIcon>
-                                <ListItemText primary={board.title} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
+                                    >
+                                        <DashboardIcon
+                                            sx={{
+                                                fontSize: '1rem',
+                                                marginLeft: '0.25rem',
+                                            }}
+                                        />
+                                    </ListItemIcon>
+                                    <ListItemText primary={board.title} />
+                                </ListItemButton>
+                            </ListItem>
+                        )
+                    })}
                 </List>
             </Drawer>
-
 
             {!isOpen && (
                 <IconButton
@@ -155,5 +183,5 @@ export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
                 </IconButton>
             )}
         </div>
-    );
+    )
 }
