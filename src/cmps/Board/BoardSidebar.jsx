@@ -10,8 +10,8 @@ import IconButton from '@mui/material/IconButton'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import DashboardIcon from '@mui/icons-material/Dashboard'
-import StarIcon from '@mui/icons-material/Star'
-import StarBorderIcon from '@mui/icons-material/StarBorder'
+import StarRoundedIcon from '@mui/icons-material/StarRounded'
+import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded'
 
 export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
     const navigate = useNavigate()
@@ -117,20 +117,20 @@ export function BoardSidebar({ isOpen, toggleDrawer, boards = [] }) {
                                 }}
                                 secondaryAction={
                                     board.isStarred ? (
-                                        <StarIcon 
+                                        <StarRoundedIcon 
                                             sx={{ 
                                                 color: '#FFFFFF',
                                                 fontSize: '1.2rem',
-                                                marginRight: '12px'
+                                                marginRight: '2px'
                                             }} 
                                         />
                                     ) : (
-                                        <StarBorderIcon 
+                                        <StarBorderRoundedIcon 
                                             className="star-border"
                                             sx={{ 
                                                 color: '#FFFFFF',
                                                 fontSize: '1.2rem',
-                                                marginRight: '12px'
+                                                marginRight: '2px'
                                             }} 
                                         />
                                     )
