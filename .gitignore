@@ -26,3 +26,7 @@ data
 
 # For presentation
 group.js
+
+# Vite cache files
+vite.config.js.timestamp-*
+__vite__
