@@ -15,35 +15,32 @@ Boardllo is a project management tool designed to help teams collaborate and man
 
 Here's a visual tour of Boardllo's key features and interfaces:
 
-### Homepage
-The homepage serves as your central hub, displaying all your workspaces and starred boards. With a clean, modern interface, you can quickly access your most important projects and create new ones.
-
-![Homepage](path/to/homepage.png)
+![Homepage](/src/assets/imgs/readme/homepage.png)
 
 ### Workspace View
 The workspace view provides an organized overview of all your boards within a specific workspace. Easily manage team access, create new boards, and switch between different projects.
 
-![Workspace](path/to/workspace.png)
+![Workspace](/src/assets/imgs/readme/workspace-view.png)
 
 ### Board View
 The main board interface features a Kanban-style layout with drag-and-drop functionality. Organize tasks into lists, add labels, assignees, and due dates. The intuitive design makes project management effortless.
 
-![Board View](path/to/board-view.png)
+![Board View](/src/assets/imgs/readme/board-space.png)
 
 ### Task Details
 Dive deep into task management with our detailed task view. Add descriptions, attachments, comments, and track activity history. The comprehensive task details ensure nothing is missed.
 
-![Task Details](path/to/task-details.png)
+![Task Details](/src/assets/imgs/readme/task-details.png)
 
 ### Side Menu
-The collapsible side menu provides quick access to all your workspaces and boards. Use keyboard shortcuts (press '[' to toggle) for faster navigation, and star your favorite boards for easy access.
+The collapsible side menu provides quick access to all your workspaces and boards. Use keyboard shortcuts (press `[` to toggle) for faster navigation, and star your favorite boards for easy access.
 
-![Side Menu](path/to/side-menu.png)
+![Side Menu](/src/assets/imgs/readme/side-menu.png)
 
 ### Mobile Experience
 Boardllo is fully responsive and optimized for mobile devices. Access your boards and manage tasks on the go with our touch-friendly interface. The mobile view maintains all core functionality while adapting to smaller screens.
 
-![Mobile View](path/to/mobile.png)
+![Mobile View](/src/assets/imgs/eadme/mobile.png)
 
 ## Getting Started
 
