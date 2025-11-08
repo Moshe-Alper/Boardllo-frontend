@@ -1,33 +1,33 @@
-import { Link, NavLink } from 'react-router-dom';
-import { useNavigate } from 'react-router';
-import { useSelector } from 'react-redux';
-import { svgService } from '../services/svg.service.js';
-import UserMenuDropdown from '../cmps/UserMenuDropdown.jsx';
-import { Layout } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
-import { BoardCreateModal } from './Board/BoardCreateModal.jsx';
-import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js';
-import { login, signup } from '../store/actions/user.actions.js';
-import { boardService } from '../services/board';
+import { Link, NavLink } from 'react-router-dom'
+import { useNavigate } from 'react-router'
+import { useSelector } from 'react-redux'
+import { svgService } from '../services/svg.service.js'
+import UserMenuDropdown from '../cmps/UserMenuDropdown.jsx'
+import { Layout } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { BoardCreateModal } from './Board/BoardCreateModal.jsx'
+import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
+import { login, signup } from '../store/actions/user.actions.js'
+import { boardService } from '../services/board'
 
 export function AppHeader() {
-  const boards = useSelector((storeState) => storeState.boardModule.boards);
-  const user = useSelector((storeState) => storeState.userModule.user);
-  const [filterBy, setFilterBy] = useState(boardService.getDefaultFilter());
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const createButtonRef = useRef(null);
-  const navigate = useNavigate();
+  const boards = useSelector((storeState) => storeState.boardModule.boards)
+  const user = useSelector((storeState) => storeState.userModule.user)
+  const [filterBy, setFilterBy] = useState(boardService.getDefaultFilter())
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const createButtonRef = useRef(null)
+  const navigate = useNavigate()
 
-  const [isSearch, setIsSearch] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
-  const searchInputRef = useRef(null);
-  const dropdownRef = useRef(null);
+  const [isSearch, setIsSearch] = useState(false)
+  const [isFocused, setIsFocused] = useState(false)
+  const searchInputRef = useRef(null)
+  const dropdownRef = useRef(null)
 
   const defaultUser = {
     username: 'default_user',
     password: '123',
     fullname: 'default',
-  };
+  }
 
   useEffect(() => {
     function handleClickOutside(ev) {
@@ -36,61 +36,83 @@ export function AppHeader() {
         !dropdownRef.current.contains(ev.target) &&
         !searchInputRef.current.contains(ev.target)
       ) {
-        setIsSearch(false);
-        setIsFocused(false);
+        setIsSearch(false)
+        setIsFocused(false)
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   function handleNavigate(path) {
-    navigate(path);
+    navigate(path)
   }
 
   function handleChange({ target }) {
-    const field = target.name;
-    let value = target.value;
+    const field = target.name
+    let value = target.value
 
     switch (target.type) {
       case 'number':
       case 'range':
-        value = +value || '';
-        break;
+        value = +value || ''
+        break
       case 'checkbox':
-        value = target.checked;
-        break;
+        value = target.checked
+        break
       default:
-        break;
+        break
     }
 
-    setFilterBy((prevFilter) => ({ ...prevFilter, [field]: value }));
+    setFilterBy((prevFilter) => ({ ...prevFilter, [field]: value }))
   }
 
   function handleSearchFocus() {
-    setIsSearch(true);
-    setIsFocused(true);
+    setIsSearch(true)
+    setIsFocused(true)
   }
 
   function handleBoardClick(boardId) {
-    navigate(`/board/${boardId}`);
+    navigate(`/board/${boardId}`)
     setTimeout(() => {
-      setIsSearch(false);
-      setIsFocused(false);
-    }, 0);
+      setIsSearch(false)
+      setIsFocused(false)
+    }, 0)
   }
 
-  async function handleDefaultLogin() {
-    try {
-      await signup(defaultUser);
-      showSuccessMsg('Welcome to Boardllo!');
-      navigate('/board');
-    } catch (err) {
-      console.error('Signup failed:', err);
-      showErrorMsg('Oops! Something went wrong');
+async function handleDefaultLogin() {
+  try {
+
+    await login(defaultUser)
+    showSuccessMsg('Welcome back to Boardllo!')
+    navigate('/board')
+  } catch (err) {
+
+    if (
+      err.response?.status === 401 || 
+      err.response?.status === 404 || 
+      err.message.includes('not found')
+    ) {
+      try {
+        await signup(defaultUser)
+        showSuccessMsg('Account created! Welcome to Boardllo!')
+        navigate('/board')
+      } catch (signupErr) {
+
+        if (signupErr.response?.data?.includes('already exists')) {
+          showErrorMsg('Demo account is busy. Please try again in a few seconds.')
+        } else {
+          showErrorMsg('Something went wrong. Try again!')
+        }
+        console.error('Signup failed:', signupErr)
+      }
+    } else {
+      showErrorMsg('Login failed. Try again!')
+      console.error('Login error:', err)
     }
   }
+}
 
   // console.log('🚀 filterBy, isSearch', filterBy.txt, isSearch)
   if (user) {
@@ -198,7 +220,7 @@ export function AppHeader() {
           </div>
         </nav>
       </header>
-    );
+    )
   }
 
   return (
@@ -221,5 +243,5 @@ export function AppHeader() {
         </div>
       </nav>
     </header>
-  );
+  )
 }
