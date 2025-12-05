@@ -20,15 +20,35 @@ export function ImgUploader() {
       const { secure_url } = await uploadService.uploadImg(ev)
       await updateUserImg({ ...user, imgUrl: secure_url })
 
-      if (board?.owner?._id === user._id) {
-        await updateBoard({
-          ...board,
-          owner: {
+      // Update board if user is owner or member
+      if (board?._id) {
+        const updatedBoard = { ...board }
+        let needsUpdate = false
+
+        // Update board owner if user is the owner
+        if (board.owner?._id === user._id) {
+          updatedBoard.owner = {
             ...board.owner,
             imgUrl: secure_url
           }
-        })
-        await loadBoard(board._id)
+          needsUpdate = true
+        }
+
+        // Update board members array if user is a member
+        if (board.members && board.members.some(member => member._id === user._id)) {
+          updatedBoard.members = board.members.map(member => 
+            member._id === user._id 
+              ? { ...member, imgUrl: secure_url }
+              : member
+          )
+          needsUpdate = true
+        }
+
+        // Update board and reload if changes were made
+        if (needsUpdate) {
+          await updateBoard(updatedBoard)
+          await loadBoard(board._id)
+        }
       }
 
       setImgData(secure_url)
