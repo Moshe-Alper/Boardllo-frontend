@@ -165,6 +165,19 @@
         border-radius: 50%;
       }
 
+      .member-initial {
+        width: rem(32px);
+        height: rem(32px);
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $text-white;
+        font-size: rem(14px);
+        font-weight: 600;
+      }
+
       .admin-badge {
         position: absolute;
         bottom: 0;

@@ -15,7 +15,13 @@ export function MemberDraggable({ member, index }) {
                     className="member"
                 >
                       <div className="member-img">
-                        <img src={member.imgUrl} alt={member.fullname} />
+                        {member.imgUrl ? (
+                            <img src={member.imgUrl} alt={member.fullname} />
+                        ) : (
+                            <div className="member-initial">
+                                {member.fullname?.charAt(0).toUpperCase()}
+                            </div>
+                        )}
                         {/* Make sure isAdmin is being properly checked */}
                         {Boolean(member.isAdmin) && (
                             <span 
