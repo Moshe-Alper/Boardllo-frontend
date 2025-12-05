@@ -8,6 +8,7 @@ import {
   assignMemberToTask,
   updateBoard
 } from '../store/actions/board.actions'
+import { CLEAR_BOARD } from '../store/reducers/board.reducer'
 import { BoardGroup } from '../cmps/Group/BoardGroup'
 import { AddGroupForm } from '../cmps/Group/AddGroupForm'
 import { BoardHeader } from '../cmps/Board/BoardHeader'
@@ -40,9 +41,13 @@ export function BoardDetails() {
   }
 
   useEffect(() => {
+    // Clear stale board data when boardId changes to prevent flickering
+    if (board && board._id !== boardId) {
+      dispatch({ type: CLEAR_BOARD })
+    }
     loadBoard(boardId)
     loadBoardsToSidebar()
-  }, [boardId])
+  }, [boardId, board, dispatch])
 
   async function onAddGroup(boardId) {
     if (!newGroupTitle.trim()) {
@@ -121,7 +126,8 @@ export function BoardDetails() {
     }
   }
 
-  if (!board) return <Loader />
+  // Ensure board exists and matches the route boardId to prevent rendering stale data
+  if (!board || board._id !== boardId) return <Loader />
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <div className={`board-layout ${isSidebarOpen ? 'sidebar-open' : ''}`}>

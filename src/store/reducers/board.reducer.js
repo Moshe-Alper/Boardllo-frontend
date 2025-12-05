@@ -3,6 +3,7 @@ import { assignMemberToTask } from '../actions/board.actions'
 
 export const SET_BOARDS = 'SET_BOARDS'
 export const SET_BOARD = 'SET_BOARD'
+export const CLEAR_BOARD = 'CLEAR_BOARD'
 export const REMOVE_BOARD = 'REMOVE_BOARD'
 export const ADD_BOARD = 'ADD_BOARD'
 export const UPDATE_BOARD = 'UPDATE_BOARD'
@@ -53,6 +54,9 @@ export function boardReducer(state = initialState, action) {
       break
     case SET_BOARD:
       newState = { ...state, board: action.board }
+      break
+    case CLEAR_BOARD:
+      newState = { ...state, board: null }
       break
     case REMOVE_BOARD:
       const removedBoard = state.boards.find(
