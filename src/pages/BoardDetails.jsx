@@ -42,7 +42,7 @@ export function BoardDetails() {
 
   useEffect(() => {
     // Always clear board when boardId changes to prevent stale data rendering
-    dispatch({ type: CLEAR_BOARD })
+      dispatch({ type: CLEAR_BOARD })
     loadBoard(boardId)
     loadBoardsToSidebar()
   }, [boardId, dispatch])
