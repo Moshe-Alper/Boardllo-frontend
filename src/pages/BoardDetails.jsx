@@ -41,13 +41,11 @@ export function BoardDetails() {
   }
 
   useEffect(() => {
-    // Clear stale board data when boardId changes to prevent flickering
-    if (board && board._id !== boardId) {
-      dispatch({ type: CLEAR_BOARD })
-    }
+    // Always clear board when boardId changes to prevent stale data rendering
+    dispatch({ type: CLEAR_BOARD })
     loadBoard(boardId)
     loadBoardsToSidebar()
-  }, [boardId, board, dispatch])
+  }, [boardId, dispatch])
 
   async function onAddGroup(boardId) {
     if (!newGroupTitle.trim()) {
